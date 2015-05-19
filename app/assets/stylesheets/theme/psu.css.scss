@@ -1,0 +1,38 @@
+$school_main_color: #0062A0;
+$school_secondary_color: #3580d1;
+$school_dark_color: #404d5b;
+
+.brand {
+  background: url(psu.png);
+  background-size: 100% 100%;
+  width: 122px;
+  height: 55px;
+}
+
+.navbar {
+  .system-logo {
+    background: url(sf-logo-unc.jpg);
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+  }
+
+  a {
+    color: white !important;
+  }
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:hover {
+    color: $body_text;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: white;
+  background: $school_secondary_color;
+}

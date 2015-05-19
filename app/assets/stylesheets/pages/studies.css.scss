@@ -1,0 +1,169 @@
+.study-result-hud {
+  padding-left: 0px;
+  
+  .results-header {
+    
+    padding: 15px 30px 30px 30px;
+    background: $school_main_color;
+    color: white;
+  
+    h3 {
+      margin: 10px 0;
+      position: relative;
+      color: white;
+      font-weight: 200;
+    }
+
+    .fa-search {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+    }
+
+    .age-ranges, .healthy-volunteers {
+      margin-left: 50px;
+    }
+
+    .btn-school-inverse {
+      width: 150px;
+    }
+  }
+
+  select {
+    width: 145px;
+    border-radius: 0;
+    border: 0;
+    outline: 1px inset $school_main_color;
+    outline-offset: -1px;
+  }
+
+  .input-search {
+    color: white;
+    padding: 10px 10px 10px 50px;
+    background: rgba(255,255,255,0.3);
+    border: 0;
+    width: 100%;
+  }
+
+  .pagination .active span {
+    background-color: $school_secondary_color;
+    border-color: $school_secondary_color;
+  }
+}
+
+.suggestions {
+  margin: 20px 0 0 0;
+  font-size: 18px;
+
+  .alert {
+    margin-bottom: 0;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.study-results {
+  padding: 25px 10px;
+  
+  em {
+    font-style: normal;
+    text-shadow: none;
+    padding: 4px 10px;
+    border-radius: 10px;
+    background: $highlight_color;
+  }
+
+  hr {
+    margin: 30px 0;
+  }
+
+  .tighten {
+    margin: 20px 0;
+  }
+
+  h3 {
+    margin: 10px 0;
+  }
+
+  h4 {
+    line-height: 30px;
+    font-weight: 200;
+    font-size: 20px;
+  }
+
+  .study-count {
+    margin-top: 9px;
+    font-size: 17px;
+  }
+
+  .pagination {
+    margin: 0 0 10px 0;
+  }
+
+  .matching-message {
+    margin-top: 10px;
+  }
+
+  .study {
+    position: relative;
+
+    label {
+      display: block;
+      color: #404d5b;
+    }
+
+    .number {
+      position: absolute;
+      right: 0;
+      top: -5px;
+      background: $school_main_color;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .single {
+      display: inline;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .nomargin {
+      margin-bottom: 2px;
+    }
+
+    font-size: 12px;
+
+    .important {
+      color: $school_main_color;
+      font-size: 14px;
+    }
+  }
+
+  .subgroup-text {
+    margin: 0 0 10px 5px;
+  }
+
+  .btn-subgroup {
+    margin: 5px;
+  }
+
+  .healthy-message {
+    cursor: pointer;
+    max-width: 400px;
+  }
+
+  .eligibility-line-break {
+    display: block;
+    content: " ";
+    margin: 4px 0;
+  }
+
+  .eligibility-header {
+    margin: 10px 0;
+  }
+}

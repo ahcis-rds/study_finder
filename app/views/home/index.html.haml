@@ -1,0 +1,21 @@
+.mast.visible-lg-block
+.content.home
+  .row
+    .col-md-6
+      %h2 Find a Study Opportunity
+      = render 'shared/search_form'
+    .col-xs-12.hidden-lg.hidden-md
+      %hr  
+    .col-md-6
+      %h2= @system_info.system_header
+      = @system_info.system_description.html_safe
+  
+  %hr
+  %h3 Find more ways to get involved with research!
+  .row
+    .col-md-6.rm-link
+      %a{ href:"https://researchmatch.org?rm=#{@system_info.research_match_campaign}", target:"_blank" }
+        = image_tag "researchmatch.png"
+        Research Match
+    .col-md-6
+      = link_to 'Contact Us', contact_index_path, class: 'btn btn-school btn-lg'

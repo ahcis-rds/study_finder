@@ -1,0 +1,68 @@
+$school_main_color: #7a0019;
+$school_secondary_color: #ffd75f;
+$school_dark_color: #404d5b;
+
+.brand {
+  background: image-url("logo.png");
+  background-size: 100% 100%;
+  width: 288px;
+  height: 38px;
+
+  // IE 8 fix
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='#{image_path("logo.png")}', sizingMethod='scale');
+}
+
+.navbar {
+  .system-logo {
+    background: image-url("sf-logo.png");
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+
+    // IE 8 fix
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='#{image_path("sf-logo.png")}', sizingMethod='scale');
+  }
+
+  .nav {
+    .dropdown-menu {
+      a:hover {
+        color: white;
+      }
+    }
+
+    .open .dropdown-toggle {
+      background: $school_main_color;
+      color: white;
+    }
+  }
+}
+
+.lt-ie9 .brand, .lt-ie9 .navbar .system-logo {
+  background-image:none;
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:active, &:visited {
+    color: white;
+  }
+
+  &:hover {
+    color: $body_text;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: $school_main_color;
+  background: $school_secondary_color;
+}
+
+@media ( max-width: $screen-sm-min ) {
+  .brand {
+    width: 240px;
+    height: 33px;
+  }
+}

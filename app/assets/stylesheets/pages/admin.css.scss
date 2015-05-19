@@ -1,0 +1,56 @@
+.breadcrumb {
+  margin-top: 10px;
+  background: none;
+  border: 1px solid #ddd;
+}
+
+.admin {
+  padding: 10px;
+  
+  .table-trials {
+    margin-top: 20px;
+    ul {
+      margin: 0;
+      padding: 0 15px;
+    }
+    li {
+      font-family: Arial;
+      font-size: 11px;
+      padding: 3px 0;
+    }
+  }
+
+  .header-button {
+    margin-top: 15px;
+  }
+
+  ul.admin-list {
+    font-size: 16px;
+    margin: 25px 0;
+    
+    li {
+      margin: 15px 0;
+    }
+  }
+
+  .controls {
+    margin-top: 20px;
+  }
+
+  .description {
+    margin: 15px 0;
+  }
+
+  .last-updated {
+    background: $school_main_color;
+    padding: 20px;
+    margin-top: 20px;
+    color: white;
+    
+
+    strong {
+      padding: 10px;
+      font-size: 16px;
+    }
+  }
+}

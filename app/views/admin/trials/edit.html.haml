@@ -1,0 +1,29 @@
+.admin
+  %h3 Edit Trial
+  %label Title
+  %p= @trial.display_title
+  %label Gender
+  %p= @trial.gender
+  %label Status
+  %p= @trial.overall_status
+
+  - if !@oncore.nil? && !@oncore.contents.blank?
+    %hr
+    .well
+      %h4
+        %i.fa.fa-info-circle
+        Trial also exists in Oncore.
+      %p If the simple description field is not populated, the value will be updated from Oncore.  Additionally, if a Protocol Contact or Principal Investigator exist the contact override fields will be populated as we are assuming the data from Oncore is of better quality.
+      %hr
+      %label Protocol No
+      %p= @oncore.contents['protocol_no']
+      %label Status
+      %p= @oncore.contents['status']
+      %label Simple Description
+      %p= @oncore.contents['lay_description']
+      - if !@oncore.contents['contacts'].empty?
+        - contact = @oncore.contents['contacts'][0]
+        %label= contact['staff_role']
+        %p #{contact['first_name']}, #{contact['last_name']} (#{contact['email_address']})
+  %hr
+  = render 'form', admin_trial: @trial

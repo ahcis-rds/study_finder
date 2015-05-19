@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @system_info.initials %> - <%= @system_info.system_name %></title>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600" media="all">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta name=apple-mobile-web-app-capable content=yes>
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/logo76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/logo120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/logo152.png">
+</head>
+<body>
+  <div class="embed-container">
+    <%= yield %>
+  </div>
+  <%= javascript_include_tag 'application' %>
+  <%= render 'shared/analytics' %>
+</body>
+</html>

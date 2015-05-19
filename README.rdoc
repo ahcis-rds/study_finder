@@ -1,0 +1,3 @@
+To reindex:
+bundle exec rake studyfinder:trials:reindex RAILS_ENV=local
+/lib/tasks/elasticsearch.rake

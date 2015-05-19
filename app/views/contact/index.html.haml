@@ -1,0 +1,22 @@
+.contact
+  .clearfix.row
+    .col-md-12.col-sm-12.col-lg-6
+      %h2 Contact Us
+      %p We would love to hear from you!
+      = form_tag contact_index_path, method: :post do
+        .form-group
+          %label.control-label Name (*)
+          = text_field_tag 'name', '', class: 'form-control'
+
+        .form-group
+          %label.control-label Email (*)
+          = text_field_tag 'email', '', class: 'form-control'
+
+        .form-group
+          %label.control-label Message (*)
+          = text_area_tag 'message', '', class: 'form-control'
+
+        = submit_tag 'Contact Us', class: 'btn btn-school'
+    
+    .col-lg-6.visible-lg-block
+      = image_tag 'cute.jpg', class: 'bordered'

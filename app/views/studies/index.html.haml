@@ -1,0 +1,229 @@
+.study-result-hud
+  = render 'shared/refine_search'
+
+- unless @suggestions.nil?
+  - unless @suggestions['suggestions'].empty?
+    - if @suggestions['suggestions'][0]['options'].size > 0
+      .suggestions
+        .alert.alert-info
+          %i.fa.fa-info-circle
+          Did you mean 
+          - replacement_search = params[:search][:q].gsub(@suggestions['suggestions'][0]['text'], @suggestions['suggestions'][0]['options'][0]['text'])
+          "
+          - url = request.original_url.encode('utf-8', 'ascii-8bit')
+          %a{ href: url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) }
+            = replacement_search
+          " ?
+
+.study-results
+  .study-results-info
+    %h3
+      Search Results
+      - if !params[:search].nil? and !params[:search][:category].nil?
+        within category "#{@group.group_name}"
+    - if !params[:search].nil? and !params[:search][:category].nil?
+      %a.btn.btn-default{ href: "#{remove_category_param}" } Search all categories
+      %hr.tighten
+      - unless @group.subgroups.empty?
+        %p.subgroup-text
+          %strong Suggestions within category "#{@group.group_name}"
+        .subgroups
+          - url = request.original_url.encode('utf-8', 'ascii-8bit')
+          - p = request.query_parameters.dup
+          - @group.subgroups.sort_by{ |l| l.name }.each do |subgroup|
+            - p[:search][:q] = subgroup.name
+            = link_to subgroup.name, "/studies?#{p.to_query}", class: 'btn btn-school btn-subgroup'
+        %hr.tighten    
+    .clearfix
+      .pull-left.study-count
+        Study matches:
+        - unless @trials.empty?
+          = @trials.total
+        - else
+          0
+      .pull-right
+        = will_paginate @trials, renderer: BootstrapPagination::Rails
+    
+    %p.alert.alert-warning.matching-message 
+      Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.
+    
+  %hr
+  - if @trials.empty?
+    .alert.alert-danger
+      %i.fa.fa-warning
+      There were no trials that matched your search for
+      %strong "#{params[:search][:q]}"
+  - @trials.each_with_index do |t, i|
+    .study
+      %h4
+        = highlight(t, 'display_title')
+      
+      - unless t.simple_description.blank?
+        .field
+          %label Description:
+          = highlight(t, 'simple_description')
+
+      .field.important
+        %strong
+          %label Contact(s):
+          - c = determine_contacts(t)
+          = contacts_display(c)
+          %br
+      .field.important.nomargin
+        %label.single Gender:
+        %strong
+          = eligibility_display(t.gender)
+      .field.important.nomargin
+        %label.single Age:
+        %strong
+          = age_display(t.min_age, t.max_age)
+      
+      .field.important
+        %strong
+          %label
+            Healthy Volunteers:
+          .healthy-message{ data: { toggle: 'popover', title: 'Healthy Volunteer', content: 'A person who does not have the condition or disease being studied.', placement: 'top' } }
+            - if t.healthy_volunteers == true 
+              %i.fa.fa-check-circle
+              This study is also accepting healthy volunteers
+              %i.fa.fa-question-circle
+            - else
+              %i.fa.fa-exclamation-triangle
+              This study is NOT accepting healthy volunteers
+              %i.fa.fa-question-circle
+      
+      - unless t.eligibility_criteria.nil?
+        .eligibility-criteria.hide
+          .clearfix
+            .btn.btn-xs.btn-school-inverse.pull-right.btn-hide-full-eligibility 
+              .fa.fa-close
+              Hide eligibility criteria
+          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').html_safe
+          / .gsub(/\d*. /, "<strong>#{$1}</strong><br>")
+        .field.important
+          .btn.btn-xs.btn-school-inverse.btn-show-full-eligibility Show full eligibility criteria
+
+      .field.nomargin
+        %label.single System ID:
+        = t.system_id
+
+      - unless t.interventions.nil?
+        .field.nomargin
+          %label.single Interventions:
+          = highlight(t, 'interventions')
+
+      - unless t.keywords.nil?
+        .field.nomargin
+          %label.single Keywords:
+          = highlight(t, 'keywords')
+
+      - unless t.conditions_map.nil?
+        .field.line-clamp-3
+          %label.single Conditions:
+          = highlight(t, 'conditions_map')
+
+      .trial-cta-options
+        .btn.btn-school.btn-email-me{ data: { toggle: 'modal', target: '#email-me-modal', title: t.display_title, trial_id: t.id }, onclick: "track('send', 'event', 'email_me', 'open', '#{t.system_id}')" }
+          %i.fa.fa-envelope
+          &nbsp; Email this study information to me
+      
+        - unless c.empty?
+          .btn.btn-school.btn-email-study-team{ data: { toggle: 'modal', target: '#contact-study-team-modal', email: c.first[:email], trial_id: t.id }, onclick: "track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')" }
+            %i.fa.fa-envelope
+            &nbsp; Contact the study team
+
+        %a.btn.btn-school.btn-more-info{ href: "https://www.clinicaltrials.gov/ct2/show/study/#{t.system_id}", onclick: "track('send', 'event', 'ctgov', 'click', '#{t.system_id}')", target: '_blank' }
+          .fa.fa-info-circle
+          &nbsp; See more information
+
+        - unless t.recruitment_url.blank?
+          %a.btn.btn-school.btn-recruitment{ target: '_blank', href: t.recruitment_url }
+            .fa.fa-users
+            &nbsp; Get Involved
+
+
+        - if !t.trial_locations.empty? && @system_info.display_all_locations == true
+          .btn.btn-school.btn-all-locations
+            %i.fa.fa-location-arrow
+            &nbsp; Show all
+            = t.trial_locations.count
+            locations
+
+          .field.hide.study-locations
+            %hr
+            .clearfix
+              %h4.pull-left Study Locations
+              .btn.btn-school.btn-hide.pull-right
+                %i.fa.fa-close
+                Hide all locations
+            
+            %table.table.table-bordered
+              %thead
+                %tr
+                  %th Location
+                  %th Contacts
+              %tbody
+                - t.trial_locations.sort_by{ |l| l['location_name'] ? l['location_name']: '' }.each do |location|
+                  %tr
+                    %td
+                      = location.location_name
+                      .div
+                        %small #{location.city}, #{location.state}
+                    %td
+                      #{location.last_name}
+                      - unless location.email.nil?
+                        %a{ href:"mailto:#{location.email}" } - (#{location.email})
+                      .div
+                        #{location.backup_last_name}
+                        - unless location.backup_email.nil?
+                          %a{ href:"mailto:#{location.backup_email}" } - (#{location.backup_email})    
+    %hr
+  = will_paginate @trials, renderer: BootstrapPagination::Rails
+
+.modal.fade#email-me-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h4
+          %i.fa.fa-envelope
+          &nbsp;Email this study information to me
+      .modal-body
+        %form#email-me-form
+          %label Study Title
+          %p.study-title
+          .form-group
+            %label Email address (*)
+            %input.form-control.email{ type: 'text' }
+          .form-group
+            %label Additional Notes
+            %textarea.form-control.notes
+      .modal-footer
+        %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
+        %button.btn.btn-school#email-me-modal-submit{ data: { trial_id: '' } } Send
+
+.modal.fade#contact-study-team-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h4
+          %i.fa.fa-envelope
+          &nbsp;Contact the study team
+      .modal-body
+        %form#contact-study-team-form
+          %label Study Email
+          %p.study-email
+          .form-group
+            %label Email address (*)
+            %input.form-control.email{ type: 'text' }
+          .form-group
+            %label Name (*)
+            %input.form-control.name{ type: 'text' }
+          .form-group
+            %label Phone
+            %input.form-control.phone{ type: 'text' }
+          .form-group
+            %label Notes
+            %textarea.form-control.notes
+      .modal-footer
+        %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
+        %button.btn.btn-school#contact-study-team-modal-submit{ data: { trial_id: '' } } Send

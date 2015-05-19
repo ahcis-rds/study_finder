@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <title><%= @system_info.initials %> - <%= @system_info.system_name %></title>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600" media="all">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta name=apple-mobile-web-app-capable content=yes>
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/logo76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/logo120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/logo152.png">
+</head>
+<body>
+  <%= render 'shared/navbar' %>
+  <div class="container main-content">
+    <%= render 'shared/flash', flash: flash %>
+    <%= render 'shared/breadcrumb' %>
+    <%= yield %>
+    <hr>
+    <footer>
+      <span>StudyFinder was developed by the <a href="http://www.ctsi.umn.edu" target="_blank">Clinical and Translational Science Institute (CTSI)</a>, and is supported by the NIH Clinical and Translational Science Award at the University of Minnesota: UL1TR000114.</span>
+      <span>
+        <% if logged_in? %>
+          <%= link_to 'Sign Out', session_path, data: { method: "delete" } %>
+        <% else %>
+          <%= link_to 'Sign In', new_session_path %>
+        <% end %>
+      </span>
+    </footer>
+  </div>
+  <%= javascript_include_tag 'application' %>
+  <%= render 'shared/analytics' %>
+</body>
+</html>

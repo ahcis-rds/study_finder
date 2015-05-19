@@ -1,0 +1,34 @@
+$school_main_color: #001A57;
+$school_secondary_color: #F7F3E2;
+$school_dark_color: #404d5b;
+
+.brand {
+  background: url(duke.jpg);
+  background-size: 100% 100%;
+  width: 100px;
+  height: 42px;
+}
+
+.navbar {
+  .system-logo {
+    background: url(sf-logo-unc.jpg);
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+  }
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:hover {
+    color: $body_text;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: $school_main_color;
+  background: $school_secondary_color;
+}

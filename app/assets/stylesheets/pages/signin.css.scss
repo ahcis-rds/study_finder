@@ -1,0 +1,41 @@
+.sign-in-container {
+  padding: 50px;
+  color: white;
+  text-align: center;
+
+  .sign-in-content {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    background: $school_main_color;
+  }
+
+  i {
+    font-size: 40px;
+    background: rgba(255,255,255,0.2);
+    padding: 20px 25px;
+    border-radius: 50%;
+  }
+
+  h2 {
+    color: white;
+  }
+
+  input[type=text], input[type=password] {
+    height: 45px;
+    border-radius: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .form-inputs {
+    margin: 30px 0;
+  }
+
+  .btn-sign-in {
+    width: 100%;
+    border: 0;
+    padding: 15px;
+  }
+}

@@ -1,0 +1,30 @@
+= form_tag studies_path, method: :get, class: 'search-form', target: (params[:group] ? '_blank' : nil) do  
+  .row
+    .col-md-6
+      %label{ for: 'search_heathy_volunteers', data: { toggle: 'popover', title: 'Healthy Volunteer', content: 'A person who does not have the condition or disease being studied.', placement: 'top' } }
+        Healthy Volunteers
+        %i.fa.fa-question-circle
+      %select#search_heathy_volunteers.form-control{ name: 'search[healthy_volunteers]' }
+        %option{ value: '' } Please Select
+        %option{ value: '1' } Yes
+        %option{ value: '0' } No
+        %option{ value: '' } No Preference
+  .age-ranges  
+    %label.checkbox
+      = check_box_tag 'search[children]'
+      Children (age < 18 years) 
+     
+    %label.checkbox
+      = check_box_tag 'search[adults]'
+      Adults (age >= 18 years)
+  .row
+    .col-md-10
+      = text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, treatment, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off'
+  - unless @category.nil?
+    = hidden_field 'search', 'category', value: @category.id
+  .search-controls
+    = submit_tag 'Search', class: 'btn btn-lg btn-school btn-search'
+    %a.btn.btn-primary.btn-not-sure{ href: categories_path }
+      Not sure what you're looking for?
+      %br
+      Click here to browse all research opportunities

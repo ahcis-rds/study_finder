@@ -1,0 +1,35 @@
+.admin
+  .clearfix
+    %h3.pull-left Groups
+    .pull-right.header-button
+      = link_to 'Add Group', new_admin_group_path, class: 'btn btn-school'
+  
+  %p.description
+    The groups section allows the administrator to map many conditions from ClinicalTrials.gov or Oncore into a single grouping which is displayed in the categories section of the site.  The idea is that groups would make it easier for the public to navigate through many different conditions within a single area of study.
+
+  .alert.alert-info
+    %p Note: When changing groups the trials must be re-indexed to reflect the changes. This process can take up to 5 min to complete.  If you have made changes to the groups, please re-index by pressing the button below.
+
+  .clearfix
+    .pull-right
+      .btn.btn-success
+        .fa.fa-refresh
+        Re-Index Trials Now
+
+  %table.table.table-bordered.table-trials
+    %thead
+      %tr
+        %th Group Name
+        %th Condition Count
+        %th 
+    %tbody
+      - if @groups.empty?
+        %tr
+          %td{ colspan: 3 } There are no groups loaded.  Add groups manually using the add button above.
+      - @groups.each do |g|
+        %tr
+          %td= g.group_name
+          %td= g.condition_groups.size
+          %td{ width: 150 }
+            = link_to 'Edit', edit_admin_group_path(g.id), class: 'btn btn-primary'
+            = link_to 'Delete', admin_group_path(g.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this group?" }

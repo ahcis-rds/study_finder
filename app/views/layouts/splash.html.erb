@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @system_info.initials %> - <%= @system_info.system_name %></title>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600" media="all">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta name=apple-mobile-web-app-capable content=yes>
+</head>
+<body>
+  <div class="container main-content">
+    <%= yield %>
+  </div>
+  <%= render 'shared/analytics' %>
+</body>
+</html>

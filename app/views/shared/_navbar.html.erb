@@ -1,0 +1,29 @@
+<div class="navbar">
+  <div class="container brand-marks clearfix">
+    <a href="#" class="brand pull-left"></a>
+    <div class="pull-right system-logo visible-lg-block visible-md-block visible-sm"></div>
+  </div>
+  <p class="alt-header visible-xs-block">Study Finder</p>
+  <div class="container main-nav">
+    <div class="row">
+      <ul class="nav navbar-nav pull-right">
+        <li><a href="<%= root_path %>" <% if params[:controller] == 'home' %>class="active"<% end %>>Home</a></li>
+        <li><a href="<%= categories_path %>" <% if params[:controller] == 'categories' %>class="active"<% end %>>Search for a Study</a></li>
+        <li><a href="<%= researchers_path %>" <% if params[:controller] == 'researchers' %>class="active"<% end %>>For Researchers</a></li>
+        <li><a href="<%= contact_index_path %>" <% if params[:controller] == 'contact' %>class="active"<% end %>>Contact Us</a></li>
+        <% if is_admin? %>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Admin <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to 'System Administration', admin_system_index_path %></li>
+            <li><%= link_to 'User Administration', admin_users_path %></li>
+            <li><%= link_to 'Group Administration', admin_groups_path %></li>
+            <li><%= link_to 'Trial Administration', admin_trials_path %></li>
+          </ul>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  
+</div>

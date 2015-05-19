@@ -1,0 +1,14 @@
+.admin
+  %h3 Add Trial
+  %hr
+  = simple_form_for @trial, url: admin_trial_preview_path, method: :post do |f|
+    .row
+      = f.input :system_id, label: 'System ID (NCT ID from ClinicalTrials.gov / Protocol ID from Oncore)', wrapper_html: { class: 'col-md-6' }
+    .row
+      .form-group.col-md-6
+        %label{:for => "exampleInputEmail1"} System
+        = select_tag :system, options_for_select(@systems), { class: 'form-control' }
+    .row
+      .col-md-12
+        = f.submit 'Lookup Trial', class: 'btn btn-school'
+        = link_to 'Back to Trials Admin', admin_trials_path, class: 'btn btn-default'

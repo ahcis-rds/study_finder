@@ -1,0 +1,6 @@
+.row.categories
+  - @group.each do |g|
+    .col-md-2
+      %a{ href: studies_path(search: { category: g.id }), title: g.group_name } 
+        %p= g.group_name
+      .label= g.trial_count.to_i

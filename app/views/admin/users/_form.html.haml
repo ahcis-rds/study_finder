@@ -1,0 +1,8 @@
+= f.input :first_name
+= f.input :last_name
+= f.input :email
+= f.input :internet_id
+
+.controls
+  = f.submit 'Save User', class: 'btn btn-school'
+  = link_to 'Back to users', admin_users_path, class: 'btn btn-default'

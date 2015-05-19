@@ -1,0 +1,27 @@
+// Variables
+@import "base/variables";
+
+// Adjust school file to change school specific colors etc.
+// Note: Change this file out with your school specific theme.
+@import "theme/<%= ENV['theme'] %>";
+
+// Base styles
+@import "base/globals";
+@import "base/navbar";
+
+// Pages
+@import "pages/home";
+@import "pages/categories";
+@import "pages/admin";
+@import "pages/contact";
+@import "pages/studies";
+@import "pages/signin";
+@import "pages/splash";
+@import "pages/spotlight";
+@import "pages/search";
+
+// Responsive
+@import "base/media";
+
+// Print Friendly
+@import "base/print";

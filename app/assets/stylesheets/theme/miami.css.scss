@@ -1,0 +1,48 @@
+$school_main_color: #7B9A70;
+$school_secondary_color: #d77127;
+$school_dark_color: #404d5b;
+
+.brand {
+  background: url('miami.jpg');
+  background-size: 100% 100%;
+  width: 288px;
+  height: 38px;
+}
+
+.navbar {
+
+  .nav {
+    a {
+      color: white !important;
+    }
+  }
+
+  .system-logo {
+    background: url(sf-logo.png);
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+  }
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:hover {
+    color: white;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: white;
+  background: $school_secondary_color;
+}
+
+@media ( max-width: $screen-sm-min ) {
+  .brand {
+    width: 240px;
+    height: 33px;
+  }
+}

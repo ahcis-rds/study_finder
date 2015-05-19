@@ -1,0 +1,22 @@
+<h2 style="text-decoration:underline">StudyFinder - Someone is interested in your study</h2>
+
+<p>An email has been sent to you via <a href="<%= @system_info.default_url %>">StudyFinder</a>, a <%= @system_info.initials %> website that gives potential research participants a simple way to identify <%= @system_info.initials %> studies that need volunteers. Please respond to the interested volunteer directly, using the contact information below.</p>
+
+<p><b>Name:</b></p>
+<p><%= @name %></p>
+
+<p><b>Email:</b></p>
+<p><%= @email %></p>
+
+<p><b>Phone:</b></p>
+<p><%= @phone %></p>
+
+<p><b>Study:</b></p>
+<p><%= @system_id %> - <%= @brief_title %></p>
+
+<p><b>Message:</b></p>
+<p><%= @message %></p>
+
+<hr>
+
+<p>If you feel you have received this message in error, or this study is not affiliated with the <%= @system_info.school_name %>, or is no longer recruiting please let us know by contacting <a href="mailto:<%= @system_info.default_email %>"><%= @system_info.default_email %></a></p>

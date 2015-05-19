@@ -1,0 +1,34 @@
+$school_main_color: #B70101;
+$school_secondary_color: #F7F5E8;
+$school_dark_color: #404d5b;
+
+.brand {
+  background: url(uw.jpg);
+  background-size: 100% 100%;
+  width: 217px;
+  height: 74px;
+}
+
+.navbar {
+  .system-logo {
+    background: url(sf-logo.png);
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+  }
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:hover {
+    color: $body_text;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: $school_main_color;
+  background: $school_secondary_color;
+}

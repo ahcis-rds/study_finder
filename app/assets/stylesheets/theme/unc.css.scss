@@ -1,0 +1,44 @@
+$school_main_color: #56a0d3;
+$school_secondary_color: #235d86;
+$school_dark_color: #666666;
+
+.brand {
+  background: url(unc.jpg);
+  background-size: 100% 100%;
+  width: 218px;
+  height: 62px;
+}
+
+.navbar {
+  .nav {
+    a {
+      color: white !important;
+    }
+  }
+
+  .system-logo {
+    background: url(sf-logo-unc.jpg);
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+  }
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:hover {
+    color: white;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: white;
+  background: $school_secondary_color;
+}
+
+.categories .col-md-2 .label {
+  color: white !important;
+}

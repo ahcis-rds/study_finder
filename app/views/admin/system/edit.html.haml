@@ -1,0 +1,40 @@
+.admin
+  %h2 Edit System Information
+  .last-updated
+    %i.fa.fa-info-circle.big-icon
+    %strong
+      Trials Last Updated: #{@updated.created_at.strftime('%m-%d-%Y') }
+  %hr
+  = simple_form_for @system, url: admin_system_path do |f|
+    %h4 Basic Information
+    = f.input :initials
+    = f.input :school_name
+    = f.input :system_header
+    = f.input :system_description, as: :text, input_html: { rows: 5 }
+    = f.input :default_url
+    = f.input :default_email
+    = f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.'
+
+    %hr
+    %h4 System Override Options
+    %label Search Term
+    %small
+      %i (Search term is the term that will be used to pull clinical trials from ClinicalTrials.gov)
+    = f.input :search_term, label: false
+
+    %label Contact email suffix
+    %small
+      %i (If populated, the system will find and display only contacts with this email pattern. On a trial located at multiple sites, the system will attempt to provide a @umn.edu email as the contact.)
+    = f.input :contact_email_suffix, label: false
+
+    %label Display Locations
+    %small
+      %i (When a trial is located at multiple sites "display locations" determines if those other sites be listed within StudyFinder)
+    = f.input :display_all_locations, as: :select, label: false
+    
+    %hr
+    %h4 Analytics/Tracking Options
+    %label Google analytics tracking ID
+    = f.input :google_analytics_id, label: false
+    = f.input :research_match_campaign
+    = f.submit 'Update System Information', class: 'btn btn-school'

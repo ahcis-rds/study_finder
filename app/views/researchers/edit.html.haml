@@ -1,0 +1,12 @@
+%h3 Edit Trial
+%p.lead= @trial.display_title
+= simple_form_for @trial, url: researcher_path, method: :put do |f|
+  =# f.input :simple_description
+  = f.input :contact_override, label: 'Contact override email'
+  = f.input :contact_override_first_name
+  = f.input :contact_override_last_name
+  .form-group
+    %label.control-label{ for: "secret_key" } Secret key
+    %input#secret_key.form-control{ name: "secret_key", type: "password" }
+    %p.help-block This is required for all updates.
+  = f.submit 'Update Trial', class: 'btn btn-school'

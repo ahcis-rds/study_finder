@@ -1,0 +1,131 @@
+//  Phones Only
+@media ( max-width: $screen-sm-min ) {
+  html, body {
+    width: 100%;
+    font-size: 12px;
+    overflow-x: hidden;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .content {
+    padding: 0 10px;
+  }
+
+  .navbar {
+    .alt-header {
+      font-size: 16px;
+    }
+  }
+
+  .modal {
+    .modal-content {
+      .modal-header {
+        h4 {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+
+  .navbar-nav {
+    width: 100%;
+    margin-right: -8px;
+
+    li {
+      margin-right: 15px;
+    }
+  }
+
+  .home {
+    .search-form {
+      .btn-search {
+        margin-bottom: 15px;
+        width: 100%;
+      }
+      .btn-not-sure {
+        width: 100%;
+        font-size: 11px;
+      }
+    }
+  }
+
+  .study-result-hud {
+    .results-header {
+      h3 {
+        font-size: 17px;
+        width: 100%;
+      }
+
+      .fa-search {
+        top: 11px;
+        left: 11px;
+      }
+
+      .input-search {
+        padding: 10px 10px 10px 37px;
+      }
+
+      .healthy-volunteers {
+        margin: 5px 0 10px 0;
+      }
+      .age-ranges {
+        margin: 0 0 10px 25px;
+      }
+      .btn {
+        margin-bottom: 5px;
+        width: 100%;
+      }
+    }
+  }
+
+  .study-results {
+    em {
+      padding: 2px 8px;
+    }
+    h4 {
+      font-size: 18px;
+      line-height: 23px;
+      font-weight: 200;
+      margin: 0 0 20px 0;
+    }
+    .btn {
+      padding: 15px;
+      width: 100%;
+    }
+    .btn-email-me, .btn-email-study-team, .btn-more-info {
+      margin-bottom: 10px;
+    }
+  }
+
+  .study-locations {
+    table {
+      margin-top: 10px;
+      td {
+        font-size: 11px;
+      }
+    }
+  }
+
+  .categories {
+    width: 100%;
+    padding: 0;
+    margin-top: 20px;
+
+    .col-md-2 {
+      height: 75px;
+      display: block;
+      margin: 0 15px 13px 10px;
+    }
+  }
+}
+
+@media ( max-width: 500px ) {
+  .embed-container {
+    .btn-search, .btn-not-sure {
+      width: 100%;
+    }
+  }
+}

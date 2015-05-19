@@ -1,0 +1,44 @@
+.navbar {
+  margin-bottom: 0;
+  border: 0;
+
+  .main-nav {
+    background: $school_secondary_color;
+  }
+  .brand-marks {
+    padding: 30px;
+    background: white;
+  }
+  .nav {
+    a {
+      font-size: 12px;
+      padding: 10px 15px;
+      color: $body_text;
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &:hover {
+        color: white;
+        background: $school_main_color;
+      }
+    }
+    a.active {
+      color: white;
+      background: $school_main_color;
+    }
+
+    .dropdown-menu {
+      a {
+        color: $body_text;
+      }
+    }
+  }
+
+  .alt-header {
+    margin: 10px 0 0;
+    font-size: 26px;
+    padding: 15px;
+    background: $school_main_color;
+    color: white;
+  }
+}
