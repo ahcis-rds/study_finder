@@ -11,6 +11,11 @@ You will need the following requirements to get StudyFinder up and running local
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
 
 - ElasticSearch 1.0 or higher. [Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
+- ElasticSearch synonyms file: (In trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly.  Please copy /config/analysis/synonym.txt to the location below and rename the file accordingly.)
+
+```ruby
+  synonyms_path: '/etc/elasticsearch/trials_synonym.txt'.to_s
+```
 
 # System Setup
 Once everything is configured above, the following steps will need to be taken.
