@@ -10,7 +10,10 @@ You will need the following requirements to get StudyFinder up and running local
 
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
 
-- ElasticSearch 1.0 or higher. [Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
+- ElasticSearch 1.0 or higher. 
+  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/guide/current/_installing_elasticsearch.html)
+  [Mac Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
+
 - ElasticSearch synonyms file: (In trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly.  Please copy /config/analysis/synonym.txt to the location below and rename the file accordingly.)
 
 ```ruby
@@ -61,6 +64,9 @@ $ rake db:migrate RAILS_ENV=local
 ```
 
 - Configure seed the data for your school.  In the seeds.rb file there is "system" hash where you will want to change some of the data that is specific to your institution. You will be able to change this information later in the administration section, however it's good to do it before downloading any trials from clinicaltrials.gov.
+
+- Updating the seeds file
+The seeds file is responsible for seeding the database and will need to be updated to reflect the system data for your specific installation.  Also note that the seeds file will create an initial admin user and should be changed to someone within your organization designated to managing the system.
 
 - Seed the database with initial data
 

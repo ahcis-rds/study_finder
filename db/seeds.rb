@@ -106,10 +106,6 @@ end
   {
     name: 'clinicaltrials.gov',
     klass: 'Parsers::Ctgov'
-  },
-  {
-    name: 'oncore',
-    klass: 'Parsers::Oncore'
   }
 ].each do |p|
   parser = StudyFinder::Parser.find_or_initialize_by(name: p[:name])
