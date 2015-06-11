@@ -1,18 +1,17 @@
 class VwGroupTrialCounts < ActiveRecord::Migration
   def up
-    if Rails.env == 'local'
-      # We are using postgres locally, which supports a boolean type.
-      visible = true
-    else
+
+    adapter = ActiveRecord::Base.connection.adapter_name.downcase.to_sym
+    if adapter == :oracleenhanced
       # This is an oracle thing.  Oracle doesn't support boolean types. If you are not using oracle, please remove this sillyness and just use visible = true.
       visible = 1
+    else
+      # We are using postgres locally, which supports a boolean type.
+      visible = true
     end
 
-    execute "CREATE VIEW vw_study_finder_trial_counts AS
-      SELECT x.id, x.group_name, count(x.trial_ids) as trial_count
-      FROM
-      (
-              SELECT
+
+    execute "CREATE OR REPLACE VIEW vw_study_finder_trial_gp_name AS SELECT
                   g.id,
                   g.group_name,
                   trials.id as trial_ids
@@ -23,13 +22,17 @@ class VwGroupTrialCounts < ActiveRecord::Migration
               GROUP BY
                   g.id,
                   g.group_name,
-                  trials.id
-      ) x
+                  trials.id"
+
+    execute "CREATE OR REPLACE VIEW vw_study_finder_trial_counts AS
+      SELECT x.id, x.group_name, count(x.trial_ids) as trial_count
+      FROM vw_study_finder_trial_gp_name x
       GROUP BY x.id, x.group_name
     "
   end
 
   def down
     execute "DROP VIEW vw_study_finder_trial_counts"
+    execute "DROP VIEW vw_study_finder_trial_gp_name"
   end
 end
