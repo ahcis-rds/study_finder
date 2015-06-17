@@ -106,6 +106,7 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :min_age, type: 'float'
       indexes :max_age, type: 'float'
       indexes :gender
+      indexes :phase, type: 'string'
       indexes :visible, type: 'boolean'
       indexes :healthy_volunteers
 
@@ -151,7 +152,8 @@ class StudyFinder::Trial < ActiveRecord::Base
         :contact_email,
         :contact_backup_last_name,
         :contact_backup_email,
-        :recruitment_url
+        :recruitment_url,
+        :phase
       ],
       include: {
         trial_locations: {
