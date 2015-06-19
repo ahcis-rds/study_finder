@@ -9,6 +9,7 @@ class Admin::GroupsController < ApplicationController
 
   def new
     @group = StudyFinder::Group.new
+    @conditions = StudyFinder::Condition.all.order(:condition)
 
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Add Group'
@@ -26,6 +27,7 @@ class Admin::GroupsController < ApplicationController
   def edit
     @group = StudyFinder::Group.find(params[:id])
     @conditions = StudyFinder::Condition.all.order(:condition)
+    
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Edit Group'
   end
