@@ -7,7 +7,10 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :trials, only: ['index', 'new', 'edit', 'update', 'create']
     post 'trials/preview', controller: 'trials', action: 'preview', as: 'trial_preview'
+    
+    get 'groups/reindex', controller: 'groups', action: 'reindex', as: 'group_reindex'
     resources :groups
+
     resources :system, only: ['index', 'edit', 'update'] # TODO: remove id from these routes, use system helper to get id
     resources :users
   end

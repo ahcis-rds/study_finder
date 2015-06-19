@@ -45,6 +45,9 @@ function addListeners() {
     $(this).parent().parent().addClass('hide');
   });
 
+  $('.btn-reindex').on('click', function() {
+    $(this).html('Indexing... Please Wait.');
+  });
 }
 
 function applyPopovers() {

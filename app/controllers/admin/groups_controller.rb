@@ -59,6 +59,12 @@ class Admin::GroupsController < ApplicationController
     end
   end
 
+  def reindex
+    StudyFinder::Trial.import force: true
+
+    add_breadcrumb 'Groups', :admin_groups_path
+  end
+
   private
     def group_params
       params.permit(:group_name, condition_ids: [])
