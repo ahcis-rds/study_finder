@@ -92,3 +92,9 @@ $ rake studyfinder:ctgov:load RAILS_ENV=local
 $ rake studyfinder:trials:reindex RAILS_ENV=local
 ```
 
+## Embed Widget
+The search screen within StudyFinder has the ability to be embedded into other websites. To do this add the following snippet to any other sites wanting to embed the search capability of StudyFinder.
+
+```html
+<iframe src="https://studyfinder.url/embed" width="100%" height="350" frameborder="0"></iframe>
+```
