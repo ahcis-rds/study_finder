@@ -4,7 +4,9 @@
     %h3.pull-left Trials
     .pull-right.header-button
       = link_to 'Add Trial', new_admin_trial_path, class: 'btn btn-school'
-  
+  %p.description
+    This section is where the administrator can configure trials within StudyFinder.  To add a new trial from clincialtrials.gov click the "Add Trial" button above.  Otherwise, use the search box to find a specific trial and then click the "Edit" button to edit specific information related to that trial. 
+  %hr
   .clearfix
     .pull-left
       = form_tag admin_trials_path, method: :get do
