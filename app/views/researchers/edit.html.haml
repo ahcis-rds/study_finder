@@ -2,11 +2,26 @@
 %p.lead= @trial.display_title
 = simple_form_for @trial, url: researcher_path, method: :put do |f|
   =# f.input :simple_description
-  = f.input :contact_override, label: 'Contact override email'
-  = f.input :contact_override_first_name
-  = f.input :contact_override_last_name
+  
+  %label Contact override email
+  %small
+    %i (If populated, this will override any contact email from clinialtrials.gov for this trial)
+  = f.input :contact_override, label: false
+
+  %label Contact override first anme
+  %small
+    %i (If populated, this will override any contact first name from clinialtrials.gov for this trial)  
+  = f.input :contact_override_first_name, label: false
+
+  %label Contact override last anme
+  %small
+    %i (If populated, this will override any contact last name from clinialtrials.gov for this trial)
+  = f.input :contact_override_last_name, label: false
   .form-group
     %label.control-label{ for: "secret_key" } Secret key
     %input#secret_key.form-control{ name: "secret_key", type: "password" }
-    %p.help-block This is required for all updates.
+    %p.help-block 
+      Note: The secret key is a shared key among the research community and is required for all updates.  It has been configured by the StudyFinder adminstrative staff.  If you have not received the key via some   form of communication, feel free to email
+      %a{ href: "mailto:#{@system_info.default_email}"}=@system_info.default_email
+      \.
   = f.submit 'Update Trial', class: 'btn btn-school'
