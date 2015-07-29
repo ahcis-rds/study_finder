@@ -35,6 +35,6 @@
 
       - if !params[:search].nil? and !params[:search][:category].nil?
         %input{type:'hidden', name: 'search[category]', value: params[:search][:category] }
-
-    = submit_tag 'Search', class: 'btn btn-lg btn-school-inverse btn-search'
-    = link_to 'Clear', studies_path, class: 'btn btn-lg btn-default'
+    .buttons
+      = submit_tag 'Search', class: 'btn btn-lg btn-school-inverse btn-search'
+      = link_to 'Clear', studies_path, class: 'btn btn-lg btn-default'
