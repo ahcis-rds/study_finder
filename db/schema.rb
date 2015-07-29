@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513193450) do
+ActiveRecord::Schema.define(version: 20150720154212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20150513193450) do
     t.boolean  "display_all_locations"
     t.string   "contact_email_suffix"
     t.string   "secret_key"
+    t.text     "researcher_description"
   end
 
   create_table "study_finder_trial_conditions", force: true do |t|
@@ -154,6 +155,8 @@ ActiveRecord::Schema.define(version: 20150513193450) do
     t.string   "contact_backup_email"
     t.text     "eligibility_criteria"
     t.string   "recruitment_url"
+    t.string   "min_age_unit"
+    t.string   "max_age_unit"
   end
 
   create_table "study_finder_updaters", force: true do |t|
