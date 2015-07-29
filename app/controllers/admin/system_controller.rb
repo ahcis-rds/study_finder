@@ -37,6 +37,7 @@ class Admin::SystemController < ApplicationController
         :contact_email_suffix,
         :google_analytics_id,
         :display_all_locations,
+        :researcher_description,
         :secret_key
       )
     end
