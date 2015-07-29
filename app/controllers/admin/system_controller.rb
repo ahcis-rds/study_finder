@@ -15,6 +15,8 @@ class Admin::SystemController < ApplicationController
 
   def update
     @system = StudyFinder::SystemInfo.find(params[:id])
+    @updated = StudyFinder::Updater.all.last
+    
     if @system.update(system_params)
       redirect_to edit_admin_system_path(params[:id]), flash: { success: 'System information updated successfully' }
     else
