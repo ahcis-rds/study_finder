@@ -1,4 +1,4 @@
-= form_tag studies_path, method: :get, class: 'search-form', target: (params[:group] ? '_blank' : nil) do  
+= form_tag studies_path, method: :get, class: 'search-form', target: (params[:action] == 'embed' ? '_blank' : nil) do
   .row
     .col-md-6
       %label{ for: 'search_heathy_volunteers', data: { toggle: 'popover', title: 'Healthy Volunteer', content: 'A person who does not have the condition or disease being studied.', placement: 'top' } }
