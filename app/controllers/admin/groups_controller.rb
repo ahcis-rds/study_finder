@@ -34,6 +34,12 @@ class Admin::GroupsController < ApplicationController
 
   def update
     @group = StudyFinder::Group.find(params[:id])
+    
+    # If all condition ids are unchecked...
+    if params[:condition_ids].nil?
+      params[:condition_ids] = []
+    end
+
     if @group.update(group_params)
       unless params[:tags].nil?
         StudyFinder::Subgroup.delete_all({ group_id: @group.id })
