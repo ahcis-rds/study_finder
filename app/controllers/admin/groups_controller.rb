@@ -35,10 +35,10 @@ class Admin::GroupsController < ApplicationController
   def update
     @group = StudyFinder::Group.find(params[:id])
     
-    # If all condition ids are unchecked...
-    if params[:condition_ids].nil?
-      params[:condition_ids] = []
-    end
+    params[:condition_ids] = [] if params[:condition_ids].nil?
+    params[:children] = false if params[:children].nil?
+    params[:adults] = false if params[:adults].nil?
+    params[:healthy_volunteers] = false if params[:healthy_volunteers].nil?
 
     if @group.update(group_params)
       unless params[:tags].nil?
@@ -73,6 +73,6 @@ class Admin::GroupsController < ApplicationController
 
   private
     def group_params
-      params.permit(:group_name, condition_ids: [])
+      params.permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
     end
 end

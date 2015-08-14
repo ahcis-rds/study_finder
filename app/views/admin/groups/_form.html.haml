@@ -7,6 +7,27 @@
 .form-group
   %label Subgroup
   %input#tags.select2.tags{ type: 'hidden', value: f.object.subgroups.map { |g| g.name }.join(','), name: 'tags[]' }
+
+%hr
+ 
+.form-group
+  %label Filters
+  %div
+    = check_box_tag 'children', 'true', @group.children
+    Children (age < 18 years) 
+     
+  %div
+    = check_box_tag 'adults', 'true', @group.adults
+    Adults (age >= 18 years)
+
+  %div  
+    %label{ for: 'search_heathy_volunteers', data: { toggle: 'popover', title: 'Healthy Volunteer', content: 'A person who does not have the condition or disease being studied.', placement: 'top' } }
+      Healthy Volunteers
+      %i.fa.fa-question-circle
+    %select#search_heathy_volunteers.form-control{ name: 'healthy_volunteers' }
+      %option{ value: '' } Please Select
+      %option{ value: '1' } Yes
+      %option{ value: '0' } No
 %hr
 
 %label Choose all conditions that apply
