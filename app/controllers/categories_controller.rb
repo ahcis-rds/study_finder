@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
   def index
-    @group = StudyFinder::VwGroupTrialCount.all.order(:group_name) 
+    @groups = StudyFinder::Group.order(:group_name).all
   end
 end

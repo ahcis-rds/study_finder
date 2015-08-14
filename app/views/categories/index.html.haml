@@ -1,6 +1,8 @@
 .row.categories
-  - @group.each do |g|
+  - @groups.each do |g|
     .col-md-2
-      %a{ href: studies_path(search: { category: g.id }), title: g.group_name } 
+
+      %a{ href: studies_path(search: { category: g.id }.merge(g.apply_filters)), title: g.group_name } 
         %p= g.group_name
-      .label= g.trial_count.to_i
+      .label 
+        = g.study_count

@@ -4,22 +4,28 @@ class StudiesController < ApplicationController
   respond_to :html, :json
   
   def index
+    search_parameters = params[:search].deep_dup if !params[:search].nil?
+
     if !params[:search].nil? and !params[:search][:category].nil?
       @group = StudyFinder::Group.find(params[:search][:category])
+      
+      if @group.conditions_empty?
+        search_parameters = search_parameters.except!(:category)
+      end
     end
 
     if params[:search].nil? or params[:search][:q].blank?
       # Show all trials that are visible, there were no search terms entered.
-      params[:search] = {} if params[:search].nil?
-      @trials = StudyFinder::Trial.match_all(params[:search]).page(params[:page]).results
+      search_parameters = {} if search_parameters.nil?
+      @trials = StudyFinder::Trial.match_all(search_parameters).page(params[:page]).results
     else
       # There is actually a search term here.
       # phrase_search = StudyFinder::Trial.phrase_search(params[:search]).page(params[:page]).results
       # unless phrase_search.total == 0
       #   @trials = phrase_search
       # else
-        params[:search][:q] = replace_words(params[:search][:q])
-        @trials = StudyFinder::Trial.match_all_search(params[:search]).page(params[:page]).results
+        params[:search][:q] = replace_words(search_parameters[:q])
+        @trials = StudyFinder::Trial.match_all_search(search_parameters).page(params[:page]).results
         # if match_all.total == 0
         #   @trials = StudyFinder::Trial.match_synonyms(params[:search]).page(params[:page]).results
         # else
@@ -27,7 +33,7 @@ class StudiesController < ApplicationController
         # end  
       # end
       if @trials.total == 0
-        @suggestions = StudyFinder::Trial.suggestions(params[:search][:q])
+        @suggestions = StudyFinder::Trial.suggestions(search_parameters[:q])
       end
     end
   end
