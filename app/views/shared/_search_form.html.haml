@@ -24,7 +24,7 @@
     = hidden_field 'search', 'category', value: @category.id
   .search-controls
     = submit_tag 'Search', class: 'btn btn-lg btn-school btn-search'
-    %a.btn.btn-primary.btn-not-sure{ href: categories_path }
+    %a.btn.btn-primary.btn-not-sure{ href: categories_path, target: (params[:action] == 'embed' ? '_blank' : nil) }
       Not sure what you're looking for?
       %br
       Click here to browse all research opportunities
