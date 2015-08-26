@@ -202,8 +202,8 @@
             %label Additional Notes
             %textarea.form-control.notes
       .modal-footer
-        %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
-        %button.btn.btn-school#email-me-modal-submit{ data: { trial_id: '' } } Send
+        %button.btn.btn-default{ data: { dismiss: 'modal' }, onclick: "track('send', 'event', 'email_me_close', 'close')" } Close
+        %button.btn.btn-school#email-me-modal-submit{ data: { trial_id: '' }, onclick: "track('send', 'event', 'email_me_submit', 'submit')" } Send
 
 .modal.fade#contact-study-team-modal
   .modal-dialog
@@ -229,5 +229,5 @@
             %label Notes
             %textarea.form-control.notes
       .modal-footer
-        %button.btn.btn-default{ data: { dismiss: 'modal' } } Close
-        %button.btn.btn-school#contact-study-team-modal-submit{ data: { trial_id: '' } } Send
+        %button.btn.btn-default{ data: { dismiss: 'modal' }, onclick: "track('send', 'event', 'email_study_team_close', 'close')" } Close
+        %button.btn.btn-school#contact-study-team-modal-submit{ data: { trial_id: '' }, onclick: "track('send', 'event', 'email_study_team_submit', 'submit')" } Send
