@@ -11,6 +11,8 @@ module Parsers
       'phase',
       'overall_status',
       'verification_date',
+      'lastchanged_date',
+      'firstreceived_date',
       'brief_summary',
       'detailed_description'
     ]
