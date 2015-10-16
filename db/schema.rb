@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720154212) do
+ActiveRecord::Schema.define(version: 20150928123031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,9 @@ ActiveRecord::Schema.define(version: 20150720154212) do
     t.string   "group_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "children"
+    t.boolean  "adults"
+    t.boolean  "healthy_volunteers"
   end
 
   create_table "study_finder_locations", force: true do |t|
@@ -157,6 +160,8 @@ ActiveRecord::Schema.define(version: 20150720154212) do
     t.string   "recruitment_url"
     t.string   "min_age_unit"
     t.string   "max_age_unit"
+    t.string   "lastchanged_date"
+    t.string   "firstreceived_date"
   end
 
   create_table "study_finder_updaters", force: true do |t|
