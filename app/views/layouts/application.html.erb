@@ -23,7 +23,7 @@
     <hr>
     <footer>
       <span>StudyFinder was developed by the <a href="http://www.ctsi.umn.edu" target="_blank">Clinical and Translational Science Institute (CTSI)</a>, and is supported by the NIH Clinical and Translational Science Award at the University of Minnesota: UL1TR000114.</span>
-      <span>
+      <span class="credentials">
         <% if logged_in? %>
           <%= link_to 'Sign Out', session_path, data: { method: "delete" } %>
         <% else %>

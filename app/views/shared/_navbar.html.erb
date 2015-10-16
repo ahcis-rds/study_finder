@@ -9,7 +9,7 @@
       <ul class="nav navbar-nav pull-right">
         <li><a href="<%= root_path %>" <% if params[:controller] == 'home' %>class="active"<% end %>>Home</a></li>
         <li><a href="<%= categories_path %>" <% if params[:controller] == 'categories' %>class="active"<% end %>>Search for a Study</a></li>
-        <li><a href="<%= researchers_path %>" <% if params[:controller] == 'researchers' %>class="active"<% end %>>For Researchers</a></li>
+        <li><a href="<%= researchers_path %>" <% if params[:controller] == 'researchers' %>class="active"<% end %> class="nav-for-researchers">For Researchers</a></li>
         <li><a href="<%= contact_index_path %>" <% if params[:controller] == 'contact' %>class="active"<% end %>>Contact Us</a></li>
         <% if is_admin? %>
         <li class="dropdown">

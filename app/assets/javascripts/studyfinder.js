@@ -91,6 +91,8 @@ function determineStandalone() {
     // Hide elements that shouldn't display on kiosk.
     $('.rm-link').hide();
     $('.btn-more-info').hide();
+    $('.nav-for-researchers').hide();
+    $('.credentials').hide();
   }
 }
 
