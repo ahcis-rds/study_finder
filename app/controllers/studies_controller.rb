@@ -25,6 +25,8 @@ class StudiesController < ApplicationController
       #   @trials = phrase_search
       # else
         params[:search][:q] = replace_words(search_parameters[:q])
+        search_parameters[:q] = params[:search][:q]
+
         @trials = StudyFinder::Trial.match_all_search(search_parameters).page(params[:page]).results
         # if match_all.total == 0
         #   @trials = StudyFinder::Trial.match_synonyms(params[:search]).page(params[:page]).results
@@ -69,6 +71,6 @@ class StudiesController < ApplicationController
 
   private
     def replace_words(q)
-      q.gsub('head ache', 'headache')
+      q.gsub('head ache', 'headache').gsub('/', ' ').gsub('"', ' ')
     end
 end
