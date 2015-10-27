@@ -4,16 +4,17 @@
 - unless @suggestions.nil?
   - unless @suggestions['suggestions'].empty?
     - if @suggestions['suggestions'][0]['options'].size > 0
-      .suggestions
-        .alert.alert-info
-          %i.fa.fa-info-circle
-          Did you mean 
-          - replacement_search = params[:search][:q].gsub(@suggestions['suggestions'][0]['text'], @suggestions['suggestions'][0]['options'][0]['text'])
-          "
-          - url = request.original_url.encode('utf-8', 'ascii-8bit')
-          %a{ href: url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) }
-            = replacement_search
-          " ?
+      - replacement_search = params[:search][:q].gsub(@suggestions['suggestions'][0]['text'], @suggestions['suggestions'][0]['options'][0]['text'])
+      - if replacement_search != params[:search][:q]    
+        .suggestions
+          .alert.alert-info
+            %i.fa.fa-info-circle
+            Did you mean 
+            "
+            - url = request.original_url.encode('utf-8', 'ascii-8bit')
+            %a{ href: url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) }
+              = replacement_search
+            " ?
 
 .study-results
   .study-results-info
