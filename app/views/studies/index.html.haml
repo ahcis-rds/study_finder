@@ -193,7 +193,7 @@
           %i.fa.fa-envelope
           &nbsp;Email this study information to me
       .modal-body
-        %form#email-me-form
+        %form#email-me-form{ onsubmit: "return false;" }
           %label Study Title
           %p.study-title
           .form-group
@@ -214,7 +214,7 @@
           %i.fa.fa-envelope
           &nbsp;Contact the study team
       .modal-body
-        %form#contact-study-team-form
+        %form#contact-study-team-form{ onsubmit: "return false;" }
           %label Study Email
           %p.study-email
           .form-group
