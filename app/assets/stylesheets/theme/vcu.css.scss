@@ -1,0 +1,36 @@
+$school_main_color: #222;
+$school_secondary_color: #fbb731;
+$school_dark_color: #fff;
+
+.brand {
+  background: url(vcu.svg);
+  width: 240px;
+  height: 72px;
+  margin-left: 16px;
+  background-size: 240px 72px;
+  background-repeat: no-repeat;
+}
+
+.navbar {
+  .system-logo {
+    background: url(sf-logo.png);
+    background-size: 100% 100%;
+    width: 260px;
+    height: 48px;
+  }
+}
+
+.btn-school {
+  background: $school_main_color;
+  color: white;
+
+  &:hover {
+    color: $body_text;
+    background: $school_secondary_color;
+  }
+}
+
+.btn-school-inverse {
+  color: $school_main_color;
+  background: $school_secondary_color;
+}
