@@ -60,16 +60,17 @@
         = highlight(t, 'display_title')
       
       - unless t.simple_description.blank?
-        .field
-          %label Description:
-          = highlight(t, 'simple_description')
+        .field.important
+          %strong
+            %label Description:
+            = highlight(t, 'simple_description')
 
       .field.important
         %strong
           %label Contact(s):
           - c = determine_contacts(t)
           = contacts_display(c)
-          %br
+
       .field.important.nomargin
         %label.single Gender:
         %strong
