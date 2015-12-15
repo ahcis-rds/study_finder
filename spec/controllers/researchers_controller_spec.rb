@@ -10,6 +10,21 @@ RSpec.describe ResearchersController, :type => :controller do
       last_name: 'Kadrmas',
       role: 'researcher'
     })
+
+    @system_info = StudyFinder::SystemInfo.create({
+      initials: 'UMN',
+      school_name: 'University of Minnesota',
+      system_name: 'Study Finder',
+      system_header: 'Make A Difference. Get Involved.',
+      system_description: "Test Description",
+      researcher_description: "Test",
+      search_term: 'University of Minnesota',
+      default_url: 'http://studyfinder.umn.edu',
+      default_email: 'sfinder@umn.edu',
+      display_all_locations: false,
+      secret_key: 'test',
+      contact_email_suffix: '@umn.edu'
+    })
   }
 
   describe "GET #index" do
@@ -47,6 +62,76 @@ RSpec.describe ResearchersController, :type => :controller do
       expect( assigns(:trial) ).to eq(trial)
       expect(response).to be_success
       expect(response).to have_http_status(200)
+    end
+  end
+
+  describe "PUT #update" do
+    it "trial with override information" do
+      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+
+      simple_description = 'Testing adding a simple_description'
+      contact_override = 'jim@aol.com'
+      contact_override_first_name = 'Jim'
+      contact_override_last_name = 'Smith'
+
+      study_finder_trial = {
+        simple_description: simple_description, 
+        contact_override: contact_override, 
+        contact_override_first_name: contact_override_first_name, 
+        contact_override_last_name: contact_override_last_name
+      }
+      
+      put :update, id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: @system_info.secret_key
+      
+      expect( assigns(:trial).simple_description ).to eq(simple_description)
+      expect( assigns(:trial).contact_override ).to eq(contact_override)
+      expect( assigns(:trial).contact_override_first_name ).to eq(contact_override_first_name)
+      expect( assigns(:trial).contact_override_last_name ).to eq(contact_override_last_name)
+
+      expect(response).to redirect_to(edit_researcher_path(trial.system_id))
+      expect(flash[:success]).to eq('Trial updated successfully')
+    end
+
+    it "fails when a secret_key is not provided" do
+      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+
+      simple_description = 'Testing adding a simple_description'
+      contact_override = 'jim@aol.com'
+      contact_override_first_name = 'Jim'
+      contact_override_last_name = 'Smith'
+
+      study_finder_trial = {
+        simple_description: simple_description, 
+        contact_override: contact_override, 
+        contact_override_first_name: contact_override_first_name, 
+        contact_override_last_name: contact_override_last_name
+      }
+      
+      put :update, id: trial.system_id, study_finder_trial: study_finder_trial
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+      expect(flash[:notice]).to eq('The secret key you entered was incorrect.')
+    end
+
+    it "fails when an invalid secret_key is added" do
+      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+
+      simple_description = 'Testing adding a simple_description'
+      contact_override = 'jim@aol.com'
+      contact_override_first_name = 'Jim'
+      contact_override_last_name = 'Smith'
+
+      study_finder_trial = {
+        simple_description: simple_description, 
+        contact_override: contact_override, 
+        contact_override_first_name: contact_override_first_name, 
+        contact_override_last_name: contact_override_last_name
+      }
+      
+      put :update, id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: 'invalid_key'
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+      expect(flash[:notice]).to eq('The secret key you entered was incorrect.')
     end
   end
 

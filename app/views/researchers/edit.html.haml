@@ -1,8 +1,17 @@
 %h3 Edit Trial
 %p.lead= @trial.display_title
 = simple_form_for @trial, url: researcher_path, method: :put do |f|
-  =# f.input :simple_description
   
+  %label Simple Description
+  %p.help-block 
+    %strong FORMAT:
+    This is a study of (population)  with/without (condition) between ages (X-Y) years old. This study is trying to figure out (aim of study).  
+    %br
+    %strong NOTE:
+    Your simple description must be IRB approved.
+  = f.input :simple_description, label: false
+    
+  %hr
   %label Contact override email
   %small
     %i (If populated, this will override any contact email from clinialtrials.gov for this trial)

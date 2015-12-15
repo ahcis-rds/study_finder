@@ -27,10 +27,11 @@ class ResearchersController < ApplicationController
   def update
     @trial = StudyFinder::Trial.find_by(system_id: params[:id])
 
-    unless params[:secret_key].blank?
+    if !params[:secret_key].blank? && params[:secret_key] == @system_info.secret_key
       if @trial.update(trial_params)
         redirect_to edit_researcher_path(params[:id]), flash: { success: 'Trial updated successfully' }
       else
+        flash[:notice] = 'There was an error updating the record.'
         render 'edit'
       end
     else
