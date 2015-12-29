@@ -14,9 +14,9 @@ module Connectors
 
     def load(start_date=nil, end_date=nil)
       start_load_time = Time.now
-      
+
       url = "https://clinicaltrials.gov/search?locn=#{URI::encode(@system_info.search_term)}&studyxml=true"
-      
+
       if !start_date.nil? and !end_date.nil?
         puts "Loading clinicaltrials.gov results for #{@system_info.search_term} ... from #{start_date} to #{end_date}"
         url = url + "&lup_s=#{URI::encode(start_date)}&lup_e=#{URI::encode(end_date)}"
@@ -26,8 +26,14 @@ module Connectors
 
       # @zipfile = Tempfile.new('file')
       # @zipfile.binmode
-      FileUtils.rm_rf("#{Rails.root}/tmp/search_result.zip")
-      File.open("#{Rails.root}/tmp/search_result.zip", "w+") do |f|
+
+      dirname = File.dirname("#{Rails.root}/tmp/")
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+
+      FileUtils.rm_rf("#{dirname}search_result.zip")
+      File.open("#{dirname}search_result.zip", "w+") do |f|
         f.write(HTTParty.get(url).body)
       end
       # @zipfile.write(HTTParty.get(url).body)
@@ -87,14 +93,19 @@ module Connectors
 
     private
       def extract_zip
-        unless File.directory?("#{Rails.root}/tmp/trials/")
-          FileUtils.mkdir_p("#{Rails.root}/tmp/trials/")
+        dirname = File.dirname("#{Rails.root}/tmp/")
+        unless File.directory?(dirname)
+          FileUtils.mkdir_p(dirname)
         end
 
-        FileUtils.rm_rf(Dir.glob("#{Rails.root}/tmp/trials/*"))
-        Zip::File.open("#{Rails.root}/tmp/search_result.zip") do |file|
+        unless File.directory?("#{dirname}trials/")
+          FileUtils.mkdir_p("#{dirname}trials/")
+        end
+
+        FileUtils.rm_rf(Dir.glob("#{dirname}trials/*"))
+        Zip::File.open("#{dirname}search_result.zip") do |file|
           file.each do |entry|
-            file.extract(entry, "#{Rails.root}/tmp/trials/#{entry.name}")
+            file.extract(entry, "#{dirname}trials/#{entry.name}")
           end
         end
       end
