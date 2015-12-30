@@ -3,11 +3,13 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  
+
   namespace :admin do
     resources :trials, only: ['index', 'new', 'edit', 'update', 'create']
+    get 'trials/recent', controller: 'trials', action: 'recent_as', as: 'trial_recent_as'
+    post 'trials/review/:id', controller: 'trials', action: 'review', as: 'review_trial'
     post 'trials/preview', controller: 'trials', action: 'preview', as: 'trial_preview'
-    
+
     get 'groups/reindex', controller: 'groups', action: 'reindex', as: 'group_reindex'
     resources :groups
 

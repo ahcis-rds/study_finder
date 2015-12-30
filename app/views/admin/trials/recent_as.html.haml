@@ -1,0 +1,33 @@
+
+.admin
+  .clearfix
+    .pull-left
+      %h3 Recent Trials
+    .pull-right
+      = will_paginate @collection, renderer: BootstrapPagination::Rails
+  %p.description
+    This section is where the administrator can review recently imported trials within StudyFinder. To indicate if a trial is reviewed/OK click "Approve".
+  %hr
+  %table.table.table-bordered.table-trials
+    %thead
+      %tr
+        %th System Id
+        %th Brief Title
+        %th{nowrap: true} Last Updated
+        %th
+    %tbody
+      - if @trials.empty?
+        %tr
+          %td{ colspan: 4 }
+            No trials found
+      - @trials.each do |t|
+        %tr
+          %td= t.system_id
+          %td= t.display_title
+          %td= t.updated_at.localtime.strftime('%m/%d/%Y')
+          %td
+            - if t.reviewed
+              %span.label.label-success Approved
+            - else
+              = button_to 'Approve', admin_review_trial_path(id: t.system_id), :method => :post, class: 'btn btn-school'
+  = will_paginate @collection, renderer: BootstrapPagination::Rails

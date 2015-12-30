@@ -11,12 +11,14 @@ class StudyFinder::Trial < ActiveRecord::Base
   belongs_to :parser
   has_many :trial_interventions
   has_many :trial_keywords
-  
+
   has_many :trial_conditions
   has_many :conditions, through: :trial_conditions
-  
+
   has_many :trial_locations
   has_many :locations, -> { order 'study_finder_locations.location' }, through: :trial_locations
+
+  scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
   def display_title
     display = brief_title
@@ -93,7 +95,7 @@ class StudyFinder::Trial < ActiveRecord::Base
         synonyms_path: '/etc/elasticsearch/trials_synonym.txt'.to_s
       },
       english_filter: {
-        type: 'kstem' 
+        type: 'kstem'
       }
     }
   } do
@@ -213,7 +215,7 @@ class StudyFinder::Trial < ActiveRecord::Base
   end
 
   def self.match_all_admin(search)
-    
+
     search(
       query: {
         filtered: {

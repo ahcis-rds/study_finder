@@ -1,6 +1,6 @@
 class Admin::TrialsController < ApplicationController
   before_filter :authorize_admin
-  
+
   require 'parsers/ctgov'
   require 'parsers/oncore'
 
@@ -13,7 +13,7 @@ class Admin::TrialsController < ApplicationController
 
     @trial = StudyFinder::Trial.new
     @systems = ['Ctgov', 'Oncore']
-    
+
     add_breadcrumb 'Trials Administration', :admin_trials_path
     add_breadcrumb 'Edit Trial'
   end
@@ -40,6 +40,20 @@ class Admin::TrialsController < ApplicationController
     trial.process
 
     redirect_to admin_trials_path, flash: { success: 'Trial added successfully' }
+  end
+
+  def review
+    @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    @trial.reviewed = true
+    @trial.save!
+    redirect_to admin_trial_recent_as_path
+  end
+
+  def recent_as
+    d = params.has_key?('days') ? params[:days].to_i : 30
+    @trials = StudyFinder::Trial.recent_as(d.days).paginate(page: params[:page])
+    add_breadcrumb 'Trials Administration'
+    add_breadcrumb 'Recently Added'
   end
 
   def index
@@ -84,7 +98,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(:simple_description, :visible, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url)
+      params.require(:study_finder_trial).permit(:simple_description, :visible, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed)
     end
 
 end
