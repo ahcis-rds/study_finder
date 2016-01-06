@@ -74,10 +74,10 @@ ActiveRecord::Schema.define(version: 20151229195439) do
     t.string   "research_match_campaign"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "secret_key"
     t.string   "google_analytics_id"
     t.boolean  "display_all_locations"
     t.string   "contact_email_suffix"
+    t.string   "secret_key"
     t.text     "researcher_description"
   end
 
@@ -158,6 +158,8 @@ ActiveRecord::Schema.define(version: 20151229195439) do
     t.string   "contact_backup_email"
     t.text     "eligibility_criteria"
     t.string   "recruitment_url"
+    t.string   "min_age_unit"
+    t.string   "max_age_unit"
     t.string   "lastchanged_date"
     t.string   "firstreceived_date"
     t.boolean  "reviewed",                                 default: false
