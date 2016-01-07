@@ -55,6 +55,8 @@ obesity, weight loss, bmi, body mass index
 ocular, eyepiece, opthalmic, optic, optical
 oculist, ophthalmologist, optometrist
 oculus, eye, optic
+pancreas, pancreatic
+pancreatic, pancreas
 pain, chronic pain, myalgia, arthralgia
 pediatric, kid, neonate, child, children
 preteen, preadolescent, preteenager
