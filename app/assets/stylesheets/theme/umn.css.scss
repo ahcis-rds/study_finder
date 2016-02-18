@@ -66,3 +66,57 @@ $school_dark_color: #404d5b;
     height: 33px;
   }
 }
+
+// Kiosk version.
+@media (max-width: 1024px) and (min-width: 768px) {
+  .container {
+    width: 100%;
+  }
+  .brand {
+    width: 240px;
+    height: 33px;
+  }
+  .system-logo {
+    width: 208px !important;
+    height: 38px !important;
+  }
+  .content {
+    padding: 0 !important;
+  }
+  .home {
+    margin-top: 0 !important;
+
+    .home-content {
+      padding: 10px 20px;
+    }
+
+    h3 {
+      padding: 0 20px;
+    }
+
+    .rm-link {
+      padding-left: 35px;
+    }
+
+    .contact-link {
+      text-align: right;
+      padding-right: 60px;
+    }
+  }
+  .study-results {
+    padding: 25px !important;
+    .study .field {
+      font-size: 14px !important;
+    }
+    .study .important {
+      font-size: 16px !important;
+    }
+  }
+
+  footer, .nav-for-researchers {
+    display: none !important;
+  }
+  .navbar-nav .dropdown {
+    display: none !important;
+  }
+}
