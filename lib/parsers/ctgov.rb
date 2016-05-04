@@ -37,6 +37,10 @@ module Parsers
       @contents
     end
 
+    def set_contents_from_xml(xml)
+      @contents = Hash.from_xml( Nokogiri::XML( xml ).xpath('clinical_study').to_s )['clinical_study']
+    end
+
     def preview
       trial = StudyFinder::Trial.new(system_id: @id)
 
@@ -141,18 +145,37 @@ module Parsers
       if @contents['eligibility'].has_key?('minimum_age')
         trial.minimum_age = @contents['eligibility']['minimum_age'].gsub(' Years', '').gsub(' Year', '') unless @contents['eligibility']['minimum_age'].nil?
         trial.minimum_age = nil if trial.minimum_age == 'N/A'
+        trial.min_age_unit = @contents['eligibility']['minimum_age']
 
-        if !trial.minimum_age.nil? and (trial.minimum_age.include? 'Month' or trial.minimum_age.include? 'Months')
+        if !trial.min_age_unit.nil? and (trial.min_age_unit.include? 'Month' or trial.min_age_unit.include? 'Months')
           trial.minimum_age = (trial.minimum_age.gsub(' Months', '').gsub(' Month', '').to_f / 12).round(2)
         end
+
+        if !trial.min_age_unit.nil? and (trial.min_age_unit.include? 'Week' or trial.min_age_unit.include? 'Weeks')
+          trial.minimum_age = (trial.minimum_age.gsub(' Weeks', '').gsub(' Week', '').to_f * 0.0191781).round(2)
+        end
+
+        if !trial.min_age_unit.nil? and (trial.min_age_unit.include? 'Day' or trial.min_age_unit.include? 'Days')
+          trial.minimum_age = (trial.minimum_age.gsub(' Days', '').gsub(' Day', '').to_f * 0.002739728571424657).round(2)
+        end
+
       end
       
       if @contents['eligibility'].has_key?('maximum_age')
         trial.maximum_age = @contents['eligibility']['maximum_age'].gsub(' Years', '').gsub(' Year', '') unless @contents['eligibility']['maximum_age'].nil?
         trial.maximum_age = nil if trial.maximum_age == 'N/A'
+        trial.max_age_unit = @contents['eligibility']['maximum_age']
 
-        if !trial.maximum_age.nil? and (trial.maximum_age.include? 'Month' or trial.maximum_age.include? 'Months')
+        if !trial.max_age_unit.nil? and (trial.max_age_unit.include? 'Month' or trial.max_age_unit.include? 'Months')
           trial.maximum_age = (trial.maximum_age.gsub(' Months', '').gsub(' Month', '').to_f / 12).round(2)
+        end
+
+        if !trial.max_age_unit.nil? and (trial.max_age_unit.include? 'Week' or trial.max_age_unit.include? 'Weeks')
+          trial.maximum_age = (trial.maximum_age.gsub(' Weeks', '').gsub(' Week', '').to_f * 0.0191781).round(2)
+        end
+
+        if !trial.max_age_unit.nil? and (trial.max_age_unit.include? 'Day' or trial.max_age_unit.include? 'Days')
+          trial.maximum_age = (trial.maximum_age.gsub(' Days', '').gsub(' Day', '').to_f * 0.002739728571424657).round(2)
         end
         
       end

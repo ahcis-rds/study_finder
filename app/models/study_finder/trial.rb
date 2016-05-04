@@ -134,6 +134,8 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :interventions, analyzer: 'en'
       indexes :conditions_map, analyzer: 'en'
       indexes :keywords, analyzer: 'en'
+      indexes :min_age_unit, type: 'string'
+      indexes :max_age_unit, type: 'string'
     end
 
   end
@@ -155,7 +157,9 @@ class StudyFinder::Trial < ActiveRecord::Base
         :contact_backup_last_name,
         :contact_backup_email,
         :recruitment_url,
-        :phase
+        :phase,
+        :min_age_unit,
+        :max_age_unit
       ],
       include: {
         trial_locations: {

@@ -78,7 +78,10 @@
       .field.important.nomargin
         %label.single Age:
         %strong
-          = age_display(t.min_age, t.max_age)
+          - if t.respond_to?(:min_age_unit) and t.respond_to?(:max_age_unit)
+            = age_display_units(t.min_age_unit, t.max_age_unit)
+          - else
+            = age_display(t.min_age, t.max_age)
       .field.important.nomargin
         %label.single Phase:
         %strong

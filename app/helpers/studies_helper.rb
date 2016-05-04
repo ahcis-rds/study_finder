@@ -113,24 +113,39 @@ module StudiesHelper
     end
   end
 
+  def age_display_units(min_age_unit, max_age_unit)
+    if min_age_unit == 'N/A' and max_age_unit != 'N/A'
+      return "up to #{max_age_unit} old"
+    elsif min_age_unit != 'N/A' and max_age_unit == 'N/A'
+      return "#{min_age_unit} and over"
+    else
+      return "#{min_age_unit} to #{max_age_unit} old"
+    end
+  end
+
   def age_display(min_age, max_age)
     age = ''
     unless (min_age.nil? and max_age.nil?) or (min_age == 0 and max_age == 1000)
       unless min_age.nil? or min_age == 0
-        if min_age < 1.0
+        unless (min_age % 1).zero?
+          # There is a decimal value.  Let's convert it.
           age << "#{(min_age * 12).round} month(s)"
-        else  
-          age << "#{min_age.to_i}"
+        else
+          age << "#{min_age.to_i} year(s)"
         end
       else
         age << 'up to '
       end
 
       unless max_age.nil? or max_age == 1000
-        if max_age < 1.0
-          age << "#{(max_age * 12).round} month(s)"
+        unless age.include?('to')
+          age << " to "
+        end
+        unless (max_age % 1).zero?
+          # There is a decimal value.  Let's convert it.
+          age << "#{(max_age * 12).round} month(s) old"
         else
-          age << " to #{max_age.to_i} year(s) old"
+          age << "#{max_age.to_i} year(s) old"
         end
       else
         age << ' and over'
