@@ -113,5 +113,58 @@ describe Parsers::Ctgov do
       expect(trial.max_age_unit).to eq('300 Months')
     end
 
+    it "parses conditions when there is only one" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <eligibility>
+            <criteria>
+              <textblock></textblock>
+            </criteria>
+            <gender>Both</gender>
+            <minimum_age>13 Months</minimum_age>
+            <maximum_age>300 Months</maximum_age>
+            <healthy_volunteers>No</healthy_volunteers>
+          </eligibility>
+          <condition>Test Condition</condition>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.conditions.first.condition).to eq('Test Condition')
+    end
+
+    it "parses conditions when there are many" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <eligibility>
+            <criteria>
+              <textblock></textblock>
+            </criteria>
+            <gender>Both</gender>
+            <minimum_age>13 Months</minimum_age>
+            <maximum_age>300 Months</maximum_age>
+            <healthy_volunteers>No</healthy_volunteers>
+          </eligibility>
+          <condition>Test Condition 1</condition>
+          <condition>Test Condition 2</condition>
+          <condition>Test Condition 3</condition>
+          <condition>Test Condition 4</condition>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.conditions.size).to eq(4)
+      expect(trial.conditions.first.condition).to eq('Test Condition 1')
+      expect(trial.conditions.last.condition).to eq('Test Condition 4')
+    end
+
   end
 end
