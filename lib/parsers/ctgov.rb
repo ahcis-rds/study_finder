@@ -85,6 +85,8 @@ module Parsers
         trial.save
       end
 
+      trial.updated_at = DateTime.now # Set updated date, even if the trial has not changed.
+
       # Save associations.
       if @contents.has_key?('condition')
         process_conditions(trial.id)

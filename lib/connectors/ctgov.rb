@@ -24,10 +24,11 @@ module Connectors
         puts "Loading all clinicaltrials.gov results for #{@system_info.search_term} ..."
       end
 
+      puts "Search URL: #{url}"
       # @zipfile = Tempfile.new('file')
       # @zipfile.binmode
 
-      dirname = File.dirname("#{Rails.root}/tmp/")
+      dirname = "#{Rails.root}/tmp/"
       unless File.directory?(dirname)
         FileUtils.mkdir_p(dirname)
       end
@@ -68,7 +69,7 @@ module Connectors
       end
       end_load_time = Time.now
 
-      puts "Logging update to updaters table."
+      puts "Logging update to updaters table. Processed #{count} records."
       StudyFinder::Updater.create({
         parser_id: @parser_id,
         num_updated: count
@@ -93,7 +94,7 @@ module Connectors
 
     private
       def extract_zip
-        dirname = File.dirname("#{Rails.root}/tmp/")
+        dirname = "#{Rails.root}/tmp/"
         unless File.directory?(dirname)
           FileUtils.mkdir_p(dirname)
         end
