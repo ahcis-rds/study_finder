@@ -1,5 +1,7 @@
 class Admin::GroupsController < ApplicationController
   before_filter :authorize_admin
+
+  require 'csv'
   
   def index
     @groups = StudyFinder::Group.all
@@ -30,6 +32,11 @@ class Admin::GroupsController < ApplicationController
     
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Edit Group'
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data generate_csv, filename: "#{friendly_filename(@group.group_name.downcase)}_categories.csv" }
+    end
   end
 
   def update
@@ -75,4 +82,25 @@ class Admin::GroupsController < ApplicationController
     def group_params
       params.permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
     end
+
+    def generate_csv
+      column_names = ['Condition Name', 'Selected']
+      group_conditions = @group.conditions
+
+      CSV.generate do |csv|
+        csv << column_names
+        @conditions.each do |item|
+          selected = !group_conditions.select { |gc| gc.id == item.id }.empty?
+          row = [item.condition, (selected) ? 'X': '']
+          csv << row
+        end
+      end
+    end
+
+    def friendly_filename(filename)
+      filename.gsub(/[^\w\s_-]+/, '')
+        .gsub(/(^|\b\s)\s+($|\s?\b)/, '\\1\\2')
+        .gsub(/\s+/, '_')
+    end
+
 end
