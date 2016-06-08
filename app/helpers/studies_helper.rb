@@ -118,6 +118,8 @@ module StudiesHelper
       return "up to #{max_age_unit} old"
     elsif min_age_unit != 'N/A' and max_age_unit == 'N/A'
       return "#{min_age_unit} and over"
+    elsif min_age_unit == 'N/A' and max_age_unit == 'N/A'
+      return "Not specified"
     else
       return "#{min_age_unit} to #{max_age_unit} old"
     end
