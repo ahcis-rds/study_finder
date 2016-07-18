@@ -7,7 +7,7 @@ describe Parsers::Ctgov do
 
   describe "#parse" do
 
-    it "parses status and sets visibility" do
+    it "parses status and sets visibility when Recruiting" do
       url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
       p = Parsers::Ctgov.new( 'NCT01678638', 1)
       p.set_contents_from_xml("
@@ -22,7 +22,7 @@ describe Parsers::Ctgov do
       expect(trial.visible).to eq(true)
     end
 
-    it "parses status and sets visibility" do
+    it "parses status and sets visibility when not Recruiting" do
       url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
       p = Parsers::Ctgov.new( 'NCT01678638', 1)
       p.set_contents_from_xml("
@@ -36,6 +36,60 @@ describe Parsers::Ctgov do
       trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
     end 
+
+    it "parses status and sets visibility from Recruiting to not Recruiting" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <overall_status>Recruiting</overall_status>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.visible).to eq(true)
+
+      p2 = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p2.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <overall_status>Not yet Recruiting</overall_status>
+        </clinical_study>
+      ")
+      p2.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.visible).to eq(false)
+    end
+
+    it "parses status and sets visibility from not Recruiting to Recruiting" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <overall_status>Not yet Recruiting</overall_status>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.visible).to eq(false)
+
+      p2 = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p2.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <overall_status>Recruiting</overall_status>
+        </clinical_study>
+      ")
+      p2.process(true)
+
+      trial2 = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial2.visible).to eq(true)
+    end
     
     it "parses age ranges correctly when weeks are involved" do
       url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'

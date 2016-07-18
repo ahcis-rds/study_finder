@@ -299,6 +299,8 @@ module Parsers
     end
 
     def retrieve_simple_fields(trial)
+      previous_status = trial.overall_status
+      
       # Look at simple fields and update where appropriate.
       @@simple_fields.each do |f|
         if @contents.has_key?(f)
@@ -312,11 +314,12 @@ module Parsers
             if @contents[f] == 'Recruiting'
               trial.recruiting = true
               # Only set visible to true if overall_status has CHANGED to 'Recruiting'.
-              if trial.overall_status != @contents[f]
+              if previous_status != @contents[f]
                 trial.visible = true
               end
             else
               trial.recruiting = false
+              trial.visible = false
             end
           end
         end
