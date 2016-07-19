@@ -306,5 +306,116 @@ describe Parsers::Ctgov do
       expect(keywords.last).to eq("Test Keyword 5")
     end
 
+    it "parses conditional browse mesh term when there is one" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <conditional_browse>
+            <mesh_term>Test Conditional Mesh Term</mesh_term>
+          </conditional_browse>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.mesh_terms).to eq("Conditional: Test Conditional Mesh Term")
+    end
+
+    it "parses conditional browse mesh term when there are many" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <conditional_browse>
+            <mesh_term>Test Conditional Mesh Term 1</mesh_term>
+            <mesh_term>Test Conditional Mesh Term 2</mesh_term>
+            <mesh_term>Test Conditional Mesh Term 3</mesh_term>
+          </conditional_browse>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      mesh_term = trial.mesh_terms.split("; ")
+      expect(mesh_term.size).to eq(3)
+      expect(mesh_term.first).to eq("Conditional: Test Conditional Mesh Term 1")
+      expect(mesh_term.second).to eq("Conditional: Test Conditional Mesh Term 2")
+      expect(mesh_term.last).to eq("Conditional: Test Conditional Mesh Term 3")
+    end
+
+    it "parses intervention browse mesh term when there is one" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <intervention_browse>
+            <mesh_term>Test Intervention Mesh Term</mesh_term>
+          </intervention_browse>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.mesh_terms).to eq("Intervention: Test Intervention Mesh Term")
+    end
+
+    it "parses intervention browse mesh term when there are many" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <intervention_browse>
+            <mesh_term>Test Intervention Mesh Term 1</mesh_term>
+            <mesh_term>Test Intervention Mesh Term 2</mesh_term>
+            <mesh_term>Test Intervention Mesh Term 3</mesh_term>
+          </intervention_browse>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      mesh_term = trial.mesh_terms.split("; ")
+      expect(mesh_term.size).to eq(3)
+      expect(mesh_term.first).to eq("Intervention: Test Intervention Mesh Term 1")
+      expect(mesh_term.second).to eq("Intervention: Test Intervention Mesh Term 2")
+      expect(mesh_term.last).to eq("Intervention: Test Intervention Mesh Term 3")
+    end
+
+
+    it "parses conditional and intervention browse mesh term" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <conditional_browse>
+            <mesh_term>Test Conditional Mesh Term 1</mesh_term>
+            <mesh_term>Test Conditional Mesh Term 2</mesh_term>
+            <mesh_term>Test Conditional Mesh Term 3</mesh_term>
+          </conditional_browse>
+          <intervention_browse>
+            <mesh_term>Test Intervention Mesh Term 1</mesh_term>
+            <mesh_term>Test Intervention Mesh Term 2</mesh_term>
+            <mesh_term>Test Intervention Mesh Term 3</mesh_term>
+          </intervention_browse>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      mesh_term = trial.mesh_terms.split("; ")
+      expect(mesh_term.size).to eq(6)
+      expect(mesh_term.first).to eq("Conditional: Test Conditional Mesh Term 1")
+      expect(mesh_term.second).to eq("Conditional: Test Conditional Mesh Term 2")
+      expect(mesh_term.third).to eq("Conditional: Test Conditional Mesh Term 3")
+      expect(mesh_term.fourth).to eq("Intervention: Test Intervention Mesh Term 1")
+      expect(mesh_term.fifth).to eq("Intervention: Test Intervention Mesh Term 2")
+      expect(mesh_term.last).to eq("Intervention: Test Intervention Mesh Term 3")
+    end
   end
 end
