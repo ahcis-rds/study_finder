@@ -220,5 +220,91 @@ describe Parsers::Ctgov do
       expect(trial.conditions.last.condition).to eq('Test Condition 4')
     end
 
+    it "parses intervention when there is only one" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <intervention>
+            <intervention_type>Intervention Type</intervention_type>
+            <intervention_name>Intervention Name</intervention_name>
+          </intervention>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.interventions).to eq('Intervention Type: Intervention Name')
+    end
+
+    it "parses intervention when there are many" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <intervention>
+            <intervention_type>Intervention Type 1</intervention_type>
+            <intervention_name>Intervention Name 1</intervention_name>
+          </intervention>
+          <intervention>
+            <intervention_type>Intervention Type 2</intervention_type>
+            <intervention_name>Intervention Name 2</intervention_name>
+          </intervention>
+          <intervention>
+            <intervention_type>Intervention Type 3</intervention_type>
+            <intervention_name>Intervention Name 3</intervention_name>
+          </intervention>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      interventions = trial.interventions.split("; ")
+      expect(interventions.size).to eq(3)
+      expect(interventions.first).to eq('Intervention Type 1: Intervention Name 1')
+      expect(interventions.second).to eq('Intervention Type 2: Intervention Name 2')
+      expect(interventions.third).to eq('Intervention Type 3: Intervention Name 3')
+    end
+
+    it "parses keyword when there is only one" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <keyword>Test Keyword</keyword>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      expect(trial.keywords).to eq("Test Keyword")
+    end
+
+    it "parses keyword when there are many" do
+      url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
+      p = Parsers::Ctgov.new( 'NCT01678638', 1)
+      p.set_contents_from_xml("
+        <clinical_study>
+          <brief_title>Test Study</brief_title>
+          <keyword>Test Keyword 1</keyword>
+          <keyword>Test Keyword 2</keyword>
+          <keyword>Test Keyword 3</keyword>
+          <keyword>Test Keyword 4</keyword>
+          <keyword>Test Keyword 5</keyword>
+        </clinical_study>
+      ")
+      p.process(true)
+
+      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      keywords = trial.keywords.split("; ")
+      expect(keywords.size).to eq(5)
+      expect(keywords.first).to eq("Test Keyword 1")
+      expect(keywords.second).to eq("Test Keyword 2")
+      expect(keywords.last).to eq("Test Keyword 5")
+    end
+
   end
 end
