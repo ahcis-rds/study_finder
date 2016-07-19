@@ -76,6 +76,14 @@ class StudyFinder::Trial < ActiveRecord::Base
     }
   end
 
+  def conditional_mesh_terms
+    trial_mesh_terms.map { |t| "#{t.mesh_term}" if t.mesh_term_type == 'Conditional'}.join("; ") if trial_mesh_terms.any?
+  end
+
+  def intervention_mesh_terms
+    trial_mesh_terms.map { |t| "#{t.mesh_term}" if t.mesh_term_type == 'Intervention'}.join("; ") if trial_mesh_terms.any?
+  end
+
   def mesh_terms
     trial_mesh_terms.map { |t| "#{t.mesh_term_type}: #{t.mesh_term}"}.join('; ') if trial_mesh_terms.any?
   end
