@@ -18,6 +18,8 @@ class StudyFinder::Trial < ActiveRecord::Base
   has_many :trial_locations
   has_many :locations, -> { order 'study_finder_locations.location' }, through: :trial_locations
 
+  has_many :trial_mesh_terms
+
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
   def display_title
@@ -72,6 +74,18 @@ class StudyFinder::Trial < ActiveRecord::Base
     {
       input: trial_keywords.map { |k| k.keyword.downcase }
     }
+  end
+
+  def conditional_mesh_terms
+    trial_mesh_terms.map { |t| "#{t.mesh_term}" if t.mesh_term_type == 'Conditional'}.join("; ") if trial_mesh_terms.any?
+  end
+
+  def intervention_mesh_terms
+    trial_mesh_terms.map { |t| "#{t.mesh_term}" if t.mesh_term_type == 'Intervention'}.join("; ") if trial_mesh_terms.any?
+  end
+
+  def mesh_terms
+    trial_mesh_terms.map { |t| "#{t.mesh_term_type}: #{t.mesh_term}"}.join('; ') if trial_mesh_terms.any?
   end
 
   # ===============================================
