@@ -85,6 +85,10 @@ module Parsers
         trial.save
       end
 
+      if @contents.has_key?('conditional_browse') || @contents.has_key?('intervention_browse')
+        process_mesh_term(trial)
+      end
+
       trial.updated_at = DateTime.now # Set updated date, even if the trial has not changed.
 
       # Save associations.
@@ -194,6 +198,45 @@ module Parsers
         trial.eligibility_criteria = @contents['eligibility']['criteria']['textblock']
       end
 
+    end
+
+    def process_mesh_term(trial)
+      if (!@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')) || 
+         (!@contents['intervention_browse'].nil? && @contents['intervention_browse'].has_key?('mesh_term')) 
+        StudyFinder::TrialMeshTerm.delete_all(trial_id: trial.id)
+      end
+      if !@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')
+        process_condition_browse(trial)
+      end
+      if !@contents['intervention_browse'].nil? && @contents['intervention_browse'].has_key?('mesh_term')
+        process_intervention_browse(trial)
+      end
+    end
+
+    def process_condition_browse(trial)
+      mesh_term = @contents['conditional_browse']['mesh_term']
+      mesh_term = [mesh_term] unless mesh_term.instance_of?(Array)
+
+      mesh_term.each do |mesh|
+        test = StudyFinder::TrialMeshTerm.create({
+          trial_id: trial.id,
+          mesh_term_type: 'Conditional',
+          mesh_term: mesh
+        })
+      end
+    end
+
+    def process_intervention_browse(trial)
+      mesh_term = @contents['intervention_browse']['mesh_term']
+      mesh_term = [mesh_term] unless mesh_term.instance_of?(Array)
+
+      mesh_term.each do |mesh|
+        test = StudyFinder::TrialMeshTerm.create({
+          trial_id: trial.id,
+          mesh_term_type: 'Intervention',
+          mesh_term: mesh
+        })
+      end
     end
 
     def process_conditions(id)
