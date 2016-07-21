@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151229195439) do
+ActiveRecord::Schema.define(version: 20160719163202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,10 +74,10 @@ ActiveRecord::Schema.define(version: 20151229195439) do
     t.string   "research_match_campaign"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "secret_key"
     t.string   "google_analytics_id"
     t.boolean  "display_all_locations"
     t.string   "contact_email_suffix"
-    t.string   "secret_key"
     t.text     "researcher_description"
   end
 
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(version: 20151229195439) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "study_finder_trial_conditions", ["condition_id"], name: "condition_idx", using: :btree
 
   create_table "study_finder_trial_intervents", force: true do |t|
     t.integer  "trial_id"
@@ -116,6 +118,14 @@ ActiveRecord::Schema.define(version: 20151229195439) do
     t.string   "backup_email"
     t.string   "investigator_last_name"
     t.string   "investigator_role"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "study_finder_trial_mesh_terms", force: true do |t|
+    t.integer  "trial_id"
+    t.string   "mesh_term_type"
+    t.string   "mesh_term"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -162,7 +172,7 @@ ActiveRecord::Schema.define(version: 20151229195439) do
     t.string   "max_age_unit"
     t.string   "lastchanged_date"
     t.string   "firstreceived_date"
-    t.boolean  "reviewed",                                 default: false
+    t.boolean  "reviewed"
   end
 
   create_table "study_finder_updaters", force: true do |t|
