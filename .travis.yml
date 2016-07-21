@@ -8,9 +8,8 @@ bundler_args: --without development production
 
 # setup the database
 before_script:
-  - psql -c 'create database study_finder_test' -U postgres
   - cp config/database.yml.travis config/database.yml 
-  - RAILS_ENV=test bundle exec rake db:migrate
+  - RAILS_ENV=test bundle exec rake db:create db:migrate
 
 # run the spec test
 script:
@@ -24,5 +23,5 @@ services:
   - postgresql
 
 # have travis not email after every update
-notification:
+notifications:
   email: false
