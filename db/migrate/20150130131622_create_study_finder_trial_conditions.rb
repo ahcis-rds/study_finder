@@ -5,6 +5,6 @@ class CreateStudyFinderTrialConditions < ActiveRecord::Migration
       t.integer :condition_id
       t.timestamps
     end
-    execute "ALTER TABLE study_finder_trial_conditions ADD INDEX condition_idx (condition_id)"
+    execute "CREATE INDEX condition_idx ON study_finder_trial_conditions (condition_id)"
   end
 end
