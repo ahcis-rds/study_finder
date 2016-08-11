@@ -1,4 +1,6 @@
 # StudyFinder
+[![Build Status](https://travis-ci.org/ahcis-rds/study_finder.svg?branch=master)](https://travis-ci.org/ahcis-rds/study_finder)
+
 The goal for StudyFinder is to provide a flexible and configurable application to pull studies from clinicaltrials.gov and augment the data from alternate datasources such as a clinical trials management system.  StudyFinder also has a basic theming component which allows for even further customizations.
 
 ## Installation

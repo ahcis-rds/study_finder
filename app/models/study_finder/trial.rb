@@ -150,6 +150,7 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :keywords, analyzer: 'en'
       indexes :min_age_unit, type: 'string'
       indexes :max_age_unit, type: 'string'
+      indexes :featured, type: 'integer'
     end
 
   end
@@ -173,7 +174,8 @@ class StudyFinder::Trial < ActiveRecord::Base
         :recruitment_url,
         :phase,
         :min_age_unit,
-        :max_age_unit
+        :max_age_unit,
+        :featured
       ],
       include: {
         trial_locations: {
@@ -195,11 +197,19 @@ class StudyFinder::Trial < ActiveRecord::Base
   def self.match_all(search)
     search(
       query: {
-        filtered: {
+        function_score: {
           query: {
-            match_all: {}
+            filtered: {
+              query: {
+                match_all: {}
+              },
+              filter: create_filters(search)
+            }
           },
-          filter: create_filters(search)
+          boost_mode: "sum",
+          script_score: {
+            script: "_score + (doc['featured'].value * 15)"
+          }
         }
       },
       highlight: {
@@ -212,17 +222,23 @@ class StudyFinder::Trial < ActiveRecord::Base
 
     search(
       query: {
-        filtered: {
+        function_score: {
           query: {
-            query_string: {
-              query: search[:q],
-              default_operator: "AND",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords"]
+            filtered: {
+              query: {
+                query_string: {
+                  query: search[:q],
+                  default_operator: "AND",
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords"]
+                }
+              },
+              filter: create_filters(search)
             }
           },
-
-          filter: create_filters(search)
-
+          boost_mode: "sum",
+          script_score: {
+            script: "_score + (doc['featured'].value * 15)"
+          }
         }
       },
       highlight: {
