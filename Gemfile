@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.10'
+gem 'rails', '4.2.7.1'
+gem 'responders'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
@@ -52,6 +53,7 @@ gem 'will_paginate-bootstrap'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 
+gem 'recaptcha', require: 'recaptcha/rails'
 gem 'httparty'
 gem 'rubyzip'
 
