@@ -18,6 +18,7 @@
     = f.input :recruitment_url
   = f.input :visible, as: :select
   = f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false
+  = f.input :captcha, as: :select
 
   = f.submit 'Update Trial', class: 'btn btn-school'
   = link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-default'
