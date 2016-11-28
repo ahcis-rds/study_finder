@@ -25,7 +25,7 @@ module Parsers
     end
 
     def url
-      "http://clinicaltrials.gov/show/" + @id + "?displayxml=true"
+      "https://clinicaltrials.gov/show/" + @id + "?displayxml=true"
     end
 
     def load(path=nil)
