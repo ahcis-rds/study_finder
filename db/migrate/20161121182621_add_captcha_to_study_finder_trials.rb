@@ -1,6 +1,6 @@
 class AddCaptchaToStudyFinderTrials < ActiveRecord::Migration
   def up
-	  if Rails.env == 'local'
+	  if Rails.env == 'local' or Rails.env == 'test'
 	    # We are using postgres locally, which supports a boolean type.
 	    default = 'FALSE'
 	    type = 'BOOLEAN'
