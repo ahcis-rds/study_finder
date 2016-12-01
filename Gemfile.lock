@@ -53,6 +53,9 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    debase (0.2.1)
+      debase-ruby_core_source
+    debase-ruby_core_source (0.9.4)
     diff-lcs (1.2.5)
     elasticsearch (1.0.6)
       elasticsearch-api (= 1.0.6)
@@ -161,6 +164,8 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.4)
+    ruby-debug-ide (0.4.32)
+      rake (>= 0.8.1)
     ruby-oci8 (2.1.8)
     rubyzip (1.1.0)
     sass (3.2.19)
@@ -211,6 +216,7 @@ DEPENDENCIES
   breadcrumbs_on_rails
   capybara
   coffee-rails (~> 4.0.1)
+  debase
   elasticsearch-model
   elasticsearch-rails
   figaro
@@ -227,6 +233,7 @@ DEPENDENCIES
   recaptcha
   responders
   rspec-rails (~> 3.0)
+  ruby-debug-ide
   ruby-oci8
   rubyzip
   sass-rails (~> 4.0.3)

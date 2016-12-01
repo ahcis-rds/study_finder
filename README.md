@@ -100,3 +100,15 @@ The search screen within StudyFinder has the ability to be embedded into other w
 ```html
 <iframe src="https://studyfinder.url/embed" width="100%" height="350" frameborder="0"></iframe>
 ```
+
+## Adding Captcha to email forms (optional)
+If you would like to add a captcha to the contact forms, follow the steps below.
+
+1. Go to https://www.google.com/recaptcha/admin and obtain a reCAPTCHA API key.
+2. Put the site key and secret key into the application.yml file as variables.
+```
+  RECAPTCHA_SITE_KEY: 'site_key_from_google'
+  RECAPTCHA_SECRET_KEY: 'secret_key_from_google'
+```
+3. Go to the admin section and turn on the "Add Captcha to email forms" option and save.
+4. Verify that captcha is now setup on forms.

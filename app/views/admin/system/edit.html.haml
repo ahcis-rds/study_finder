@@ -17,6 +17,11 @@
     = f.input :default_email
     = f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.'
 
+    %label Add Captcha to email forms
+    %small
+      %i (Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.)
+    = f.input :captcha, as: :select, label: false
+
     %hr
     %h4 System Override Options
     %label Search Term

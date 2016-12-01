@@ -7,6 +7,10 @@ $('#email-me-modal').on('show.bs.modal', function (event) {
   // pass some trial attributes from the search results into the modal
   modal.find('.study-title').text(studyTitle);
   modal.find('#email-me-modal-submit').data('trial_id', trialId).data('button', button);
+
+  if(window.myselfWidget !== undefined) {
+    grecaptcha.reset();
+  }
 });
 
 // "Email this study information to me" form handler
@@ -19,14 +23,26 @@ $('#email-me-modal-submit').on('click', function (event) {
   // reset validation messages
   form.find('.help-inline').remove();
   form.find('.form-group').removeClass('has-error');
-
+ 
   // grab our form inputs
   var email = form.find('.email');
   var notes = form.find('.notes');
+  var captcha = form.find('#g-recaptcha-response');
 
-  if ($.trim(email.val())  === '') {
+  if(window.myselfWidget !== undefined) {
+    var mwResponse = grecaptcha.getResponse( window.myselfWidget )
+  }
+
+  if ($.trim(email.val())  === '' || (window.myselfWidget !== undefined && !mwResponse.length)) {
     email.parent().addClass('has-error');
-    email.parent().append('<span class="help-inline">Please provide your email.</span>');
+    
+    if($.trim(email.val())  === '')
+      email.parent().append('<span class="help-inline">Please provide your email.</span>');
+
+    if(window.myselfWidget !== undefined && !mwResponse.length) {
+      captcha.parent().append('<span class="help-inline">Please complete the captcha.</span>');
+    }
+
     email.focus();
     return false;
   }
@@ -36,6 +52,10 @@ $('#email-me-modal-submit').on('click', function (event) {
     email: email.val(),
     notes: notes.val()
   };
+
+  if(window.myselfWidget !== undefined) {
+    data['g-recaptcha-response'] = mwResponse;
+  }
 
   var jqxhr = $.post("/studies/email_me", data, function() {
     // clear the form
@@ -69,6 +89,10 @@ $('#contact-study-team-modal').on('show.bs.modal', function (event) {
   // pass some trial attributes from the search results into the modal
   modal.find('.study-email').text(studyEmail);
   modal.find('#contact-study-team-modal-submit').data('trial_id', trialId).data('button', button);
+
+  if(window.studyTeamWidget !== undefined) {
+    grecaptcha.reset();
+  }
 });
 
 // "Contact the Study Team" form handler
@@ -88,6 +112,11 @@ $('#contact-study-team-modal-submit').on('click', function (event) {
   var phone = form.find('.phone');
   var notes = form.find('.notes');
   var to    = form.find('.study-email').text();
+  var captcha = form.find('#study-team-captcha');
+
+  if(window.studyTeamWidget !== undefined) {
+    var stResponse = grecaptcha.getResponse( window.studyTeamWidget )
+  }
 
   if ($.trim(email.val())  === '') {
     email.parent().addClass('has-error');
@@ -103,14 +132,23 @@ $('#contact-study-team-modal-submit').on('click', function (event) {
     return false;
   }
 
+  if(studyTeamWidget !== undefined && !stResponse.length) {
+    captcha.parent().append('<span class="help-inline">Please complete the captcha.</span>');
+    return false;
+  }
+
   var data = {
-      id: trial_id,
-      to: to,
-      name: name.val(),
-      email: email.val(),
-      phone: phone.val(),
-      notes: notes.val()
-    };
+    id: trial_id,
+    to: to,
+    name: name.val(),
+    email: email.val(),
+    phone: phone.val(),
+    notes: notes.val()
+  };
+
+  if(window.studyTeamWidget !== undefined) {
+    data['g-recaptcha-response'] = stResponse;
+  }
 
   var jqxhr = $.post("/studies/contact_team", data, function() {
     // clear the form

@@ -98,7 +98,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(:simple_description, :captcha, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed)
+      params.require(:study_finder_trial).permit(:simple_description, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed)
     end
 
 end

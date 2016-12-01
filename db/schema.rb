@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20161121182621) do
     t.string   "contact_email_suffix",    limit: 255
     t.string   "secret_key",              limit: 255
     t.text     "researcher_description"
+    t.boolean  "captcha",                              default: false, null: false
   end
 
   create_table "study_finder_trial_conditions", force: :cascade do |t|
@@ -172,7 +173,6 @@ ActiveRecord::Schema.define(version: 20161121182621) do
     t.string   "firstreceived_date",          limit: 255
     t.boolean  "reviewed",                                 default: false
     t.integer  "featured",                                 default: 0
-    t.boolean  "captcha",                                  default: false, null: false
   end
 
   create_table "study_finder_updaters", force: :cascade do |t|

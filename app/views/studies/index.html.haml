@@ -1,6 +1,18 @@
+- if @system_info.captcha
+  :javascript
+    var myselfWidget;
+    var studyTeamWidget;
+    var onloadCallback = function() {
+      myselfWidget = grecaptcha.render('myself-captcha', {
+        'sitekey' : "#{ Recaptcha.configuration.site_key }"
+      });
+      studyTeamWidget = grecaptcha.render('study-team-captcha', {
+        'sitekey' : "#{ Recaptcha.configuration.site_key }"
+      });
+    };
+  
 .study-result-hud
   = render 'shared/refine_search'
-
 - unless @suggestions.nil?
   - unless @suggestions['suggestions'].empty?
     - if @suggestions['suggestions'][0]['options'].size > 0
@@ -206,6 +218,9 @@
           .form-group
             %label Additional Notes
             %textarea.form-control.notes
+          - if @system_info.captcha  
+            .form-group
+              #myself-captcha
       .modal-footer
         %button.btn.btn-default{ data: { dismiss: 'modal' }, onclick: "track('send', 'event', 'email_me_close', 'close')" } Close
         %button.btn.btn-school#email-me-modal-submit{ data: { trial_id: '' }, onclick: "track('send', 'event', 'email_me_submit', 'submit')" } Send
@@ -233,6 +248,11 @@
           .form-group
             %label Notes
             %textarea.form-control.notes
+          - if @system_info.captcha  
+            .form-group
+              #study-team-captcha
       .modal-footer
         %button.btn.btn-default{ data: { dismiss: 'modal' }, onclick: "track('send', 'event', 'email_study_team_close', 'close')" } Close
         %button.btn.btn-school#contact-study-team-modal-submit{ data: { trial_id: '' }, onclick: "track('send', 'event', 'email_study_team_submit', 'submit')" } Send
+- if @system_info.captcha
+  %script(src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit")

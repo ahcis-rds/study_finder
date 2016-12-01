@@ -31,6 +31,7 @@ class Admin::SystemController < ApplicationController
         :school_name,
         :system_name,
         :system_header,
+        :captcha,
         :system_description,
         :search_term,
         :default_url,

@@ -47,16 +47,24 @@ class StudiesController < ApplicationController
 
   def contact_team
     @trial = StudyFinder::Trial.find params[:id]
-    StudyMailer.contact_team(
-      params[:to],
-      params[:name],
-      params[:email],
-      params[:phone],
-      params[:notes],
-      @trial.system_id,
-      @trial.brief_title,
-      @system_info
-    ).deliver
+    should_send = true
+
+    if @system_info.captcha
+      should_send = verify_recaptcha
+    end
+
+    if should_send
+      StudyMailer.contact_team(
+        params[:to],
+        params[:name],
+        params[:email],
+        params[:phone],
+        params[:notes],
+        @trial.system_id,
+        @trial.brief_title,
+        @system_info
+      ).deliver
+    end
     render nothing: true
   end
 
@@ -65,7 +73,16 @@ class StudiesController < ApplicationController
     contacts = contacts_display(determine_contacts(@trial))
     eligibility = eligibility_display(@trial.gender)
     age = age_display(@trial.min_age, @trial.max_age)
-    StudyMailer.email_me(params[:email], params[:notes], @trial, contacts, eligibility, age).deliver
+    should_send = true
+
+    if @system_info.captcha
+      should_send = verify_recaptcha
+    end
+
+    if should_send
+      StudyMailer.email_me(params[:email], params[:notes], @trial, contacts, eligibility, age).deliver
+    end
+    
     render nothing: true
   end
 
