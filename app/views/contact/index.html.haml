@@ -6,9 +6,6 @@
       myselfWidget = grecaptcha.render('myself-captcha', {
         'sitekey' : "#{ Recaptcha.configuration.site_key }"
       });
-      studyTeamWidget = grecaptcha.render('study-team-captcha', {
-        'sitekey' : "#{ Recaptcha.configuration.site_key }"
-      });
     };
 
 .contact
@@ -19,15 +16,15 @@
       = form_tag contact_index_path, method: :post do
         .form-group
           %label.control-label Name (*)
-          = text_field_tag 'name', '', class: 'form-control'
+          = text_field_tag 'name', params[:name], class: 'form-control'
 
         .form-group
           %label.control-label Email (*)
-          = text_field_tag 'email', '', class: 'form-control'
+          = text_field_tag 'email', params[:email], class: 'form-control'
 
         .form-group
           %label.control-label Message (*)
-          = text_area_tag 'message', '', class: 'form-control'
+          = text_area_tag 'message', params[:message], class: 'form-control'
         - if @system_info.captcha  
           .form-group
             #myself-captcha

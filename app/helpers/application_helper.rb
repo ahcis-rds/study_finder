@@ -10,6 +10,8 @@ module ApplicationHelper
         'alert-danger'
       when 'notice'
         'alert-info'
+      when 'recaptcha_error'
+        'alert-warning'
       else
         flash_type
     end
@@ -25,6 +27,8 @@ module ApplicationHelper
         'fa-exclamation-triangle'
       when 'notice'
         'fa-info-circle'
+      when 'recaptcha_error'
+        'fa-refresh'  
       else
         flash_type
     end

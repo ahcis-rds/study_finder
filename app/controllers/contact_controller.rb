@@ -12,7 +12,8 @@ class ContactController < ApplicationController
       c.deliver
       redirect_to contact_index_path, flash: { success: 'Thank you for your inquiry.' }
     else
-      redirect_to contact_index_path, flash: { error: c.errors.full_messages }
+      flash[:error] = c.errors.full_messages
+      render 'index'
     end
   end
 end
