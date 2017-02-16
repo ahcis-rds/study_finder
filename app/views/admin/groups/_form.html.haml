@@ -42,4 +42,5 @@
 .controls
   = f.submit 'Save Group', class: 'btn btn-school'
   = link_to 'Back to group admin', admin_groups_path, class: 'btn btn-default'
-  = link_to 'Export to Excel', edit_admin_group_path(id: params[:id], format: 'csv'), class: 'btn btn-success'
+  - unless params[:action] == 'new'
+    = link_to 'Export to Excel', edit_admin_group_path(id: params[:id], format: 'csv'), class: 'btn btn-success'
