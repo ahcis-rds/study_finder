@@ -151,6 +151,7 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :min_age_unit, type: 'string'
       indexes :max_age_unit, type: 'string'
       indexes :featured, type: 'integer'
+      indexes :irb_number, type: 'string'
     end
 
   end
@@ -172,6 +173,7 @@ class StudyFinder::Trial < ActiveRecord::Base
         :contact_backup_last_name,
         :contact_backup_email,
         :recruitment_url,
+        :irb_number,
         :phase,
         :min_age_unit,
         :max_age_unit,

@@ -89,6 +89,7 @@ class Admin::TrialsController < ApplicationController
 
   def update
     @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    
     if @trial.update(trial_params)
       redirect_to edit_admin_trial_path(params[:id]), flash: { success: 'Trial updated successfully' }
     else
@@ -98,7 +99,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(:simple_description, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed)
+      params.require(:study_finder_trial).permit(:simple_description, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed, :irb_number)
     end
 
 end

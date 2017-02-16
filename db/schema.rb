@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121182621) do
+ActiveRecord::Schema.define(version: 20170216213551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(version: 20161121182621) do
     t.string   "firstreceived_date",          limit: 255
     t.boolean  "reviewed",                                 default: false
     t.integer  "featured",                                 default: 0
+    t.string   "irb_number"
   end
 
   create_table "study_finder_updaters", force: :cascade do |t|

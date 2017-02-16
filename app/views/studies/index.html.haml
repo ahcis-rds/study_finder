@@ -128,6 +128,11 @@
         %label.single System ID:
         = t.system_id
 
+      - unless t.irb_number.nil?
+        .field.nomargin
+          %label.single IRB Number:
+          = t.irb_number
+
       - unless t.interventions.nil?
         .field.nomargin
           %label.single Interventions:
