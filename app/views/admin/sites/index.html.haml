@@ -1,0 +1,32 @@
+.admin
+  .clearfix
+    %h3.pull-left Sites
+    .pull-right.header-button
+      = link_to 'Add Site', new_admin_site_path, class: 'btn btn-school'
+  
+  %p.description
+    The site section allows the administrator to add different local sites/locations to the system.  These sites can then be tagged on a particular trial.
+
+  %table.table.table-bordered.table-trials
+    %thead
+      %tr
+        %th Site Name
+        %th Address
+        %th City
+        %th State
+        %th Zip
+        %th 
+    %tbody
+      - if @sites.empty?
+        %tr
+          %td{ colspan: 6 } There are no sites loaded.  Add sites manually using the add button above.
+      - @sites.each do |s|
+        %tr
+          %td= s.site_name
+          %td= s.address
+          %td= s.city
+          %td= s.state
+          %td= s.zip
+          %td{ width: 150 }
+            = link_to 'Edit', edit_admin_site_path(s.id), class: 'btn btn-primary'
+            = link_to 'Delete', admin_site_path(s.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this site?" }

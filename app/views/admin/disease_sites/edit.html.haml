@@ -1,0 +1,5 @@
+.admin
+  %h3 Edit Site
+  %hr
+  = simple_form_for(@site, :url => admin_disease_site_path) do |f|
+    = render 'form', :f => f

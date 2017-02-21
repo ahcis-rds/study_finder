@@ -1,0 +1,7 @@
+.form-group
+  = f.input :disease_site_name, label: 'Disease Site Name'
+  = f.association :group, label_method: :group_name, value_method: :id
+
+.controls
+  = f.submit 'Save Disease Site', class: 'btn btn-school'
+  = link_to 'Back to site admin', admin_disease_sites_path, class: 'btn btn-default'

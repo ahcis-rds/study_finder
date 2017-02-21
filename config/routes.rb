@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
     get 'groups/reindex', controller: 'groups', action: 'reindex', as: 'group_reindex'
     resources :groups
+    resources :sites
+    resources :disease_sites
 
     resources :system, only: ['index', 'edit', 'update'] # TODO: remove id from these routes, use system helper to get id
     resources :users

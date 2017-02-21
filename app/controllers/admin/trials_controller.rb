@@ -74,6 +74,7 @@ class Admin::TrialsController < ApplicationController
     trial.process
 
     @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    
     if @trial.nil?
       redirect_to admin_trials_path, alert: 'This trial does not exist'
     end
@@ -99,7 +100,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(:simple_description, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed, :irb_number)
+      params.require(:study_finder_trial).permit(:simple_description, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed, :irb_number, site_ids: [], disease_site_ids: [])
     end
 
 end

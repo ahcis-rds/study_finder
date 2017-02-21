@@ -55,6 +55,7 @@ module Parsers
       else
         trial = StudyFinder::BaseTrial.find_or_initialize_by(system_id: @id)
       end
+
       
       trial.system_id = @id # i think this is just overwriting system_id from the line above
 
@@ -362,7 +363,10 @@ module Parsers
               end
             else
               trial.recruiting = false
-              trial.visible = false
+
+              if previous_status != @contents[f]
+                trial.visible = false
+              end
             end
           end
         end

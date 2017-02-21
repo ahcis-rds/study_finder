@@ -15,6 +15,12 @@ class StudyFinder::Trial < ActiveRecord::Base
   has_many :trial_conditions
   has_many :conditions, through: :trial_conditions
 
+  has_many :trial_sites
+  has_many :sites, through: :trial_sites
+
+  has_many :ds_trials
+  has_many :disease_sites, through: :ds_trials
+
   has_many :trial_locations
   has_many :locations, -> { order 'study_finder_locations.location' }, through: :trial_locations
 
@@ -106,7 +112,7 @@ class StudyFinder::Trial < ActiveRecord::Base
     filter: {
       synonym: {
         type: 'synonym',
-        synonyms_path: '/etc/elasticsearch/trials_synonym.txt'.to_s
+        synonyms_path: 'trials_synonym.txt'.to_s
       },
       english_filter: {
         type: 'kstem'
@@ -130,8 +136,8 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :contact_override_first_name
       indexes :contact_override_last_name
 
-      indexes :category_ids, as: 'category_ids'
-      indexes :keyword_suggest, type: 'completion', index_analyzer: 'typeahead', search_analyzer: 'typeahead', payloads: false
+      indexes :category_ids
+      indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead', payloads: false
 
       indexes :trial_locations do
         indexes :last_name, type: 'string'
@@ -144,7 +150,20 @@ class StudyFinder::Trial < ActiveRecord::Base
         indexes :zip, type: 'string'
       end
 
-      indexes :categories, as: 'categories'
+      indexes :sites do
+        indexes :site_name, type: 'string'
+        indexes :address, type: 'string'
+        indexes :city, type: 'string'
+        indexes :state, type: 'string'
+        indexes :zip, type: 'string'
+      end
+
+      indexes :disease_sites do
+        indexes :disease_site_name, type: 'string'
+        indexes :group_id, type: 'integer'
+      end
+
+      indexes :categories
       indexes :interventions, analyzer: 'en'
       indexes :conditions_map, analyzer: 'en'
       indexes :keywords, analyzer: 'en'
@@ -190,6 +209,22 @@ class StudyFinder::Trial < ActiveRecord::Base
             :investigator_role
           ],
           methods: [:location_name, :city, :state, :zip, :country]
+        },
+        sites: {
+          only: [
+            :site_name,
+            :address,
+            :city,
+            :state,
+            :zip
+          ]
+        },
+
+        disease_sites: {
+          only: [
+            :disease_site_name,
+            :group_id
+          ]
         }
       },
       methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :categories, :category_ids, :keywords, :keyword_suggest]

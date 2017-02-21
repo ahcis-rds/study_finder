@@ -7,6 +7,9 @@
   %label Status
   %p= @trial.overall_status
 
+  %label System ID
+  %p= @trial.system_id
+
   - if !@oncore.nil? && !@oncore.contents.blank?
     %hr
     .well

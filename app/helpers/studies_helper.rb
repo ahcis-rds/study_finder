@@ -171,4 +171,18 @@ module StudiesHelper
     end
     contacts.html_safe
   end
+
+  def site(site)
+    site_name = site.site_name
+
+    unless site.city.blank?
+      site_name = site_name + ' - ' + site.city
+    end
+
+    unless site.state.blank?
+      site_name = site_name + ', ' + site.state
+    end
+
+    return site_name
+  end
 end

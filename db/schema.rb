@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216213551) do
+ActiveRecord::Schema.define(version: 20170220010712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 20170216213551) do
     t.string   "condition",  limit: 1000
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "study_finder_disease_categories", force: :cascade do |t|
+    t.string   "disease_category_name"
+    t.integer  "group_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "study_finder_groups", force: :cascade do |t|
@@ -53,6 +60,16 @@ ActiveRecord::Schema.define(version: 20170216213551) do
     t.string   "klass",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "study_finder_sites", force: :cascade do |t|
+    t.string   "site_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "study_finder_subgroups", force: :cascade do |t|
@@ -127,6 +144,13 @@ ActiveRecord::Schema.define(version: 20170216213551) do
     t.string   "mesh_term",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "study_finder_trial_sites", force: :cascade do |t|
+    t.integer  "trial_id"
+    t.integer  "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "study_finder_trials", force: :cascade do |t|

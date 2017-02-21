@@ -1,5 +1,5 @@
 = simple_form_for admin_trial, url: admin_trial_path, method: :put do |f|
-
+  
   - if !@oncore.nil? && !@oncore.contents.blank?
     - if f.object.simple_description.nil?
       = f.input :simple_description, input_html: { value: @oncore.contents['lay_description'] }
@@ -19,6 +19,9 @@
     = f.input :irb_number, label: 'IRB Number'
   = f.input :visible, as: :select
   = f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false
+
+  = f.association :sites, label_method: :site_name, value_method: :id, input_html: { class: 'select2' }
+  = f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' }
 
   = f.submit 'Update Trial', class: 'btn btn-school'
   = link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-default'

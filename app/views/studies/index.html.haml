@@ -128,7 +128,7 @@
         %label.single System ID:
         = t.system_id
 
-      - unless t.irb_number.nil?
+      - unless t.irb_number.blank?
         .field.nomargin
           %label.single IRB Number:
           = t.irb_number
@@ -142,6 +142,16 @@
         .field.nomargin
           %label.single Keywords:
           = highlight(t, 'keywords')
+
+      - if t.respond_to?(:sites) && !t.sites.blank?
+        .field.nomargin
+          %label.single Sites:
+          = t.sites.map {|x| site(x) }.join('; ')
+
+      - if t.respond_to?(:disease_sites) && !t.disease_sites.blank?
+        .field.nomargin
+          %label.single Disease Sites:
+          = t.disease_sites.map {|x| x.disease_site_name }.join('; ')
 
       - unless t.conditions_map.nil?
         .field.line-clamp-3

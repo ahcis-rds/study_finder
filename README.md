@@ -12,7 +12,7 @@ You will need the following requirements to get StudyFinder up and running local
 
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
 
-- ElasticSearch 1.0 or higher. 
+- ElasticSearch 1.0 to 2.x. (Note: 5.x is currently not supported due to breaking changes in the api)
   [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/guide/current/_installing_elasticsearch.html)
   [Mac Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
 
