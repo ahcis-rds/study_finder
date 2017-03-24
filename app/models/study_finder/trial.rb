@@ -330,13 +330,22 @@ class StudyFinder::Trial < ActiveRecord::Base
   private
     def self.create_filters(search)
       terms = { term: { visible: true } }
-      range = { range: {} }
+      range = { or: [] }
       filters = nil
 
-      range[:range]['min_age'] = { lt: 18 } if search.has_key?('children')
-      range[:range]['max_age'] = { gte: 18 } if search.has_key?('adults')
+      if (search.has_key?('children'))
+        range[:or] << { range: { min_age: { lt: 18 } } }
+      end
 
-      if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category')
+      if (search.has_key?('adults'))
+        range[:or] << { range: { min_age: { lt: 66 }, max_age: { gte: 18 } } }
+      end
+
+      if (search.has_key?('seniors'))
+        range[:or] << { range: { max_age: { gte: 66 } } }
+      end
+
+      if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
         term_array = [terms]
 
         if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
@@ -347,12 +356,16 @@ class StudyFinder::Trial < ActiveRecord::Base
           term_array << { term: { category_ids: search[:category] } }
         end
 
+        if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
+          term_array << { terms: { gender: ['all', search[:gender].downcase] }}
+        end
+
         terms = {
           and: term_array
         }
       end
 
-      if search.has_key?('children') or search.has_key?('adults')
+      if search.has_key?('children') or search.has_key?('adults') or search.has_key?('seniors')
         filters = {}
         filters['and'] = []
         filters['and'] << terms
