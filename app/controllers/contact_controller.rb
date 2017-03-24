@@ -3,6 +3,7 @@ class ContactController < ApplicationController
   end
 
   def create
+    should_send = true
     if @system_info.captcha
       should_send = verify_recaptcha
     end
