@@ -56,7 +56,7 @@ departmental_cn: 'USERNAME'
 departmental_pw: 'PASSWORD'
 theme: 'umn'
 es_host: 'elastic.umn.edu'
-  
+
 ```
 
 - Migrate the local database
@@ -82,10 +82,14 @@ $ rake db:seed RAILS_ENV=local
 $ rake studyfinder:ctgov:reload_all RAILS_ENV=local
 ```
 
-- Once the trials are loaded initially, the "load" task updates them each night with the last "x" amount of days worth of trials from ctgov.  (Note: The "days_previous" variable is configurable in lib/tasks/ctgov.rake)
+- Once the trials are loaded initially, the "load" task updates them each night with the last "x" amount of days worth of trials from ctgov.  (Note: The number of days previous variable is available as a parameter)
 
 ```
+# defaults to 4 days previous
 $ rake studyfinder:ctgov:load RAILS_ENV=local
+
+# specify the number of days previous as a parameters (10 days in this example)
+$ rake studyfinder:ctgov:load[10] RAILS_ENV=local
 ```
 
 - Trials should automatically add/update themselves into the elasticsearch index.  If for some reason all the trials need to be re-indexed the following will do that.
