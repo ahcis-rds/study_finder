@@ -9,11 +9,11 @@
         %option{ value: '1' } Yes
         %option{ value: '0' } No
         %option{ value: '' } No Preference
-  .age-ranges  
+  .age-ranges
     %label.checkbox
       = check_box_tag 'search[children]'
-      Children (age < 18 years) 
-     
+      Children (age < 18 years)
+
     %label.checkbox
       = check_box_tag 'search[adults]'
       Adults (age >= 18 years)
@@ -24,7 +24,5 @@
     = hidden_field 'search', 'category', value: @category.id
   .search-controls
     = submit_tag 'Search', class: 'btn btn-lg btn-school btn-search'
-    %a.btn.btn-primary.btn-not-sure{ href: (@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) ), target: (params[:action] == 'embed' ? '_blank' : nil) }
-      Not sure what you're looking for?
-      %br
-      Click here to browse all research opportunities
+    %a.btn.btn-primary.btn-lg.btn-search{ href: (@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) ), target: (params[:action] == 'embed' ? '_blank' : nil) }
+      Browse by category
