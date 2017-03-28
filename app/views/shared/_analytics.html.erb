@@ -13,6 +13,8 @@
 
       ga('set', 'campaignName', utm_source);
       ga('set', 'campaignSource', utm_source);
+
+      document.getElementById('utm-campaign').innerHTML = 'Current Campaign: ' + utm_source;
     }
 
     ga('send', 'pageview');
