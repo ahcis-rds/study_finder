@@ -23,7 +23,7 @@ $('#email-me-modal-submit').on('click', function (event) {
   // reset validation messages
   form.find('.help-inline').remove();
   form.find('.form-group').removeClass('has-error');
- 
+
   // grab our form inputs
   var email = form.find('.email');
   var notes = form.find('.notes');
@@ -35,7 +35,7 @@ $('#email-me-modal-submit').on('click', function (event) {
 
   if ($.trim(email.val())  === '' || (window.myselfWidget !== undefined && !mwResponse.length)) {
     email.parent().addClass('has-error');
-    
+
     if($.trim(email.val())  === '')
       email.parent().append('<span class="help-inline">Please provide your email.</span>');
 
@@ -132,7 +132,7 @@ $('#contact-study-team-modal-submit').on('click', function (event) {
     return false;
   }
 
-  if(studyTeamWidget !== undefined && !stResponse.length) {
+  if(window.studyTeamWidget !== undefined && !stResponse.length) {
     captcha.parent().append('<span class="help-inline">Please complete the captcha.</span>');
     return false;
   }
