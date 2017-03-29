@@ -1,17 +1,21 @@
 .study-result-hud {
   padding-left: 0px;
-  
+
   .results-header {
-    
+
     padding: 15px 30px 30px 30px;
     background: $school_main_color;
     color: white;
-  
+
     h3 {
       margin: 10px 0;
       position: relative;
       color: white;
       font-weight: 200;
+    }
+
+    .gender-label {
+      margin-top: 5px;
     }
 
     .fa-search {
@@ -66,7 +70,7 @@
 
 .study-results {
   padding: 25px 10px;
-  
+
   em {
     font-style: normal;
     text-shadow: none;

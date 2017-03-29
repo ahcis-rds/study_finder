@@ -16,7 +16,16 @@
           %option{ value: '' } Please Select
           %option{ value: '1', selected: healthy_voulunteers == '1' } Yes
           %option{ value: '0', selected: healthy_voulunteers == '0' } No
-          %option{ value: '' } No Preference  
+          %option{ value: '' } No Preference
+
+        %label.gender-label{}
+          Gender
+
+        - gender = params[:search]['gender'] if !params[:search].nil? and !params[:search]['gender'].nil?
+        %select#gender.form-control{ name: 'search[gender]' }
+          %option{ value: '' } Any
+          %option{ value: 'Female', selected: gender == 'Female' } Female
+          %option{ value: 'Male', selected: gender == 'Male' } Male
 
       .age-ranges.pull-left
         %label.checkbox
@@ -24,14 +33,21 @@
             = check_box_tag 'search[children]', 1, { checked: 'checked' }
           - else
             = check_box_tag 'search[children]'
-          Children (age < 18 years) 
-         
+          Children (age &lt; 18 years)
+
         %label.checkbox
           - if !params[:search].nil? and !params[:search]['adults'].nil?
             = check_box_tag 'search[adults]', 1, { checked: 'checked' }
           - else
             = check_box_tag 'search[adults]'
-          Adults (age >= 18 years)
+          Adults (age &ge; 18 years; age &lt; 66 years)
+
+        %label.checkbox
+          - if !params[:search].nil? and !params[:search]['seniors'].nil?
+            = check_box_tag 'search[seniors]', 1, { checked: 'checked' }
+          - else
+            = check_box_tag 'search[seniors]'
+          Seniors (age &ge; 66 years)
 
       - if !params[:search].nil? and !params[:search][:category].nil?
         %input{type:'hidden', name: 'search[category]', value: params[:search][:category] }

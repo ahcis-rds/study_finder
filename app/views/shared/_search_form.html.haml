@@ -9,14 +9,27 @@
         %option{ value: '1' } Yes
         %option{ value: '0' } No
         %option{ value: '' } No Preference
-  .age-ranges  
+  .row
+    .col-md-6
+      %label{ for: 'gender' }
+        Gender
+      %select#gender.form-control{ name: 'search[gender]' }
+        %option{ value: '' } Any
+        %option{ value: 'Female' } Female
+        %option{ value: 'Male' } Male
+  .age-ranges
     %label.checkbox
       = check_box_tag 'search[children]'
-      Children (age < 18 years) 
-     
+      Children (age &lt; 18 years)
+
+
     %label.checkbox
       = check_box_tag 'search[adults]'
-      Adults (age >= 18 years)
+      Adults (age &ge; 18 years; age &lt; 66 years)
+
+    %label.checkbox
+      = check_box_tag 'search[seniors]'
+      Seniors (age &ge; 66 years)
   .row
     .col-md-10
       = text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, treatment, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off'
@@ -24,7 +37,6 @@
     = hidden_field 'search', 'category', value: @category.id
   .search-controls
     = submit_tag 'Search', class: 'btn btn-lg btn-school btn-search'
-    %a.btn.btn-primary.btn-not-sure{ href: (@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) ), target: (params[:action] == 'embed' ? '_blank' : nil) }
-      Not sure what you're looking for?
-      %br
-      Click here to browse all research opportunities
+
+    %a.btn.btn-primary.btn-lg.btn-search{ href: (@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) ), target: (params[:action] == 'embed' ? '_blank' : nil) }
+      Browse by category

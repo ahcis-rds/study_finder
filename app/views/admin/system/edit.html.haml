@@ -1,3 +1,17 @@
+:javascript
+  document.addEventListener('DOMContentLoaded', function(event) {
+    var campaignElement = document.getElementById('campaign_source');
+    if(window.localStorage.getItem('utm_source')) {
+      campaignElement.value = window.localStorage.getItem('utm_source');
+    }
+    var formElement = document.getElementById('edit_study_finder_system_info_1');
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.localStorage.setItem('utm_source', campaignElement.value);
+      this.submit();
+    }, false);
+  });
+
 .admin
   %h2 Edit System Information
   %p.description
@@ -40,10 +54,13 @@
     = f.input :display_all_locations, as: :select, label: false
 
     = f.input :researcher_description, as: :text, input_html: { rows: 5 }
-    
+
     %hr
     %h4 Analytics/Tracking Options
     %label Google analytics tracking ID
     = f.input :google_analytics_id, label: false
     = f.input :research_match_campaign
+    .form-group.string.optional
+      %label.string.optional.control-label{:for => "campaign_source"} Campaign Source
+      %input.string.optional.form-control#campaign_source
     = f.submit 'Update System Information', class: 'btn btn-school'
