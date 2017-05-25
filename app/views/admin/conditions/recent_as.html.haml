@@ -1,0 +1,28 @@
+.admin
+  .clearfix
+    .pull-left
+      %h3 Recent Conditions
+    .pull-right
+      = will_paginate @collection, renderer: BootstrapPagination::Rails
+  %p.description
+    This section is where the administrator can review recently created conditions within StudyFinder.
+  %hr
+  .clearfix
+    .pull-right
+      = link_to 'Back to Reports', admin_reports_path, class: 'btn btn-default'
+  %table.table.table-bordered.table-trials
+    %thead
+      %tr
+        %th Condition
+        %th Date Added
+    %tbody
+      - if @conditions.empty?
+        %tr
+          %td{ colspan: 2 }
+            No conditions found
+      - @conditions.each do |t|
+        %tr
+          %td= t.condition
+          %td= t.created_at
+
+  = will_paginate @collection, renderer: BootstrapPagination::Rails

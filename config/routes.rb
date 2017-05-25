@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
     resources :system, only: ['index', 'edit', 'update'] # TODO: remove id from these routes, use system helper to get id
     resources :users
+    resources :reports, only: ['index']
+    get 'reports/recent_conditions', to: "conditions#recent_as"
   end
 
   resources :categories, only: ['index']
