@@ -34,6 +34,16 @@ class Admin::TrialsController < ApplicationController
     end
   end
 
+  def import_show
+  end
+
+  def import
+    StudyFinder::Trial.import(params[:file])
+    redirect_to admin_trials_import_path, notice: "Trials Imported"
+  rescue => e
+    redirect_to admin_trials_import_path, alert: "Some trials may have failed to import: #{e}"
+  end
+
   def create
     trial = Parsers::Ctgov.new(params[:study_finder_trial][:system_id])
     trial.load
@@ -74,7 +84,7 @@ class Admin::TrialsController < ApplicationController
     trial.process
 
     @trial = StudyFinder::Trial.find_by(system_id: params[:id])
-    
+
     if @trial.nil?
       redirect_to admin_trials_path, alert: 'This trial does not exist'
     end
@@ -90,7 +100,7 @@ class Admin::TrialsController < ApplicationController
 
   def update
     @trial = StudyFinder::Trial.find_by(system_id: params[:id])
-    
+
     if @trial.update(trial_params)
       redirect_to edit_admin_trial_path(params[:id]), flash: { success: 'Trial updated successfully' }
     else
