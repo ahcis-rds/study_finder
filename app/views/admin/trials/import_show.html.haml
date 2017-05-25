@@ -1,7 +1,6 @@
 .admin
   %h3 Import Trials
   %a(href="/trials-import-template.csv") Template
-  %p= flash[:notice]
 
   = form_tag admin_trials_import_path, multipart: true do
     .form-group
