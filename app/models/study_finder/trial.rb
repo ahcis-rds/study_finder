@@ -1,7 +1,8 @@
 class StudyFinder::Trial < ActiveRecord::Base
 
-  self.table_name = 'study_finder_trials'
+  require 'csv'
 
+  self.table_name = 'study_finder_trials'
 
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
@@ -27,6 +28,12 @@ class StudyFinder::Trial < ActiveRecord::Base
   has_many :trial_mesh_terms
 
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
+
+  def self.import(file)
+    CSV.foreach(file.path, headers: true) do |row|
+      StudyFinder::Trial.create! row.to_hash
+    end
+  end
 
   def display_title
     display = brief_title
