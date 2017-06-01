@@ -34,6 +34,10 @@
       Search Results
       - if !params[:search].nil? and !params[:search][:category].nil?
         within category "#{@group.group_name}"
+    
+    %p.matching-message
+      Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.
+    
     - if !params[:search].nil? and !params[:search][:category].nil?
       %a.btn.btn-default{ href: "#{remove_category_param}" } Search all categories
       %hr.tighten
@@ -49,17 +53,16 @@
         %hr.tighten    
     .clearfix
       .pull-left.study-count
-        Study matches:
-        - unless @trials.empty?
-          = @trials.total
-        - else
-          0
-      .pull-right
+        %span
+          - unless @trials.empty?
+            = @trials.total
+          - else
+            0
+        Study Matches
+        
+      .pull-right.top-paginate
         = will_paginate @trials, renderer: BootstrapPagination::Rails
-    
-    %p.alert.alert-warning.matching-message 
-      Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.
-    
+       
   %hr
   - if @trials.empty?
     .alert.alert-danger
@@ -99,10 +102,9 @@
         %strong
           = t.phase
       
-      .field.important
+      .field.important.nomargin
         %strong
-          %label
-            Healthy Volunteers:
+          %label.single Healthy Volunteers:
           .healthy-message{ data: { toggle: 'popover', title: 'Healthy Volunteer', content: 'A person who does not have the condition or disease being studied.', placement: 'top' } }
             - if t.healthy_volunteers == true 
               %i.fa.fa-check-circle
@@ -113,17 +115,6 @@
               This study is NOT accepting healthy volunteers
               %i.fa.fa-question-circle
       
-      - unless t.eligibility_criteria.nil?
-        .eligibility-criteria.hide
-          .clearfix
-            .btn.btn-xs.btn-school-inverse.pull-right.btn-hide-full-eligibility 
-              .fa.fa-close
-              Hide eligibility criteria
-          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').html_safe
-          / .gsub(/\d*. /, "<strong>#{$1}</strong><br>")
-        .field.important
-          .btn.btn-xs.btn-school-inverse.btn-show-full-eligibility Show full eligibility criteria
-
       .field.nomargin
         %label.single System ID:
         = t.system_id
@@ -133,15 +124,33 @@
           %label.single IRB Number:
           = t.irb_number
 
+      - unless t.eligibility_criteria.nil?
+        .field.important.eligibility-buttons
+          .btn.btn-xs.btn-school-inverse.btn-show-full-eligibility 
+            Show full eligibility criteria
+          .btn.btn-xs.btn-school-inverse.btn-hide-full-eligibility.hide
+            .fa.fa-close
+            Hide eligibility criteria
+
+        .eligibility-criteria.hide
+          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').html_safe  
       - unless t.interventions.nil?
         .field.nomargin
           %label.single Interventions:
-          = highlight(t, 'interventions')
+          .concept-list
+            = highlight(t, 'interventions').gsub(';', ',').html_safe
+      
+      - unless t.conditions_map.nil?
+        .field.nomargin
+          %label.single Conditions:
+          .concept-list
+            = highlight(t, 'conditions_map').gsub(';', ',').html_safe
 
       - unless t.keywords.nil?
         .field.nomargin
           %label.single Keywords:
-          = highlight(t, 'keywords')
+          .concept-list
+            = highlight(t, 'keywords').gsub(';', ',').html_safe
 
       - if t.respond_to?(:sites) && !t.sites.blank?
         .field.nomargin
@@ -152,11 +161,6 @@
         .field.nomargin
           %label.single Disease Sites:
           = t.disease_sites.map {|x| x.disease_site_name }.join('; ')
-
-      - unless t.conditions_map.nil?
-        .field.line-clamp-3
-          %label.single Conditions:
-          = highlight(t, 'conditions_map')
 
       .trial-cta-options
         .btn.btn-school.btn-email-me{ data: { toggle: 'modal', target: '#email-me-modal', title: t.display_title, trial_id: t.id }, onclick: "track('send', 'event', 'email_me', 'open', '#{t.system_id}')" }

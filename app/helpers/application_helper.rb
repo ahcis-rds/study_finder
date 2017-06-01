@@ -35,7 +35,6 @@ module ApplicationHelper
   end
 
   def highlight(record, key)
-    # if
     if record.has_key?('highlight') and record['highlight'].has_key?(key)
       record['highlight'][key][0].html_safe
     else

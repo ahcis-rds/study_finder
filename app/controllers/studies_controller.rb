@@ -38,6 +38,8 @@ class StudiesController < ApplicationController
         @suggestions = StudyFinder::Trial.suggestions(search_parameters[:q])
       end
     end
+
+    respond_with(@trials)
   end
 
   def typeahead

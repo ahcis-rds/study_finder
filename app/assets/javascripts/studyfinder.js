@@ -38,10 +38,14 @@ function addListeners() {
   });
 
   $('.study-results').on('click', '.btn-show-full-eligibility', function() {
-    $(this).parent().prev('.eligibility-criteria').removeClass('hide');
+    $(this).hide();
+    $(this).next('.btn-hide-full-eligibility').removeClass('hide');
+    $(this).parent().next('.eligibility-criteria').removeClass('hide');
   });
 
   $('.study-results').on('click', '.btn-hide-full-eligibility', function() {
+    $(this).hide();
+    $(this).prev('.btn-show-full-eligibility').removeClass('hide');
     $(this).parent().parent().addClass('hide');
   });
 
