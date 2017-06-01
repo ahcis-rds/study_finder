@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
 
   namespace :admin do
+    get 'trials/import', to: 'trials#import_show'
+    post 'trials/import', to: 'trials#import'
     resources :trials, only: ['index', 'new', 'edit', 'update', 'create']
     get 'trials/recent', controller: 'trials', action: 'recent_as', as: 'trial_recent_as'
     post 'trials/review/:id', controller: 'trials', action: 'review', as: 'review_trial'
@@ -17,6 +19,8 @@ Rails.application.routes.draw do
 
     resources :system, only: ['index', 'edit', 'update'] # TODO: remove id from these routes, use system helper to get id
     resources :users
+    resources :reports, only: ['index']
+    get 'reports/recent_conditions', to: "conditions#recent_as"
   end
 
   resources :categories, only: ['index']
