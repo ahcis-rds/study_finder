@@ -12,7 +12,7 @@ function applySelect2() {
   $('.select2').each(function() {
 
     var $this = $(this);
-    var tags = false, 
+    var tags = false,
         multiple = false,
         options = { width: '100%' };
 
@@ -38,11 +38,15 @@ function addListeners() {
   });
 
   $('.study-results').on('click', '.btn-show-full-eligibility', function() {
-    $(this).parent().prev('.eligibility-criteria').removeClass('hide');
+    $('.btn-hide-full-eligibility').removeClass('hide');
+    $('.eligibility-criteria').removeClass('hide');
+    $('.btn-show-full-eligibility').addClass('hide');
   });
 
   $('.study-results').on('click', '.btn-hide-full-eligibility', function() {
-    $(this).parent().parent().addClass('hide');
+    $('.btn-hide-full-eligibility').addClass('hide');
+    $('.eligibility-criteria').addClass('hide');
+    $('.btn-show-full-eligibility').removeClass('hide');
   });
 
   $('.btn-reindex').on('click', function() {
@@ -102,7 +106,7 @@ function track(method, event, category, action, data) {
   }
 }
 
-/* 
+/*
   This is all related to keeping the user in the standalone version when
   clicking a link.  The default behavior on iOS is that Safari will take
   the user out of app mode and open the link a new window in Safari.
