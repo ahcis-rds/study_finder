@@ -38,7 +38,7 @@ class Admin::TrialsController < ApplicationController
   end
 
   def import
-    StudyFinder::Trial.import(params[:file])
+    StudyFinder::Trial.import_from_file(params[:file])
     redirect_to admin_trials_import_path, notice: "Trials Imported"
   rescue => e
     redirect_to admin_trials_import_path, alert: "Some trials may have failed to import: #{e}"

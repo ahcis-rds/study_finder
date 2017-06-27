@@ -29,7 +29,7 @@ class StudyFinder::Trial < ActiveRecord::Base
 
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
-  def self.import(file)
+  def self.import_from_file(file)
     CSV.foreach(file.path, headers: true) do |row|
       StudyFinder::Trial.create! row.to_hash
     end
