@@ -10,18 +10,18 @@
         'sitekey' : "#{ Recaptcha.configuration.site_key }"
       });
     };
-  
+
 .study-result-hud
   = render 'shared/refine_search'
 - unless @suggestions.nil?
   - unless @suggestions['suggestions'].empty?
     - if @suggestions['suggestions'][0]['options'].size > 0
       - replacement_search = params[:search][:q].gsub(@suggestions['suggestions'][0]['text'], @suggestions['suggestions'][0]['options'][0]['text'])
-      - if replacement_search != params[:search][:q]    
+      - if replacement_search != params[:search][:q]
         .suggestions
           .alert.alert-info
             %i.fa.fa-info-circle
-            Did you mean 
+            Did you mean
             "
             - url = request.original_url.encode('utf-8', 'ascii-8bit')
             %a{ href: url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) }
@@ -34,10 +34,10 @@
       Search Results
       - if !params[:search].nil? and !params[:search][:category].nil?
         within category "#{@group.group_name}"
-    
+
     %p.matching-message
       Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.
-    
+
     - if !params[:search].nil? and !params[:search][:category].nil?
       %a.btn.btn-default{ href: "#{remove_category_param}" } Search all categories
       %hr.tighten
@@ -50,7 +50,7 @@
           - @group.subgroups.sort_by{ |l| l.name }.each do |subgroup|
             - p[:search][:q] = subgroup.name
             = link_to subgroup.name, "studies?#{p.to_query}", class: 'btn btn-school btn-subgroup'
-        %hr.tighten    
+        %hr.tighten
     .clearfix
       .pull-left.study-count
         %span
@@ -59,10 +59,10 @@
           - else
             0
         Study Matches
-        
+
       .pull-right.top-paginate
         = will_paginate @trials, renderer: BootstrapPagination::Rails
-       
+
   %hr
   - if @trials.empty?
     .alert.alert-danger
@@ -73,7 +73,7 @@
     .study
       %h4
         = highlight(t, 'display_title')
-      
+
       - unless t.simple_description.blank?
         .field.important
           %strong
@@ -101,12 +101,12 @@
         %label.single Phase:
         %strong
           = t.phase
-      
+
       .field.important.nomargin
         %strong
           %label.single Healthy Volunteers:
           .healthy-message{ data: { toggle: 'popover', title: 'Healthy Volunteer', content: 'A person who does not have the condition or disease being studied.', placement: 'top' } }
-            - if t.healthy_volunteers == true 
+            - if t.healthy_volunteers == true
               %i.fa.fa-check-circle
               This study is also accepting healthy volunteers
               %i.fa.fa-question-circle
@@ -114,7 +114,7 @@
               %i.fa.fa-exclamation-triangle
               This study is NOT accepting healthy volunteers
               %i.fa.fa-question-circle
-      
+
       .field.nomargin
         %label.single System ID:
         = t.system_id
@@ -126,20 +126,20 @@
 
       - unless t.eligibility_criteria.nil?
         .field.important.eligibility-buttons
-          .btn.btn-xs.btn-school-inverse.btn-show-full-eligibility 
+          .btn.btn-xs.btn-school-inverse.btn-show-full-eligibility
             Show full eligibility criteria
           .btn.btn-xs.btn-school-inverse.btn-hide-full-eligibility.hide
             .fa.fa-close
             Hide eligibility criteria
 
         .eligibility-criteria.hide
-          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').html_safe  
+          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').html_safe
       - unless t.interventions.nil?
         .field.nomargin
           %label.single Interventions:
           .concept-list
             = highlight(t, 'interventions').gsub(';', ',').html_safe
-      
+
       - unless t.conditions_map.nil?
         .field.nomargin
           %label.single Conditions:
@@ -166,7 +166,7 @@
         .btn.btn-school.btn-email-me{ data: { toggle: 'modal', target: '#email-me-modal', title: t.display_title, trial_id: t.id }, onclick: "track('send', 'event', 'email_me', 'open', '#{t.system_id}')" }
           %i.fa.fa-envelope
           &nbsp; Email this study information to me
-      
+
         - unless c.empty?
           .btn.btn-school.btn-email-study-team{ data: { toggle: 'modal', target: '#contact-study-team-modal', email: c.first[:email], trial_id: t.id }, onclick: "track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')" }
             %i.fa.fa-envelope
@@ -196,7 +196,7 @@
               .btn.btn-school.btn-hide.pull-right
                 %i.fa.fa-close
                 Hide all locations
-            
+
             %table.table.table-bordered
               %thead
                 %tr
@@ -216,7 +216,7 @@
                       .div
                         #{location.backup_last_name}
                         - unless location.backup_email.nil?
-                          %a{ href:"mailto:#{location.backup_email}" } - (#{location.backup_email})    
+                          %a{ href:"mailto:#{location.backup_email}" } - (#{location.backup_email})
     %hr
   = will_paginate @trials, renderer: BootstrapPagination::Rails
 
@@ -237,7 +237,7 @@
           .form-group
             %label Additional Notes
             %textarea.form-control.notes
-          - if @system_info.captcha  
+          - if @system_info.captcha
             .form-group
               #myself-captcha
       .modal-footer
@@ -267,7 +267,7 @@
           .form-group
             %label Notes
             %textarea.form-control.notes
-          - if @system_info.captcha  
+          - if @system_info.captcha
             .form-group
               #study-team-captcha
       .modal-footer
