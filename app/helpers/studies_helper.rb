@@ -10,7 +10,7 @@ module StudiesHelper
 
     if !trial.contact_override.blank?
       # Always use the override, if available.
-      return [{ 
+      return [{
         email: trial.contact_override,
         first_name: trial.contact_override_first_name,
         last_name: trial.contact_override_last_name
@@ -24,33 +24,37 @@ module StudiesHelper
       if !trial.contact_email.nil? && trial.contact_email.include?(contact_suffix)
         contacts << {
           email: trial.contact_email,
-          last_name: trial.contact_last_name
+          last_name: trial.contact_last_name,
+          first_name: trial.contact_first_name
         }
       end
 
       if !trial.contact_backup_email.nil? && trial.contact_backup_email.include?(contact_suffix)
         contacts << {
           email: trial.contact_backup_email,
-          last_name: trial.contact_backup_last_name
+          last_name: trial.contact_backup_last_name,
+          first_name: trial.contact_backup_first_name
         }
       end
 
       return contacts
-    
+
     elsif (!trial.contact_email.nil? or !trial.contact_backup_email.nil?) and contact_suffix.nil?
       # Use the overall contacts, if appropriate.
       contacts = []
       if !trial.contact_email.nil?
         contacts << {
           email: trial.contact_email,
-          last_name: trial.contact_last_name
+          last_name: trial.contact_last_name,
+          first_name: trial.contact_first_name
         }
       end
 
       if !trial.contact_backup_email.nil?
         contacts << {
           email: trial.contact_backup_email,
-          last_name: trial.contact_backup_last_name
+          last_name: trial.contact_backup_last_name,
+          first_name: trial.contact_backup_first_name
         }
       end
 
@@ -81,14 +85,16 @@ module StudiesHelper
       if !x.email.nil? && x.email.include?(@system_info.contact_email_suffix)
         location_contacts << {
           email: x.email,
-          last_name: x.last_name
+          last_name: x.last_name,
+          first_name: x.first_name
         }
       end
 
       if !x.backup_email.nil? && x.backup_email.include?(@system_info.contact_email_suffix)
         location_contacts << {
           email: x.backup_email,
-          last_name: x.backup_last_name
+          last_name: x.backup_last_name,
+          first_name: x.backup_first_name
         }
       end
     end
