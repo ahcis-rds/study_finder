@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 
 module Parsers
-  class Ctgov 
+  class Ctgov
 
     @@simple_fields = [
       'brief_title',
@@ -56,7 +56,7 @@ module Parsers
         trial = StudyFinder::BaseTrial.find_or_initialize_by(system_id: @id)
       end
 
-      
+
       trial.system_id = @id # i think this is just overwriting system_id from the line above
 
       # Trial does not exist yet, setup defaults
@@ -79,7 +79,7 @@ module Parsers
       if @contents.has_key?('eligibility')
         process_eligibility(trial)
       end
-      
+
       process_contacts(trial)
 
       if trial.id.nil?
@@ -110,7 +110,7 @@ module Parsers
       end
 
       trial.save
-      
+
     end
 
     def process_contacts(trial)
@@ -124,6 +124,7 @@ module Parsers
         end
 
         trial.official_last_name = overall_offical['last_name'] if  overall_offical.has_key?('last_name')
+        trial.official_first_name = overall_offical['first_name'] if  overall_offical.has_key?('first_name')
         trial.official_role = overall_offical['role'] if  overall_offical.has_key?('role')
         trial.official_affiliation = overall_offical['affiliation'] if  overall_offical.has_key?('affiliation')
       end
@@ -131,6 +132,7 @@ module Parsers
       # Primary Contact
       if @contents.has_key?('overall_contact')
         trial.contact_last_name = @contents['overall_contact']['last_name'] if  @contents['overall_contact'].has_key?('last_name')
+        trial.contact_first_name = @contents['overall_contact']['first_name'] if  @contents['overall_contact'].has_key?('first_name')
         trial.contact_phone = @contents['overall_contact']['phone'] if  @contents['overall_contact'].has_key?('phone')
         trial.contact_email = @contents['overall_contact']['email'] if  @contents['overall_contact'].has_key?('email')
       end
@@ -138,17 +140,18 @@ module Parsers
       # Backup Contact
       if @contents.has_key?('overall_contact_backup')
         trial.contact_backup_last_name = @contents['overall_contact_backup']['last_name'] if  @contents['overall_contact_backup'].has_key?('last_name')
+        trial.contact_backup_first_name = @contents['overall_contact_backup']['first_name'] if  @contents['overall_contact_backup'].has_key?('first_name')
         trial.contact_backup_phone = @contents['overall_contact_backup']['phone'] if  @contents['overall_contact_backup'].has_key?('phone')
         trial.contact_backup_email = @contents['overall_contact_backup']['email'] if  @contents['overall_contact_backup'].has_key?('email')
       end
     end
 
     def process_eligibility(trial)
-      
+
       if @contents['eligibility'].has_key?('gender')
         trial.gender = @contents['eligibility']['gender']
       end
-      
+
       if @contents['eligibility'].has_key?('minimum_age')
         trial.minimum_age = @contents['eligibility']['minimum_age'].gsub(' Years', '').gsub(' Year', '') unless @contents['eligibility']['minimum_age'].nil?
         trial.minimum_age = nil if trial.minimum_age == 'N/A'
@@ -167,7 +170,7 @@ module Parsers
         end
 
       end
-      
+
       if @contents['eligibility'].has_key?('maximum_age')
         trial.maximum_age = @contents['eligibility']['maximum_age'].gsub(' Years', '').gsub(' Year', '') unless @contents['eligibility']['maximum_age'].nil?
         trial.maximum_age = nil if trial.maximum_age == 'N/A'
@@ -184,7 +187,7 @@ module Parsers
         if !trial.max_age_unit.nil? and (trial.max_age_unit.include? 'Day' or trial.max_age_unit.include? 'Days')
           trial.maximum_age = (trial.maximum_age.gsub(' Days', '').gsub(' Day', '').to_f * 0.002739728571424657).round(2)
         end
-        
+
       end
 
       if @contents['eligibility'].has_key?('healthy_volunteers')
@@ -202,8 +205,8 @@ module Parsers
     end
 
     def process_mesh_term(trial)
-      if (!@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')) || 
-         (!@contents['intervention_browse'].nil? && @contents['intervention_browse'].has_key?('mesh_term')) 
+      if (!@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')) ||
+         (!@contents['intervention_browse'].nil? && @contents['intervention_browse'].has_key?('mesh_term'))
         StudyFinder::TrialMeshTerm.delete_all(trial_id: trial.id)
       end
       if !@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')
@@ -243,7 +246,7 @@ module Parsers
     def process_conditions(id)
       conditions = @contents['condition']
       conditions = [conditions] unless conditions.instance_of?(Array)
-  
+
       StudyFinder::TrialCondition.delete_all(trial_id: id)
 
       conditions.each do |c|
@@ -284,7 +287,7 @@ module Parsers
       locations.each do |l|
         facility = l['facility'] if l.has_key?('facility')
         location = StudyFinder::Location.find_or_initialize_by(location: facility['name'])
-        
+
         if facility.has_key?('address')
           address = facility['address']
           location.city = address['city'] if address.has_key?('city')
@@ -307,6 +310,7 @@ module Parsers
         if l.has_key?('contact')
           contact = l['contact']
           trial_location_hash['last_name'] = contact['last_name'] if contact.has_key?('last_name')
+          trial_location_hash['first_name'] = contact['first_name'] if contact.has_key?('first_name')
           trial_location_hash['phone'] = contact['phone'] if contact.has_key?('phone')
           trial_location_hash['email'] = contact['email'] if contact.has_key?('email')
         end
@@ -314,6 +318,7 @@ module Parsers
         if l.has_key?('contact_backup')
           contact_backup = l['contact_backup']
           trial_location_hash['backup_last_name'] = contact_backup['last_name'] if contact_backup.has_key?('last_name')
+          trial_location_hash['backup_first_name'] = contact_backup['first_name'] if contact_backup.has_key?('first_name')
           trial_location_hash['backup_phone'] = contact_backup['phone'] if contact_backup.has_key?('phone')
           trial_location_hash['backup_email'] = contact_backup['email'] if contact_backup.has_key?('email')
         end
@@ -327,7 +332,7 @@ module Parsers
     end
 
     def process_keywords(id)
-      
+
       keywords = @contents['keyword']
       keywords = [keywords] unless keywords.instance_of?(Array)
 
@@ -344,7 +349,7 @@ module Parsers
 
     def retrieve_simple_fields(trial)
       previous_status = trial.overall_status
-      
+
       # Look at simple fields and update where appropriate.
       @@simple_fields.each do |f|
         if @contents.has_key?(f)
@@ -353,7 +358,7 @@ module Parsers
           else
             trial[f] = @contents[f]
           end
-          
+
           if f == 'overall_status'
             if @contents[f] == 'Recruiting'
               trial.recruiting = true
