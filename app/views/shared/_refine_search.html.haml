@@ -40,14 +40,7 @@
             = check_box_tag 'search[adults]', 1, { checked: 'checked' }
           - else
             = check_box_tag 'search[adults]'
-          Adults (age &ge; 18 years; age &lt; 66 years)
-
-        %label.checkbox
-          - if !params[:search].nil? and !params[:search]['seniors'].nil?
-            = check_box_tag 'search[seniors]', 1, { checked: 'checked' }
-          - else
-            = check_box_tag 'search[seniors]'
-          Seniors (age &ge; 66 years)
+          Adults (age &ge; 18 years)
 
       - if !params[:search].nil? and !params[:search][:category].nil?
         %input{type:'hidden', name: 'search[category]', value: params[:search][:category] }

@@ -133,7 +133,7 @@
             Hide eligibility criteria
 
         .eligibility-criteria.hide
-          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').html_safe
+          = highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>').html_safe
       - unless t.interventions.nil?
         .field.nomargin
           %label.single Interventions:

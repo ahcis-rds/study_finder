@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.7.1'
+gem 'rails', '4.2.10'
 gem 'responders'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
@@ -10,12 +10,12 @@ gem 'sqlite3'
 gem 'pg', group: :local
 
 group :development, :production do
-  gem 'ruby-oci8'
-  gem 'activerecord-oracle_enhanced-adapter'
+  gem 'ruby-oci8', '~> 2.2.3'
+  gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
 end
 
 group :local, :test do
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails', '~> 3.7.2'
   gem 'capybara'
   gem 'ruby-debug-ide'
   gem 'debase'
@@ -57,12 +57,10 @@ gem 'elasticsearch-rails'
 
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'httparty'
-gem 'rubyzip'
+gem 'rubyzip', '~> 1.2.1'
 
-gem 'net-ldap'
+gem 'net-ldap', '~> 0.16.1'
 gem 'figaro'
-
-# gem 'rails_builder', path: '~/Sites/rails_builder'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

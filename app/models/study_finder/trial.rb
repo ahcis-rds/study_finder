@@ -337,6 +337,7 @@ class StudyFinder::Trial < ActiveRecord::Base
   private
     def self.create_filters(search)
       terms = { term: { visible: true } }
+      
       range = { or: [] }
       filters = nil
 
@@ -345,12 +346,12 @@ class StudyFinder::Trial < ActiveRecord::Base
       end
 
       if (search.has_key?('adults'))
-        range[:or] << { range: { min_age: { lt: 66 }, max_age: { gte: 18 } } }
+        range[:or] << { range: { max_age: { gte: 18 } } }
       end
 
-      if (search.has_key?('seniors'))
-        range[:or] << { range: { max_age: { gte: 66 } } }
-      end
+      # if (search.has_key?('seniors'))
+      #   range[:or] << { range: { max_age: { gte: 66 } } }
+      # end
 
       if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
         term_array = [terms]
@@ -372,7 +373,7 @@ class StudyFinder::Trial < ActiveRecord::Base
         }
       end
 
-      if search.has_key?('children') or search.has_key?('adults') or search.has_key?('seniors')
+      if search.has_key?('children') or search.has_key?('adults')
         filters = {}
         filters['and'] = []
         filters['and'] << terms

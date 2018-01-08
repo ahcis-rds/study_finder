@@ -25,11 +25,8 @@
 
     %label.checkbox
       = check_box_tag 'search[adults]'
-      Adults (age &ge; 18 years; age &lt; 66 years)
+      Adults (age &ge; 18 years)
 
-    %label.checkbox
-      = check_box_tag 'search[seniors]'
-      Seniors (age &ge; 66 years)
   .row
     .col-md-10
       = text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, treatment, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off'
