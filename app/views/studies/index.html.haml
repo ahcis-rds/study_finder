@@ -86,6 +86,16 @@
           - c = determine_contacts(t)
           = contacts_display(c)
 
+      - if t.respond_to?(:pi_name)
+        .field.important.nomargin
+          %label.single Principal Investigator:
+          %strong #{t.pi_name}
+
+      - if t.respond_to?(:pi_id)
+        .field.important.nomargin
+          %label.single Principal Investigator ID:
+          %strong #{t.pi_id}
+
       .field.important.nomargin
         %label.single Gender:
         %strong

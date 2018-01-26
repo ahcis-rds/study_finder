@@ -5,9 +5,6 @@ class Admin::ConditionsController < ApplicationController
 
   	@start_date = (params[:start_date].nil?) ? (DateTime.now - 30.days).strftime('%m/%d/%Y') : params[:start_date]
   	@end_date = (params[:end_date].nil?) ? DateTime.now.strftime('%m/%d/%Y') : params[:end_date]
-
-    #d = params.has_key?('days') ? params[:days].to_i : 30
-    #@conditions = StudyFinder::Condition.recent_as(d.days).paginate(page: params[:page])
     @conditions = StudyFinder::Condition.find_range(@start_date, @end_date)
 
     add_breadcrumb 'Reports'

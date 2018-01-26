@@ -19,6 +19,10 @@
     = f.input :irb_number, label: 'IRB Number'
   = f.input :visible, as: :select
   = f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false
+  = f.input :cancer_yn, as: :select, collection: [['Yes', 'Y'],['No', 'N']], include_blank: true, label: 'Cancer Y/N'
+
+  = f.input :pi_name, label: 'PI Name'
+  = f.input :pi_id, label: 'PI ID'
 
   = f.association :sites, label_method: :site_name, value_method: :id, input_html: { class: 'select2' }
   = f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' }

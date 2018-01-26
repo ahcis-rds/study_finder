@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220010712) do
+ActiveRecord::Schema.define(version: 20180126133905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,11 +29,16 @@ ActiveRecord::Schema.define(version: 20170220010712) do
     t.datetime "updated_at"
   end
 
-  create_table "study_finder_disease_categories", force: :cascade do |t|
-    t.string   "disease_category_name"
+  create_table "study_finder_disease_sites", force: :cascade do |t|
+    t.string   "disease_site_name"
     t.integer  "group_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "study_finder_ds_trials", force: :cascade do |t|
+    t.integer "disease_site_id"
+    t.integer "trial_id"
   end
 
   create_table "study_finder_groups", force: :cascade do |t|
@@ -198,6 +203,9 @@ ActiveRecord::Schema.define(version: 20170220010712) do
     t.boolean  "reviewed",                                 default: false
     t.integer  "featured",                                 default: 0
     t.string   "irb_number"
+    t.string   "cancer_yn"
+    t.string   "pi_name"
+    t.string   "pi_id"
   end
 
   create_table "study_finder_updaters", force: :cascade do |t|

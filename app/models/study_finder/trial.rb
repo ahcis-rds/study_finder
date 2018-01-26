@@ -35,6 +35,10 @@ class StudyFinder::Trial < ActiveRecord::Base
     end
   end
 
+  def self.find_range(start_date, end_date)
+    where('updated_at between ? and ?', start_date, end_date ).order('updated_at DESC')
+  end
+
   def display_title
     display = brief_title
     unless acronym.nil?
@@ -136,12 +140,16 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :max_age, type: 'float'
       indexes :gender
       indexes :phase, type: 'string'
+      indexes :cancer_yn, type: 'string'
       indexes :visible, type: 'boolean'
       indexes :healthy_volunteers
 
       indexes :contact_override
       indexes :contact_override_first_name
       indexes :contact_override_last_name
+
+      indexes :pi_name, type: 'string', analyzer: 'en'
+      indexes :pi_id
 
       indexes :category_ids
       indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead', payloads: false
@@ -198,9 +206,12 @@ class StudyFinder::Trial < ActiveRecord::Base
         :contact_email,
         :contact_backup_last_name,
         :contact_backup_email,
+        :pi_name,
+        :pi_id,
         :recruitment_url,
         :irb_number,
         :phase,
+        :cancer_yn,
         :min_age_unit,
         :max_age_unit,
         :featured
@@ -273,7 +284,7 @@ class StudyFinder::Trial < ActiveRecord::Base
                 query_string: {
                   query: search[:q],
                   default_operator: "AND",
-                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords"]
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
                 }
               },
               filter: create_filters(search)
@@ -301,7 +312,7 @@ class StudyFinder::Trial < ActiveRecord::Base
             multi_match: {
               query: search[:q],
               operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords"]
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
             }
           }
         }

@@ -5,12 +5,6 @@ class Admin::TrialsController < ApplicationController
   require 'parsers/oncore'
 
   def new
-    # trial = Parsers::Ctgov.new('NCT01794143')
-    # trial.load
-    # trial.process
-
-    # raise Parsers::Oncore.new('2003NT036').process.to_yaml
-
     @trial = StudyFinder::Trial.new
     @systems = ['Ctgov', 'Oncore']
 
@@ -60,10 +54,22 @@ class Admin::TrialsController < ApplicationController
   end
 
   def recent_as
-    d = params.has_key?('days') ? params[:days].to_i : 30
-    @trials = StudyFinder::Trial.recent_as(d.days).paginate(page: params[:page])
+    @start_date = (params[:start_date].nil?) ? (DateTime.now - 30.days).strftime('%m/%d/%Y') : params[:start_date]
+    @end_date = (params[:end_date].nil?) ? DateTime.now.strftime('%m/%d/%Y') : params[:end_date]
+    @trials = StudyFinder::Trial.includes(:disease_sites).find_range(@start_date, @end_date)
+
     add_breadcrumb 'Trials Administration'
     add_breadcrumb 'Recently Added'
+
+    respond_to do |format|
+      format.html
+
+      format.xls do
+        response.headers['Content-Type'] = 'application/vnd.ms-excel'
+        response.headers['Content-Disposition'] = "attachment; filename=\"study_finder_trials_#{DateTime.now}.xls\""
+        render "recent_as.xls.erb"
+      end
+    end
   end
 
   def index
@@ -110,7 +116,11 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(:simple_description, :visible, :featured, :recruiting, :contact_override, :contact_override_first_name, :contact_override_last_name, :recruitment_url, :reviewed, :irb_number, site_ids: [], disease_site_ids: [])
+      params.require(:study_finder_trial).permit(
+        :simple_description, :visible, 
+        :featured, :recruiting, :contact_override, :cancer_yn,
+        :contact_override_first_name, :contact_override_last_name, :pi_name, :pi_id, :recruitment_url, 
+        :reviewed, :irb_number, site_ids: [], disease_site_ids: [])
     end
 
 end
