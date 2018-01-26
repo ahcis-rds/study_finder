@@ -2,6 +2,7 @@ var standalone = ("standalone" in window.navigator) && window.navigator.standalo
 
 $(function() {
   applySelect2();
+  addDatePickers();
   addListeners();
   applyPopovers();
   applyTypeahead();
@@ -26,6 +27,10 @@ function applySelect2() {
     $this.removeClass('form-control');
     $this.select2(options);
   });
+}
+
+function addDatePickers() {
+  $('.datepicker').datepicker();
 }
 
 function addListeners() {

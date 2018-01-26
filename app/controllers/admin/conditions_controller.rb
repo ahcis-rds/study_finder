@@ -3,11 +3,25 @@ class Admin::ConditionsController < ApplicationController
 
   def recent_as
 
-    d = params.has_key?('days') ? params[:days].to_i : 30
-    @conditions = StudyFinder::Condition.recent_as(d.days).paginate(page: params[:page])
+  	@start_date = (params[:start_date].nil?) ? (DateTime.now - 30.days).strftime('%m/%d/%Y') : params[:start_date]
+  	@end_date = (params[:end_date].nil?) ? DateTime.now.strftime('%m/%d/%Y') : params[:end_date]
+
+    #d = params.has_key?('days') ? params[:days].to_i : 30
+    #@conditions = StudyFinder::Condition.recent_as(d.days).paginate(page: params[:page])
+    @conditions = StudyFinder::Condition.find_range(@start_date, @end_date)
 
     add_breadcrumb 'Reports'
     add_breadcrumb 'Recent Conditions'
+
+    respond_to do |format|
+    	format.html
+
+    	format.xls do
+    		response.headers['Content-Type'] = 'application/vnd.ms-excel'
+    		response.headers['Content-Disposition'] = "attachment; filename=\"study_finder_conditions_#{DateTime.now}.xls\""
+        render "recent_as.xls.erb"
+    	end
+    end
     
   end
 

@@ -1,15 +1,25 @@
 .admin
   .clearfix
     .pull-left
-      %h3 Recent Conditions
+      %h3 Recent Conditions (#{@conditions.size})
     .pull-right
-      = will_paginate @collection, renderer: BootstrapPagination::Rails
+      =# will_paginate @collection, renderer: BootstrapPagination::Rails
   %p.description
     This section is where the administrator can review recently created conditions within StudyFinder.
   %hr
   .clearfix
-    .pull-right
-      = link_to 'Back to Reports', admin_reports_path, class: 'btn btn-default'
+    = form_tag admin_reports_recent_conditions_path, method: :get do |f|
+      .pull-left.row
+        .col-md-4
+          %label Start Date
+          %input#start_date.form-control.datepicker{ name: 'start_date', type: 'text', value: @start_date }
+        .col-md-4  
+          %label End Date
+          %input#end_date.form-control.datepicker{ name: 'end_date', type: 'text', value: @end_date }
+        .col-md-4
+          %button.btn.btn-primary{ style: 'margin-top: 25px;'} Filter Conditions
+      .pull-right
+        = link_to 'Back to Reports', admin_reports_path, class: 'btn btn-default'
   %table.table.table-bordered.table-trials
     %thead
       %tr
@@ -23,6 +33,7 @@
       - @conditions.each do |t|
         %tr
           %td= t.condition
-          %td= t.created_at
+          %td= t.created_at.strftime('%m/%d/%Y')
 
-  = will_paginate @collection, renderer: BootstrapPagination::Rails
+  =# will_paginate @collection, renderer: BootstrapPagination::Rails
+  = link_to "Export to Excel", admin_reports_recent_conditions_path(format: :xls, start_date: params[:start_date], end_date: params[:end_date]), class: 'btn btn-success'

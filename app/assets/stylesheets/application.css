@@ -13,5 +13,6 @@
  *= require bootstrap.min
  *= require font-awesome.min
  *= require select2
+ *= require bootstrap-datepicker.min
  *= require study_finder
  */
