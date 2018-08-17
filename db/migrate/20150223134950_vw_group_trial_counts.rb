@@ -11,7 +11,7 @@ class VwGroupTrialCounts < ActiveRecord::Migration
     end
 
 
-    execute "CREATE OR REPLACE VIEW vw_study_finder_trial_gp_name AS SELECT
+    execute "CREATE VIEW vw_study_finder_trial_gp_name AS SELECT
                   g.id,
                   g.group_name,
                   trials.id as trial_ids
@@ -24,7 +24,7 @@ class VwGroupTrialCounts < ActiveRecord::Migration
                   g.group_name,
                   trials.id"
 
-    execute "CREATE OR REPLACE VIEW vw_study_finder_trial_counts AS
+    execute "CREATE VIEW vw_study_finder_trial_counts AS
       SELECT x.id, x.group_name, count(x.trial_ids) as trial_count
       FROM vw_study_finder_trial_gp_name x
       GROUP BY x.id, x.group_name
