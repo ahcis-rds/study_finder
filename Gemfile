@@ -57,7 +57,7 @@ gem 'elasticsearch-rails'
 
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'httparty'
-gem 'rubyzip', '~> 1.2.1'
+gem 'rubyzip', '~> 1.2.2'
 
 gem 'net-ldap', '~> 0.16.1'
 gem 'figaro'
