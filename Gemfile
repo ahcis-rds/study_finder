@@ -17,8 +17,6 @@ end
 group :local, :test do
   gem 'rspec-rails', '~> 3.7.2'
   gem 'capybara'
-  gem 'ruby-debug-ide'
-  gem 'debase'
 end
 
 # Use SCSS for stylesheets
