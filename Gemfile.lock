@@ -111,7 +111,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     net-ldap (0.16.1)
-    nokogiri (1.10.1)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     pg (0.17.1)
     rack (1.6.11)
@@ -226,7 +226,7 @@ DEPENDENCIES
   json
   mail_form
   net-ldap (~> 0.16.1)
-  nokogiri
+  nokogiri (>= 1.10.4)
   pg
   rails (= 4.2.11.1)
   recaptcha

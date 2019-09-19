@@ -42,7 +42,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem 'haml'
 
-gem 'nokogiri'
+gem "nokogiri", ">= 1.10.4"
 gem 'simple_form'
 gem 'breadcrumbs_on_rails'
 
