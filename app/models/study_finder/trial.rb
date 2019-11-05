@@ -132,15 +132,15 @@ class StudyFinder::Trial < ActiveRecord::Base
   } do
 
     mappings dynamic: 'false' do
-      indexes :display_title, type: 'string', analyzer: 'en'
-      indexes :simple_description, type: 'string', analyzer: 'en'
-      # indexes :eligibility_criteria, type: 'string', analyzer: 'snowball'
+      indexes :display_title, type: 'text', analyzer: 'en'
+      indexes :simple_description, type: 'text', analyzer: 'en'
+      # indexes :eligibility_criteria, type: 'text', analyzer: 'snowball'
       indexes :system_id
       indexes :min_age, type: 'float'
       indexes :max_age, type: 'float'
       indexes :gender
-      indexes :phase, type: 'string'
-      indexes :cancer_yn, type: 'string'
+      indexes :phase, type: 'text'
+      indexes :cancer_yn, type: 'text'
       indexes :visible, type: 'boolean'
       indexes :healthy_volunteers
 
@@ -148,33 +148,34 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :contact_override_first_name
       indexes :contact_override_last_name
 
-      indexes :pi_name, type: 'string', analyzer: 'en'
+      indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
 
       indexes :category_ids
-      indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead', payloads: false
+      indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead'
+
 
       indexes :trial_locations do
-        indexes :last_name, type: 'string'
-        indexes :email, type: 'string'
-        indexes :backup_email, type: 'string'
-        indexes :backup_last_name, type: 'string'
-        indexes :location_name, type: 'string', index: 'not_analyzed', store: 'yes'
-        indexes :city, type: 'string'
-        indexes :state, type: 'string'
-        indexes :zip, type: 'string'
+        indexes :last_name, type: 'text'
+        indexes :email, type: 'text'
+        indexes :backup_email, type: 'text'
+        indexes :backup_last_name, type: 'text'
+        indexes :location_name, type: 'text', index: false #'not_analyzed', store: 'yes'
+        indexes :city, type: 'text'
+        indexes :state, type: 'text'
+        indexes :zip, type: 'text'
       end
 
       indexes :sites do
-        indexes :site_name, type: 'string'
-        indexes :address, type: 'string'
-        indexes :city, type: 'string'
-        indexes :state, type: 'string'
-        indexes :zip, type: 'string'
+        indexes :site_name, type: 'text'
+        indexes :address, type: 'text'
+        indexes :city, type: 'text'
+        indexes :state, type: 'text'
+        indexes :zip, type: 'text'
       end
 
       indexes :disease_sites do
-        indexes :disease_site_name, type: 'string'
+        indexes :disease_site_name, type: 'text'
         indexes :group_id, type: 'integer'
       end
 
@@ -182,10 +183,10 @@ class StudyFinder::Trial < ActiveRecord::Base
       indexes :interventions, analyzer: 'en'
       indexes :conditions_map, analyzer: 'en'
       indexes :keywords, analyzer: 'en'
-      indexes :min_age_unit, type: 'string'
-      indexes :max_age_unit, type: 'string'
+      indexes :min_age_unit, type: 'text'
+      indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
-      indexes :irb_number, type: 'string'
+      indexes :irb_number, type: 'text'
     end
 
   end
@@ -254,11 +255,11 @@ class StudyFinder::Trial < ActiveRecord::Base
       query: {
         function_score: {
           query: {
-            filtered: {
-              query: {
-                match_all: {}
-              },
-              filter: create_filters(search)
+            bool: {
+              must: [
+                { bool: { filter: filters(search) } },
+                { bool: { should: range_filters(search) } }
+              ]
             }
           },
           field_value_factor: {
@@ -279,15 +280,18 @@ class StudyFinder::Trial < ActiveRecord::Base
       query: {
         function_score: {
           query: {
-            filtered: {
-              query: {
-                query_string: {
-                  query: search[:q],
-                  default_operator: "AND",
-                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
-                }
-              },
-              filter: create_filters(search)
+            bool: {
+              must: [
+                {
+                  query_string: {
+                    query: search[:q],
+                    default_operator: "AND",
+                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
+                  }
+                },
+                { bool: { filter: filters(search) } },
+                { bool: { should: range_filters(search) } }
+              ]
             }
           },
           field_value_factor: {
@@ -304,106 +308,95 @@ class StudyFinder::Trial < ActiveRecord::Base
   end
 
   def self.match_all_admin(search)
-
     search(
       query: {
-        filtered: {
-          query: {
-            multi_match: {
-              query: search[:q],
-              operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
-            }
-          }
+        multi_match: {
+          query: search[:q],
+          operator: "and",
+          fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
         }
       }
     )
-
   end
 
   #  Keyword typeahead
   def self.typeahead(q)
-    self.__elasticsearch__.client.suggest(index: self.index_name, body: {
-      keyword_suggest:{
-        text: q,
-        completion: {
-          field: "keyword_suggest"
+    search({
+      suggest: {
+        keyword_suggest: {
+          text: q,
+          completion: {
+            field: "keyword_suggest"
+          }
         }
       }
-    })
+    }).raw_response
   end
 
   # Did you mean?
   def self.suggestions(q)
-    self.__elasticsearch__.client.suggest(index: self.index_name, body: {
-      suggestions: {
-        text: q,
-        term: {
-          field: "display_title"
+    search({
+      suggest: {
+        suggestions: {
+          text: q,
+          term: {
+            field: "display_title"
+          }
         }
       }
-    })
+    }).raw_response
   end
 
   private
-    def self.create_filters(search)
-      terms = { term: { visible: true } }
-      
-      range = { or: [] }
-      filters = nil
 
-      if (search.has_key?('children'))
-        range[:or] << { range: { min_age: { lt: 18 } } }
+  def self.filters(search)
+    ret = []
+    ret << { term: { visible: true } }
+
+    if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
+      if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
+        ret << { term: { healthy_volunteers: true } }
       end
 
-      if (search.has_key?('adults'))
-        range[:or] << { range: { max_age: { gte: 18 } } }
+      if search.has_key?('category')
+        ret << { term: { category_ids: search[:category] } }
       end
 
-      # if (search.has_key?('seniors'))
-      #   range[:or] << { range: { max_age: { gte: 66 } } }
-      # end
-
-      if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
-        term_array = [terms]
-
-        if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
-          term_array << { term: { healthy_volunteers: true } }
-        end
-
-        if search.has_key?('category')
-          term_array << { term: { category_ids: search[:category] } }
-        end
-
-        if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
-          term_array << { terms: { gender: ['all', search[:gender].downcase] }}
-        end
-
-        terms = {
-          and: term_array
-        }
+      if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
+        ret << { terms: { gender: ['all', search[:gender].downcase] }}
       end
-
-      if search.has_key?('children') or search.has_key?('adults')
-        filters = {}
-        filters['and'] = []
-        filters['and'] << terms
-        filters['and'] << range
-      else
-        filters = terms
-      end
-      filters
     end
 
-    def self.highlight_fields
-      {
-        _all: { pre_tags: ["<em>"], post_tags: ["</em>"] },
-        display_title: { number_of_fragments: 0 },
-        interventions: { number_of_fragments: 0 },
-        keywords: { number_of_fragments: 0 },
-        simple_description: { number_of_fragments: 0 },
-        conditions_map: { number_of_fragments: 0 },
-        eligibility_criteria: { number_of_fragments: 0 }
-      }
+    ret
+  end
+
+  def self.range_filters(search)
+    ret = []
+
+    if search.has_key?('children')
+      ret << { range: { min_age: { lt: 18 } } }
     end
+
+    if search.has_key?('adults')
+      ret << { range: { max_age: { gte: 18 } } }
+    end
+
+    if search.has_key?('seniors')
+      ret << { range: { max_age: { gte: 66 } } }
+    end
+
+    ret
+  end
+
+  def self.highlight_fields
+    {
+      _all: { pre_tags: ["<em>"], post_tags: ["</em>"] },
+      display_title: { number_of_fragments: 0 },
+      interventions: { number_of_fragments: 0 },
+      keywords: { number_of_fragments: 0 },
+      simple_description: { number_of_fragments: 0 },
+      conditions_map: { number_of_fragments: 0 },
+      eligibility_criteria: { number_of_fragments: 0 }
+    }
+  end
 end
