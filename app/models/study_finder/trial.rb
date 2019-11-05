@@ -261,9 +261,9 @@ class StudyFinder::Trial < ActiveRecord::Base
               filter: create_filters(search)
             }
           },
-          boost_mode: "sum",
-          script_score: {
-            script: "_score + (doc['featured'].value * 15)"
+          field_value_factor: {
+            field: "featured",
+            factor: 15
           }
         }
       },
@@ -290,9 +290,9 @@ class StudyFinder::Trial < ActiveRecord::Base
               filter: create_filters(search)
             }
           },
-          boost_mode: "sum",
-          script_score: {
-            script: "_score + (doc['featured'].value * 15)"
+          field_value_factor: {
+            field: "featured",
+            factor: 15
           }
         }
       },
