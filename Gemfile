@@ -4,14 +4,11 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.11.1'
 gem 'responders'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-
-gem 'pg', group: :local
+gem 'pg'
 
 group :development, :production do
-  gem 'ruby-oci8', '~> 2.2.3'
-  gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
+  #gem 'ruby-oci8', '~> 2.2.3'
+  #gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
 end
 
 group :local, :test do

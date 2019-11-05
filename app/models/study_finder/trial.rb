@@ -123,7 +123,7 @@ class StudyFinder::Trial < ActiveRecord::Base
     filter: {
       synonym: {
         type: 'synonym',
-        synonyms_path: 'trials_synonym.txt'.to_s
+        synonyms_path: 'analysis/synonyms.txt'
       },
       english_filter: {
         type: 'kstem'
@@ -261,9 +261,9 @@ class StudyFinder::Trial < ActiveRecord::Base
               filter: create_filters(search)
             }
           },
-          boost_mode: "sum",
-          script_score: {
-            script: "_score + (doc['featured'].value * 15)"
+          field_value_factor: {
+            field: "featured",
+            factor: 15
           }
         }
       },
@@ -290,9 +290,9 @@ class StudyFinder::Trial < ActiveRecord::Base
               filter: create_filters(search)
             }
           },
-          boost_mode: "sum",
-          script_score: {
-            script: "_score + (doc['featured'].value * 15)"
+          field_value_factor: {
+            field: "featured",
+            factor: 15
           }
         }
       },
