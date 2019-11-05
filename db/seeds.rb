@@ -65,12 +65,14 @@ end
 # Users
 # ============================================
 
-[{
-  internet_id: 'kadrm002',
-  first_name: 'Jason',
-  last_name: 'Kadrmas',
-  email: 'kadrm002@umn.edu'
-}].each do |u|
+[
+  {
+    internet_id: ENV['USER'],
+    first_name: 'Admin',
+    last_name: 'User',
+    email: "#{ENV['USER']}@umn.edu"
+  }
+].each do |u|
   user = StudyFinder::User.find_or_initialize_by(internet_id: u[:internet_id])
   user.first_name = u[:first_name]
   user.last_name = u[:last_name]
