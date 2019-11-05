@@ -89,3 +89,9 @@ CSV.foreach(Rails.root.join("db/seeds/condition_groups.csv")) do |group_name, co
   condition = StudyFinder::Condition.find_or_create_by(condition: condition_name)
   StudyFinder::ConditionGroup.find_or_create_by(group: group, condition: condition)
 end
+
+# ============================================
+# Trials
+# ============================================
+
+Rake::Task['studyfinder:ctgov:load'].invoke
