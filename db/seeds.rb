@@ -47,70 +47,6 @@ system_info.contact_email_suffix = system[:contact_email_suffix]
 system_info.save!
 
 # ============================================
-# Groups
-# ============================================
-
-[
-  {
-    name: "Cancer"
-  },
-  {
-    name: "Diabetes & Hormones"
-  },
-  {
-    name: "Digestive Systems & Liver Disease"
-  },
-  {
-    name: "Infectious Diseases & Immune System"
-  },
-  {
-    name: "Prevention"
-  },
-  {
-    name: "Muscle & Bone"
-  },
-  {
-    name: "Vision & Eyes"
-  },
-  {
-    name: "Blood Disorders"
-  },
-  {
-    name: "Arthritis & Rheumatic Diseases"
-  },
-  {
-    name: "Heart Health"
-  },
-  {
-    name: "Lung Disease & Asthma"
-  },
-  {
-    name: "Dentistry"
-  },
-  {
-    name: "Mental Health"
-  },
-  {
-    name: "Neurology"
-  },
-  {
-    name: "Kidney & Urinary System"
-  },
-  {
-    name: "Hearing/Ears"
-  },
-  {
-    name: "Women's Health"
-  },
-  {
-    name: "Children's Health"
-  }
-].each do |g|
-  group = StudyFinder::Group.find_or_initialize_by(group_name: g[:name])
-  group.save!
-end
-
-# ============================================
 # Parsers
 # ============================================
 
@@ -140,4 +76,14 @@ end
   user.last_name = u[:last_name]
   user.email = u[:email]
   user.save!
+end
+
+# ============================================
+# Groups and conditions
+# ============================================
+
+CSV.foreach(Rails.root.join("db/seeds/condition_groups.csv")) do |group_name, condition_name|
+  group = StudyFinder::Group.find_or_create_by(group_name: group_name)
+  condition = StudyFinder::Condition.find_or_create_by(condition: condition_name)
+  StudyFinder::ConditionGroup.find_or_create_by(group: group, condition: condition)
 end
