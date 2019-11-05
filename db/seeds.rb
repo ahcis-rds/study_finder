@@ -70,7 +70,7 @@ end
     internet_id: ENV['USER'],
     first_name: 'Admin',
     last_name: 'User',
-    email: "#{ENV['USER']}@umn.edu"
+    email: "fake@example.edu"
   }
 ].each do |u|
   user = StudyFinder::User.find_or_initialize_by(internet_id: u[:internet_id])
