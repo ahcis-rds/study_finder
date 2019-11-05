@@ -123,7 +123,7 @@ class StudyFinder::Trial < ActiveRecord::Base
     filter: {
       synonym: {
         type: 'synonym',
-        synonyms_path: 'trials_synonym.txt'.to_s
+        synonyms_path: 'analysis/synonyms.txt'
       },
       english_filter: {
         type: 'kstem'
