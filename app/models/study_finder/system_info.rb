@@ -1,4 +1,4 @@
-class StudyFinder::SystemInfo < ActiveRecord::Base
+class StudyFinder::SystemInfo < ApplicationRecord
   self.table_name = 'study_finder_system_infos'
 
   validates_presence_of :secret_key, :default_email, :initials, :school_name

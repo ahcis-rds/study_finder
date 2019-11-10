@@ -1,4 +1,4 @@
-class StudyFinder::User < ActiveRecord::Base
+class StudyFinder::User < ApplicationRecord
   self.table_name = 'study_finder_users'
 
   validates :first_name, :last_name, :email, :internet_id, presence: true

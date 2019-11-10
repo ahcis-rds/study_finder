@@ -1,4 +1,4 @@
-class StudyFinder::Condition < ActiveRecord::Base
+class StudyFinder::Condition < ApplicationRecord
   self.table_name = 'study_finder_conditions'
 
   scope :recent_as, ->(duration){ where('created_at > ?', Time.zone.today - duration ).order('created_at DESC') }

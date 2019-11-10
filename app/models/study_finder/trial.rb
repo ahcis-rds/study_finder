@@ -1,4 +1,4 @@
-class StudyFinder::Trial < ActiveRecord::Base
+class StudyFinder::Trial < ApplicationRecord
 
   require 'csv'
 

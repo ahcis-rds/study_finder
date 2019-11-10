@@ -1,3 +1,3 @@
-class StudyFinder::Parser < ActiveRecord::Base
+class StudyFinder::Parser < ApplicationRecord
   self.table_name = 'study_finder_parsers'
 end

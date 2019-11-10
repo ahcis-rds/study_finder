@@ -1,4 +1,4 @@
-class StudyFinder::Group < ActiveRecord::Base
+class StudyFinder::Group < ApplicationRecord
   self.table_name = 'study_finder_groups'
 
   validates :group_name, presence: true
