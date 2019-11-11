@@ -48,23 +48,23 @@ es_host: 'elastic.umn.edu'
 - Load all trials.  (Note: Dangerous business here!!  This will delete and reload data from every StudyFinder table.  Essentially starting from scratch. Use at your own risk!)
 
 ```
-$ rake studyfinder:ctgov:reload_all RAILS_ENV=local
+$ rake studyfinder:ctgov:reload_all
 ```
 
 - Once the trials are loaded initially, the "load" task updates them each night with the last "x" amount of days worth of trials from ctgov.  (Note: The number of days previous variable is available as a parameter)
 
 ```
 # defaults to 4 days previous
-$ rake studyfinder:ctgov:load RAILS_ENV=local
+$ rake studyfinder:ctgov:load
 
 # specify the number of days previous as a parameters (10 days in this example)
-$ rake studyfinder:ctgov:load[10] RAILS_ENV=local
+$ rake studyfinder:ctgov:load[10]
 ```
 
 - Trials should automatically add/update themselves into the elasticsearch index.  If for some reason all the trials need to be re-indexed the following will do that.
 
 ```
-$ rake studyfinder:trials:reindex RAILS_ENV=local
+$ rake studyfinder:trials:reindex
 ```
 
 ## Embed Widget

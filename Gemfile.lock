@@ -148,7 +148,6 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (13.0.0)
-    rdoc (4.3.0)
     recaptcha (5.2.1)
       json
     ref (2.0.0)
@@ -184,9 +183,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sdoc (0.4.2)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
     simple_form (5.0.1)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -243,7 +239,6 @@ DEPENDENCIES
   rspec-rails (~> 3.7.2)
   rubyzip (~> 1.2.2)
   sass-rails
-  sdoc (~> 0.4.0)
   simple_form
   spring
   therubyracer
