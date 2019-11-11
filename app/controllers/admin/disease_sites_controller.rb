@@ -1,5 +1,5 @@
 class Admin::DiseaseSitesController < ApplicationController
-  before_filter :authorize_admin
+  before_action :authorize_admin
   
   def index
     @sites = StudyFinder::DiseaseSite.includes(:group).all

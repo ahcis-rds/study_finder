@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_filter :authorize_admin
+  before_action :authorize_admin
   
   def index
     @users = StudyFinder::User.all
