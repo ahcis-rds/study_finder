@@ -28,7 +28,7 @@ RSpec.describe Admin::GroupsController, :type => :controller do
   describe "GET #edit" do
     it "responds to an edit request" do
       group = StudyFinder::Group.create({ group_name: 'Test' })
-      get :edit, id: group.id
+      get :edit, params: { id: group.id }
       expect( assigns(:group) ).to eq(group)
       expect(response).to be_success
       expect(response).to have_http_status(200)
@@ -42,7 +42,7 @@ RSpec.describe Admin::GroupsController, :type => :controller do
     end
 
     it "successfully changes group's attributes" do
-      put :update, id: @group, group_name: 'Testing...', condition_ids: [@condition.id]
+      put :update, params: { id: @group, group_name: 'Testing...', condition_ids: [@condition.id] }
       @group.reload
       
       expect( @group.group_name ).to eq('Testing...')
@@ -50,7 +50,7 @@ RSpec.describe Admin::GroupsController, :type => :controller do
     end
 
     it "redirects to the updated contact" do
-      put :update, id: @group, group_name: 'Testing...', condition_ids: [@condition.id]
+      put :update, params: { id: @group, group_name: 'Testing...', condition_ids: [@condition.id] }
       expect( redirect_to @group )
     end
 
