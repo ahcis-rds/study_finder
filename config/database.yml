@@ -1,0 +1,20 @@
+development:
+  adapter: postgresql
+  host: postgres
+  database: study_finder_development
+  username: postgres
+  password: 
+
+test:
+  adapter: postgresql
+  host: postgres
+  database: study_finder_test
+  username: postgres
+  password: 
+
+staging:
+  url: <%= ENV['DATABASE_URL'] %>
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+

@@ -1,23 +1,13 @@
-language: ruby
+language: minimal
 
-# skip ruby-oci8 install on travis, since we can't install on travis
-bundler_args: --without development production
-
-# setup the database
-before_script:
-  - cp config/database.yml.travis config/database.yml 
-  - RAILS_ENV=test bundle exec rake db:create db:migrate
-
-# run the spec test
-script:
-  - bundle exec rspec
-
-# cache the bundler for the next run
-cache: bundler
-
-# launch postgresql on startup
 services:
-  - postgresql
+  - docker
+
+before_install:
+  - docker-compose run -e RAILS_ENV=test web bundle exec rake db:create db:migrate
+
+script:
+  - docker-compose run web bundle exec rspec
 
 # have travis not email after every update
 notifications:
