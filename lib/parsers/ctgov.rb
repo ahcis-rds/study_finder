@@ -204,7 +204,7 @@ module Parsers
     def process_mesh_term(trial)
       if (!@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')) || 
          (!@contents['intervention_browse'].nil? && @contents['intervention_browse'].has_key?('mesh_term')) 
-        StudyFinder::TrialMeshTerm.delete_all(trial_id: trial.id)
+        StudyFinder::TrialMeshTerm.where(trial_id: trial.id).delete_all
       end
       if !@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')
         process_condition_browse(trial)
@@ -244,7 +244,7 @@ module Parsers
       conditions = @contents['condition']
       conditions = [conditions] unless conditions.instance_of?(Array)
   
-      StudyFinder::TrialCondition.delete_all(trial_id: id)
+      StudyFinder::TrialCondition.where(trial_id: id).delete_all
 
       conditions.each do |c|
         condition = StudyFinder::Condition.find_or_initialize_by(condition: c)
@@ -263,7 +263,7 @@ module Parsers
       interventions = @contents['intervention']
       interventions = [interventions] unless interventions.instance_of?(Array)
 
-      StudyFinder::TrialIntervention.delete_all(trial_id: id)
+      StudyFinder::TrialIntervention.where(trial_id: id).delete_all
 
       interventions.each do |i|
         StudyFinder::TrialIntervention.create({
@@ -279,7 +279,7 @@ module Parsers
       locations = @contents['location']
       locations = [locations] unless locations.instance_of?(Array)
 
-      StudyFinder::TrialLocation.delete_all(trial_id: id)
+      StudyFinder::TrialLocation.where(trial_id: id).delete_all
 
       locations.each do |l|
         facility = l['facility'] if l.has_key?('facility')
@@ -331,7 +331,7 @@ module Parsers
       keywords = @contents['keyword']
       keywords = [keywords] unless keywords.instance_of?(Array)
 
-      StudyFinder::TrialKeyword.delete_all(trial_id: id)
+      StudyFinder::TrialKeyword.where(trial_id: id).delete_all
 
       keywords.each do |k|
         StudyFinder::TrialKeyword.create({
