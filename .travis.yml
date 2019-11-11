@@ -1,11 +1,8 @@
 language: ruby
 
-# skip ruby-oci8 install on travis, since we can't install on travis
-bundler_args: --without development production
-
 # setup the database
 before_script:
-  - cp config/database.yml.travis config/database.yml 
+  - cp config/database.yml.travis config/database.yml
   - RAILS_ENV=test bundle exec rake db:create db:migrate
 
 # run the spec test
