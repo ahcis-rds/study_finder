@@ -42,7 +42,7 @@ gem "nokogiri", ">= 1.10.4"
 gem 'simple_form'
 gem 'breadcrumbs_on_rails'
 
-gem 'mail_form', '~> 1.7.1'
+gem 'mail_form'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
