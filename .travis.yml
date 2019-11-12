@@ -1,20 +1,8 @@
-language: ruby
-
-# setup the database
-before_script:
-  - cp config/database.yml.travis config/database.yml
-  - RAILS_ENV=test bundle exec rake db:create db:migrate
-
-# run the spec test
 script:
-  - bundle exec rspec
+  - docker-compose run web rspec
 
-# cache the bundler for the next run
-cache: bundler
-
-# launch postgresql on startup
 services:
-  - postgresql
+  - docker
 
 # have travis not email after every update
 notifications:
