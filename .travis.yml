@@ -1,8 +1,14 @@
-script:
-  - docker-compose run web rspec
+language: ruby
 
 services:
   - docker
+
+before_install:
+  - docker-compose run web bundle exec rake db:create db:migrate
+  - docker-compose run web bundle exec rspec
+
+script:
+  - bundle exec rspec
 
 # have travis not email after every update
 notifications:
