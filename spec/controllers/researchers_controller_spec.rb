@@ -57,7 +57,7 @@ RSpec.describe ResearchersController, :type => :controller do
     it "responds to an edit request" do
       trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
 
-      get :edit, id: trial.system_id
+      get :edit, params: { id: trial.system_id }
       
       expect( assigns(:trial) ).to eq(trial)
       expect(response).to be_success
@@ -81,7 +81,7 @@ RSpec.describe ResearchersController, :type => :controller do
         contact_override_last_name: contact_override_last_name
       }
       
-      put :update, id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: @system_info.secret_key
+      put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: @system_info.secret_key }
       
       expect( assigns(:trial).simple_description ).to eq(simple_description)
       expect( assigns(:trial).contact_override ).to eq(contact_override)
@@ -107,7 +107,7 @@ RSpec.describe ResearchersController, :type => :controller do
         contact_override_last_name: contact_override_last_name
       }
       
-      put :update, id: trial.system_id, study_finder_trial: study_finder_trial
+      put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial }
       expect(response).to be_success
       expect(response).to have_http_status(200)
       expect(flash[:notice]).to eq('The secret key you entered was incorrect.')
@@ -128,7 +128,7 @@ RSpec.describe ResearchersController, :type => :controller do
         contact_override_last_name: contact_override_last_name
       }
       
-      put :update, id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: 'invalid_key'
+      put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: 'invalid_key' }
       expect(response).to be_success
       expect(response).to have_http_status(200)
       expect(flash[:notice]).to eq('The secret key you entered was incorrect.')

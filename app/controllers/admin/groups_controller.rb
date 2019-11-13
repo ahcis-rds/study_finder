@@ -1,5 +1,5 @@
 class Admin::GroupsController < ApplicationController
-  before_filter :authorize_admin
+  before_action :authorize_admin
 
   require 'csv'
   

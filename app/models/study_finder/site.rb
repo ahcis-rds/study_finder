@@ -1,4 +1,4 @@
-class StudyFinder::Site < ActiveRecord::Base
+class StudyFinder::Site < ApplicationRecord
   self.table_name = 'study_finder_sites'
 
   validates :site_name, presence: true

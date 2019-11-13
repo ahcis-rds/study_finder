@@ -1,5 +1,5 @@
 class Admin::TrialsController < ApplicationController
-  before_filter :authorize_admin
+  before_action :authorize_admin
 
   require 'parsers/ctgov'
   require 'parsers/oncore'

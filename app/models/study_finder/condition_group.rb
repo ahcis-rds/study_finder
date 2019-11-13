@@ -1,4 +1,4 @@
-class StudyFinder::ConditionGroup < ActiveRecord::Base
+class StudyFinder::ConditionGroup < ApplicationRecord
   self.table_name = 'study_finder_condition_groups'
 
   belongs_to :condition

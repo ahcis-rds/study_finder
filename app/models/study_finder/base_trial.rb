@@ -1,4 +1,4 @@
-class StudyFinder::BaseTrial < ActiveRecord::Base
+class StudyFinder::BaseTrial < ApplicationRecord
   self.table_name = 'study_finder_trials'
 
   belongs_to :parser

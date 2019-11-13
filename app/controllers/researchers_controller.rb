@@ -1,11 +1,11 @@
 class ResearchersController < ApplicationController
-  before_filter :authorize_researcher, except: [:index, :search]
+  before_action :authorize_researcher, except: [:index, :search]
   
   def index
   end
 
   def search
-    # if we just let the before_filter check this it's going to tell the user they "don't have access to that page" which is kind wierd
+    # if we just let the before_action check this it's going to tell the user they "don't have access to that page" which is kind wierd
     if is_researcher? || is_admin?
       add_breadcrumb 'Home', :root_path
       add_breadcrumb 'For Researchers', :researchers_path

@@ -1,4 +1,4 @@
-class StudyFinder::Trial < ActiveRecord::Base
+class StudyFinder::Trial < ApplicationRecord
 
   require 'csv'
 
@@ -179,7 +179,6 @@ class StudyFinder::Trial < ActiveRecord::Base
         indexes :group_id, type: 'integer'
       end
 
-      indexes :categories
       indexes :interventions, analyzer: 'en'
       indexes :conditions_map, analyzer: 'en'
       indexes :keywords, analyzer: 'en'
@@ -246,7 +245,7 @@ class StudyFinder::Trial < ActiveRecord::Base
           ]
         }
       },
-      methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :categories, :category_ids, :keywords, :keyword_suggest]
+      methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
     )
   end
 
