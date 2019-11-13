@@ -1,4 +1,4 @@
-class CreateSystemInfos < ActiveRecord::Migration
+class CreateSystemInfos < ActiveRecord::Migration[4.2]
   def change
     create_table :study_finder_system_infos do |t|
       t.string :initials

@@ -1,4 +1,4 @@
-class CreateTrialGroupView < ActiveRecord::Migration
+class CreateTrialGroupView < ActiveRecord::Migration[4.2]
   def up
     execute "create view vw_study_finder_trial_groups as
       select study_finder_trial_conditions.trial_id, study_finder_condition_groups.group_id

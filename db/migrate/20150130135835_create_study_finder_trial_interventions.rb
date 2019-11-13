@@ -1,4 +1,4 @@
-class CreateStudyFinderTrialInterventions < ActiveRecord::Migration
+class CreateStudyFinderTrialInterventions < ActiveRecord::Migration[4.2]
   def change
     create_table :study_finder_trial_intervents do |t|
       t.integer :trial_id

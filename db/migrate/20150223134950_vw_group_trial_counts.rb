@@ -1,4 +1,4 @@
-class VwGroupTrialCounts < ActiveRecord::Migration
+class VwGroupTrialCounts < ActiveRecord::Migration[4.2]
   def up
 
     adapter = ActiveRecord::Base.connection.adapter_name.downcase.to_sym

@@ -1,4 +1,4 @@
-class CreateStudyFinderTrialSites < ActiveRecord::Migration
+class CreateStudyFinderTrialSites < ActiveRecord::Migration[4.2]
   def change
     create_table :study_finder_trial_sites do |t|
       t.integer :trial_id
