@@ -1,4 +1,4 @@
-class AddFiltersToStudyFinderGroups < ActiveRecord::Migration
+class AddFiltersToStudyFinderGroups < ActiveRecord::Migration[4.2]
   def change
     add_column :study_finder_groups, :children, :boolean
     add_column :study_finder_groups, :adults, :boolean

@@ -1,4 +1,4 @@
-class CreateStudyFinderParsers < ActiveRecord::Migration
+class CreateStudyFinderParsers < ActiveRecord::Migration[4.2]
   def change
     create_table :study_finder_parsers do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class CreateEresearchSites < ActiveRecord::Migration
+class CreateEresearchSites < ActiveRecord::Migration[4.2]
   def change
     create_table :study_finder_sites do |t|
       t.string :site_name

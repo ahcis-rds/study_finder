@@ -1,4 +1,4 @@
-class CreateTrials < ActiveRecord::Migration
+class CreateTrials < ActiveRecord::Migration[4.2]
   def change
     create_table :study_finder_trials do |t|
       

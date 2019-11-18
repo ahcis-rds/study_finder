@@ -98,7 +98,7 @@ module StudiesHelper
   def remove_category_param
     p = params.dup
     p[:search] = p[:search].except('category')
-    return "#{request.path}?#{p.to_query}"
+    return "#{request.path}?#{p.to_unsafe_h.to_query}"
   end
 
   def eligibility_display(gender)
