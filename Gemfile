@@ -22,7 +22,7 @@ gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'httparty'
-gem 'rubyzip', '~> 1.3.0'
+gem 'rubyzip', '~> 2.0.0'
 gem 'net-ldap', '~> 0.16.1'
 gem 'figaro'
 
