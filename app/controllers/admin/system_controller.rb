@@ -41,7 +41,8 @@ class Admin::SystemController < ApplicationController
         :google_analytics_id,
         :display_all_locations,
         :researcher_description,
-        :secret_key
+        :secret_key,
+        :display_keywords
       )
     end
 end

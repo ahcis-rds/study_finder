@@ -156,7 +156,7 @@
           .concept-list
             = highlight(t, 'conditions_map').gsub(';', ',').html_safe
 
-      - unless t.keywords.nil?
+      - if @system_info.display_keywords? && !t.keywords.blank?
         .field.nomargin
           %label.single Keywords:
           .concept-list
