@@ -89,7 +89,7 @@ class StudyFinder::Trial < ApplicationRecord
 
   def keyword_suggest
     {
-      input: trial_keywords.map { |k| k.keyword.downcase }
+      input: trial_keywords.where.not(keyword: nil).map { |k| k.keyword.downcase }
     }
   end
 
