@@ -53,6 +53,11 @@
       %i (When a trial is located at multiple sites "display locations" determines if those other sites be listed within StudyFinder)
     = f.input :display_all_locations, as: :select, label: false
 
+    %label Display Keywords
+    %small
+      %i (Show a trial's keywords in the search results)
+    = f.input :display_keywords, as: :select, label: false
+
     = f.input :researcher_description, as: :text, input_html: { rows: 5 }
 
     %hr
