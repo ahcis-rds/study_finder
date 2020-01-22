@@ -6,7 +6,7 @@
 =# f.association :conditions, collection: @conditions, label_method: :condition, value_method: :id, label: 'Choose all conditions that apply', input_html: { class: 'select2' }, wrapper: false
 .form-group
   %label Subgroup
-  %input#tags.select2.tags{ type: 'hidden', value: f.object.subgroups.map { |g| g.name }.join(','), name: 'tags[]' }
+  %input#tags.select2.tags{ type: 'hidden', value: f.object.subgroups.map { |g| g.name }.join(','), name: 'tags' }
 
 %hr
  

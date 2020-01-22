@@ -47,16 +47,12 @@ class Admin::GroupsController < ApplicationController
     params[:adults] = false if params[:adults].nil?
     params[:healthy_volunteers] = false if params[:healthy_volunteers].nil?
 
+    @group.subgroups = params[:tags].to_s.split(',').map do |subgroup|
+      @group.subgroups.build(name: subgroup)
+    end
+    @group.save
+
     if @group.update(group_params)
-      unless params[:tags].nil?
-        StudyFinder::Subgroup.delete_all({ group_id: @group.id })
-        params[:tags][0].split(',').each do |t|
-          StudyFinder::Subgroup.create!({
-            group_id: @group.id,
-            name: t
-          })
-        end
-      end
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
     else
       render 'edit'
