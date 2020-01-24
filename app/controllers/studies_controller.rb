@@ -67,7 +67,8 @@ class StudiesController < ApplicationController
         @system_info
       ).deliver
     end
-    render nothing: true
+
+    head :ok
   end
 
   def email_me
@@ -84,8 +85,8 @@ class StudiesController < ApplicationController
     if should_send
       StudyMailer.email_me(params[:email], params[:notes], @trial, contacts, eligibility, age).deliver
     end
-    
-    render nothing: true
+
+    head :ok
   end
 
   private
