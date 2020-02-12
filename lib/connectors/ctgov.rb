@@ -86,8 +86,6 @@ module Connectors
       StudyFinder::TrialLocation.delete_all
       StudyFinder::TrialKeyword.delete_all
       StudyFinder::Location.delete_all
-      StudyFinder::Condition.delete_all
-      StudyFinder::ConditionGroup.delete_all
       StudyFinder::Trial.delete_all
       StudyFinder::TrialCondition.delete_all
     end
