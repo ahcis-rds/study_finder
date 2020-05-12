@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_17_194422) do
+ActiveRecord::Schema.define(version: 2020_05_12_050148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,6 +229,12 @@ ActiveRecord::Schema.define(version: 2019_12_17_194422) do
     t.datetime "updated_at"
     t.index ["email"], name: "index_study_finder_users_on_email", unique: true
     t.index ["internet_id"], name: "index_study_finder_users_on_internet_id", unique: true
+  end
+
+  create_table "zip_centroids", force: :cascade do |t|
+    t.string "zip", limit: 5
+    t.decimal "lat", precision: 9, scale: 6
+    t.decimal "long", precision: 9, scale: 6
   end
 
 end

@@ -23,4 +23,9 @@ class StudyFinder::TrialLocation < ApplicationRecord
     location.country unless location.nil?
   end
 
+  def coordinates
+    location.coordinates
+  rescue
+    nil
+  end
 end

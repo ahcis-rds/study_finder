@@ -91,6 +91,16 @@ CSV.foreach(Rails.root.join("db/seeds/condition_groups.csv")) do |group_name, co
 end
 
 # ============================================
+# ZIP code centroids
+# ============================================
+
+# Updated ZIP centroid data can be found on the US Census Bureau website, most
+# recently: https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html
+CSV.foreach(Rails.root.join("db/seeds/2019_zip_centroids.csv")) do |zip, lat, long|
+  StudyFinder::ZipCentroid.find_or_create_by(zip: zip, lat: lat, long: long)
+end
+
+# ============================================
 # Trials
 # ============================================
 

@@ -164,6 +164,7 @@ class StudyFinder::Trial < ApplicationRecord
         indexes :city, type: 'text'
         indexes :state, type: 'text'
         indexes :zip, type: 'text'
+        indexes :coordinates, type: 'geo_point'
       end
 
       indexes :sites do
@@ -226,7 +227,7 @@ class StudyFinder::Trial < ApplicationRecord
             :investigator_last_name,
             :investigator_role
           ],
-          methods: [:location_name, :city, :state, :zip, :country]
+          methods: [:location_name, :city, :state, :zip, :country, :coordinates]
         },
         sites: {
           only: [
