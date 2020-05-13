@@ -3,14 +3,14 @@ development:
   host: postgres
   database: study_finder_development
   username: postgres
-  password: 
+  password: postgres
 
 test:
   adapter: postgresql
   host: postgres
   database: study_finder_test
   username: postgres
-  password: 
+  password: postgres
 
 staging:
   url: <%= ENV['DATABASE_URL'] %>
