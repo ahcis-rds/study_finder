@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.3'
-gem 'pg'
-#gem 'ruby-oci8', '~> 2.2.3'
-#gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
+# gem 'pg'
+gem 'ruby-oci8'
+gem 'activerecord-oracle_enhanced-adapter', '~> 5.2.0'
 gem 'responders'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
