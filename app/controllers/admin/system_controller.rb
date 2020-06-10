@@ -26,7 +26,7 @@ class Admin::SystemController < ApplicationController
 
   private
     def system_params
-      params.require(:study_finder_system_info).permit(
+      params.require(:system_info).permit(
         :initials,
         :school_name,
         :system_name,

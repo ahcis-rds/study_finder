@@ -51,6 +51,6 @@ class Admin::UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:study_finder_user).permit(:email, :internet_id, :first_name, :last_name, :phone)
+      params.require(:user).permit(:email, :internet_id, :first_name, :last_name, :phone)
     end
 end

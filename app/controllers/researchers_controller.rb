@@ -52,7 +52,7 @@ class ResearchersController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(:simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name)
+      params.require(:trial).permit(:simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name)
     end
 
 end

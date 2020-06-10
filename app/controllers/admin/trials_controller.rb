@@ -13,11 +13,11 @@ class Admin::TrialsController < ApplicationController
   end
 
   def preview
-    if params.has_key?('study_finder_trial') && params[:study_finder_trial].has_key?('system_id') && !params[:study_finder_trial][:system_id].blank?
-      @trial = Trial.find_by(system_id: params[:study_finder_trial][:system_id])
+    if params.has_key?('trial') && params[:trial].has_key?('system_id') && !params[:trial][:system_id].blank?
+      @trial = Trial.find_by(system_id: params[:trial][:system_id])
 
       if @trial.nil?
-        parser = Parsers::Ctgov.new(params[:study_finder_trial][:system_id]) # initialize the parser
+        parser = Parsers::Ctgov.new(params[:trial][:system_id]) # initialize the parser
         parser.load # call the api and load the xml response
         @preview = parser.preview # preview the simple fields
       else
@@ -39,7 +39,7 @@ class Admin::TrialsController < ApplicationController
   end
 
   def create
-    trial = Parsers::Ctgov.new(params[:study_finder_trial][:system_id])
+    trial = Parsers::Ctgov.new(params[:trial][:system_id])
     trial.load
     trial.process
 
@@ -66,7 +66,7 @@ class Admin::TrialsController < ApplicationController
 
       format.xls do
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
-        response.headers['Content-Disposition'] = "attachment; filename=\"study_finder_trials_#{DateTime.now}.xls\""
+        response.headers['Content-Disposition'] = "attachment; filename=\"trials_#{DateTime.now}.xls\""
         render "recent_as.xls.erb"
       end
     end
@@ -116,7 +116,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(
+      params.require(:trial).permit(
         :simple_description, :visible, 
         :featured, :recruiting, :contact_override, :cancer_yn,
         :contact_override_first_name, :contact_override_last_name, :pi_name, :pi_id, :recruitment_url, 

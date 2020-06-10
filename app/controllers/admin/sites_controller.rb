@@ -50,6 +50,6 @@ class Admin::SitesController < ApplicationController
 
   private
     def site_params
-      params.require(:study_finder_site).permit(:site_name, :address, :city, :state, :zip)
+      params.require(:site).permit(:site_name, :address, :city, :state, :zip)
     end
 end

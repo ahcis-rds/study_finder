@@ -6,13 +6,13 @@ class SessionsController < ApplicationController
   end
 
   def create
-    ldap = Modules::Ldap.new.authenticate(params[:study_finder_user][:internet_id], params[:study_finder_user][:password])
+    ldap = Modules::Ldap.new.authenticate(params[:user][:internet_id], params[:user][:password])
 
     # passed ldap authentication, still need to have an account in Study Finder
     if ldap[:success] == true
 
       # look the user up in Study Finder
-      user = User.find_by(internet_id: params[:study_finder_user][:internet_id])
+      user = User.find_by(internet_id: params[:user][:internet_id])
 
       # user has an account in Study Finder, set them to admin
       unless user.nil?

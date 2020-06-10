@@ -50,7 +50,7 @@ class Admin::DiseaseSitesController < ApplicationController
   
   private
     def site_params
-      params.require(:study_finder_disease_site).permit(:disease_site_name, :group_id)
+      params.require(:disease_site).permit(:disease_site_name, :group_id)
     end
 
 end
