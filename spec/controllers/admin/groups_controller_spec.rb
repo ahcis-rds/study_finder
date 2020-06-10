@@ -27,7 +27,7 @@ RSpec.describe Admin::GroupsController, :type => :controller do
 
   describe "GET #edit" do
     it "responds to an edit request" do
-      group = StudyFinder::Group.create({ group_name: 'Test' })
+      group = Group.create({ group_name: 'Test' })
       get :edit, params: { id: group.id }
       expect( assigns(:group) ).to eq(group)
       expect(response).to be_success
@@ -37,8 +37,8 @@ RSpec.describe Admin::GroupsController, :type => :controller do
 
   describe "PUT #update" do
     before :each do
-      @group = StudyFinder::Group.create({ group_name: 'Test' })
-      @condition = StudyFinder::Condition.create({ condition: 'Test Condition' })
+      @group = Group.create({ group_name: 'Test' })
+      @condition = Condition.create({ condition: 'Test Condition' })
     end
 
     it "successfully changes group's attributes" do

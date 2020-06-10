@@ -2,20 +2,20 @@ class Admin::SystemController < ApplicationController
   before_action :authorize_admin
   
   def index
-    @system = StudyFinder::SystemInfo.current
+    @system = SystemInfo.current
     redirect_to edit_admin_system_path(@system.id)
   end
 
   def edit
-    @system = StudyFinder::SystemInfo.find(params[:id])
-    @updated = StudyFinder::Updater.all.last
+    @system = SystemInfo.find(params[:id])
+    @updated = Updater.all.last
 
     add_breadcrumb 'System Administration'
   end
 
   def update
-    @system = StudyFinder::SystemInfo.find(params[:id])
-    @updated = StudyFinder::Updater.all.last
+    @system = SystemInfo.find(params[:id])
+    @updated = Updater.all.last
     
     if @system.update(system_params)
       redirect_to edit_admin_system_path(params[:id]), flash: { success: 'System information updated successfully' }

@@ -1,4 +1,4 @@
-class StudyFinder::DsTrial < ApplicationRecord
+class DsTrial < ApplicationRecord
   self.table_name = 'study_finder_ds_trials'
 
   belongs_to :trial

@@ -2,19 +2,19 @@ class Admin::DiseaseSitesController < ApplicationController
   before_action :authorize_admin
   
   def index
-    @sites = StudyFinder::DiseaseSite.includes(:group).all
+    @sites = DiseaseSite.includes(:group).all
     add_breadcrumb 'Disease Site'
   end
 
   def new
-    @site = StudyFinder::DiseaseSite.new
+    @site = DiseaseSite.new
 
     add_breadcrumb 'Disease Site', :admin_disease_sites_path
     add_breadcrumb 'Add Disease Site'
   end
 
   def create
-    @site = StudyFinder::DiseaseSite.new(site_params)
+    @site = DiseaseSite.new(site_params)
     if @site.save(@site)
       redirect_to admin_disease_sites_path, flash: { success: 'Site added successfully' }
     else
@@ -23,13 +23,13 @@ class Admin::DiseaseSitesController < ApplicationController
   end
 
   def edit
-    @site = StudyFinder::DiseaseSite.find(params[:id])
+    @site = DiseaseSite.find(params[:id])
     add_breadcrumb 'Disease Sites', :admin_disease_sites_path
     add_breadcrumb 'Edit Site'
   end
 
   def update
-    @site = StudyFinder::DiseaseSite.find(params[:id])
+    @site = DiseaseSite.find(params[:id])
 
     if @site.update(site_params)
       redirect_to edit_admin_disease_site_path(params[:id]), flash: { success: 'Site updated successfully' }
@@ -39,7 +39,7 @@ class Admin::DiseaseSitesController < ApplicationController
   end
 
   def destroy
-    @site = StudyFinder::DiseaseSite.find(params[:id])
+    @site = DiseaseSite.find(params[:id])
     if @site.destroy
       redirect_to admin_disease_sites_path, flash: { success: 'Site removed successfully' }
     else

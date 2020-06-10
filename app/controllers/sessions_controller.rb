@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   require 'modules/ldap'
 
   def new
-    @user = StudyFinder::User.new
+    @user = User.new
   end
 
   def create
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     if ldap[:success] == true
 
       # look the user up in Study Finder
-      user = StudyFinder::User.find_by(internet_id: params[:study_finder_user][:internet_id])
+      user = User.find_by(internet_id: params[:study_finder_user][:internet_id])
 
       # user has an account in Study Finder, set them to admin
       unless user.nil?
@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
       else
         # stuff the ldap info into a user model to be stored in the session
         # logger.debug ldap[:ldap_user].cn.first.to_s
-        researcher = StudyFinder::User.new
+        researcher = User.new
         researcher.internet_id = ldap[:ldap_user].uid.first
         researcher.first_name = ldap[:ldap_user].givenname.first
         researcher.last_name = ldap[:ldap_user].sn.first

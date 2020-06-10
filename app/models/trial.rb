@@ -1,4 +1,4 @@
-class StudyFinder::Trial < ApplicationRecord
+class Trial < ApplicationRecord
 
   require 'csv'
 
@@ -31,7 +31,7 @@ class StudyFinder::Trial < ApplicationRecord
 
   def self.import_from_file(file)
     CSV.foreach(file.path, headers: true) do |row|
-      StudyFinder::Trial.create! row.to_hash
+      Trial.create! row.to_hash
     end
   end
 
@@ -84,7 +84,7 @@ class StudyFinder::Trial < ApplicationRecord
   end
 
   def category_ids
-    StudyFinder::VwStudyFinderTrialGroups.where({ trial_id: id }).map(&:group_id)
+    VwStudyFinderTrialGroups.where({ trial_id: id }).map(&:group_id)
   end
 
   def keyword_suggest

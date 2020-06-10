@@ -18,7 +18,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(true)
     end
 
@@ -33,7 +33,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
     end 
 
@@ -48,7 +48,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(true)
 
       p2 = Parsers::Ctgov.new( 'NCT01678638', 1)
@@ -60,7 +60,7 @@ describe Parsers::Ctgov do
       ")
       p2.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
     end
 
@@ -75,7 +75,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
 
       p2 = Parsers::Ctgov.new( 'NCT01678638', 1)
@@ -87,7 +87,7 @@ describe Parsers::Ctgov do
       ")
       p2.process(true)
 
-      trial2 = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial2 = Trial.find_by(system_id: 'NCT01678638')
       expect(trial2.visible).to eq(true)
     end
     
@@ -110,7 +110,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.minimum_age).to eq(nil)
       expect(trial.maximum_age).to eq('0.71')
     end
@@ -134,7 +134,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.minimum_age).to eq('0.1')
       expect(trial.min_age_unit).to eq('37 Days')
       expect(trial.maximum_age).to eq('2')
@@ -160,7 +160,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.minimum_age).to eq('1.08')
       expect(trial.min_age_unit).to eq('13 Months')
       expect(trial.maximum_age).to eq('25.0')
@@ -187,7 +187,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.conditions.first.condition).to eq('Test Condition')
     end
 
@@ -214,7 +214,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.conditions.size).to eq(4)
       expect(trial.conditions.first.condition).to eq('Test Condition 1')
       expect(trial.conditions.last.condition).to eq('Test Condition 4')
@@ -234,7 +234,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.interventions).to eq('Intervention Type: Intervention Name')
     end
 
@@ -260,7 +260,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       interventions = trial.interventions.split("; ")
       expect(interventions.size).to eq(3)
       expect(interventions.first).to eq('Intervention Type 1: Intervention Name 1')
@@ -279,7 +279,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.keywords).to eq("Test Keyword")
     end
 
@@ -298,7 +298,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       keywords = trial.keywords.split("; ")
       expect(keywords.size).to eq(5)
       expect(keywords.first).to eq("Test Keyword 1")
@@ -319,7 +319,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.mesh_terms).to eq("Conditional: Test Conditional Mesh Term")
     end
 
@@ -338,7 +338,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       mesh_term = trial.mesh_terms.split("; ")
       expect(mesh_term.size).to eq(3)
       expect(mesh_term.first).to eq("Conditional: Test Conditional Mesh Term 1")
@@ -359,7 +359,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.mesh_terms).to eq("Intervention: Test Intervention Mesh Term")
     end
 
@@ -378,7 +378,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       mesh_term = trial.mesh_terms.split("; ")
       expect(mesh_term.size).to eq(3)
       expect(mesh_term.first).to eq("Intervention: Test Intervention Mesh Term 1")
@@ -407,7 +407,7 @@ describe Parsers::Ctgov do
       ")
       p.process(true)
 
-      trial = StudyFinder::Trial.find_by(system_id: 'NCT01678638')
+      trial = Trial.find_by(system_id: 'NCT01678638')
       mesh_term = trial.mesh_terms.split("; ")
       expect(mesh_term.size).to eq(6)
       expect(mesh_term.first).to eq("Conditional: Test Conditional Mesh Term 1")

@@ -1,4 +1,4 @@
-class StudyFinder::BaseTrial < ApplicationRecord
+class BaseTrial < ApplicationRecord
   self.table_name = 'study_finder_trials'
 
   belongs_to :parser
@@ -51,6 +51,6 @@ class StudyFinder::BaseTrial < ApplicationRecord
   end
 
   def category_ids
-    StudyFinder::VwStudyFinderTrialGroups.where({ trial_id: id }).map(&:group_id)
+    VwStudyFinderTrialGroups.where({ trial_id: id }).map(&:group_id)
   end
 end

@@ -8,8 +8,8 @@ namespace :studyfinder do
 
   task add_dates_to_trials: :environment do |t, args|
     
-    parser_id = StudyFinder::Parser.find_by({ klass: 'Parsers::Ctgov'}).id
-    trials = StudyFinder::Trial.all
+    parser_id = Parser.find_by({ klass: 'Parsers::Ctgov'}).id
+    trials = Trial.all
     
     trials.each_with_index do |trial, index|
       p = Parsers::Ctgov.new(trial.system_id, parser_id)

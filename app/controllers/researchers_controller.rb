@@ -16,7 +16,7 @@ class ResearchersController < ApplicationController
   end
 
   def edit
-    @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    @trial = Trial.find_by(system_id: params[:id])
 
     add_breadcrumb 'Home', :root_path
     add_breadcrumb 'For Researchers', :researchers_path
@@ -25,7 +25,7 @@ class ResearchersController < ApplicationController
   end
 
   def update
-    @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    @trial = Trial.find_by(system_id: params[:id])
 
     if !params[:secret_key].blank? && params[:secret_key] == @system_info.secret_key
       if @trial.update(trial_params)
@@ -41,7 +41,7 @@ class ResearchersController < ApplicationController
   end
 
   def search_results
-    trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    trial = Trial.find_by(system_id: params[:id])
 
     if trial.nil?
       redirect_to search_trials_researchers_path, flash: { error: 'Trial does not exist in the system' }

@@ -4,21 +4,21 @@ class Admin::GroupsController < ApplicationController
   require 'csv'
   
   def index
-    @groups = StudyFinder::Group.all
+    @groups = Group.all
 
     add_breadcrumb 'Groups'
   end
 
   def new
-    @group = StudyFinder::Group.new
-    @conditions = StudyFinder::Condition.all.order(:condition)
+    @group = Group.new
+    @conditions = Condition.all.order(:condition)
 
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Add Group'
   end
 
   def create
-    @group = StudyFinder::Group.new(group_params)
+    @group = Group.new(group_params)
     if @group.save(@group)
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
     else
@@ -27,8 +27,8 @@ class Admin::GroupsController < ApplicationController
   end
 
   def edit
-    @group = StudyFinder::Group.find(params[:id])
-    @conditions = StudyFinder::Condition.all.order(:condition)
+    @group = Group.find(params[:id])
+    @conditions = Condition.all.order(:condition)
     
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Edit Group'
@@ -40,7 +40,7 @@ class Admin::GroupsController < ApplicationController
   end
 
   def update
-    @group = StudyFinder::Group.find(params[:id])
+    @group = Group.find(params[:id])
     
     params[:condition_ids] = [] if params[:condition_ids].nil?
     params[:children] = false if params[:children].nil?
@@ -60,7 +60,7 @@ class Admin::GroupsController < ApplicationController
   end
 
   def destroy
-    @group = StudyFinder::Group.find(params[:id])
+    @group = Group.find(params[:id])
     if @group.destroy
       redirect_to admin_groups_path, flash: { success: 'Group removed successfully' }
     else
@@ -69,7 +69,7 @@ class Admin::GroupsController < ApplicationController
   end
 
   def reindex
-    StudyFinder::Trial.import force: true
+    Trial.import force: true
 
     add_breadcrumb 'Groups', :admin_groups_path
   end
