@@ -3,8 +3,8 @@ set :scm, :none
 set :repository, "."
 
 desc "Run on development server"
-task :development do
-  set :rails_env,   "development"
+task :staging do
+  set :rails_env,   "staging"
   set :location, "goldfish.ahc.umn.edu" # Web server url.
   role :web, location # Your HTTP server, Apache/etc
 end
