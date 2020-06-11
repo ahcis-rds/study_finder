@@ -1,4 +1,4 @@
-class StudyFinder::Group < ApplicationRecord
+class Group < ApplicationRecord
   self.table_name = 'study_finder_groups'
 
   validates :group_name, presence: true
@@ -22,9 +22,9 @@ class StudyFinder::Group < ApplicationRecord
 
   def study_count
     if conditions_empty?
-      count = StudyFinder::Trial.match_all(apply_filters).results.total
+      count = Trial.match_all(apply_filters).results.total
     else
-      count = StudyFinder::VwGroupTrialCount.where({ id: id }).first.trial_count.to_i
+      count = VwGroupTrialCount.where({ id: id }).first.trial_count.to_i
     end
 
     count

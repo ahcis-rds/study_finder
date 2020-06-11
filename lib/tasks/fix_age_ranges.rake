@@ -1,7 +1,7 @@
 namespace :studyfinder do
   task fix_ages: :environment do |t, args|
   
-    trials = StudyFinder::Trial.all
+    trials = Trial.all
 
     # Minimum Age
     trials.each do |trial|
@@ -54,7 +54,7 @@ namespace :studyfinder do
     end
 
     # Re-Index with the new fields.
-    StudyFinder::Trial.import force: true
+    Trial.import force: true
 
   end
 end

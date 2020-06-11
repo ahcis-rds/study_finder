@@ -42,7 +42,7 @@ module Parsers
     end
 
     def preview
-      trial = StudyFinder::Trial.new(system_id: @id)
+      trial = Trial.new(system_id: @id)
 
       retrieve_simple_fields(trial)
 
@@ -51,9 +51,9 @@ module Parsers
 
     def process(without_index=nil)
       if without_index.nil?
-        trial = StudyFinder::Trial.find_or_initialize_by(system_id: @id)
+        trial = Trial.find_or_initialize_by(system_id: @id)
       else
-        trial = StudyFinder::BaseTrial.find_or_initialize_by(system_id: @id)
+        trial = BaseTrial.find_or_initialize_by(system_id: @id)
       end
 
       
@@ -68,7 +68,7 @@ module Parsers
         end
 
         if @parser_id.nil?
-          trial.parser_id = StudyFinder::Parser.find_by({ klass: 'Parsers::Ctgov'}).id
+          trial.parser_id = Parser.find_by({ klass: 'Parsers::Ctgov'}).id
         else
           trial.parser_id = @parser_id
         end
@@ -204,7 +204,7 @@ module Parsers
     def process_mesh_term(trial)
       if (!@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')) || 
          (!@contents['intervention_browse'].nil? && @contents['intervention_browse'].has_key?('mesh_term')) 
-        StudyFinder::TrialMeshTerm.where(trial_id: trial.id).delete_all
+        TrialMeshTerm.where(trial_id: trial.id).delete_all
       end
       if !@contents['conditional_browse'].nil? && @contents['conditional_browse'].has_key?('mesh_term')
         process_condition_browse(trial)
@@ -219,7 +219,7 @@ module Parsers
       mesh_term = [mesh_term] unless mesh_term.instance_of?(Array)
 
       mesh_term.each do |mesh|
-        test = StudyFinder::TrialMeshTerm.create({
+        test = TrialMeshTerm.create({
           trial_id: trial.id,
           mesh_term_type: 'Conditional',
           mesh_term: mesh
@@ -232,7 +232,7 @@ module Parsers
       mesh_term = [mesh_term] unless mesh_term.instance_of?(Array)
 
       mesh_term.each do |mesh|
-        test = StudyFinder::TrialMeshTerm.create({
+        test = TrialMeshTerm.create({
           trial_id: trial.id,
           mesh_term_type: 'Intervention',
           mesh_term: mesh
@@ -244,15 +244,15 @@ module Parsers
       conditions = @contents['condition']
       conditions = [conditions] unless conditions.instance_of?(Array)
   
-      StudyFinder::TrialCondition.where(trial_id: id).delete_all
+      TrialCondition.where(trial_id: id).delete_all
 
       conditions.each do |c|
-        condition = StudyFinder::Condition.find_or_initialize_by(condition: c)
+        condition = Condition.find_or_initialize_by(condition: c)
         if condition.id.nil?
           condition.save
         end
 
-        StudyFinder::TrialCondition.create({
+        TrialCondition.create({
           trial_id: id,
           condition_id: condition.id
         })
@@ -263,10 +263,10 @@ module Parsers
       interventions = @contents['intervention']
       interventions = [interventions] unless interventions.instance_of?(Array)
 
-      StudyFinder::TrialIntervention.where(trial_id: id).delete_all
+      TrialIntervention.where(trial_id: id).delete_all
 
       interventions.each do |i|
-        StudyFinder::TrialIntervention.create({
+        TrialIntervention.create({
           trial_id: id,
           intervention_type: i['intervention_type'],
           intervention: i['intervention_name'],
@@ -279,11 +279,11 @@ module Parsers
       locations = @contents['location']
       locations = [locations] unless locations.instance_of?(Array)
 
-      StudyFinder::TrialLocation.where(trial_id: id).delete_all
+      TrialLocation.where(trial_id: id).delete_all
 
       locations.each do |l|
         facility = l['facility'] if l.has_key?('facility')
-        location = StudyFinder::Location.find_or_initialize_by(location: facility['name'])
+        location = Location.find_or_initialize_by(location: facility['name'])
         
         if facility.has_key?('address')
           address = facility['address']
@@ -322,7 +322,7 @@ module Parsers
           trial_location_hash['status'] = l['status']
         end
 
-        StudyFinder::TrialLocation.create(trial_location_hash)
+        TrialLocation.create(trial_location_hash)
       end
     end
 
@@ -331,10 +331,10 @@ module Parsers
       keywords = @contents['keyword']
       keywords = [keywords] unless keywords.instance_of?(Array)
 
-      StudyFinder::TrialKeyword.where(trial_id: id).delete_all
+      TrialKeyword.where(trial_id: id).delete_all
 
       keywords.each do |k|
-        StudyFinder::TrialKeyword.create({
+        TrialKeyword.create({
           trial_id: id,
           keyword: k
         })

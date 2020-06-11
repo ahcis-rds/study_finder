@@ -22,7 +22,7 @@ describe "search/embed" do
 
   it "changes not sure button to specific group/category if passed in as params[:group]" do
 
-    assign(:category, StudyFinder::Group.create!({ group_name: 'Heart Health' }) )
+    assign(:category, Group.create!({ group_name: 'Heart Health' }) )
 
     allow(view).to receive(:params).and_return({action: 'embed', group: 'Heart%20Health' })
 

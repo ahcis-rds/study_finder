@@ -1,4 +1,4 @@
-class StudyFinder::DiseaseSite < ApplicationRecord
+class DiseaseSite < ApplicationRecord
   self.table_name = 'study_finder_disease_sites'
 
   belongs_to :group

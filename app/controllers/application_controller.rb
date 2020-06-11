@@ -42,6 +42,6 @@ class ApplicationController < ActionController::Base
 
   private
     def system
-      @system_info = StudyFinder::SystemInfo.current
+      @system_info = SystemInfo.current
     end
 end

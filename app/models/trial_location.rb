@@ -1,4 +1,4 @@
-class StudyFinder::TrialLocation < ApplicationRecord
+class TrialLocation < ApplicationRecord
   self.table_name = 'study_finder_trial_locations'
 
   belongs_to :location

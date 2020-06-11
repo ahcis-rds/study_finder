@@ -11,7 +11,7 @@ RSpec.describe ResearchersController, :type => :controller do
       role: 'researcher'
     })
 
-    @system_info = StudyFinder::SystemInfo.create({
+    @system_info = SystemInfo.create({
       initials: 'UMN',
       school_name: 'University of Minnesota',
       system_name: 'Study Finder',
@@ -55,7 +55,7 @@ RSpec.describe ResearchersController, :type => :controller do
 
   describe "GET #edit" do
     it "responds to an edit request" do
-      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
 
       get :edit, params: { id: trial.system_id }
       
@@ -67,7 +67,7 @@ RSpec.describe ResearchersController, :type => :controller do
 
   describe "PUT #update" do
     it "trial with override information" do
-      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
 
       simple_description = 'Testing adding a simple_description'
       contact_override = 'jim@aol.com'
@@ -81,7 +81,7 @@ RSpec.describe ResearchersController, :type => :controller do
         contact_override_last_name: contact_override_last_name
       }
       
-      put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: @system_info.secret_key }
+      put :update, params: { id: trial.system_id, trial: study_finder_trial, secret_key: @system_info.secret_key }
       
       expect( assigns(:trial).simple_description ).to eq(simple_description)
       expect( assigns(:trial).contact_override ).to eq(contact_override)
@@ -93,7 +93,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when a secret_key is not provided" do
-      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
 
       simple_description = 'Testing adding a simple_description'
       contact_override = 'jim@aol.com'
@@ -114,7 +114,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when an invalid secret_key is added" do
-      trial = StudyFinder::Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
 
       simple_description = 'Testing adding a simple_description'
       contact_override = 'jim@aol.com'
@@ -137,8 +137,8 @@ RSpec.describe ResearchersController, :type => :controller do
 
   # describe "PUT #update" do
   #   before :each do
-  #     @group = StudyFinder::Group.create({ group_name: 'Test' })
-  #     @condition = StudyFinder::Condition.create({ condition: 'Test Condition' })
+  #     @group = Group.create({ group_name: 'Test' })
+  #     @condition = Condition.create({ condition: 'Test Condition' })
   #   end
 
   #   it "successfully changes group's attributes" do

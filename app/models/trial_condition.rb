@@ -1,4 +1,4 @@
-class StudyFinder::TrialCondition < ApplicationRecord
+class TrialCondition < ApplicationRecord
   self.table_name = 'study_finder_trial_conditions'
   self.primary_key = :id
 
