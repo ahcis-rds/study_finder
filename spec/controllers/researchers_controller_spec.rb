@@ -81,7 +81,7 @@ RSpec.describe ResearchersController, :type => :controller do
         contact_override_last_name: contact_override_last_name
       }
       
-      put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: @system_info.secret_key }
+      put :update, params: { id: trial.system_id, trial: study_finder_trial, secret_key: @system_info.secret_key }
       
       expect( assigns(:trial).simple_description ).to eq(simple_description)
       expect( assigns(:trial).contact_override ).to eq(contact_override)
