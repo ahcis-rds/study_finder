@@ -28,6 +28,7 @@ gem 'figaro'
 
 group :development do
   gem 'spring'
+  gem 'capistrano', '~> 2.12.0'
 end
 
 group :development, :test do
