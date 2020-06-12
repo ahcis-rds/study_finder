@@ -1,6 +1,7 @@
 set :application, 'study_finder'
 set :scm, :none
 set :repository, "."
+set :default_environment, { 'PATH' => "/opt/ruby26/bin:$PATH" }
 
 desc "Run on development server"
 task :staging do
