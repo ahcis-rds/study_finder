@@ -50,8 +50,8 @@ end
 namespace :figaro do
   # desc "Symlink application.yml and database.yml to the release path"
   task :symlink do
-    run "ln -sf #{shared_path}/database.yml #{release_path}/config/database.yml"
-    run "ln -sf #{shared_path}/application.yml #{release_path}/config/application.yml"
+    run "ln -sf #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    run "ln -sf #{shared_path}/config/application.yml #{release_path}/config/application.yml"
   end
 
   after "deploy:finalize_update", "figaro:symlink"
