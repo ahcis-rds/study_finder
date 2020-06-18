@@ -11,6 +11,7 @@ class Admin::GroupsController < ApplicationController
 
   def new
     @group = Group.new
+    @subgroups = Subgroup.all.order(:name)
     @conditions = Condition.all.order(:condition)
 
     add_breadcrumb 'Groups', :admin_groups_path
@@ -19,15 +20,19 @@ class Admin::GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
+    
     if @group.save(@group)
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
     else
+      @subgroups = Subgroup.all.order(:name)
+      @conditions = Condition.all.order(:condition)
       render action: 'new'
     end
   end
 
   def edit
     @group = Group.find(params[:id])
+    @subgroups = Subgroup.all.order(:name)
     @conditions = Condition.all.order(:condition)
     
     add_breadcrumb 'Groups', :admin_groups_path
@@ -41,13 +46,9 @@ class Admin::GroupsController < ApplicationController
 
   def update
     @group = Group.find(params[:id])
-    
-    params[:condition_ids] = [] if params[:condition_ids].nil?
-    params[:children] = false if params[:children].nil?
-    params[:adults] = false if params[:adults].nil?
-    params[:healthy_volunteers] = false if params[:healthy_volunteers].nil?
 
-    @group.subgroups = params[:tags].to_s.split(',').map do |subgroup|
+    #TODO - revisit this logic and get working with strong params
+    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
       @group.subgroups.build(name: subgroup)
     end
     @group.save
@@ -55,6 +56,8 @@ class Admin::GroupsController < ApplicationController
     if @group.update(group_params)
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
     else
+      @subgroups = Subgroup.all.order(:name)
+      @conditions = Condition.all.order(:condition)
       render 'edit'
     end
   end
@@ -76,7 +79,7 @@ class Admin::GroupsController < ApplicationController
 
   private
     def group_params
-      params.permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
+      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
     end
 
     def generate_csv

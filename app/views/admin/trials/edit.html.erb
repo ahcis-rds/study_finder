@@ -1,0 +1,66 @@
+<div class="admin">
+  <h3>Edit Trial</h3>
+  <label>Title</label>
+  <p><%= @trial.display_title %></p>
+  <label>Sex</label>
+  <p><%= @trial.gender %></p>
+  <label>Status</label>
+  <p><%= @trial.overall_status %></p>
+  <label>System ID</label>
+  <p><%= @trial.system_id %></p>
+  
+  <% if !@oncore.nil? && !@oncore.contents.blank? %>
+    <hr/>
+    <div class="well">
+      <h4><i class="fa fa-info-circle"></i>Trial also exists in Oncore</h4>
+      <p>If the simple description field is not populated, the value will be updated from Oncore.  Additionally, if a Protocol Contact or Principal Investigator exist the contact override fields will be populated as we are assuming the data from Oncore is of better quality.</p>
+      <hr/>
+      <label>Protocol No</label>
+      <p><%= @oncore.contents['protocol_no'] %></p>
+      <label>Status</label>
+      <p><%= @oncore.contents['status'] %></p>
+      <label>Simple Description</label>
+      <p><%= @oncore.contents['lay_description'] %></p>
+      <% if !@oncore.contents['contacts'].empty? %>
+        <% contact = @Oncore.contents['contacts'][0] %>
+        <label><%= contact['staff_role'] %></label>
+        <p><%= contact['first_name'] %>, <%= contact['last_name'] %> (<%= contact['email_address'] %>)</p>
+      <% end %>    
+    </div>
+  <% end %>
+
+  <hr/>
+
+  <%= simple_form_for @trial, url: admin_trial_path, method: :put do |f| %>
+    <% if !@oncore.nil? && !@oncore.contents.blank? %>
+      <% if f.object.simple_description.nil? %>
+        <%= f.input :simple_description, input_html: { value: @oncore.contents['lay_description'] } %>
+      <% else %>
+        <%= f.input :simple_description %>
+      <% end %>
+      <% contact = @oncore.contents['contacts'][0] %>
+      <%= f.input :contact_override, input_html: { value: contact['email_address'] } %>
+      <%= f.input :contact_override_first_name, input_html: { value: contact['first_name'] } %>
+      <%= f.input :contact_override_last_name, input_html: { value: contact['last_name'] } %>
+    <% else %>
+      <%= f.input :simple_description %>
+      <%= f.input :contact_override %>
+      <%= f.input :contact_override_first_name %>
+      <%= f.input :contact_override_last_name %>
+      <%= f.input :recruitment_url %>
+      <%= f.input :irb_number, label: 'IRB Number' %>
+    <% end %>
+    <%= f.input :visible, as: :select %>
+    <%= f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false %>
+    <%= f.input :cancer_yn, as: :select, collection: [['Yes', 'Y'],['No', 'N']], include_blank: true, label: 'Cancer Y/N' %>
+
+    <%= f.input :pi_name, label: 'PI Name' %>
+    <%= f.input :pi_id, label: 'PI ID' %>
+
+    <%= f.association :sites, label_method: :site_name, value_method: :id, input_html: { class: 'select2' } %>
+    <%= f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' } %>
+
+    <%= f.submit 'Update Trial', class: 'btn btn-school' %>
+    <%= link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-default' %>
+  <% end %>
+</div>

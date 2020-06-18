@@ -1,0 +1,80 @@
+<div class="admin">
+  <h2>Edit System Information</h2>
+  <p class="description">This section is where the administrator can configure how StudyFinder works.</p>
+  <div class="last-updated">
+    <i class="fa fa-info-circle big-icon"></i>
+    <strong>Trials Last Updated: <%= @updated.created_at.strftime('%m-%d-%Y') %></strong>
+  </div>
+
+  <hr/>
+
+  <%= simple_form_for @system, url: admin_system_path do |f| %>
+    <h4> Basic Information</h4>
+    <%= f.input :initials %>
+    <%= f.input :school_name %>
+    <%= f.input :system_header %>
+    <%= f.input :system_description, as: :text, input_html: { rows: 5 } %>
+    <%= f.input :default_url %>
+    <%= f.input :default_email %>
+    <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %>
+
+    <label>Add Captcha to email forms</label>
+    <small>
+      <i>(Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.)</i>
+    </small>
+    <%= f.input :captcha, as: :select, label: false %>
+
+    <hr/>
+    <h4> System Override Options</h4>
+    <label>Search Term</label>
+    <small>
+      <i>(Search term is the term that will be used to pull clinical trials from ClinicalTrials.gov)</i>
+    </small>
+    <%= f.input :search_term, label: false %>
+
+    <label>Contact email suffix</label>
+    <small>
+      <i>(If populated, the system will find and display only contacts with this email pattern. On a trial located at multiple sites, the system will attempt to provide a @umn.edu email as the contact.)</i>
+    </small>
+    <%= f.input :contact_email_suffix, label: false %>
+
+    <label>Display Locations</label>
+    <small>
+      <i>(When a trial is located at multiple sites "display locations" determines if those other sites be listed within StudyFinder)</i>
+    </small>
+    <%= f.input :display_all_locations, as: :select, label: false %>
+
+    <label>Display Keywords</label>
+    <small>
+      <i>(Show a trial's keywords in the search results)</i>
+    </small>
+    <%= f.input :display_keywords, as: :select, label: false %>
+
+    <%= f.input :researcher_description, as: :text, input_html: { rows: 5 } %>
+
+    <hr/>
+    <h4> Analytics/Tracking Options</h4>
+    <label>Google analytics tracking ID</label>
+    <%= f.input :google_analytics_id, label: false %>
+    <%= f.input :research_match_campaign %>
+    <div class="form-group string optional">
+      <label class="string optional control-label" for="campaign_source"}>Campaign Source</label>
+      <input class="string optional form-control" id="campaign_source"></input>
+    </div>
+    <%= f.submit 'Update System Information', class: 'btn btn-school' %>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    var campaignElement = document.getElementById('campaign_source');
+    if(window.localStorage.getItem('utm_source')) {
+      campaignElement.value = window.localStorage.getItem('utm_source');
+    }
+    var formElement = document.getElementById('edit_study_finder_system_info_1');
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.localStorage.setItem('utm_source', campaignElement.value);
+      this.submit();
+    }, false);
+</script>
