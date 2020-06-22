@@ -45,7 +45,7 @@
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
           <% p = request.query_parameters.dup %>
           <% @group.subgroups.sort_by{ |l| l.name }.each do |subgroup| %>
-            <% p[:search][:q] = subgroup.nam %>
+            <% p[:search][:q] = subgroup.name %>
             <%= link_to subgroup.name, "studies?#{p.to_query}", class: 'btn btn-school btn-subgroup' %>
           <% end %>
         </div>
@@ -56,9 +56,9 @@
       <div class="pull-left study-count">
         <span><%= @trials.empty? ? 0 : @trials.total %></span> Study Matches
       </div>
-    </div>
-    <div class="pull-right top-paginate">
-      <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+      <div class="pull-right top-paginate">
+        <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+      </div>
     </div>
   </div>
 
@@ -251,7 +251,7 @@
       </div>
     </div>
   <% end %>
-
+  <hr/>
   <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
 </div> 
 

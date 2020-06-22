@@ -2,7 +2,7 @@
   <% @groups.each do |g| %>
     <div class="col-md-2">
       <a href="<%=studies_path(search: { category: g.id }.merge(g.apply_filters)) %>"><p><%= g.group_name%></p></a>
-      <div class="study-count"><%= g.study_count %></div>
+      <div class="label"><%= g.study_count %></div>
     </div>
   <% end %>
 </div>
