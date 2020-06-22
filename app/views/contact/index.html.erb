@@ -36,7 +36,7 @@
     var myselfWidget;
     var onloadCallback = function() {
       myselfWidget = grecaptcha.render('myself-captcha', {
-        'sitekey' : "#{ Recaptcha.configuration.site_key }"
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
       });
     };
   </script>
