@@ -204,7 +204,7 @@
       <% end %>
 
       <div class="trial-cta-options">
-        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Email this study information to me</div>
+        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
         
         <% unless c.empty? %>
           <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
