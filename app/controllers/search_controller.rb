@@ -5,7 +5,7 @@ class SearchController < ApplicationController
     unless params[:group].nil?
       @category = Group.find_by(group_name: params[:group]) 
     end
-
+    
     render 'embed', layout: 'embed'
   end
 end

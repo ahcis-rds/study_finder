@@ -106,7 +106,7 @@ class Admin::TrialsController < ApplicationController
 
   def update
     @trial = Trial.find_by(system_id: params[:id])
-
+    
     if @trial.update(trial_params)
       redirect_to edit_admin_trial_path(params[:id]), flash: { success: 'Trial updated successfully' }
     else

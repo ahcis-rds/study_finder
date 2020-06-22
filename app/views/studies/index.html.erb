@@ -1,0 +1,334 @@
+<% if @system_info.captcha %>
+  <script>
+    var myselfWidget;
+    var studyTeamWidget;
+    var onloadCallback = function() {
+      myselfWidget = grecaptcha.render('myself-captcha', {
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+      });
+      studyTeamWidget = grecaptcha.render('study-team-captcha', {
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+      });
+    };
+  </script>
+<% end %>
+
+<div class="study-result-hud">
+  <%= render 'shared/refine_search' %>
+</div>
+
+<% unless @suggestions.nil? %>
+  <% unless @suggestions['suggest']['suggestions'].empty? %>
+    <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
+      <% replacement_search = params[:search][:q].gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
+      <% if replacement_search != params[:search][:q] %>
+        <div clsas="suggestions">
+          <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
+          <div class="alert alert-info"><i class="fa fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="study-results">
+  <div class="study-results-info">
+    <h3>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h3>
+    <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
+
+    <% if !params[:search].nil? and !params[:search][:category].nil? %>
+      <a class="btn btn-default" href="<%=remove_category_param%>">Search all categories</a>
+      <hr class="tighten"/>
+      <% unless @group.subgroups.empty? %>
+        <p class="subgroup-text"><strong>Suggestions within category "<%= @group.group_name %>"</strong></p>
+        <div class="subgroups">
+          <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
+          <% p = request.query_parameters.dup %>
+          <% @group.subgroups.sort_by{ |l| l.name }.each do |subgroup| %>
+            <% p[:search][:q] = subgroup.name %>
+            <%= link_to subgroup.name, "studies?#{p.to_query}", class: 'btn btn-school btn-subgroup' %>
+          <% end %>
+        </div>
+      <% end %>
+      <hr class="tighten"/>   
+    <% end %>
+    <div class="clearfix">
+      <div class="pull-left study-count">
+        <span><%= @trials.empty? ? 0 : @trials.total %></span> Study Matches
+      </div>
+      <div class="pull-right top-paginate">
+        <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <% if @trials.empty? %>
+    <div class="alert"><i class="fa fa-warning"></i> There were no trials that matched your search for <strong><%= params[:search][:q] %></strong></div>
+  <% end %>
+
+  <% @trials.each_with_index do |t, i| %>
+    <div class="study">
+      <h4><%= highlight(t, 'display_title') %></h4>
+      <% unless t.simple_description.blank? %>
+        <div class="field important">
+          <strong>
+            <label>Description:</label>
+            <%= highlight(t, 'simple_description') %>
+          </strong>
+        </div>
+      <% end %>
+
+      <div class="field important">
+        <strong>
+          <label>Contact(s):</label>
+          <% c = determine_contacts(t) %>
+          <%= contacts_display(c) %>
+        </strong>
+      </div>
+
+      <% if t.respond_to?(:pi_name) %>
+        <div class="field important nomargin">
+          <label class="single">Principal Investigator:</label>
+          <strong>
+            <%= t.pi_name %>
+          </strong>
+        </div>
+      <% end %>
+
+      <% if t.respond_to?(:pi_id) %>
+        <div class="field important nomargin">
+          <label class="single">Principal Investigator ID:</label>
+          <strong>
+            <%= t.pi_id %>
+          </strong>
+        </div>
+      <% end %>
+
+      <div class="field important nomargin">
+        <label class="single">Gender:</label>
+        <strong>
+          <%= eligibility_display(t.gender) %>
+        </strong>
+      </div>
+
+      <div class="field important nomargin">
+        <label class="single">Age:</label>
+        <strong>
+          <%= (t.respond_to?(:min_age_unit) and t.respond_to?(:max_age_unit)) ? age_display_units(t.min_age_unit, t.max_age_unit) : age_display(t.min_age, t.max_age) %>
+        </strong>
+      </div>
+
+      <div class="field important nomargin">
+        <label class="single">Phase:</label>
+        <strong>
+          <%= t.phase %>
+        </strong>
+      </div>
+      
+      <div class="field important nomargin">
+        <label class="single">Healthy Volunteers</label>
+        <strong>
+          <div class="healthy-message" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>
+            <% if t.healthy_volunteers == true %>
+              <i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>
+            <% else %>
+              <i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>
+            <% end %>
+          </div>
+        </strong>
+      </div>
+
+      <div class="field nomargin">
+        <label class="single">System ID:</label>
+        <%= t.system_id %>
+      </div>
+
+      <% unless t.irb_number.blank? %>
+        <div class="field nomargin">
+          <label class="single">IRB Number:</label>
+          <%= t.irb_number %>
+        </div>
+      <% end %>
+
+      <% unless t.eligibility_criteria.nil? %>
+        <div class="field important eligibility-buttons">
+          <div class="btn btn-xs btn-school-inverse btn-show-full-eligibility">Show full eligibility criteria</div>
+          <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility hide"><i class="fa fa-close"></i> Hide eligibility criteria</div>
+        </div>
+        <div class="eligibility-criteria hide">
+          <%= highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>').html_safe %>
+        </div>
+      <% end %>
+      
+      <% unless t.interventions.nil? %>
+        <div class="field nomargin">
+          <label class="single">Interventions:</label>
+          <div class="concept-list">
+            <%= highlight(t, 'interventions').gsub(';', ',').html_safe %>
+          </div>
+        </div>
+      <% end %>
+
+      <% unless t.conditions_map.nil? %>
+        <div class="field nomargin">
+          <label class="single">Conditions:</label>
+          <div class="concept-list">
+            <%= highlight(t, 'conditions_map').gsub(';', ',').html_safe %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @system_info.display_keywords? && !t.keywords.blank? %>
+        <div class="field nomargin">
+          <label class="single">Keywords:</label>
+          <div class="concept-list">
+            <%= highlight(t, 'keywords').gsub(';', ',').html_safe %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if t.respond_to?(:sites) && !t.sites.blank? %>
+        <div class="field nomargin">
+          <label class="single">Sites:</label>
+          <%= t.sites.map {|x| site(x) }.join('; ') %>
+        </div>
+      <% end %>
+
+      <% if t.respond_to?(:disease_sites) && !t.disease_sites.blank? %>
+        <div class="field nomargin">
+          <label class="single">Disease Sites:</label>
+          <%= t.disease_sites.map {|x| x.disease_site_name }.join('; ') %>
+        </div>
+      <% end %>
+
+      <div class="trial-cta-options">
+        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
+        
+        <% unless c.empty? %>
+          <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+        <% end %>
+
+        <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
+
+        <% unless t.recruitment_url.blank? %>
+          <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
+        <% end %>
+
+        <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
+          <div class="btn btn-school btn-all-locations"><i class="fa fa-location-arrow"></i> Show All <%= t.trial_locations.count %> locations</div>
+          <div class="field hide study-locations">
+            <hr/>
+            <div class="clearfix">
+              <h4 class="pull-left">Study Locations</h4>
+              <div class="btn btn-school btn-hide pull-right"><i class="fa fa-close"></i> Hide all locations</div>
+            </div>
+            <table class="table table-bordered">
+              <tr>
+                <th>Location</th>
+                <th>Contacts</th>
+              </tr>
+              <% t.trial_locations.sort_by{ |l| l['location_name'] ? l['location_name']: '' }.each do |location| %>
+                <tr>
+                  <td><%= location.location_name %> <small><%= location.city %>, <%= location.state %></small></td>
+                  <td>
+                    <%= location.last_name %>
+                    <% unless location.email.nil? %>
+                      <a href="mailto:<%=location.email%>"> - (<%= location.email %>)</a>
+                    <% end %>
+                    <%= location.backup_last_name %>
+                    <% unless location.backup_email.nil? %>
+                      <a href="mailto:<%=location.backup_email%>"> - (<%= location.backup_email %>)</a>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  <% end %>
+  <hr/>
+  <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+</div> 
+
+<div id="email-me-modal" name="email-me-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4><i class="fa fa-envelope"></i> Email this study information to me</h4>
+      </div>
+      <div class="modal-body">
+        <form id="email-me-form" onsubmit="return false;">
+          <label>Study Title</label>
+          <p class="study-title"></p>
+          <div class="form-group">
+            <label>Email address (*)</label>
+            <input class="form-control email" type="text"></input>
+          </div>
+          <div class="form-group">
+            <label>Additional Notes</label>
+            <textarea class="form-control notes"></textarea>
+          </div>
+          <% if @system_info.captcha %>
+            <div class="form-group">
+              <div id="myself-captcha" name="myself-captcha"></div>
+            </div>
+          <% end %>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss='modal' onclick="track('send', 'event', 'email_me_close', 'close')">Close</button>
+        <button class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_me_submit', 'submit')">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="contact-study-team-modal" name="ontact-study-team-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4><i class="fa fa-envelope"></i> Contact the study team</h4>
+      </div>
+      <div class="modal-body">
+        <form id="contact-study-team-form" onsubmit="return false;">
+          <label>Study Email</label>
+          <p class="study-email"></p>
+          <div class="form-group">
+            <label>Email address (*)</label>
+            <input class="form-control email" type="text"></input>
+          </div>
+          <div class="form-group">
+            <label>Name (*)</label>
+            <input class="form-control name" type="text"></input>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input class="form-control phone" type="text"></input>
+          </div>
+          <div class="form-group">
+            <label>Notes</label>
+            <textarea class="form-control notes"></textarea>
+          </div>
+          <% if @system_info.captcha %>
+            <div class="form-group">
+              <div id="study-team-captcha" name="study-team-captcha"></div>
+            </div>
+          <% end %>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss='modal' onclick="track('send', 'event', 'email_study_team_close', 'close')">Close</button>
+        <button class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_study_team_submit', 'submit')">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @system_info.captcha %>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
+<% end %>

@@ -27,6 +27,9 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  #Whitelist your local/development IPs here for the web-console gem
+  #config.web_console.whitelisted_ips = 'xxx.xxx.xxx.xxx'
+
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.

@@ -1,0 +1,40 @@
+<h3>Edit Trial</h3>
+<p class="lead"><%= @trial.display_title %></p>
+<%= simple_form_for @trial, url: researcher_path, method: :put do |f| %>
+  <label>Simple Description</label>
+  <p class="help-block">
+    <strong>FORMAT:</strong>
+    This is a study of (population)  with/without (condition) between ages (X-Y) years old. This study is trying to figure out (aim of study).
+    <br/>
+    <strong>Note:</strong>
+    Your simple description must be IRB approved.
+  </p>
+  <%= f.input :simple_description, label: false %>
+    
+  <hr/>
+  <label>Contact override email</label>
+  <small>
+    <i>(If populated, this will override any contact email from clinialtrials.gov for this trial)</i>
+  </small>
+  <%= f.input :contact_override, label: false %>
+
+  <label>Contact override first name</label>
+  <small>
+    <i>(If populated, this will override any contact first name from clinialtrials.gov for this trial)</i>
+  </small>
+  <%= f.input :contact_override_first_name, label: false %>
+
+  <label>Contact override last name</label>
+  <small>
+    <i>(If populated, this will override any contact last name from clinialtrials.gov for this trial)</i>
+  <small>
+  <%= f.input :contact_override_last_name, label: false %>
+  <div class="form-group">
+    <label class="control-label" for="secret_key">Secret Key</label>
+    <input id="secret_key" name="secret_key" class="form-copntrol" type="password"></input>
+    <p class="help-block">
+      Note: The secret key is a shared key among the research community and is required for all updates.  It has been configured by the StudyFinder adminstrative staff.  If you have not received the key via some form of communication, feel free to email <a href="mailto:<%=@system_info.default_email%>"><%=@system_info.default_email %></a>.
+    </p>
+  </div>
+  <%= f.submit 'Update Trial', class: 'btn btn-school' %>
+<% end %>

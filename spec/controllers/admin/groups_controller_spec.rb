@@ -42,7 +42,7 @@ RSpec.describe Admin::GroupsController, :type => :controller do
     end
 
     it "successfully changes group's attributes" do
-      put :update, params: { id: @group, group_name: 'Testing...', condition_ids: [@condition.id] }
+      put :update, params: { id: @group, group: {group_name: 'Testing...', condition_ids: [@condition.id] } }
       @group.reload
       
       expect( @group.group_name ).to eq('Testing...')
@@ -50,24 +50,24 @@ RSpec.describe Admin::GroupsController, :type => :controller do
     end
 
     it "redirects to the updated contact" do
-      put :update, params: { id: @group, group_name: 'Testing...', condition_ids: [@condition.id] }
+      put :update, params: { id: @group, group: {group_name: 'Testing...', condition_ids: [@condition.id] } }
       expect( redirect_to @group )
     end
 
     it "adds a new subgroup" do
-      put :update, params: { id: @group, tags: "This is a subgroup, And so is this, And this one too"}
+      put :update, params: { id: @group, group: {tags: "This is a subgroup, And so is this, And this one too"} }
       expect( redirect_to @group )
       expect(@group.subgroups.count).to eq(3)
     end
 
     it "removes a subgroup" do
-      put :update, params: { id: @group, tags: "This is a subgroup" }
+      put :update, params: { id: @group, group: {tags: "This is a subgroup" } }
       expect( redirect_to @group )
       expect(@group.subgroups.count).to eq(1)
     end
 
     it "removes all subgroups" do
-      put :update, params: { id: @group, tags: "" }
+      put :update, params: { id: @group, group: {tags: "" } }
       expect( redirect_to @group )
       expect(@group.subgroups).to be_empty
     end

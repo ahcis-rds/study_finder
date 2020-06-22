@@ -1,0 +1,9 @@
+<h3>Lookup Trial Information</h3>
+<%= form_tag search_trial_results_researchers_path do %>
+  <div class="form-group">
+    <label class="control-label">Study ID</label>
+    <small>(NCT ID from ClinicalTrials.gov)</small>
+    <%= text_field_tag :id, '', class: 'form-control' %>
+  </div>
+  <%= submit_tag 'Lookup', class: 'btn btn-school' %>
+<% end %>

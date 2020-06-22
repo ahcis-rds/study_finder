@@ -28,6 +28,7 @@ gem 'figaro'
 
 group :development do
   gem 'spring'
+  gem 'web-console', '>= 3.7.0' # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 end
 
 group :development, :test do

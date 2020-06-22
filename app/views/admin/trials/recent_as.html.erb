@@ -1,0 +1,49 @@
+<div class="admin">
+  <div class="clearfix">
+    <h3 class="pull-left">Recent Trials (<%= @trials.size %>)</h3>
+  </div>
+  <p class="description">This section is where the administrator can review recently imported trials within StudyFinder.</p>
+  <hr/>
+  <div class="clearfix">
+    <div class="pull-left">
+      <%= form_tag admin_trial_recent_as_path, method: :get do %>
+        <div class="pull-left row">
+          <div class="col-md-4">
+            <label>Start Date</label>
+            <input id="start_date" name="start_date" class="form-control datepicker" type="text", value="<%=@start_date%>">
+          </div>
+          <div class="col-md-4">
+            <label>End Date</label>
+            <input id="end_date" name="end_date" class="form-control datepicker" type="text", value="<%=@end_date%>">
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-primary" style='margin-top: 25px;'>Filter Trials</button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Back to Reports', admin_reports_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+  <table class="table table-bordered table-trials">
+    <tr>
+      <th>System Id</th>
+      <th>Brief Title</th>
+      <th>Disease Sites</th>
+      <th>Last Updated</th>
+    </tr>
+    <% if @trials.empty? %>
+      <tr><td colspan="4">No trials found.</td></tr>
+    <% end %>
+    <% @trials.each do |t| %>
+      <tr>
+        <td><%= t.system_id %></td>
+        <td><%= t.display_title %></td>
+        <td><%= t.disease_sites.map { |d| "#{d.disease_site_name}" }.join('; ') %></td>
+        <td><%= t.updated_at.localtime.strftime('%m/%d/%Y') %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= link_to "Export to Excel", admin_trial_recent_as_path(format: :xls, start_date: params[:start_date], end_date: params[:end_date]), class: 'btn btn-success' %>
+</div>

@@ -1,0 +1,12 @@
+<div class="admin">
+  <h3>Import Trials</h3>
+  <a href="/trials-import-template.csv">Template</a>
+
+  <%= form_tag admin_trials_import_path, multipart: true do %>
+    <div class="form-group">
+      <label>File Input</label>
+      <%= file_field_tag :file %>
+    </div>
+    <%= submit_tag "Import CSV", class: "btn btn-school" %>
+  <% end %>
+</div>

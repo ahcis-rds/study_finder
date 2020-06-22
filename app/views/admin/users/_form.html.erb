@@ -1,0 +1,11 @@
+<%= simple_form_for [:admin, @user] do |f| %>
+  <%= f.input :first_name, input_html: { class: 'form-control'} %>
+  <%= f.input :last_name, input_html: { class: 'form-control'} %>
+  <%= f.input :email, input_html: { class: 'form-control'} %>
+  <%= f.input :internet_id, input_html: { class: 'form-control'} %>
+
+  <div class="controls">
+    <%= f.button :submit, 'Save User', class: 'btn-school' %>
+    <%= link_to 'Back to Users', admin_users_path, class: 'btn btn-default' %>
+  </div>
+<% end %>
