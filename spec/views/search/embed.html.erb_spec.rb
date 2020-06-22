@@ -27,7 +27,7 @@ describe "search/embed" do
     allow(view).to receive(:params).and_return({action: 'embed', group: 'Heart%20Health' })
 
     render
-
+    
     expect(rendered).to match /search_category/
     expect(rendered).to match /search%5Bcategory%5D=/
   end

@@ -1,8 +1,0 @@
-.row.categories
-  - @groups.each do |g|
-    .col-md-2
-
-      %a{ href: studies_path(search: { category: g.id }.merge(g.apply_filters)), title: g.group_name } 
-        %p= g.group_name
-      .label 
-        = g.study_count

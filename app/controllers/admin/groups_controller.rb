@@ -47,6 +47,12 @@ class Admin::GroupsController < ApplicationController
   def update
     @group = Group.find(params[:id])
 
+    #TODO - revisit this logic and get working with strong params
+    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
+      @group.subgroups.build(name: subgroup)
+    end
+    @group.save
+
     if @group.update(group_params)
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
     else

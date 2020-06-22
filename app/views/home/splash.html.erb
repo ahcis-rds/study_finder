@@ -1,11 +1,13 @@
-.splash
-  %a{ href: root_path }
-    = image_tag "splash_1.jpg", id: 'sp1'
-    = image_tag "splash_2.jpg", id: 'sp2'
-    = image_tag "splash_3.jpg", id: 'sp3'
-    = image_tag "splash_4.jpg", id: 'sp4'
+<div class="splash">
+  <a href="<%=root_path%>">
+    <%= image_tag "splash_1.jpg", id: 'sp1' %>
+    <%= image_tag "splash_2.jpg", id: 'sp2' %>
+    <%= image_tag "splash_3.jpg", id: 'sp3' %>
+    <%= image_tag "splash_4.jpg", id: 'sp4' %>
+  </a>
+</div>
 
-:javascript
+<script>
   var sp1 = document.getElementById('sp1');
   var sp2 = document.getElementById('sp2');
   var sp3 = document.getElementById('sp3');
@@ -26,4 +28,4 @@
   setTimeout(function() {
     sp4.className = sp4.className + "reveal";
   }, 2700);
-  
+</script>
