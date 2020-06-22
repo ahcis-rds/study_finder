@@ -40,7 +40,7 @@
       <a class="btn btn-default" href="<%=remove_category_param%>">Search all categories</a>
       <hr class="tighten"/>
       <% unless @group.subgroups.empty? %>
-        <p class="subgroup-text"><strong>Suggestions within category "#{@group.group_name}"</strong></p>
+        <p class="subgroup-text"><strong>Suggestions within category "<%= @group.group_name %>"</strong></p>
         <div class="subgroups">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
           <% p = request.query_parameters.dup %>
