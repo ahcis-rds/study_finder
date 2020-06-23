@@ -42,7 +42,8 @@ class Admin::SystemController < ApplicationController
         :display_all_locations,
         :researcher_description,
         :secret_key,
-        :display_keywords
+        :display_keywords,
+        :display_groups_page
       )
     end
 end
