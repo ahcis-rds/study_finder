@@ -109,7 +109,7 @@ module StudiesHelper
         gender
       end
     else
-      'No gender available'
+      'No info available'
     end
   end
 
