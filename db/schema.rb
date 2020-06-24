@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_17_194422) do
+ActiveRecord::Schema.define(version: 2020_06_22_195327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 2019_12_17_194422) do
     t.text "researcher_description"
     t.boolean "captcha", default: false, null: false
     t.boolean "display_keywords", default: true
+    t.boolean "display_groups_page", default: true, null: false
   end
 
   create_table "study_finder_trial_conditions", id: :serial, force: :cascade do |t|

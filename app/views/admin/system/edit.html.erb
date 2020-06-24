@@ -52,6 +52,12 @@
 
     <%= f.input :researcher_description, as: :text, input_html: { rows: 5 } %>
 
+    <label>Display Categories Page</label>
+    <small>
+      <i>(Show categories upon viewing the "Search for a Study" page)</i>
+    </small>
+    <%= f.input :display_groups_page, as: :select, label: false, include_blank: false %>
+
     <hr/>
     <h4> Analytics/Tracking Options</h4>
     <label>Google analytics tracking ID</label>

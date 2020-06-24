@@ -32,6 +32,8 @@
   <%= hidden_field 'search', 'category', value: @category.id unless @category.nil? %>
   <div class="search-controls">
     <%= submit_tag 'Search', class: 'btn btn-lg btn-school btn-search' %>
-    <a class="btn btn-primary btn-lg btn-search" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Browse by category</a>
+    <% if @system_info.try(:display_groups_page) == true %>
+      <a class="btn btn-primary btn-lg btn-search" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Browse by category</a>
+    <% end %>
   </div>
 <% end %>
