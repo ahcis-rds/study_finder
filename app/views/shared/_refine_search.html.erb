@@ -12,7 +12,7 @@
           <option value='0' <% if healthy_voulunteers == '0' %>selected<%end%> >No</option>
           <option value=''>No Preference</option>
         </select>
-        <label class="gender-label">Gender</label>
+        <label class="gender-label">Sex</label>
         <% gender = params[:search]['gender'] if !params[:search].nil? and !params[:search]['gender'].nil? %>
         <select id="gender" name="search[gender]" class="form-control">
           <option value=''>Any</option>
