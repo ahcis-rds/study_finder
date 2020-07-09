@@ -39,7 +39,7 @@ encryption: :simple_tls
 departmental_cn: 'USERNAME'
 departmental_pw: 'PASSWORD'
 theme: 'umn'
-es_host: 'elastic.umn.edu'
+es_host: 'elastic.umn.edu' # or multiple hosts separated by commas: 'elastic1.example.com, elastic2.example.com'
 
 ```
 
