@@ -72,7 +72,7 @@
     <div class="study">
       <h4>
         <% if @system_info.display_study_show_page %>
-          <%= link_to highlight(t, 'display_title'), study_path(id: t.id, search: @search_parameters.deep_dup.to_json) %>
+          <%= link_to highlight(t, 'display_title'), study_path(id: t.id, search: @search_parameters.to_json) %>
         <% else %>
           <%= highlight(t, 'display_title') %>
         <% end %>
