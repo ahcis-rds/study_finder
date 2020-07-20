@@ -70,7 +70,13 @@
 
   <% @trials.each_with_index do |t, i| %>
     <div class="study">
-      <h4><%= highlight(t, 'display_title') %></h4>
+      <h4>
+        <% if @system_info.display_study_show_page %>
+          <%= link_to highlight(t, 'display_title'), study_path(id: t.id, search: @search_parameters.deep_dup.to_json) %>
+        <% else %>
+          <%= highlight(t, 'display_title') %>
+        <% end %>
+      </h4>
       <% unless t.simple_description.blank? %>
         <div class="field important">
           <strong>
@@ -204,6 +210,10 @@
       <% end %>
 
       <div class="trial-cta-options">
+        <% if @system_info.display_study_show_page %>
+          <%= link_to "<i class='fa fa-bookmark'></i> View Study".html_safe, study_path(id: t.id, search: @search_parameters.to_json), class: 'btn btn-school'%>
+        <% end %>
+
         <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
         
         <% unless c.empty? %>
@@ -253,82 +263,6 @@
   <% end %>
   <hr/>
   <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
-</div> 
-
-<div id="email-me-modal" name="email-me-modal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4><i class="fa fa-envelope"></i> Email this study information to me</h4>
-      </div>
-      <div class="modal-body">
-        <form id="email-me-form" onsubmit="return false;">
-          <label>Study Title</label>
-          <p class="study-title"></p>
-          <div class="form-group">
-            <label>Email address (*)</label>
-            <input class="form-control email" type="text"></input>
-          </div>
-          <div class="form-group">
-            <label>Additional Notes</label>
-            <textarea class="form-control notes"></textarea>
-          </div>
-          <% if @system_info.captcha %>
-            <div class="form-group">
-              <div id="myself-captcha" name="myself-captcha"></div>
-            </div>
-          <% end %>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" data-dismiss='modal' onclick="track('send', 'event', 'email_me_close', 'close')">Close</button>
-        <button class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_me_submit', 'submit')">Send</button>
-      </div>
-    </div>
-  </div>
 </div>
 
-<div id="contact-study-team-modal" name="ontact-study-team-modal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4><i class="fa fa-envelope"></i> Contact the study team</h4>
-      </div>
-      <div class="modal-body">
-        <form id="contact-study-team-form" onsubmit="return false;">
-          <label>Study Email</label>
-          <p class="study-email"></p>
-          <div class="form-group">
-            <label>Email address (*)</label>
-            <input class="form-control email" type="text"></input>
-          </div>
-          <div class="form-group">
-            <label>Name (*)</label>
-            <input class="form-control name" type="text"></input>
-          </div>
-          <div class="form-group">
-            <label>Phone</label>
-            <input class="form-control phone" type="text"></input>
-          </div>
-          <div class="form-group">
-            <label>Notes</label>
-            <textarea class="form-control notes"></textarea>
-          </div>
-          <% if @system_info.captcha %>
-            <div class="form-group">
-              <div id="study-team-captcha" name="study-team-captcha"></div>
-            </div>
-          <% end %>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" data-dismiss='modal' onclick="track('send', 'event', 'email_study_team_close', 'close')">Close</button>
-        <button class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_study_team_submit', 'submit')">Send</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<% if @system_info.captcha %>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
-<% end %>
+<%= render 'modals' %>

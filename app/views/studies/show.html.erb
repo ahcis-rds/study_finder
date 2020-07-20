@@ -1,0 +1,78 @@
+<% c = determine_contacts(@study) %>
+<div>
+  <div class="clearfix">
+    <div class="pull-left">
+      <h3><%= @study.brief_title %></h3>
+      <div class="well">
+        <label>Status:</label>  <span class="<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'label label-success' : 'label label-info' %>"><%= @study.try(:overall_status) %></span><br>
+        <label>System ID:</label> <span><%= @study.system_id %></span><br>
+        <label>Sex:</label> <span><%= eligibility_display(@study.gender) %></span><br>
+        <label>Age:</label> <span><%= (@study.respond_to?(:min_age_unit) and @study.respond_to?(:max_age_unit)) ? age_display_units(@study.min_age_unit, @study.max_age_unit) : age_display(@study.min_age, @study.max_age) %></span><br>
+        <div class="healthy-message" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>
+          <% if @study.healthy_volunteers == true %>
+            <i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>
+          <% else %>
+            <i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="button-holder">
+  <% unless @study.recruitment_url.blank? %>
+    <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
+  <% end %>
+  <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=@study.display_title%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= @study.system_id %>')"><i class="fa fa-envelope"></i> Share via email</div>
+  <% unless c.empty? %>
+    <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+  <% end %>
+  <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
+</div>
+<br>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item active"><a class="nav-link active" id="conditions-tab" data-toggle="tab" href="#conditions" role="tab" aria-controls="conditions" aria-selected="true">Conditions & Interventions</a></li>
+  <li class="nav-item"><a class="nav-link" id="eligibility-tab" data-toggle="tab" href="#eligibility" role="tab" aria-controls="eligibility" aria-selected="false">Eligibility Criteria</a></li>
+  <li class="nav-item"><a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">Additional Details</a></li>
+</ul>
+<br>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
+    <div class="field nomargin">
+      <label>Interventions:</label>
+      <p><%= @study.interventions.gsub(/;/,',').html_safe unless @study.interventions.nil? %></p>
+    </div>
+    <div class="field nomargin">
+      <label>Conditions:</label>
+      <p><%= @study.conditions_map.gsub(/;/,',').html_safe unless @study.conditions_map.nil? %></p>
+    </div>
+    <div class="field nomargin">
+      <label>Keywords:</label>
+      <p><%= @study.keywords.gsub(/;/,',').html_safe unless @study.keywords.nil? %></p>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="eligibility" role="tabpanel" aria-labelledby="eligibility-tab">
+    <% unless @study.eligibility_criteria.nil? %>
+      <%= @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>').html_safe %>
+    <% end %>
+  </div>
+  <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
+    <% unless @study.simple_description.blank? %>
+      <div><label>Description:</label>  <%= @study.simple_description %></div>
+    <% end %>
+    <div><label>Contact(s):</label> <%= contacts_display(c) %></div>
+    <div><label>Principal Investigator:</label> <%= @study.try(:pi_name) %></div>
+    <div><label>Principal Investigator ID:</label> <%= @study.try(:pi_id) %></div>
+    <div><label>Phase:</label> <%= @study.try(:phase) %></div>
+    <div><label>IRB Number:</label> <%= @study.try(:irb_number) %></div>
+  </div>
+</div>
+<br>
+
+<% unless @search_params.nil? %>
+  <%= link_to 'Back to Results', studies_path(search: @search_params), class: 'btn btn-school' %>
+<% end %>
+
+<%= render 'modals' %>

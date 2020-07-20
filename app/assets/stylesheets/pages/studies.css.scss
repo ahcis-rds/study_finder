@@ -80,6 +80,17 @@
     background: $highlight_color;
   }
 
+  h4{
+    a {
+      text-decoration: underline;
+      //font-weight: bold;
+      color: $school_main_color;
+    }
+    a:hover {
+      background-color: $school_secondary_color;
+    }
+  }
+  
   hr {
     margin: 30px 0;
   }

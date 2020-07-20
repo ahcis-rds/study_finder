@@ -43,7 +43,8 @@ class Admin::SystemController < ApplicationController
         :researcher_description,
         :secret_key,
         :display_keywords,
-        :display_groups_page
+        :display_groups_page,
+        :display_study_show_page
       )
     end
 end
