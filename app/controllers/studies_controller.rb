@@ -46,9 +46,7 @@ class StudiesController < ApplicationController
     unless @system_info.display_study_show_page
       redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
     end
-
     @study = Trial.find(params[:id])
-    params[:search].nil? ? @search_params = {} : @search_params = JSON.parse(params[:search])
   end
 
   def typeahead

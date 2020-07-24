@@ -71,8 +71,6 @@
 </div>
 <br>
 
-<% unless @search_params.nil? %>
-  <%= link_to 'Back to Results', studies_path(search: @search_params), class: 'btn btn-school' %>
-<% end %>
+<%= link_to 'Back', :back, class: 'btn btn-school' %>
 
 <%= render 'modals' %>
