@@ -19,6 +19,7 @@ describe "search/embed" do
   end
 
   it "changes not sure button to specific group/category if passed in as params[:group]" do
+    SystemInfo.destroy_all
     @system_info = SystemInfo.create({ initials: 'UMN', school_name: 'University of Minnesota', system_name: 'StudyFinder', secret_key: 'test', default_email: 'noreply@umn.edu', display_groups_page: true})
     assign(:category, Group.create!({ group_name: 'Heart Health' }) )
     allow(view).to receive(:params).and_return({action: 'embed', group: 'Heart%20Health' })
@@ -30,6 +31,7 @@ describe "search/embed" do
   end
 
   it "does not render the 'by category' logic if groups are suppressed" do
+    SystemInfo.destroy_all
     @system_info = SystemInfo.create({ initials: 'UMN', school_name: 'University of Minnesota', system_name: 'StudyFinder', secret_key: 'test', default_email: 'noreply@umn.edu', display_groups_page: false})
     allow(view).to receive(:params).and_return({action: 'embed'})
 
