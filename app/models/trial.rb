@@ -194,6 +194,7 @@ class Trial < ApplicationRecord
     self.as_json(
       only: [
         :simple_description,
+        :overall_status,
         :eligibility_criteria,
         :system_id,
         :gender,
