@@ -95,3 +95,11 @@ end
 # ============================================
 
 Rake::Task['studyfinder:ctgov:load'].invoke
+
+# ============================================
+# Trial attribute settings
+# ============================================
+attribute_setting_data = JSON.parse(IO.read(Rails.root.join("db/seeds/trial_attribute_settings.json")))
+system_info = SystemInfo.first
+system_info.trial_attribute_settings.delete_all
+system_info.trial_attribute_settings.create(attribute_setting_data)

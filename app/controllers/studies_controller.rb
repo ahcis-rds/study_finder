@@ -5,7 +5,8 @@ class StudiesController < ApplicationController
   
   def index
     @search_parameters = params[:search].deep_dup if !params[:search].nil?
-
+    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
+    
     if !params[:search].nil? and !params[:search][:category].nil?
       @group = Group.find(params[:search][:category])
       
@@ -47,6 +48,7 @@ class StudiesController < ApplicationController
       redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
     end
     @study = Trial.find(params[:id])
+    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
   end
 
   def typeahead

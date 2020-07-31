@@ -113,6 +113,23 @@ module StudiesHelper
     end
   end
 
+  def render_healthy_volunteers(study)
+    rendered = '<div class="healthy-message" data-toggle="popover" data-title="Healthy Volunteer" data-content="A person who does not have the condition or disease being studied." data-placement="top">'
+            
+    if study.healthy_volunteers == true
+      rendered = rendered + '<i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>'
+    else
+      rendered = rendered + '<i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>'
+    end
+    rendered = rendered + '</div>'
+
+    return rendered.html_safe
+  end
+
+  def render_age_display(study)
+     return (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit)) ? age_display_units(study.min_age_unit, study.max_age_unit) : age_display(study.min_age, study.max_age)
+  end
+
   def age_display_units(min_age_unit, max_age_unit)
     if min_age_unit == 'N/A' and max_age_unit != 'N/A'
       return "up to #{max_age_unit} old"
@@ -184,5 +201,26 @@ module StudiesHelper
     end
 
     return site_name
+  end
+
+  def render_attribute(settings, key, page, attribute, new_line = false)
+    setting = settings.select{|x|x.attribute_key == key}.first
+    rendered = ''
+    return rendered if setting.nil?
+
+    open_tag = (new_line == false ? '<span>' : '<p>')
+    close_tag = (new_line == false ? '</span>' : '</p>')
+
+    if page == 'show' && setting.display_attribute_on_show && !(setting.display_attribute_if_null_on_show == false && (attribute.nil? || attribute.blank?))
+      #configured to show up on the page unless attribute is nil
+      rendered = rendered + '<label>' + setting.attribute_label + '</label> ' if setting.display_label_on_show
+      rendered = rendered + open_tag + attribute.to_s + close_tag
+    elsif page == 'list' && setting.display_attribute_on_list && !(setting.display_attribute_if_null_on_list == false && (attribute.nil? || attribute.blank?))
+      rendered = rendered + '<label>' + setting.attribute_label + '</label> ' if setting.display_label_on_list
+      rendered = rendered + open_tag + attribute.to_s + close_tag
+    end
+    rendered = '<div class="nomargin" data-attribute-name=' + setting.attribute_key + '>' + rendered + '</div>' unless rendered == ''
+
+    return rendered.html_safe
   end
 end

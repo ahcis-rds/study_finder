@@ -157,7 +157,6 @@
     position: relative;
 
     label {
-      display: block;
       color: #404d5b;
     }
 
@@ -208,12 +207,6 @@
     margin: 5px;
   }
 
-  .healthy-message {
-    cursor: pointer;
-    max-width: 400px;
-    display: inline-block;
-  }
-
   .eligibility-line-break {
     display: block;
     content: " ";
@@ -238,4 +231,14 @@
 
 .eligibility-criteria {
   margin-bottom: 10px;
+}
+
+.healthy-message {
+  cursor: pointer;
+  max-width: 400px;
+  display: inline-block;
+}
+
+.strong {
+  font-weight: bold;
 }

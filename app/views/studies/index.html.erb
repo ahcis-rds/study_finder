@@ -77,86 +77,19 @@
           <%= highlight(t, 'display_title') %>
         <% end %>
       </h4>
-      <% unless t.simple_description.blank? %>
-        <div class="field important">
-          <strong>
-            <label>Description:</label>
-            <%= highlight(t, 'simple_description') %>
-          </strong>
-        </div>
-      <% end %>
-
-      <div class="field important">
-        <strong>
-          <label>Contact(s):</label>
-          <% c = determine_contacts(t) %>
-          <%= contacts_display(c) %>
-        </strong>
-      </div>
-
-      <% if t.respond_to?(:pi_name) %>
-        <div class="field important nomargin">
-          <label class="single">Principal Investigator:</label>
-          <strong>
-            <%= t.pi_name %>
-          </strong>
-        </div>
-      <% end %>
-
-      <% if t.respond_to?(:pi_id) %>
-        <div class="field important nomargin">
-          <label class="single">Principal Investigator ID:</label>
-          <strong>
-            <%= t.pi_id %>
-          </strong>
-        </div>
-      <% end %>
-
-      <div class="field important nomargin">
-        <label class="single">Sex:</label>
-        <strong>
-          <%= eligibility_display(t.gender) %>
-        </strong>
-      </div>
-
-      <div class="field important nomargin">
-        <label class="single">Age:</label>
-        <strong>
-          <%= (t.respond_to?(:min_age_unit) and t.respond_to?(:max_age_unit)) ? age_display_units(t.min_age_unit, t.max_age_unit) : age_display(t.min_age, t.max_age) %>
-        </strong>
-      </div>
-
-      <div class="field important nomargin">
-        <label class="single">Phase:</label>
-        <strong>
-          <%= t.phase %>
-        </strong>
-      </div>
       
-      <div class="field important nomargin">
-        <label class="single">Healthy Volunteers</label>
-        <strong>
-          <div class="healthy-message" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>
-            <% if t.healthy_volunteers == true %>
-              <i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>
-            <% else %>
-              <i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>
-            <% end %>
-          </div>
-        </strong>
-      </div>
-
-      <div class="field nomargin">
-        <label class="single">System ID:</label>
-        <%= t.system_id %>
-      </div>
-
-      <% unless t.irb_number.blank? %>
-        <div class="field nomargin">
-          <label class="single">IRB Number:</label>
-          <%= t.irb_number %>
-        </div>
-      <% end %>
+      <% c = determine_contacts(t) %>
+      <%= render_attribute(@attribute_settings, 'simple_description', 'list', t.simple_description, true) %>
+      <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
+      <%= render_attribute(@attribute_settings, 'contacts', 'list', contacts_display(c), true) %>
+      <%= render_attribute(@attribute_settings, 'principal_investigator', 'list', t.pi_name) %>
+      <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'list', t.pi_id) %>
+      <%= render_attribute(@attribute_settings, 'gender', 'list', eligibility_display(t.gender)) %>
+      <%= render_attribute(@attribute_settings, 'age', 'list', render_age_display(t)) %>
+      <%= render_attribute(@attribute_settings, 'phase', 'list', t.phase) %>
+      <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'list', render_healthy_volunteers(t)) %>
+      <%= render_attribute(@attribute_settings, 'system_id', 'list', t.system_id) %>
+      <%= render_attribute(@attribute_settings, 'irb_number', 'list', t.irb_number) %>
 
       <% unless t.eligibility_criteria.nil? %>
         <div class="field important eligibility-buttons">
@@ -164,50 +97,15 @@
           <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility hide"><i class="fa fa-close"></i> Hide eligibility criteria</div>
         </div>
         <div class="eligibility-criteria hide">
-          <%= highlight(t, 'eligibility_criteria').gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>').html_safe %>
+          <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
         </div>
       <% end %>
       
-      <% unless t.interventions.nil? %>
-        <div class="field nomargin">
-          <label class="single">Interventions:</label>
-          <div class="concept-list">
-            <%= highlight(t, 'interventions').gsub(';', ',').html_safe %>
-          </div>
-        </div>
-      <% end %>
-
-      <% unless t.conditions_map.nil? %>
-        <div class="field nomargin">
-          <label class="single">Conditions:</label>
-          <div class="concept-list">
-            <%= highlight(t, 'conditions_map').gsub(';', ',').html_safe %>
-          </div>
-        </div>
-      <% end %>
-
-      <% if @system_info.display_keywords? && !t.keywords.blank? %>
-        <div class="field nomargin">
-          <label class="single">Keywords:</label>
-          <div class="concept-list">
-            <%= highlight(t, 'keywords').gsub(';', ',').html_safe %>
-          </div>
-        </div>
-      <% end %>
-
-      <% if t.respond_to?(:sites) && !t.sites.blank? %>
-        <div class="field nomargin">
-          <label class="single">Sites:</label>
-          <%= t.sites.map {|x| site(x) }.join('; ') %>
-        </div>
-      <% end %>
-
-      <% if t.respond_to?(:disease_sites) && !t.disease_sites.blank? %>
-        <div class="field nomargin">
-          <label class="single">Disease Sites:</label>
-          <%= t.disease_sites.map {|x| x.disease_site_name }.join('; ') %>
-        </div>
-      <% end %>
+      <%= render_attribute(@attribute_settings, 'interventions', 'list', t.interventions.to_s.gsub(/;/,',').html_safe) %>
+      <%= render_attribute(@attribute_settings, 'conditions', 'list', t.conditions_map.to_s.gsub(/;/,',').html_safe) %>
+      <%= render_attribute(@attribute_settings, 'keywords', 'list', t.keywords.to_s.gsub(/;/,',').html_safe) %>
+      <%= render_attribute(@attribute_settings, 'sites', 'list', t.sites.map{|x| site(x) }.join('; ')) %>
+      <%= render_attribute(@attribute_settings, 'disease_sites', 'list', t.disease_sites.map{|x| x.disease_site_name }.join('; ')) %>
 
       <div class="trial-cta-options">
         <% if @system_info.display_study_show_page %>
@@ -266,3 +164,16 @@
 </div>
 
 <%= render 'modals' %>
+
+<script>
+ $(document).ready(function() {
+  $('div[data-attribute-name="overall_status"').addClass("strong important");
+  $('div[data-attribute-name="contacts"').addClass("strong important");
+  $('div[data-attribute-name="principal_investigator"').addClass("strong important");
+  $('div[data-attribute-name="principal_investigator_id"').addClass("strong important");
+  $('div[data-attribute-name="gender"').addClass("strong important");
+  $('div[data-attribute-name="age"').addClass("strong important");
+  $('div[data-attribute-name="phase"').addClass("strong important");
+  $('div[data-attribute-name="healthy_volunteers"').addClass("strong important");
+ });
+</script>

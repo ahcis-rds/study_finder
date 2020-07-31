@@ -44,7 +44,8 @@ class Admin::SystemController < ApplicationController
         :secret_key,
         :display_keywords,
         :display_groups_page,
-        :display_study_show_page
+        :display_study_show_page,
+        trial_attribute_settings_attributes: [:id, :attribute_label, :display_label_on_list, :display_attribute_on_list, :display_attribute_if_null_on_list, :display_label_on_show, :display_attribute_on_show, :display_attribute_if_null_on_show]
       )
     end
 end

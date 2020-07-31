@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_10_133712) do
+ActiveRecord::Schema.define(version: 2020_07_23_212151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -231,6 +231,19 @@ ActiveRecord::Schema.define(version: 2020_07_10_133712) do
     t.datetime "updated_at"
     t.index ["email"], name: "index_study_finder_users_on_email", unique: true
     t.index ["internet_id"], name: "index_study_finder_users_on_internet_id", unique: true
+  end
+
+  create_table "trial_attribute_settings", force: :cascade do |t|
+    t.integer "system_info_id"
+    t.string "attribute_name"
+    t.string "attribute_key"
+    t.string "attribute_label"
+    t.boolean "display_label_on_list", default: true
+    t.boolean "display_attribute_on_list", default: true
+    t.boolean "display_attribute_if_null_on_list", default: true
+    t.boolean "display_label_on_show", default: true
+    t.boolean "display_attribute_on_show", default: true
+    t.boolean "display_attribute_if_null_on_show", default: true
   end
 
 end

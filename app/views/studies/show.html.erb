@@ -1,21 +1,14 @@
 <% c = determine_contacts(@study) %>
-<div>
-  <div class="clearfix">
-    <div class="pull-left">
-      <h3><%= @study.brief_title %></h3>
-      <div class="well">
-        <label>Status:</label>  <span class="<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'label label-success' : 'label label-info' %>"><%= @study.try(:overall_status) %></span><br>
-        <label>System ID:</label> <span><%= @study.system_id %></span><br>
-        <label>Sex:</label> <span><%= eligibility_display(@study.gender) %></span><br>
-        <label>Age:</label> <span><%= (@study.respond_to?(:min_age_unit) and @study.respond_to?(:max_age_unit)) ? age_display_units(@study.min_age_unit, @study.max_age_unit) : age_display(@study.min_age, @study.max_age) %></span><br>
-        <div class="healthy-message" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>
-          <% if @study.healthy_volunteers == true %>
-            <i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>
-          <% else %>
-            <i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>
-          <% end %>
-        </div>
-      </div>
+
+<div class="clearfix">
+  <div class="pull-left">
+    <h3><%= @study.brief_title %></h3>
+    <div class="well">
+      <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status) %>
+      <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id) %>
+      <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender)) %>
+      <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study)) %>
+      <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study)) %>
     </div>
   </div>
 </div>
@@ -40,33 +33,22 @@
 <br>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
-    <div class="field nomargin">
-      <label>Interventions:</label>
-      <p><%= @study.interventions.gsub(/;/,',').html_safe unless @study.interventions.nil? %></p>
-    </div>
-    <div class="field nomargin">
-      <label>Conditions:</label>
-      <p><%= @study.conditions_map.gsub(/;/,',').html_safe unless @study.conditions_map.nil? %></p>
-    </div>
-    <div class="field nomargin">
-      <label>Keywords:</label>
-      <p><%= @study.keywords.gsub(/;/,',').html_safe unless @study.keywords.nil? %></p>
-    </div>
+    <%= render_attribute(@attribute_settings, 'interventions', 'show', @study.interventions.to_s.gsub(/;/,',').html_safe, true) %>
+    <%= render_attribute(@attribute_settings, 'conditions', 'show', @study.conditions_map.to_s.gsub(/;/,',').html_safe, true) %>
+    <%= render_attribute(@attribute_settings, 'keywords', 'show', @study.keywords.to_s.gsub(/;/,',').html_safe, true) %>
+    <%= render_attribute(@attribute_settings, 'sites', 'show', @study.sites.map{|x| site(x) }.join('; '), true) %>
+    <%= render_attribute(@attribute_settings, 'disease_sites', 'show', @study.disease_sites.map{|x| x.disease_site_name }.join('; '), true) %>
   </div>
   <div class="tab-pane fade" id="eligibility" role="tabpanel" aria-labelledby="eligibility-tab">
-    <% unless @study.eligibility_criteria.nil? %>
-      <%= @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>').html_safe %>
-    <% end %>
+    <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
   </div>
   <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
-    <% unless @study.simple_description.blank? %>
-      <div><label>Description:</label>  <%= @study.simple_description %></div>
-    <% end %>
-    <div><label>Contact(s):</label> <%= contacts_display(c) %></div>
-    <div><label>Principal Investigator:</label> <%= @study.try(:pi_name) %></div>
-    <div><label>Principal Investigator ID:</label> <%= @study.try(:pi_id) %></div>
-    <div><label>Phase:</label> <%= @study.try(:phase) %></div>
-    <div><label>IRB Number:</label> <%= @study.try(:irb_number) %></div>
+    <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description) %>
+    <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c)) %>
+    <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name) %>
+    <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id) %>
+    <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase) %>
+    <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number) %>
   </div>
 </div>
 <br>
@@ -74,3 +56,9 @@
 <%= link_to 'Back', :back, class: 'btn btn-school' %>
 
 <%= render 'modals' %>
+
+<script>
+ $(document).ready(function() {
+  $('div[data-attribute-name="overall_status"').find("span").addClass("<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'label label-success' : 'label label-info' %>");
+ });
+</script>
