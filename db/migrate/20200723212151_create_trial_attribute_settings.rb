@@ -16,8 +16,10 @@ class CreateTrialAttributeSettings < ActiveRecord::Migration[5.2]
     #seed data
     up_only do
       system_info = SystemInfo.first
-      attributes = JSON.parse(IO.read(Rails.root.join("db/seeds/trial_attribute_settings.json")))
-      system_info.trial_attribute_settings.create(attributes)
+      if system_info
+        attributes = JSON.parse(IO.read(Rails.root.join("db/seeds/trial_attribute_settings.json")))
+        system_info.trial_attribute_settings.create(attributes)
+      end
     end
   end
 end
