@@ -22,10 +22,10 @@ module Parsers
       oncore = @contents
 
       unless oncore['nct_id'].blank?
-        ctgov = StudyFinder::Trial.find_by(system_id: oncore['nct_id'])
+        ctgov = Trial.find_by(system_id: oncore['nct_id'])
       end
       if ctgov.nil?  
-        trial = StudyFinder::Trial.find_or_initialize_by(system_id: @id)
+        trial = Trial.find_or_initialize_by(system_id: @id)
 
         trial.system_id = @id
 

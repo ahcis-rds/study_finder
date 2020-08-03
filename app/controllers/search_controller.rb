@@ -3,9 +3,9 @@ class SearchController < ApplicationController
     response.headers.delete "X-Frame-Options" # Allow only this page to be available in an iframe.
     
     unless params[:group].nil?
-      @category = StudyFinder::Group.find_by(group_name: params[:group]) 
+      @category = Group.find_by(group_name: params[:group]) 
     end
-
+    
     render 'embed', layout: 'embed'
   end
 end

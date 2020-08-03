@@ -1,0 +1,157 @@
+<div class="admin">
+  <h2>Edit System Information</h2>
+  <p class="description">This section is where the administrator can configure how StudyFinder works.</p>
+  <div class="last-updated">
+    <i class="fa fa-info-circle big-icon"></i>
+    <strong>Trials Last Updated: <%= @updated.created_at.strftime('%m-%d-%Y') %></strong>
+  </div>
+
+  <hr/>
+
+  <%= simple_form_for @system, url: admin_system_path do |f| %>
+    
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item active"><a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information</a></li>
+      <li class="nav-item"><a class="nav-link" id="override-tab" data-toggle="tab" href="#override" role="tab" aria-controls="override" aria-selected="false">System Override Options</a></li>
+      <li class="nav-item"><a class="nav-link" id="trial-display-tab" data-toggle="tab" href="#trial-display" role="tab" aria-controls="trial-display" aria-selected="false">Study Attribute Display Options</a></li>
+      <li class="nav-item"><a class="nav-link" id="tracking-tab" data-toggle="tab" href="#tracking" role="tab" aria-controls="tracking" aria-selected="false">Analytics/Tracking Options</a></li>
+    </ul>
+    <br>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+        <h4> Basic Information</h4>
+        <%= f.input :initials %>
+        <%= f.input :school_name %>
+        <%= f.input :system_header %>
+        <%= f.input :system_description, as: :text, input_html: { rows: 5 } %>
+        <%= f.input :default_url %>
+        <%= f.input :default_email %>
+        <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %>
+
+        <label>Add Captcha to email forms</label>
+        <small>
+          <i>(Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.)</i>
+        </small>
+        <%= f.input :captcha, as: :select, label: false %>
+      </div>
+      <div class="tab-pane fade" id="override" role="tabpanel" aria-labelledby="override-tab">
+        <h4> System Override Options</h4>
+        <label>Search Term</label>
+        <small>
+          <i>(Search term is the term that will be used to pull clinical trials from ClinicalTrials.gov)</i>
+        </small>
+        <%= f.input :search_term, label: false %>
+
+        <label>Contact email suffix</label>
+        <small>
+          <i>(If populated, the system will find and display only contacts with this email pattern. On a trial located at multiple sites, the system will attempt to provide a @umn.edu email as the contact.)</i>
+        </small>
+        <%= f.input :contact_email_suffix, label: false %>
+
+        <label>Display Locations</label>
+        <small>
+          <i>(When a trial is located at multiple sites "display locations" determines if those other sites be listed within StudyFinder)</i>
+        </small>
+        <%= f.input :display_all_locations, as: :select, label: false %>
+
+        <label>Display Keywords</label>
+        <small>
+          <i>(Show a trial's keywords in the search results)</i>
+        </small>
+        <%= f.input :display_keywords, as: :select, label: false %>
+
+        <%= f.input :researcher_description, as: :text, input_html: { rows: 5 } %>
+
+        <label>Display Categories Page</label>
+        <small>
+          <i>(Show categories upon viewing the "Search for a Study" page)</i>
+        </small>
+        <%= f.input :display_groups_page, as: :select, label: false, include_blank: false %>
+
+        <label>Display Study Show Page</label>
+        <small>
+          <i>(Create a landing page for each study)</i>
+        </small>
+        <%= f.input :display_study_show_page, as: :select, label: false, include_blank: false %>
+      </div>
+      <div class="tab-pane fade" id="trial-display" role="tabpanel" aria-labelledby="trial-display-tab">
+        <h4> Study Attribute Display Options</h4>
+
+        <table class="table">
+          <tr>
+            <th colspan="2"></th>
+            <th colspan="3" class="highlight-col text-center">List Page Display Settings</th>
+            <th colspan="3" class="text-center">Show Page Display Settings</th>
+          </tr>
+          <tr>
+            <th>Attribute</th>
+            <th>Label</th>
+            <th class="highlight-col">Display Attribute</th>
+            <th class="highlight-col">Display If Blank</th>
+            <th class="highlight-col">Display Label</th>
+            <th>Display Attribute</th>
+            <th>Display If Blank</th>
+            <th>Display Label</th>
+          </tr>
+          <% @system.trial_attribute_settings.order(:attribute_name).each do |t| %>
+            <tr>
+              <input type="hidden" value="<%=t.id%>" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][id]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_id" ></input>
+              <td><%= t.attribute_name %></td>
+              <td><input type="text" value="<%= t.attribute_label %>" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][attribute_label]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_attribute_label"></td>
+              <td class="highlight-col">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_list">
+                <input type="checkbox" value="1" <% if t.display_attribute_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_list">
+              </td>
+              <td class="highlight-col">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_attribute_if_null_on_list">
+                <input type="checkbox" value="1" <% if t.display_attribute_if_null_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_if_null_on_list">
+              </td>
+              <td class="highlight-col">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_label_on_list">
+                <input type="checkbox" value="1" <% if t.display_label_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_list">
+              </td>
+              <td>
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_show">
+                <input type="checkbox" value="1" <% if t.display_attribute_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_show">
+              </td>
+              <td>
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_attribute_if_null_on_show">
+                <input type="checkbox" value="1" <% if t.display_attribute_if_null_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_if_null_on_show">
+              </td>
+              <td>
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_label_on_show">
+                <input type="checkbox" value="1" <% if t.display_label_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_show">
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="tracking" role="tabpanel" aria-labelledby="tracking-tab">
+        <h4> Analytics/Tracking Options</h4>
+        <label>Google analytics tracking ID</label>
+        <%= f.input :google_analytics_id, label: false %>
+        <%= f.input :research_match_campaign %>
+        <div class="form-group string optional">
+          <label class="string optional control-label" for="campaign_source"}>Campaign Source</label>
+          <input class="string optional form-control" id="campaign_source"></input>
+        </div>
+      </div>
+    </div>
+    <br>
+    <%= f.submit 'Update System Information', class: 'btn btn-school' %>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    var campaignElement = document.getElementById('campaign_source');
+    if(window.localStorage.getItem('utm_source')) {
+      campaignElement.value = window.localStorage.getItem('utm_source');
+    }
+    var formElement = document.getElementById('edit_study_finder_system_info_1');
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.localStorage.setItem('utm_source', campaignElement.value);
+      this.submit();
+    }, false);
+</script>

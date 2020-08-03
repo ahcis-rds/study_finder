@@ -7,9 +7,6 @@ $school_dark_color: #404d5b;
   background-size: 100% 100%;
   width: 288px;
   height: 38px;
-
-  // IE 8 fix
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='#{image_path("logo.png")}', sizingMethod='scale');
 }
 
 .navbar {
@@ -18,9 +15,6 @@ $school_dark_color: #404d5b;
     background-size: 100% 100%;
     width: 260px;
     height: 48px;
-
-    // IE 8 fix
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='#{image_path("sf-logo.png")}', sizingMethod='scale');
   }
 
   .nav {

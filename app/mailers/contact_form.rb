@@ -4,7 +4,7 @@ class ContactForm < MailForm::Base
   attribute :message, validate: true
 
   def headers
-    system_info = StudyFinder::SystemInfo.current
+    system_info = SystemInfo.current
     {
       subject: 'Study Finder - Contact Us',
       to: system_info.default_email,

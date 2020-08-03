@@ -20,7 +20,7 @@ namespace :studyfinder do
       connector.process(true)
 
       puts "Reindexing all trials into elasticsearch"
-      StudyFinder::Trial.import force: true
+      Trial.import force: true
     end
 
     task refresh_all: :environment do |t, args|
@@ -31,7 +31,7 @@ namespace :studyfinder do
       connector.process(true)
 
       puts "Reindexing all trials into elasticsearch"
-      StudyFinder::Trial.import force: true
+      Trial.import force: true
     end
 
     # ==============================================================================================
@@ -49,7 +49,7 @@ namespace :studyfinder do
       connector.process(true)
 
       puts "Reindexing all trials into elasticsearch"
-      StudyFinder::Trial.import force: true
+      Trial.import force: true
     end
 
   end

@@ -1,9 +1,0 @@
-.admin
-  %h3 Import Trials
-  %a(href="/trials-import-template.csv") Template
-
-  = form_tag admin_trials_import_path, multipart: true do
-    .form-group
-      %label File Input
-      = file_field_tag :file
-    = submit_tag "Import CSV", class: "btn btn-school"

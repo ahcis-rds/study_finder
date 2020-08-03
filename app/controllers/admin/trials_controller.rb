@@ -5,7 +5,7 @@ class Admin::TrialsController < ApplicationController
   require 'parsers/oncore'
 
   def new
-    @trial = StudyFinder::Trial.new
+    @trial = Trial.new
     @systems = ['Ctgov', 'Oncore']
 
     add_breadcrumb 'Trials Administration', :admin_trials_path
@@ -13,11 +13,11 @@ class Admin::TrialsController < ApplicationController
   end
 
   def preview
-    if params.has_key?('study_finder_trial') && params[:study_finder_trial].has_key?('system_id') && !params[:study_finder_trial][:system_id].blank?
-      @trial = StudyFinder::Trial.find_by(system_id: params[:study_finder_trial][:system_id])
+    if params.has_key?('trial') && params[:trial].has_key?('system_id') && !params[:trial][:system_id].blank?
+      @trial = Trial.find_by(system_id: params[:trial][:system_id])
 
       if @trial.nil?
-        parser = Parsers::Ctgov.new(params[:study_finder_trial][:system_id]) # initialize the parser
+        parser = Parsers::Ctgov.new(params[:trial][:system_id]) # initialize the parser
         parser.load # call the api and load the xml response
         @preview = parser.preview # preview the simple fields
       else
@@ -32,14 +32,14 @@ class Admin::TrialsController < ApplicationController
   end
 
   def import
-    StudyFinder::Trial.import_from_file(params[:file])
+    Trial.import_from_file(params[:file])
     redirect_to admin_trials_import_path, notice: "Trials Imported"
   rescue => e
     redirect_to admin_trials_import_path, alert: "Some trials may have failed to import: #{e}"
   end
 
   def create
-    trial = Parsers::Ctgov.new(params[:study_finder_trial][:system_id])
+    trial = Parsers::Ctgov.new(params[:trial][:system_id])
     trial.load
     trial.process
 
@@ -47,7 +47,7 @@ class Admin::TrialsController < ApplicationController
   end
 
   def review
-    @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    @trial = Trial.find_by(system_id: params[:id])
     @trial.reviewed = true
     @trial.save!
     redirect_to admin_trial_recent_as_path
@@ -56,7 +56,7 @@ class Admin::TrialsController < ApplicationController
   def recent_as
     @start_date = (params[:start_date].nil?) ? (DateTime.now - 30.days).strftime('%m/%d/%Y') : params[:start_date]
     @end_date = (params[:end_date].nil?) ? DateTime.now.strftime('%m/%d/%Y') : params[:end_date]
-    @trials = StudyFinder::Trial.includes(:disease_sites).find_range(@start_date, @end_date)
+    @trials = Trial.includes(:disease_sites).find_range(@start_date, @end_date)
 
     add_breadcrumb 'Trials Administration'
     add_breadcrumb 'Recently Added'
@@ -66,7 +66,7 @@ class Admin::TrialsController < ApplicationController
 
       format.xls do
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
-        response.headers['Content-Disposition'] = "attachment; filename=\"study_finder_trials_#{DateTime.now}.xls\""
+        response.headers['Content-Disposition'] = "attachment; filename=\"trials_#{DateTime.now}.xls\""
         render "recent_as.xls.erb"
       end
     end
@@ -74,9 +74,9 @@ class Admin::TrialsController < ApplicationController
 
   def index
     unless params[:q].nil?
-      @trials = StudyFinder::Trial.match_all_admin({ q: params[:q] }).page(params[:page]).records
+      @trials = Trial.match_all_admin({ q: params[:q] }).page(params[:page]).records
     else
-      @trials = StudyFinder::Trial.paginate(page: params[:page])
+      @trials = Trial.paginate(page: params[:page])
     end
 
     add_breadcrumb 'Trials Administration'
@@ -89,13 +89,13 @@ class Admin::TrialsController < ApplicationController
     trial.load
     trial.process
 
-    @trial = StudyFinder::Trial.find_by(system_id: params[:id])
+    @trial = Trial.find_by(system_id: params[:id])
 
     if @trial.nil?
       redirect_to admin_trials_path, alert: 'This trial does not exist'
     end
 
-    if @trial.parser.klass == 'Parsers::Ctgov' && !StudyFinder::Parser.find_by({ klass: 'Parsers::Oncore'}).blank?
+    if @trial.parser.klass == 'Parsers::Ctgov' && !Parser.find_by({ klass: 'Parsers::Oncore'}).blank?
       @oncore = Parsers::Oncore.new(@trial.system_id)
       @oncore.load(true)
     end
@@ -105,8 +105,8 @@ class Admin::TrialsController < ApplicationController
   end
 
   def update
-    @trial = StudyFinder::Trial.find_by(system_id: params[:id])
-
+    @trial = Trial.find_by(system_id: params[:id])
+    
     if @trial.update(trial_params)
       redirect_to edit_admin_trial_path(params[:id]), flash: { success: 'Trial updated successfully' }
     else
@@ -116,7 +116,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:study_finder_trial).permit(
+      params.require(:trial).permit(
         :simple_description, :visible, 
         :featured, :recruiting, :contact_override, :cancer_yn,
         :contact_override_first_name, :contact_override_last_name, :pi_name, :pi_id, :recruitment_url, 

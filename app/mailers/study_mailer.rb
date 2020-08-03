@@ -23,7 +23,7 @@ class StudyMailer < ActionMailer::Base
     @age = age
     @conditions = @trial.conditions_map
     @interventions = @trial.interventions
-    system_info = StudyFinder::SystemInfo.current
+    system_info = SystemInfo.current
 
     mail(from: system_info.default_email, to: email, reply_to: email, subject: "StudyFinder - #{trial.brief_title}")
   end

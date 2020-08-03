@@ -31,7 +31,7 @@ system = {
   contact_email_suffix: '@umn.edu'
 }
 
-system_info = StudyFinder::SystemInfo.find_or_initialize_by(initials: system[:initials])
+system_info = SystemInfo.find_or_initialize_by(initials: system[:initials])
 system_info.school_name = system[:school_name]
 system_info.system_name = system[:system_name]
 system_info.system_header = system[:system_header]
@@ -56,7 +56,7 @@ system_info.save!
     klass: 'Parsers::Ctgov'
   }
 ].each do |p|
-  parser = StudyFinder::Parser.find_or_initialize_by(name: p[:name])
+  parser = Parser.find_or_initialize_by(name: p[:name])
   parser.klass = p[:klass]
   parser.save!
 end
@@ -73,7 +73,7 @@ end
     email: "fake@example.edu"
   }
 ].each do |u|
-  user = StudyFinder::User.find_or_initialize_by(internet_id: u[:internet_id])
+  user = User.find_or_initialize_by(internet_id: u[:internet_id])
   user.first_name = u[:first_name]
   user.last_name = u[:last_name]
   user.email = u[:email]
@@ -85,9 +85,9 @@ end
 # ============================================
 
 CSV.foreach(Rails.root.join("db/seeds/condition_groups.csv")) do |group_name, condition_name|
-  group = StudyFinder::Group.find_or_create_by(group_name: group_name)
-  condition = StudyFinder::Condition.find_or_create_by(condition: condition_name)
-  StudyFinder::ConditionGroup.find_or_create_by(group: group, condition: condition)
+  group = Group.find_or_create_by(group_name: group_name)
+  condition = Condition.find_or_create_by(condition: condition_name)
+  ConditionGroup.find_or_create_by(group: group, condition: condition)
 end
 
 # ============================================
@@ -95,3 +95,11 @@ end
 # ============================================
 
 Rake::Task['studyfinder:ctgov:load'].invoke
+
+# ============================================
+# Trial attribute settings
+# ============================================
+attribute_setting_data = JSON.parse(IO.read(Rails.root.join("db/seeds/trial_attribute_settings.json")))
+system_info = SystemInfo.first
+system_info.trial_attribute_settings.delete_all
+system_info.trial_attribute_settings.create(attribute_setting_data)

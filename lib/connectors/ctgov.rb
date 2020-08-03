@@ -4,8 +4,8 @@ module Connectors
     require 'zip'
 
     def initialize
-      @system_info = StudyFinder::SystemInfo.current
-      @parser_id = StudyFinder::Parser.find_by({ klass: 'Parsers::Ctgov'}).id
+      @system_info = SystemInfo.current
+      @parser_id = Parser.find_by({ klass: 'Parsers::Ctgov'}).id
 
       if @system_info.nil?
         raise "There is no system info associated. Please run the seeds file, or add the info in the system administration section."
@@ -70,7 +70,7 @@ module Connectors
       end_load_time = Time.now
 
       puts "Logging update to updaters table. Processed #{count} records."
-      StudyFinder::Updater.create({
+      Updater.create({
         parser_id: @parser_id,
         num_updated: count
       })
@@ -82,12 +82,12 @@ module Connectors
     def clear
       puts "Clearing out all the old trial tables."
 
-      StudyFinder::TrialIntervention.delete_all
-      StudyFinder::TrialLocation.delete_all
-      StudyFinder::TrialKeyword.delete_all
-      StudyFinder::Location.delete_all
-      StudyFinder::Trial.delete_all
-      StudyFinder::TrialCondition.delete_all
+      TrialIntervention.delete_all
+      TrialLocation.delete_all
+      TrialKeyword.delete_all
+      Location.delete_all
+      Trial.delete_all
+      TrialCondition.delete_all
     end
 
     private
