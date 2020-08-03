@@ -1,0 +1,52 @@
+<div class="admin">
+  <h2>Lookup Trial Information</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <dl>
+        <dt>System ID (NCT ID from ClinicalTrials.gov / Protocol ID from Oncore)</dl>
+        <dd><%= @preview.system_id %></dd>
+      </dl>
+      <dl>
+        <dt>Brief Title</dl>
+        <dd><%= @preview.brief_title %></dd>
+      </dl>
+      <dl>
+        <dt>Official Title</dl>
+        <dd><%= @preview.official_title %></dd>
+      </dl>
+      <dl>
+        <dt>Acronym</dl>
+        <dd><%= @preview.acronym %></dd>
+      </dl>
+      <dl>
+        <dt>Phase</dl>
+        <dd><%= @preview.phase %></dd>
+      </dl>
+      <dl>
+        <dt>Overall Status</dl>
+        <dd><%= @preview.overall_status %></dd>
+      </dl>
+      <dl>
+        <dt>Verification Date</dl>
+        <dd><%= @preview.verification_date %></dd>
+      </dl>
+      <dl>
+        <dt>Brief Summary</dl>
+        <dd><%= @preview.brief_summary %></dd>
+      </dl>
+      <dl>
+        <dt>Detailed Description</dl>
+        <dd><%= @preview.detailed_description %></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <%= simple_form_for @preview, url: admin_trials_path, method: :post do |f| %>
+        <%= f.input :system_id, as: :hidden %>
+        <%= f.submit 'Confirm & Add Trial', class: 'btn btn-school' %>
+        <%= link_to 'Back to Lookup', new_admin_trial_path, class: 'btn btn-default' %>
+      <% end %>
+    </div>
+  </div>
+</div>

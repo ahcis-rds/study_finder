@@ -1,0 +1,64 @@
+<% c = determine_contacts(@study) %>
+
+<div class="clearfix">
+  <div class="pull-left">
+    <h3><%= @study.brief_title %></h3>
+    <div class="well">
+      <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status) %>
+      <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id) %>
+      <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender)) %>
+      <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study)) %>
+      <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study)) %>
+    </div>
+  </div>
+</div>
+
+<div class="button-holder">
+  <% unless @study.recruitment_url.blank? %>
+    <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
+  <% end %>
+  <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=@study.display_title%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= @study.system_id %>')"><i class="fa fa-envelope"></i> Share via email</div>
+  <% unless c.empty? %>
+    <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+  <% end %>
+  <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
+</div>
+<br>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item active"><a class="nav-link active" id="conditions-tab" data-toggle="tab" href="#conditions" role="tab" aria-controls="conditions" aria-selected="true">Conditions & Interventions</a></li>
+  <li class="nav-item"><a class="nav-link" id="eligibility-tab" data-toggle="tab" href="#eligibility" role="tab" aria-controls="eligibility" aria-selected="false">Eligibility Criteria</a></li>
+  <li class="nav-item"><a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">Additional Details</a></li>
+</ul>
+<br>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
+    <%= render_attribute(@attribute_settings, 'interventions', 'show', @study.interventions.to_s.gsub(/;/,',').html_safe, true) %>
+    <%= render_attribute(@attribute_settings, 'conditions', 'show', @study.conditions_map.to_s.gsub(/;/,',').html_safe, true) %>
+    <%= render_attribute(@attribute_settings, 'keywords', 'show', @study.keywords.to_s.gsub(/;/,',').html_safe, true) %>
+    <%= render_attribute(@attribute_settings, 'sites', 'show', @study.sites.map{|x| site(x) }.join('; '), true) %>
+    <%= render_attribute(@attribute_settings, 'disease_sites', 'show', @study.disease_sites.map{|x| x.disease_site_name }.join('; '), true) %>
+  </div>
+  <div class="tab-pane fade" id="eligibility" role="tabpanel" aria-labelledby="eligibility-tab">
+    <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+  </div>
+  <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
+    <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description) %>
+    <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c)) %>
+    <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name) %>
+    <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id) %>
+    <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase) %>
+    <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number) %>
+  </div>
+</div>
+<br>
+
+<%= link_to 'Back', :back, class: 'btn btn-school' %>
+
+<%= render 'modals' %>
+
+<script>
+ $(document).ready(function() {
+  $('div[data-attribute-name="overall_status"').find("span").addClass("<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'label label-success' : 'label label-info' %>");
+ });
+</script>

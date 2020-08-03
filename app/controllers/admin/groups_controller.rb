@@ -4,31 +4,36 @@ class Admin::GroupsController < ApplicationController
   require 'csv'
   
   def index
-    @groups = StudyFinder::Group.all
+    @groups = Group.all
 
     add_breadcrumb 'Groups'
   end
 
   def new
-    @group = StudyFinder::Group.new
-    @conditions = StudyFinder::Condition.all.order(:condition)
+    @group = Group.new
+    @subgroups = Subgroup.all.order(:name)
+    @conditions = Condition.all.order(:condition)
 
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Add Group'
   end
 
   def create
-    @group = StudyFinder::Group.new(group_params)
+    @group = Group.new(group_params)
+    
     if @group.save(@group)
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
     else
+      @subgroups = Subgroup.all.order(:name)
+      @conditions = Condition.all.order(:condition)
       render action: 'new'
     end
   end
 
   def edit
-    @group = StudyFinder::Group.find(params[:id])
-    @conditions = StudyFinder::Condition.all.order(:condition)
+    @group = Group.find(params[:id])
+    @subgroups = Subgroup.all.order(:name)
+    @conditions = Condition.all.order(:condition)
     
     add_breadcrumb 'Groups', :admin_groups_path
     add_breadcrumb 'Edit Group'
@@ -40,14 +45,10 @@ class Admin::GroupsController < ApplicationController
   end
 
   def update
-    @group = StudyFinder::Group.find(params[:id])
-    
-    params[:condition_ids] = [] if params[:condition_ids].nil?
-    params[:children] = false if params[:children].nil?
-    params[:adults] = false if params[:adults].nil?
-    params[:healthy_volunteers] = false if params[:healthy_volunteers].nil?
+    @group = Group.find(params[:id])
 
-    @group.subgroups = params[:tags].to_s.split(',').map do |subgroup|
+    #TODO - revisit this logic and get working with strong params
+    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
       @group.subgroups.build(name: subgroup)
     end
     @group.save
@@ -55,12 +56,14 @@ class Admin::GroupsController < ApplicationController
     if @group.update(group_params)
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
     else
+      @subgroups = Subgroup.all.order(:name)
+      @conditions = Condition.all.order(:condition)
       render 'edit'
     end
   end
 
   def destroy
-    @group = StudyFinder::Group.find(params[:id])
+    @group = Group.find(params[:id])
     if @group.destroy
       redirect_to admin_groups_path, flash: { success: 'Group removed successfully' }
     else
@@ -69,14 +72,14 @@ class Admin::GroupsController < ApplicationController
   end
 
   def reindex
-    StudyFinder::Trial.import force: true
+    Trial.import force: true
 
     add_breadcrumb 'Groups', :admin_groups_path
   end
 
   private
     def group_params
-      params.permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
+      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
     end
 
     def generate_csv

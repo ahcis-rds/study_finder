@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe StudyMailer do
   describe 'contact_team' do
-    trial = StudyFinder::Trial.create({ 
+    trial = Trial.create({ 
       system_id: 'NCT00002668',
       brief_title: 'PATIENT SKILLS FOR CANCER PAIN CONTROL IN PATIENTS WITH METASTATIC BREAST OR PROSTATE CANCER',
       overall_status: 'Recruiting',
       healthy_volunteers: 'No'
     })
 
-    system_info = StudyFinder::SystemInfo.create({
+    system_info = SystemInfo.create({
       initials: 'UMN',
       school_name: 'University of Minnesota',
       system_name: 'Study Finder',

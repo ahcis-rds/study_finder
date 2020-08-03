@@ -15,6 +15,6 @@
 //= require bootstrap.min
 //= require bootstrap.typeahead.min
 //= require select2.min
-//= require jquery.idletimer
+//= require idle-timer.min
 //= require bootstrap-datepicker.min
 //= require_tree .

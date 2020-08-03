@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
 <head>
   <title><%= @system_info.initials %> - <%= @system_info.system_name %></title>
   <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700" type="text/css" rel="stylesheet" media="all">
   <link href="https://fonts.googleapis.com/css?family=Prompt:400,700" type="text/css" rel="stylesheet">
 
   <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <meta name=viewport content="width=device-width, initial-scale=1">
   <meta name=apple-mobile-web-app-capable content=yes>
@@ -35,7 +33,6 @@
       <span id="utm-campaign"></span>
     </footer>
   </div>
-  <%= javascript_include_tag 'application' %>
   <%= render 'shared/analytics' %>
 </body>
 </html>

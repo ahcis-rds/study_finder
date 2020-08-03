@@ -1,0 +1,74 @@
+<div class="admin">
+  <div class="clearfix">
+    <h3 class="pull-left">Trials</h3>
+    <div class="pull-right header-button">
+      <%= link_to 'Add Trial', new_admin_trial_path, class: 'btn btn-school'%>
+      <%= link_to 'Import Trials', admin_trials_import_path, class: 'btn btn-default'%>
+    </div>
+  </div>
+  <p class="description">This section is where the administrator can configure trials within StudyFinder. To add a new trial from clincialtrials.gov click the "Add Trial" button above.  Otherwise, use the search box to find a specific trial and then click the "Edit" button to edit specific information related to that trial. You may also see a list of new trials and <a href="<%= admin_trial_recent_as_path %>">Review</a> them.</p>
+  <hr/>
+  <div class="clearfix">
+    <div class="pull-left">
+      <%= form_tag admin_trials_path, method: :get do %>
+        <div class="form-group">
+          <label>Search</label>
+          <%= text_field_tag :q, params[:q], class: 'form-control', style: 'width: 400px' %>
+        </div>
+        <div class="form-group">
+          <%= submit_tag 'Search', class: 'btn btn-school' %>
+          <%= link_to 'Clear', admin_trials_path, class: 'btn btn-default' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="pull-right">
+      <%= will_paginate @collection, renderer: BootstrapPagination::Rails %>
+    </div>
+  </div>
+  <table class="table table-bordered table-trials">
+    <tr>
+      <th>System Id</th>
+      <th>Brief Title</th>
+      <th>Simple Description</th>
+      <th>Contact</th>
+      <th>Status</th>
+      <th>Recruiting?</th>
+      <th>Visible?</th>
+      <th>Conditions</th>
+      <th>Interventions</th>
+      <th></th>
+    </tr>
+    <% if @trials.empty? && params[:q].nil? %>
+      <tr><td colspan="9">There are no trials loaded.  Please make sure the nightly job is running, or add trials manually using the add button above.</td></tr>
+    <% elsif @trials.empty? && !params[:q].nil? %>
+      <tr><td colspan="9">No trials found with search criteria <strong><%= params[:q] %></strong></td></tr>
+    <% end %>
+    <% @trials.each do |t| %>
+      <tr>
+        <td><%= t.system_id %></td>
+        <td><%= t.display_title %></td>
+        <td><%= t.simple_description %></td>
+        <td> <%=t.contact_override_last_name %> <%=t.contact_override_first_name %> <%=t.contact_override %></td>
+        <td><%= t.overall_status %></td>
+        <td><%= t.recruiting? ? 'Yes' : 'No' %></td>
+        <td><%= t.visible? ? 'Yes' : 'No' %></td>
+        <td>
+          <ul>
+            <% t.conditions.each do |c| %>
+              <li><%= c.condition %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% t.trial_interventions.each do |i| %>
+              <li><%= i.intervention %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td><%= link_to 'Edit', edit_admin_trial_path(t.system_id), class: 'btn btn-school' %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= will_paginate @collection, renderer: BootstrapPagination::Rails %>
+</div>

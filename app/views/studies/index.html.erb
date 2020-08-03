@@ -1,0 +1,179 @@
+<% if @system_info.captcha %>
+  <script>
+    var myselfWidget;
+    var studyTeamWidget;
+    var onloadCallback = function() {
+      myselfWidget = grecaptcha.render('myself-captcha', {
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+      });
+      studyTeamWidget = grecaptcha.render('study-team-captcha', {
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+      });
+    };
+  </script>
+<% end %>
+
+<div class="study-result-hud">
+  <%= render 'shared/refine_search' %>
+</div>
+
+<% unless @suggestions.nil? %>
+  <% unless @suggestions['suggest']['suggestions'].empty? %>
+    <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
+      <% replacement_search = params[:search][:q].gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
+      <% if replacement_search != params[:search][:q] %>
+        <div clsas="suggestions">
+          <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
+          <div class="alert alert-info"><i class="fa fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="study-results">
+  <div class="study-results-info">
+    <h3>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h3>
+    <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
+
+    <% if !params[:search].nil? and !params[:search][:category].nil? %>
+      <a class="btn btn-default" href="<%=remove_category_param%>">Search all categories</a>
+      <hr class="tighten"/>
+      <% unless @group.subgroups.empty? %>
+        <p class="subgroup-text"><strong>Suggestions within category "<%= @group.group_name %>"</strong></p>
+        <div class="subgroups">
+          <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
+          <% p = request.query_parameters.dup %>
+          <% @group.subgroups.sort_by{ |l| l.name }.each do |subgroup| %>
+            <% p[:search][:q] = subgroup.name %>
+            <%= link_to subgroup.name, "studies?#{p.to_query}", class: 'btn btn-school btn-subgroup' %>
+          <% end %>
+        </div>
+      <% end %>
+      <hr class="tighten"/>   
+    <% end %>
+    <div class="clearfix">
+      <div class="pull-left study-count">
+        <span><%= @trials.empty? ? 0 : @trials.total %></span> Study Matches
+      </div>
+      <div class="pull-right top-paginate">
+        <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <% if @trials.empty? %>
+    <div class="alert"><i class="fa fa-warning"></i> There were no trials that matched your search for <strong><%= params[:search][:q] %></strong></div>
+  <% end %>
+
+  <% @trials.each_with_index do |t, i| %>
+    <div class="study">
+      <h4>
+        <% if @system_info.display_study_show_page %>
+          <%= link_to highlight(t, 'display_title'), study_path(id: t.id) %>
+        <% else %>
+          <%= highlight(t, 'display_title') %>
+        <% end %>
+      </h4>
+      
+      <% c = determine_contacts(t) %>
+      <%= render_attribute(@attribute_settings, 'simple_description', 'list', t.simple_description, true) %>
+      <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
+      <%= render_attribute(@attribute_settings, 'contacts', 'list', contacts_display(c), true) %>
+      <%= render_attribute(@attribute_settings, 'principal_investigator', 'list', t.pi_name) %>
+      <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'list', t.pi_id) %>
+      <%= render_attribute(@attribute_settings, 'gender', 'list', eligibility_display(t.gender)) %>
+      <%= render_attribute(@attribute_settings, 'age', 'list', render_age_display(t)) %>
+      <%= render_attribute(@attribute_settings, 'phase', 'list', t.phase) %>
+      <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'list', render_healthy_volunteers(t)) %>
+      <%= render_attribute(@attribute_settings, 'system_id', 'list', t.system_id) %>
+      <%= render_attribute(@attribute_settings, 'irb_number', 'list', t.irb_number) %>
+
+      <% unless t.eligibility_criteria.nil? %>
+        <div class="field important eligibility-buttons">
+          <div class="btn btn-xs btn-school-inverse btn-show-full-eligibility">Show full eligibility criteria</div>
+          <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility hide"><i class="fa fa-close"></i> Hide eligibility criteria</div>
+        </div>
+        <div class="eligibility-criteria hide">
+          <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+        </div>
+      <% end %>
+      
+      <%= render_attribute(@attribute_settings, 'interventions', 'list', t.interventions.to_s.gsub(/;/,',').html_safe) %>
+      <%= render_attribute(@attribute_settings, 'conditions', 'list', t.conditions_map.to_s.gsub(/;/,',').html_safe) %>
+      <%= render_attribute(@attribute_settings, 'keywords', 'list', t.keywords.to_s.gsub(/;/,',').html_safe) %>
+      <%= render_attribute(@attribute_settings, 'sites', 'list', t.sites.map{|x| site(x) }.join('; ')) %>
+      <%= render_attribute(@attribute_settings, 'disease_sites', 'list', t.disease_sites.map{|x| x.disease_site_name }.join('; ')) %>
+
+      <div class="trial-cta-options">
+        <% if @system_info.display_study_show_page %>
+          <%= link_to "<i class='fa fa-bookmark'></i> View Study".html_safe, study_path(id: t.id), class: 'btn btn-school'%>
+        <% end %>
+
+        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
+        
+        <% unless c.empty? %>
+          <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+        <% end %>
+
+        <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
+
+        <% unless t.recruitment_url.blank? %>
+          <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
+        <% end %>
+
+        <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
+          <div class="btn btn-school btn-all-locations"><i class="fa fa-location-arrow"></i> Show All <%= t.trial_locations.count %> locations</div>
+          <div class="field hide study-locations">
+            <hr/>
+            <div class="clearfix">
+              <h4 class="pull-left">Study Locations</h4>
+              <div class="btn btn-school btn-hide pull-right"><i class="fa fa-close"></i> Hide all locations</div>
+            </div>
+            <table class="table table-bordered">
+              <tr>
+                <th>Location</th>
+                <th>Contacts</th>
+              </tr>
+              <% t.trial_locations.sort_by{ |l| l['location_name'] ? l['location_name']: '' }.each do |location| %>
+                <tr>
+                  <td><%= location.location_name %> <small><%= location.city %>, <%= location.state %></small></td>
+                  <td>
+                    <%= location.last_name %>
+                    <% unless location.email.nil? %>
+                      <a href="mailto:<%=location.email%>"> - (<%= location.email %>)</a>
+                    <% end %>
+                    <%= location.backup_last_name %>
+                    <% unless location.backup_email.nil? %>
+                      <a href="mailto:<%=location.backup_email%>"> - (<%= location.backup_email %>)</a>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  <% end %>
+  <hr/>
+  <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+</div>
+
+<%= render 'modals' %>
+
+<script>
+ $(document).ready(function() {
+  $('div[data-attribute-name="overall_status"').addClass("strong important");
+  $('div[data-attribute-name="contacts"').addClass("strong important");
+  $('div[data-attribute-name="principal_investigator"').addClass("strong important");
+  $('div[data-attribute-name="principal_investigator_id"').addClass("strong important");
+  $('div[data-attribute-name="gender"').addClass("strong important");
+  $('div[data-attribute-name="age"').addClass("strong important");
+  $('div[data-attribute-name="phase"').addClass("strong important");
+  $('div[data-attribute-name="healthy_volunteers"').addClass("strong important");
+ });
+</script>

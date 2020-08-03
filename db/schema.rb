@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_17_194422) do
+ActiveRecord::Schema.define(version: 2020_07_23_212151) do
 
   create_table "study_finder_condition_groups", force: :cascade do |t|
     t.integer "group_id", precision: 38
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 2019_12_17_194422) do
     t.text "researcher_description"
     t.boolean "captcha", default: false, null: false
     t.boolean "display_keywords", default: true
+    t.boolean "display_groups_page", default: true, null: false
+    t.boolean "display_study_show_page", default: false, null: false
   end
 
   create_table "study_finder_trial_conditions", force: :cascade do |t|
@@ -226,6 +228,19 @@ ActiveRecord::Schema.define(version: 2019_12_17_194422) do
     t.datetime "updated_at", precision: 6
     t.index ["email"], name: "i_study_finder_users_email", unique: true
     t.index ["internet_id"], name: "i_stu_fin_use_int_id", unique: true
+  end
+
+  create_table "trial_attribute_settings", force: :cascade do |t|
+    t.integer "system_info_id"
+    t.string "attribute_name"
+    t.string "attribute_key"
+    t.string "attribute_label"
+    t.boolean "display_label_on_list", default: true
+    t.boolean "display_attribute_on_list", default: true
+    t.boolean "display_attribute_if_null_on_list", default: true
+    t.boolean "display_label_on_show", default: true
+    t.boolean "display_attribute_on_show", default: true
+    t.boolean "display_attribute_if_null_on_show", default: true
   end
 
 end

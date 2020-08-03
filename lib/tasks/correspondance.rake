@@ -2,7 +2,7 @@ namespace :studyfinder do
   namespace :coorespondance do
     task generate_pis: :environment do |t, args|
 
-      results = StudyFinder::Trial.find_by_sql("
+      results = Trial.find_by_sql("
         select x.system_id, x.email, max(x.name) as name
         from (
         select system_id, contact_email as email, contact_last_name as name

@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   post 'researchers/trials/search', controller: 'researchers', action: 'search_results', as: :search_trial_results_researchers
   resources :sessions, only: ['new', 'create']
   delete 'sessions/destroy', controller: 'sessions', action: 'destroy', as: 'session' # manually creating this route to exclude requiring an id in the destroy route
-  resources :studies, only: ['index']
+  resources :studies, only: ['index', 'show']
   get 'studies/typeahead', controller: 'studies', action: 'typeahead'
   post 'studies/contact_team', controller: 'studies', action: 'contact_team'
   post 'studies/email_me', controller: 'studies', action: 'email_me'

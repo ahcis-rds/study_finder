@@ -2,20 +2,20 @@ class Admin::SystemController < ApplicationController
   before_action :authorize_admin
   
   def index
-    @system = StudyFinder::SystemInfo.current
+    @system = SystemInfo.current
     redirect_to edit_admin_system_path(@system.id)
   end
 
   def edit
-    @system = StudyFinder::SystemInfo.find(params[:id])
-    @updated = StudyFinder::Updater.all.last
+    @system = SystemInfo.find(params[:id])
+    @updated = Updater.all.last
 
     add_breadcrumb 'System Administration'
   end
 
   def update
-    @system = StudyFinder::SystemInfo.find(params[:id])
-    @updated = StudyFinder::Updater.all.last
+    @system = SystemInfo.find(params[:id])
+    @updated = Updater.all.last
     
     if @system.update(system_params)
       redirect_to edit_admin_system_path(params[:id]), flash: { success: 'System information updated successfully' }
@@ -26,7 +26,7 @@ class Admin::SystemController < ApplicationController
 
   private
     def system_params
-      params.require(:study_finder_system_info).permit(
+      params.require(:system_info).permit(
         :initials,
         :school_name,
         :system_name,
@@ -42,7 +42,10 @@ class Admin::SystemController < ApplicationController
         :display_all_locations,
         :researcher_description,
         :secret_key,
-        :display_keywords
+        :display_keywords,
+        :display_groups_page,
+        :display_study_show_page,
+        trial_attribute_settings_attributes: [:id, :attribute_label, :display_label_on_list, :display_attribute_on_list, :display_attribute_if_null_on_list, :display_label_on_show, :display_attribute_on_show, :display_attribute_if_null_on_show]
       )
     end
 end
