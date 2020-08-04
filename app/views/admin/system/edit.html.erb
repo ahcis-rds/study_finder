@@ -99,24 +99,24 @@
               <td><%= t.attribute_name %></td>
               <td><input type="text" value="<%= t.attribute_label %>" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][attribute_label]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_attribute_label"></td>
               <td class="highlight-col">
-                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_list">
-                <input type="checkbox" value="1" <% if t.display_attribute_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_list">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_list">
+                <input type="checkbox" value="1" <% if t.display_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_list">
               </td>
               <td class="highlight-col">
-                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_attribute_if_null_on_list">
-                <input type="checkbox" value="1" <% if t.display_attribute_if_null_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_if_null_on_list">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_if_null_on_list">
+                <input type="checkbox" value="1" <% if t.display_if_null_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_if_null_on_list">
               </td>
               <td class="highlight-col">
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_label_on_list">
                 <input type="checkbox" value="1" <% if t.display_label_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_list">
               </td>
               <td>
-                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_show">
-                <input type="checkbox" value="1" <% if t.display_attribute_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_on_show">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_show">
+                <input type="checkbox" value="1" <% if t.display_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_show">
               </td>
               <td>
-                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_attribute_if_null_on_show">
-                <input type="checkbox" value="1" <% if t.display_attribute_if_null_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_attribute_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_attribute_if_null_on_show">
+                <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_if_null_on_show">
+                <input type="checkbox" value="1" <% if t.display_if_null_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_if_null_on_show">
               </td>
               <td>
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_label_on_show">

@@ -6,11 +6,11 @@ class CreateTrialAttributeSettings < ActiveRecord::Migration[5.2]
       t.string :attribute_key
       t.string :attribute_label
       t.boolean :display_label_on_list, default: true
-      t.boolean :display_attribute_on_list, default: true
-      t.boolean :display_attribute_if_null_on_list, default: true
+      t.boolean :display_on_list, default: true
+      t.boolean :display_if_null_on_list, default: true
       t.boolean :display_label_on_show, default: true
-      t.boolean :display_attribute_on_show, default: true
-      t.boolean :display_attribute_if_null_on_show, default: true
+      t.boolean :display_on_show, default: true
+      t.boolean :display_if_null_on_show, default: true
     end
 
     #seed data
