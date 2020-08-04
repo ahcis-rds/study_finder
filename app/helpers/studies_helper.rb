@@ -211,11 +211,11 @@ module StudiesHelper
     open_tag = (new_line == false ? '<span>' : '<p>')
     close_tag = (new_line == false ? '</span>' : '</p>')
 
-    if page == 'show' && setting.display_attribute_on_show && !(setting.display_attribute_if_null_on_show == false && (attribute.nil? || attribute.blank?))
+    if page == 'show' && setting.display_on_show && !(setting.display_if_null_on_show == false && (attribute.nil? || attribute.blank?))
       #configured to show up on the page unless attribute is nil
       rendered = rendered + '<label>' + setting.attribute_label + '</label> ' if setting.display_label_on_show
       rendered = rendered + open_tag + attribute.to_s + close_tag
-    elsif page == 'list' && setting.display_attribute_on_list && !(setting.display_attribute_if_null_on_list == false && (attribute.nil? || attribute.blank?))
+    elsif page == 'list' && setting.display_on_list && !(setting.display_if_null_on_list == false && (attribute.nil? || attribute.blank?))
       rendered = rendered + '<label>' + setting.attribute_label + '</label> ' if setting.display_label_on_list
       rendered = rendered + open_tag + attribute.to_s + close_tag
     end
