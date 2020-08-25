@@ -1,8 +1,16 @@
 development:
-  url: "oracle-enhanced://study_finder_development:oracle@db/orclpdb1.localdomain"
+  adapter: postgresql
+  host: postgres
+  database: study_finder_development
+  username: postgres
+  password: postgres
 
 test:
-  url: "oracle-enhanced://study_finder_test:oracle@db/orclpdb1.localdomain"
+  adapter: postgresql
+  host: postgres
+  database: study_finder_test
+  username: postgres
+  password: postgres
 
 staging:
   url: <%= ENV['DATABASE_URL'] %>

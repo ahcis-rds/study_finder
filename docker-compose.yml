@@ -8,12 +8,14 @@ services:
     volumes:
       - ./config/analysis:/usr/share/elasticsearch/config/analysis
       - elasticsearch:/usr/share/elasticsearch/data
-  db:
-    image: "hst-docker.artifactory.umn.edu/oracle:12.2.0.1-slim"
+  postgres:
+    image: postgres:11
+    environment:
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - db:/ORCL
+      - postgres:/var/lib/postgresql/data
     ports:
-      - "1521:1521"
+      - 5432:5432
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -21,7 +23,6 @@ services:
       - .:/app
       - bundle_cache:/usr/local/bundle
     environment:
-      - ORACLE_SYSTEM_PASSWORD=Oradoc_db1
       - USER=${USER}
       - es_host=elasticsearch
       - theme=umn
@@ -29,8 +30,8 @@ services:
       - 3000:3000
     depends_on:
       - elasticsearch
-      - db
+      - postgres
 volumes:
-  db:
+  postgres:
   elasticsearch:
   bundle_cache:
