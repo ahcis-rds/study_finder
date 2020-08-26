@@ -10,16 +10,6 @@
       </select>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <label for='gender'>Sex</label>
-      <select id="gender" name="search[gender]" class="form-control">
-        <option value=''>Any</option>
-        <option value='Female'>Female</option>
-        <option value='Male'>Male</option>
-      </select>
-    </div>
-  </div>
   <div class="age-ranges">
     <label class="checkbox"><%= check_box_tag 'search[children]' %>Children (age &lt; 18 years)</label>
     <label class="checkbox"><%= check_box_tag 'search[adults]' %>Adults (age &ge; 18 years)</label>
@@ -33,7 +23,7 @@
   <div class="search-controls">
     <%= submit_tag 'Search', class: 'btn btn-lg btn-school btn-search' %>
     <% if @system_info.try(:display_groups_page) == true %>
-      <a class="btn btn-primary btn-lg btn-search" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Browse by category</a>
+      <a class="btn btn-primary btn-not-sure" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Not sure what you're looking for?<br>Click here to browse all research opportunities</a>
     <% end %>
   </div>
 <% end %>

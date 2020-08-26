@@ -54,6 +54,16 @@ $school_dark_color: #404d5b;
   background: $school_secondary_color;
 }
 
+.btn-school-inverted {
+  color: $school_main_color;
+  background: $school_secondary_color;
+
+  &:hover {
+    color: white;
+    background: $school_main_color;
+  }
+}
+
 @media ( max-width: $screen-sm-min ) {
   .brand {
     width: 240px;

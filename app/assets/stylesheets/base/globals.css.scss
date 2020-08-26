@@ -129,6 +129,25 @@ footer {
   height: 440px;
 }
 
+.banner-content {
+  background: $school_secondary_color;
+}
+
+.banner-text {
+  padding-left: 30px;
+}
+
+.banner-image {
+  background: $school_secondary_color;
+  width: 780px;
+}
+
+.featured-image img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 .bordered {
   border: 10px solid white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -154,4 +173,12 @@ footer {
   height: 1.2em;
   background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
   background: linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.col-right-border {
+  border-right: 1px solid #ccc;
+}
+
+.hyperlink-header {
+  text-decoration: underline;
 }

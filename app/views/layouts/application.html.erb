@@ -22,7 +22,8 @@
     <%= yield %>
     <hr>
     <footer>
-      <span>StudyFinder was developed by the <a href="http://www.ctsi.umn.edu" target="_blank">Clinical and Translational Science Institute (CTSI)</a>, and is supported by the NIH Clinical and Translational Science Award at the University of Minnesota: UL1TR000114.</span>
+      <p>StudyFinder was developed by the <a href="http://www.ctsi.umn.edu" target="_blank">Clinical and Translational Science Institute (CTSI)</a>, and is supported by the NIH Clinical and Translational Science Award at the University of Minnesota: UL1TR000114.</p>
+      <span>If you'd like to learn more about using StudyFinder at your institution, please contact <a href="mailto:sfinder@umn.edu">sfinder@umn.edu</a>.</span>
       <span class="credentials">
         <% if logged_in? %>
           <%= link_to 'Sign Out', session_path, data: { method: "delete" } %>

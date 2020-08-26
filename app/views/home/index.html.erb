@@ -1,8 +1,39 @@
-<div class="mast visible-lg-block"></div>
+<div class="main-content banner-content">
+  <div class="row">
+    <div class="col-xs-12 hidden-lg hidden-md"><hr></div>
+    <div class="col-md-4">
+      <h2 class="banner-text">Be part of tomorrow's healthcare breakthroughs</h2>
+        <p class="banner-text">When you participate in a University of Minnesota study, you can help create a healthier future.</p>
+        <br>
+        <div class="banner-text">
+          <%= link_to 'Volunteer for a study', categories_path, class: 'btn btn-school btn-lg' %>
+        </div>
+        <br>
+    </div>
+    <div class="w-100 d-block d-sm-none"></div>
+    <div class="col-md-8 visible-lg-block visible-md-block">
+      <%= image_tag 'home-collage.jpg', class: 'pull-right visible-lg-block' %>
+      <%= image_tag 'home-collage-condensed.jpg', class: 'pull-right visible-md-block' %>
+    </div>
+  </div>
+</div>
+
 <div class="content home">
-  <div class="row home-content">
-    <div class="col-md-6 search-form-content">
-      <h2>Find a Study Opportunity</h2>
+  <% unless @featured_category.blank? %>
+    <div class="row home-content">
+      <div class="col-md-2 featured-image">
+        <%= link_to image_tag('covid.jpg'), studies_path(search: { category: @featured_category.try(:id) }), class: 'hyperlink-header', title: @featured_category.group_name %>
+      </div>
+      <div class="col-md-10 featured-content">
+        <a href="<%=studies_path(search: { category: @featured_category.try(:id) })%>" title="<%=@featured_category.group_name %>"><h2 class="hyperlink-header">COVID-19 studies that need volunteers</h2></a>
+        <p>The University of Minnesota has several clinical trials to test experimental medicines that could help those with coronavirus.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row home-content well">
+    <div class="col-md-6 search-form-content col-right-border">
+      <h2>Find a study that's right for you</h2>
       <%= render 'shared/search_form' %>
     </div>
     <div class="w-100 d-block d-sm-none"></div>
@@ -11,15 +42,35 @@
       <%= @system_info.system_description.html_safe %>
     </div>
   </div>
+
+  <div class="row home-content">
+    <div class="col-md-6 study-highlights">
+      <h2>Studies at the University of Minnesota</h2>
+      <p>The U of M conducts research on a wide range of health issues, from <a href='#{ !@cancer_category.nil? == true ? studies_path(search: { category: @cancer_category.try(:id) }) : studies_path }'>cancer</a> and <a href='#{ !@diabetes_category.nil? == true ? studies_path(search: { category: @diabetes_category.try(:id) }) : studies_path }'>diabetes</a> to <a href='#{ !@prevention_category.nil? == true ? studies_path(search: { category: @prevention_category.try(:id) }) : studies_path }'>prevention</a> and <a href='#{ !@womens_health_category.nil? == true ? studies_path(search: { category: @womens_health_category.try(:id) }) : studies_path }'>women's health</a>.</p>
+      <p>Every study is different. Some studies need people with certain diseases or conditions, while others are open to healthy volunteers. One study may ask volunteers to go into a clinic, while others just ask that you complete a survey.</p>
+      <p>There are many ways you can participate in U of M research, and there’s always a need for volunteers.</p>
+      <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
+    </div>
+    <div class="w-100 d-block d-sm-none"></div>
+    <div class="col-md-6 system-description visible-lg-block visible-md-block">
+      <%= image_tag 'campus-aerial.jpg', class: 'bordered' %>
+    </div>
+  </div>
   <hr/>
-  <h3>Find more ways to get involved with research!</h3>
-  <div class="row">
-    <div class="col-md-6 rm-link">
-      <h4><a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank"><%= image_tag "researchmatch.png" %> Research Match</a></h4>
+  
+  <h2>More ways to get involved</h2>
+  <div class="row">  
+    <div class="col-md-6 rm-link col-right-border">
+      <a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank">
+        <%= image_tag "researchmatch.png", class: 'pull-left' %>
+        <h4 class="hyperlink-header">Research Match</h4>
+      </a>
+      <span>Complete a short questionnaire and you'll get matched to studies that are right for you.</span>
     </div>
     <div class="w-100 d-block d-sm-none"></div>
     <div class="col-md-6 contact-link">
-      <h4><%= link_to 'Contact Us', contact_index_path, class: 'btn btn-school btn-lg' %></h4>
+      <a href="<%=contact_index_path%>" title="Contact Us"><h4 class="hyperlink-header">Contact Us</h4></a>
+      <span>Get answers to your questions or help finding a study.</span>
     </div>
   </div>
 </div>
