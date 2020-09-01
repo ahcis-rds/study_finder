@@ -33,7 +33,11 @@
 
 <div class="study-results">
   <div class="study-results-info">
-    <h3>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h3>
+    <% if !params[:search][:category].nil? %>
+      <h3><%= @group.group_name + 'Studies' %></h3>
+    <% else %>
+      <h3>Search Results</h3>
+    <% end %>
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
 
     <% if !params[:search].nil? and !params[:search][:category].nil? %>
