@@ -1,35 +1,44 @@
-<div class="navbar">
-  <div class="container brand-marks clearfix">
-    <a href="#" class="brand pull-left"></a>
-    <div class="pull-right system-logo visible-lg-block visible-md-block visible-sm"></div>
-  </div>
-  <p class="alt-header visible-xs-block">Study Finder</p>
-  <div class="container main-nav">
-    <div class="row">
-      <ul class="nav navbar-nav pull-right">
-        <li><a href="<%= root_path %>" <% if params[:controller] == 'home' %>class="active"<% end %>>Home</a></li>
+<div class="container-fluid">
+  <%= image_tag 'logo.png', class: 'logo' %>
+  <%= image_tag 'sf-logo.png', class: 'logo float-right d-none d-md-block' %>
+</div>
+<div id="header-content">
+  <div class="alt-header d-block d-md-none"><span>Study Finder</span></div>
+  <nav class="navbar navbar-default" id="main-nav">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item"></li>
+    </ul>
+    <ul class="nav">
+      <li class="nav-item"><a href="<%= root_path %>" class="nav-link <%= 'active' if params[:controller] == 'home' %>">Home</a></li>
+      <div class="w-100 d-block d-md-none"></div>
+      <li class="nav-item">
         <% if @system_info.display_groups_page %>
-          <li><a href="<%= categories_path %>" <% if ['categories','studies'].include? params[:controller] %>class="active"<% end %>>Search for a Study</a></li>
+          <li class="nav-item"><a href="<%= categories_path %>" class="nav-link <%= 'active' if ['categories','studies'].include? params[:controller] %>">Search for a Study</a></li>
         <% else %>
-          <li><a href="<%= studies_path %>" <% if ['categories','studies'].include? params[:controller] %>class="active"<% end %>>Search for a Study</a></li>
+          <li class="nav-item"><a href="<%= studies_path %>" class="nav-link <%= 'active' if ['categories','studies'].include? params[:controller] %>">Search for a Study</a></li>
         <% end %>
-        <li><a href="<%= researchers_path %>" <% if params[:controller] == 'researchers' %>class="active"<% end %> class="nav-for-researchers">For Researchers</a></li>
-        <li><a href="<%= contact_index_path %>" <% if params[:controller] == 'contact' %>class="active"<% end %>>Contact Us</a></li>
-        <% if is_admin? %>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Admin <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><%= link_to 'System Administration', admin_system_index_path %></li>
-            <li><%= link_to 'User Administration', admin_users_path %></li>
-            <li><%= link_to 'Group Administration', admin_groups_path %></li>
-            <li><%= link_to 'Site Administration', admin_sites_path %></li>
-            <li><%= link_to 'Disease Site Administration', admin_disease_sites_path %></li>
-            <li><%= link_to 'Trial Administration', admin_trials_path %></li>
-            <li><%= link_to 'Reports', admin_reports_path %></li>
-          </ul>
+      </li>
+      <div class="w-100 d-block d-md-none"></div>
+      <li class="nav-item"><a href="<%= researchers_path %>" class="nav-link <%= 'active' if params[:controller] == 'researchers' %>">For Researchers</a></li>
+      <div class="w-100 d-block d-md-none"></div>
+      <li class="nav-item"><a href="<%= contact_index_path %>" class="nav-link <%= 'active' if params[:controller] == 'contact' %>">Contact Us</a></li>
+      <div class="w-100 d-block d-md-none"></div>
+      <% if is_admin? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle <%= 'active' if params[:controller].include? 'admin' %>" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog"></i> Admin
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="width: 250px;">
+            <%= link_to 'System Administration', admin_system_index_path, class: 'nav-link' %>
+            <%= link_to 'User Administration', admin_users_path, class: 'nav-link' %>
+            <%= link_to 'Group Administration', admin_groups_path, class: 'nav-link' %>
+            <%= link_to 'Site Administration', admin_sites_path, class: 'nav-link' %>
+            <%= link_to 'Disease Site Administration', admin_disease_sites_path, class: 'nav-link' %>
+            <%= link_to 'Trial Administration', admin_trials_path, class: 'nav-link' %>
+            <%= link_to 'Reports', admin_reports_path, class: 'nav-link' %>
+          </div>
         </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
+      <% end %>
+    </ul>
+  </nav>
 </div>

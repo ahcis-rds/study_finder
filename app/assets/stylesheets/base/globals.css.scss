@@ -19,6 +19,16 @@ footer {
   font-weight: 500;
   font-size: 12px;
   font-style: italic;
+
+  a {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #212529;
+  }
+  a:hover {
+    background-color: $school_secondary_color;
+    color: $school_main_color;
+  }
 }
 
 .btn, .alert, .breadcrumb, .pagination, .input-lg {
@@ -73,12 +83,12 @@ footer {
       color: $school_main_color;
     }
   }
-  .active span {
-    background-color: $school_main_color;
-    border-color: $school_main_color;
-  }
-  li:last-child>a, .pagination>li:last-child>span, li:first-child>a, .pagination>li:first-child>span {
-    border-radius: 0;
+
+  .page-item.active {
+    .page-link {
+      background-color: $school_main_color;
+      border-color: $school_main_color;
+    }
   }
 }
 
@@ -154,4 +164,11 @@ footer {
   height: 1.2em;
   background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
   background: linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding: .25rem .4rem;
+  font-size: .875rem;
+  line-height: .5;
+  border-radius: .2rem;
 }

@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap.min
+//= require bootstrap.bundle.min
 //= require bootstrap.typeahead.min
 //= require select2.min
 //= require idle-timer.min

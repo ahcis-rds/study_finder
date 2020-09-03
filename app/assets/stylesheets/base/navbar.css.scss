@@ -1,44 +1,52 @@
-.navbar {
-  margin-bottom: 0;
-  border: 0;
-
-  .main-nav {
-    background: $school_secondary_color;
+#header-content {
+  margin-top: 25px;
+  a {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $school_secondary_color;
   }
-  .brand-marks {
-    padding: 30px;
-    background: white;
+}
+
+#main-nav {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: $school_secondary_color;
+  border: 0 !important;
+  box-shadow: none;
+  color: #fff;
+  .nav-link{
+    font-size: 12px;
+    padding: 10px 15px;
+    color: $body_text;
+    font-weight: 600;
   }
-  .nav {
-    a {
-      font-size: 12px;
-      padding: 10px 15px;
-      color: $body_text;
-      font-weight: 600;
-      text-transform: uppercase;
-
-      &:hover {
-        color: white;
-        background: $school_main_color;
-      }
-    }
-    a.active {
-      color: white;
-      background: $school_main_color;
-    }
-
-    .dropdown-menu {
-      a {
-        color: $body_text;
-      }
-    }
-  }
-
-  .alt-header {
-    margin: 10px 0 0;
-    font-size: 26px;
-    padding: 15px;
-    background: $school_main_color;
+  
+  .nav-link:hover{
     color: white;
+    background: $school_main_color;
   }
+  .nav-link.active{
+    color: white;
+    background: $school_main_color;
+  }
+  
+  .dropdown-menu {
+    a {
+      color: $body_text;
+    }
+  }
+}
+
+.alt-header {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-size: 26px;
+  background: $school_main_color;
+  color: white;
+}
+
+.logo {
+  margin-top: 25px;
+  width: 250px;
 }
