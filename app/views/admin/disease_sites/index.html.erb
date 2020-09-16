@@ -20,7 +20,7 @@
       <tr>
         <td><%= s.disease_site_name %></td>
         <td><%= s.group.group_name unless s.group.nil? %></td>
-        <td style="width: 150px">
+        <td style="width: 160px">
           <%= link_to 'Edit', edit_admin_disease_site_path(s.id), class: 'btn btn-primary' %>
           <%= link_to 'Delete', admin_disease_site_path(s.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this site?" }%>
         </td>
