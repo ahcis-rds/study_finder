@@ -73,3 +73,11 @@
     }
   }
 }
+
+
+table.table-trials {
+  td:last-child {
+    width: 1%;
+    white-space: nowrap;
+  }
+}

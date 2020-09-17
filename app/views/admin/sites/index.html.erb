@@ -26,7 +26,7 @@
         <td><%= s.city %></td>
         <td><%= s.state %></td>
         <td><%= s.zip %></td>
-        <td style="width: 160px">
+        <td>
           <%= link_to 'Edit', edit_admin_site_path(s.id), class: 'btn btn-primary' %>
           <%= link_to 'Delete', admin_site_path(s.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this site?" }%>
         </td>
