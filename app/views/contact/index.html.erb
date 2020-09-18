@@ -1,41 +1,37 @@
-<div class="content contact row">
-  <div class="col-md-6">
-    <h2>Contact Us</h2>
-    <p>We would love to hear from you!</p>
-    <%= form_tag contact_index_path, method: :post do %>
-      <div class="form-group">
-        <label class="control-label">Name (*)</label>
-        <%= text_field_tag 'name', params[:name], class: 'form-control' %>
-      </div>
-      <div class="form-group">
-        <label class="control-label">Email (*)</label>
-        <%= text_field_tag 'email', params[:email], class: 'form-control' %>
-      </div>
-      <div class="form-group">
-        <label class="control-label">Message (*)</label>
-        <%= text_area_tag 'message', params[:message], class: 'form-control' %>
-      </div>
-      <% if @system_info.captcha %>
+<div class="content contact">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Contact Us</h2>
+      <p>We would love to hear from you!</p>
+      <%= form_tag contact_index_path, method: :post do %>
         <div class="form-group">
-          <div id="myself-captcha" name="myself-captcha"></div>
-        <div>
-      <% end %>
-      <%= submit_tag 'Contact Us', class: 'btn btn-school', onclick: "track('send', 'event', 'contact_us_submit', 'submit')" %>
-    <% end %>
-  </div>
-  <div class="col-6 d-none d-md-block">
-    <%= image_tag 'contact-us.jpg', class: 'bordered' %>
-  </div>
-</div>
+          <label class="control-label">Name (*)</label>
+          <%= text_field_tag 'name', params[:name], class: 'form-control' %>
+          <label class="control-label">Email (*)</label>
+          <%= text_field_tag 'email', params[:email], class: 'form-control' %>
+          <label class="control-label">Message (*)</label>
+          <%= text_area_tag 'message', params[:message], class: 'form-control' %>
+          <% if @system_info.captcha %>
+            <div id="myself-captcha" name="myself-captcha"></div>
+          <% end %>
+        </div>
 
-<% if @system_info.captcha %>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
-  <script>
-    var myselfWidget;
-    var onloadCallback = function() {
-      myselfWidget = grecaptcha.render('myself-captcha', {
-        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
-      });
-    };
-  </script>
-<% end %>
+        <%= submit_tag 'Contact Us', class: 'btn btn-school', onclick: "track('send', 'event', 'contact_us_submit', 'submit')" %>
+      <% end %>
+    </div>
+    <div class="col-6 d-none d-md-block">
+      <%= image_tag 'contact-us.jpg', class: 'bordered' %>
+    </div>
+  </div>
+  <% if @system_info.captcha %>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
+    <script>
+      var myselfWidget;
+      var onloadCallback = function() {
+        myselfWidget = grecaptcha.render('myself-captcha', {
+          'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+        });
+      };
+    </script>
+  <% end %>
+</div>
