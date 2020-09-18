@@ -6,6 +6,11 @@ clinicaltrials.gov and augments the data from alternate datasources such as a
 clinical trials management system. StudyFinder also has a basic theming
 component which allows for even further customizations.
 
+Contact the StudyFinder team at studyfinder@umn.edu if you:
+- Are interested in using StudyFinder at your institution, or
+- Have any questions about StudyFinder, or
+- Want to learn more about updates or enhancements of the tool.
+
 ## Development
 
 The easiest way to get started with a development environment is to use `docker-compose`:

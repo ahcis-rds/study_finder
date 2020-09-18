@@ -45,7 +45,7 @@
       <%= simple_form_for @preview, url: admin_trials_path, method: :post do |f| %>
         <%= f.input :system_id, as: :hidden %>
         <%= f.submit 'Confirm & Add Trial', class: 'btn btn-school' %>
-        <%= link_to 'Back to Lookup', new_admin_trial_path, class: 'btn btn-default' %>
+        <%= link_to 'Back to Lookup', new_admin_trial_path, class: 'btn btn-outline-secondary' %>
       <% end %>
     </div>
   </div>

@@ -1,11 +1,11 @@
-<div class="mast visible-lg-block"></div>
+<div class="mast d-none d-md-block "></div>
 <div class="content home">
   <div class="row home-content">
     <div class="col-md-6 search-form-content">
       <h2>Find a Study Opportunity</h2>
       <%= render 'shared/search_form' %>
     </div>
-    <div class="w-100 d-block d-sm-none"></div>
+    <div class="w-100 d-block d-md-none"></div>
     <div class="col-md-6 system-description">
       <h2><%= @system_info.system_header %></h2>
       <%= @system_info.system_description.html_safe %>
@@ -17,7 +17,7 @@
     <div class="col-md-6 rm-link">
       <h4><a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank"><%= image_tag "researchmatch.png" %> Research Match</a></h4>
     </div>
-    <div class="w-100 d-block d-sm-none"></div>
+    <div class="w-100 d-block d-md-none"></div>
     <div class="col-md-6 contact-link">
       <h4><%= link_to 'Contact Us', contact_index_path, class: 'btn btn-school btn-lg' %></h4>
     </div>

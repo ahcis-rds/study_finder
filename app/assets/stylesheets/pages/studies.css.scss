@@ -48,12 +48,6 @@
     border: 0;
     width: 100%;
   }
-
-  .pagination .active span {
-    background-color: $school_secondary_color;
-    border-color: $school_secondary_color;
-    font-family: 'Prompt';
-  }
 }
 
 .suggestions {
@@ -179,7 +173,7 @@
     }
 
     .nomargin {
-      margin-bottom: 2px;
+      margin: 0px;
     }
 
     font-size: 13px;

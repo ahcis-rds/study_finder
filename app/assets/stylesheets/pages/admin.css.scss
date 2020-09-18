@@ -61,4 +61,23 @@
   .highlight-col {
     background-color: whitesmoke;
   }
+
+  .checkbox {
+    span {
+      margin: 0;
+      padding: 0;
+    }
+    label {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+
+table.table-trials {
+  td:last-child {
+    width: 1%;
+    white-space: nowrap;
+  }
 }

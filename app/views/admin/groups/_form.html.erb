@@ -1,6 +1,6 @@
 <%= simple_form_for [:admin, @group] do |f| %>
   <%= f.input :group_name, label: 'Group name' %>
-  <%#= f.association :subgroups, collection: @subgroups, input_html: {class: 'select2'} %>
+  <%= f.association :subgroups, collection: @subgroups, input_html: {class: 'select2'} %>
   
   <hr/>
   
@@ -15,16 +15,13 @@
   <hr/>
 
   <label>Choose all conditions that apply</label><br>
-  <%= f.collection_check_boxes :condition_ids, @conditions, :id, :condition, :item_wrapper_class => 'col-xs-12' %>
+  <%= f.collection_check_boxes :condition_ids, @conditions, :id, :condition, :item_wrapper_class => 'd-block checkbox' %>
 
   <div class="controls">
     <%= f.submit 'Save Group', class: 'btn btn-school' %>
-    <%= link_to 'Back to group admin', admin_groups_path, class: 'btn btn-default' %>
+    <%= link_to 'Back to group admin', admin_groups_path, class: 'btn btn-outline-secondary' %>
     <% if params[:action] == 'edit' %>
       <%= link_to 'Export to Excel', edit_admin_group_path(id: params[:id], format: 'csv'), class: 'btn btn-success' %>
     <% end%>
   </div>
 <% end %>
-
-
-
