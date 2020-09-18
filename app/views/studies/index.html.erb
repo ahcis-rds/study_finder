@@ -41,7 +41,7 @@
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
 
     <% if !params[:search].nil? and !params[:search][:category].nil? %>
-      <a class="btn btn-default" href="<%=remove_category_param%>">Search all categories</a>
+      <a class="btn btn-outline-secondary" href="<%=remove_category_param%>">Search all categories</a>
       <hr class="tighten"/>
       <% unless @group.subgroups.empty? %>
         <p class="subgroup-text"><strong>Suggestions within category "<%= @group.group_name %>"</strong></p>
@@ -54,14 +54,13 @@
           <% end %>
         </div>
       <% end %>
-      <hr class="tighten"/>   
     <% end %>
     <div class="clearfix">
       <div class="pull-left study-count">
         <span><%= @trials.empty? ? 0 : @trials.total %></span> Study Matches
       </div>
       <div class="pull-right top-paginate">
-        <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+        <%= will_paginate @trials, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %>
       </div>
     </div>
   </div>
@@ -97,10 +96,10 @@
 
       <% unless t.eligibility_criteria.nil? %>
         <div class="field important eligibility-buttons">
-          <div class="btn btn-xs btn-school-inverse btn-show-full-eligibility">Show full eligibility criteria</div>
-          <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility hide"><i class="fa fa-close"></i> Hide eligibility criteria</div>
+          <div class="btn btn-xs btn-school-inverse btn-show-full-eligibility"><i class="fa fa-plus"></i> Show full eligibility criteria</div>
+          <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility d-none"><i class="fa fa-close"></i> Hide eligibility criteria</div>
         </div>
-        <div class="eligibility-criteria hide">
+        <div class="eligibility-criteria d-none card card-body">
           <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
         </div>
       <% end %>
@@ -132,7 +131,7 @@
 
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
           <div class="btn btn-school btn-all-locations"><i class="fa fa-location-arrow"></i> Show All <%= t.trial_locations.count %> locations</div>
-          <div class="field hide study-locations">
+          <div class="field d-none study-locations">
             <hr/>
             <div class="clearfix">
               <h4 class="pull-left">Study Locations</h4>
@@ -164,9 +163,9 @@
 
       </div>
     </div>
+    <hr/>
   <% end %>
-  <hr/>
-  <%= will_paginate @trials, renderer: BootstrapPagination::Rails %>
+  <%= will_paginate @trials, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %>
 </div>
 
 <%= render 'modals' %>

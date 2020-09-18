@@ -1,7 +1,7 @@
 <div class="main-content banner-content">
   <div class="row">
     <div class="col-xs-12 hidden-lg hidden-md"><hr></div>
-    <div class="col-md-4">
+    <div class="col-md-4 d-none d-sm-block">
       <h2 class="banner-text">Be part of tomorrow's healthcare breakthroughs</h2>
         <p class="banner-text">When you participate in a University of Minnesota study, you can help create a healthier future.</p>
         <br>
@@ -12,12 +12,11 @@
     </div>
     <div class="w-100 d-block d-sm-none"></div>
     <div class="col-md-8 visible-lg-block visible-md-block">
-      <%= image_tag 'home-collage.jpg', class: 'pull-right visible-lg-block' %>
-      <%= image_tag 'home-collage-condensed.jpg', class: 'pull-right visible-md-block' %>
+      <%= image_tag 'home-collage.jpg', class: 'pull-right d-none d-xl-block' %>
+      <%= image_tag 'home-collage-condensed.jpg', class: 'pull-right d-none d-lg-block d-xl-none' %>
     </div>
   </div>
 </div>
-
 <div class="content home">
   <% unless @featured_category.blank? %>
     <div class="row home-content">
@@ -36,7 +35,7 @@
       <h2>Find a study that's right for you</h2>
       <%= render 'shared/search_form' %>
     </div>
-    <div class="w-100 d-block d-sm-none"></div>
+    <div class="w-100 d-block d-md-none"></div>
     <div class="col-md-6 system-description">
       <h2><%= @system_info.system_header %></h2>
       <%= @system_info.system_description.html_safe %>
@@ -67,7 +66,7 @@
       </a>
       <span>Complete a short questionnaire and you'll get matched to studies that are right for you.</span>
     </div>
-    <div class="w-100 d-block d-sm-none"></div>
+    <div class="w-100 d-block d-md-none"></div>
     <div class="col-md-6 contact-link">
       <a href="<%=contact_index_path%>" title="Contact Us"><h4 class="hyperlink-header">Contact Us</h4></a>
       <span>Get answers to your questions or help finding a study.</span>

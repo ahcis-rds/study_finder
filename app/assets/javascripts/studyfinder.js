@@ -35,23 +35,23 @@ function addDatePickers() {
 
 function addListeners() {
   $('.study-results').on('click', '.btn-all-locations', function() {
-    $(this).next('.study-locations').removeClass('hide');
+    $(this).next('.study-locations').removeClass('d-none');
   });
 
   $('.study-results').on('click', '.btn-hide', function() {
-    $(this).parent().parent().addClass('hide');
+    $(this).parent().parent().addClass('d-none');
   });
 
   $('.study-results').on('click', '.btn-show-full-eligibility', function() {
-    $(this).addClass('hide');
-    $(this).next('.btn-hide-full-eligibility').removeClass('hide');
-    $(this).parent().next('.eligibility-criteria').removeClass('hide');
+    $(this).addClass('d-none');
+    $(this).next('.btn-hide-full-eligibility').removeClass('d-none');
+    $(this).parent().next('.eligibility-criteria').removeClass('d-none');
   });
 
   $('.study-results').on('click', '.btn-hide-full-eligibility', function() {
-    $(this).addClass('hide');
-    $(this).prev('.btn-show-full-eligibility').removeClass('hide');
-    $(this).parent().next('.eligibility-criteria').addClass('hide');
+    $(this).addClass('d-none');
+    $(this).prev('.btn-show-full-eligibility').removeClass('d-none');
+    $(this).parent().next('.eligibility-criteria').addClass('d-none');
   });
 
   $('.btn-reindex').on('click', function() {

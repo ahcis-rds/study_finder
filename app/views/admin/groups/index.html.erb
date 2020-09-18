@@ -33,7 +33,7 @@
       <tr>
         <td><%= g.group_name %></td>
         <td><%= g.condition_groups.size %></td>
-        <td style="width: 150px">
+        <td>
           <%= link_to 'Edit', edit_admin_group_path(g.id), class: 'btn btn-primary' %>
           <%= link_to 'Delete', admin_group_path(g.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this group?" }%>
         </td>

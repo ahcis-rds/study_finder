@@ -17,6 +17,7 @@
           </div>
           <div class="age-ranges pull-left">
             <label class="checkbox"><%= check_box_tag 'search[children]', "", (!params[:search].nil? and !params[:search]['children'].nil?) %>Children (age &lt; 18 years)</label>
+            <br>
             <label class="checkbox"><%= check_box_tag 'search[adults]', "", (!params[:search].nil? and !params[:search]['adults'].nil?) %>Adults (age &ge; 18 years)</label>
           </div>
           <% if !params[:search].nil? and !params[:search][:category].nil? %>
@@ -29,7 +30,7 @@
         <div class="col-lg-3">
           <div class="buttons">
             <%= submit_tag 'Search', class: 'btn btn-lg btn-school-inverse btn-search' %>
-            <%= link_to 'Clear', studies_path, class: 'btn btn-lg btn-default' %>
+            <%= link_to 'Clear', studies_path, class: 'btn btn-lg btn-light' %>
           </div>
         </div>
 
