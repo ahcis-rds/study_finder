@@ -1,7 +1,6 @@
 <div class="main-content banner-content">
   <div class="row">
-    <div class="col-xs-12 hidden-lg hidden-md"><hr></div>
-    <div class="col-md-4 d-none d-sm-block">
+    <div class="col-lg-4 d-none d-md-block">
       <h2 class="banner-text">Be part of tomorrow's healthcare breakthroughs</h2>
         <p class="banner-text">When you participate in a University of Minnesota study, you can help create a healthier future.</p>
         <br>
@@ -10,13 +9,13 @@
         </div>
         <br>
     </div>
-    <div class="w-100 d-block d-sm-none"></div>
-    <div class="col-md-8 visible-lg-block visible-md-block">
+    <div class="col-8 d-none d-md-block">
       <%= image_tag 'home-collage.jpg', class: 'pull-right d-none d-xl-block' %>
       <%= image_tag 'home-collage-condensed.jpg', class: 'pull-right d-none d-lg-block d-xl-none' %>
     </div>
   </div>
 </div>
+
 <div class="content home">
   <% unless @featured_category.blank? %>
     <div class="row home-content">
@@ -30,17 +29,20 @@
     </div>
   <% end %>
 
-  <div class="row home-content well">
-    <div class="col-md-6 search-form-content col-right-border">
-      <h2>Find a study that's right for you</h2>
-      <%= render 'shared/search_form' %>
-    </div>
-    <div class="w-100 d-block d-md-none"></div>
-    <div class="col-md-6 system-description">
-      <h2><%= @system_info.system_header %></h2>
-      <%= @system_info.system_description.html_safe %>
+  <div class="card card-body bg-light">
+    <div class="row">
+      <div class="col-md-6 col-right-border">
+        <h2>Find a study that's right for you</h2>
+        <%= render 'shared/search_form' %>
+      </div>
+      <div class="w-100 d-block d-md-none"></div>
+      <div class="col-md-6">
+        <h2><%= @system_info.system_header %></h2>
+        <%= @system_info.system_description.html_safe %>
+      </div>
     </div>
   </div>
+  <br/>
 
   <div class="row home-content">
     <div class="col-md-6 study-highlights">
@@ -50,12 +52,11 @@
       <p>There are many ways you can participate in U of M research, and there’s always a need for volunteers.</p>
       <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
     </div>
-    <div class="w-100 d-block d-sm-none"></div>
-    <div class="col-md-6 system-description visible-lg-block visible-md-block">
+    <div class="col-6 d-none d-md-block">
       <%= image_tag 'campus-aerial.jpg', class: 'bordered' %>
     </div>
   </div>
-  <hr/>
+  <br/>
   
   <h2>More ways to get involved</h2>
   <div class="row">  
@@ -66,7 +67,6 @@
       </a>
       <span>Complete a short questionnaire and you'll get matched to studies that are right for you.</span>
     </div>
-    <div class="w-100 d-block d-md-none"></div>
     <div class="col-md-6 contact-link">
       <a href="<%=contact_index_path%>" title="Contact Us"><h4 class="hyperlink-header">Contact Us</h4></a>
       <span>Get answers to your questions or help finding a study.</span>

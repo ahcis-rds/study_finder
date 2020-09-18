@@ -46,6 +46,7 @@ $school_dark_color: #404d5b;
   &:hover {
     color: $body_text;
     background: $school_secondary_color;
+    border: 1px solid $school_main_color;
   }
 }
 
