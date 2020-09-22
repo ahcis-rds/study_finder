@@ -55,21 +55,16 @@ RSpec.describe Admin::GroupsController, :type => :controller do
     end
 
     it "adds a new subgroup" do
-      put :update, params: { id: @group, group: {tags: "This is a subgroup, And so is this, And this one too"} }
-      expect( redirect_to @group )
-      expect(@group.subgroups.count).to eq(3)
-    end
-
-    it "removes a subgroup" do
-      put :update, params: { id: @group, group: {tags: "This is a subgroup" } }
+      put :update, params: { id: @group, group: {group_name: 'Testing...', condition_ids: [@condition.id], subgroups_attributes: {"0" => {name: 'testSub', _destroy: false } } } }
       expect( redirect_to @group )
       expect(@group.subgroups.count).to eq(1)
     end
 
-    it "removes all subgroups" do
-      put :update, params: { id: @group, group: {tags: "" } }
+    it "removes a subgroup" do
+      put :update, params: { id: @group, group: {group_name: 'Testing...', condition_ids: [@condition.id], subgroups_attributes: {"0" => {name: 'testSub', _destroy: true } } } }
       expect( redirect_to @group )
-      expect(@group.subgroups).to be_empty
+      expect(@group.subgroups.count).to eq(0)
     end
+
   end
 end

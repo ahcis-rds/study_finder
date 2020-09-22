@@ -1,7 +1,16 @@
 <%= simple_form_for [:admin, @group] do |f| %>
   <%= f.input :group_name, label: 'Group name' %>
-  <%= f.association :subgroups, collection: @subgroups, input_html: {class: 'select2'} %>
-  
+  <%= f.label 'Subgroup(s):' %>
+  <p class="text-muted">*Note: Subgroups function by appending the subgroup name to the search string (as if an end user typed a word into the search box).</p>
+  <%= f.simple_fields_for :subgroups do |sg| %>
+    <fieldset>
+      <div class="form-inline">
+        <%= sg.input :name, label: false %>
+        <%= sg.hidden_field :_destroy %>
+        <div class='remove-btn'><%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#', class: "remove_fields" %></div>
+      </div>
+    </fieldset>
+  <% end %>
   <hr/>
   
   <div class="form-group">
@@ -25,3 +34,17 @@
     <% end%>
   </div>
 <% end %>
+
+<script>
+  $(document).ready(function() {
+
+    $('form').on('click', '.remove_fields', function(event) {
+      $(this).parent().prev('input[type=hidden]').val('1');
+      $(this).closest('fieldset').hide();
+      return event.preventDefault();
+    });
+
+    //don't display the last remove button as it's for a new subgroup
+    $('.remove-btn').last().hide();
+  });
+</script>

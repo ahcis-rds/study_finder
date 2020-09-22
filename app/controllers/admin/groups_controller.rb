@@ -4,14 +4,14 @@ class Admin::GroupsController < ApplicationController
   require 'csv'
   
   def index
-    @groups = Group.all
+    @groups = Group.all.order(:group_name)
 
     add_breadcrumb 'Groups'
   end
 
   def new
     @group = Group.new
-    @subgroups = Subgroup.all.order(:name)
+    @group.subgroups.build
     @conditions = Condition.all.order(:condition)
 
     add_breadcrumb 'Groups', :admin_groups_path
@@ -24,7 +24,7 @@ class Admin::GroupsController < ApplicationController
     if @group.save(@group)
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
     else
-      @subgroups = Subgroup.all.order(:name)
+      @group.subgroups.build
       @conditions = Condition.all.order(:condition)
       render action: 'new'
     end
@@ -32,7 +32,7 @@ class Admin::GroupsController < ApplicationController
 
   def edit
     @group = Group.find(params[:id])
-    @subgroups = Subgroup.all.order(:name)
+    @group.subgroups.build
     @conditions = Condition.all.order(:condition)
     
     add_breadcrumb 'Groups', :admin_groups_path
@@ -47,16 +47,10 @@ class Admin::GroupsController < ApplicationController
   def update
     @group = Group.find(params[:id])
 
-    #TODO - revisit this logic and get working with strong params
-    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
-      @group.subgroups.build(name: subgroup)
-    end
-    @group.save
-
     if @group.update(group_params)
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
     else
-      @subgroups = Subgroup.all.order(:name)
+      @group.subgroups.build
       @conditions = Condition.all.order(:condition)
       render 'edit'
     end
@@ -79,7 +73,7 @@ class Admin::GroupsController < ApplicationController
 
   private
     def group_params
-      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
+      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [], subgroups_attributes: [:id, :name, :group_id, :_destroy])
     end
 
     def generate_csv
