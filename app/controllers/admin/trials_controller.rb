@@ -119,7 +119,7 @@ class Admin::TrialsController < ApplicationController
       params.require(:trial).permit(
         :simple_description, :visible, 
         :featured, :recruiting, :contact_override, :cancer_yn,
-        :contact_override_first_name, :contact_override_last_name, :pi_name, :pi_id, :recruitment_url, 
+        :contact_override_first_name, :contact_override_last_name, :pi_name, :pi_id, :recruitment_url, :contact_url_override,
         :reviewed, :irb_number, site_ids: [], disease_site_ids: [])
     end
 

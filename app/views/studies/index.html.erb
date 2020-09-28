@@ -113,8 +113,13 @@
 
         <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
         
-        <% unless c.empty? %>
-          <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+        <% contact_method = determine_contact_method(t) %>
+        <% if contact_method == 'url' %>
+          <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
+        <% elsif contact_method == 'email' %>
+          <% unless c.empty? %>
+            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+          <% end %>
         <% end %>
 
         <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>

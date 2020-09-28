@@ -200,6 +200,8 @@ class Trial < ApplicationRecord
         :gender,
         :healthy_volunteers,
         :visible,
+        :contact_url,
+        :contact_url_override,
         :contact_override,
         :contact_override_first_name,
         :contact_override_last_name,
