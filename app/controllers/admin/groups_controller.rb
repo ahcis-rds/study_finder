@@ -11,7 +11,6 @@ class Admin::GroupsController < ApplicationController
 
   def new
     @group = Group.new
-    @group.subgroups.build
     @conditions = Condition.all.order(:condition)
 
     add_breadcrumb 'Groups', :admin_groups_path
@@ -21,10 +20,13 @@ class Admin::GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     
+    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
+      @group.subgroups.build(name: subgroup)
+    end
+
     if @group.save(@group)
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
     else
-      @group.subgroups.build
       @conditions = Condition.all.order(:condition)
       render action: 'new'
     end
@@ -32,7 +34,6 @@ class Admin::GroupsController < ApplicationController
 
   def edit
     @group = Group.find(params[:id])
-    @group.subgroups.build
     @conditions = Condition.all.order(:condition)
     
     add_breadcrumb 'Groups', :admin_groups_path
@@ -47,10 +48,13 @@ class Admin::GroupsController < ApplicationController
   def update
     @group = Group.find(params[:id])
 
+    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
+      @group.subgroups.build(name: subgroup)
+    end
+
     if @group.update(group_params)
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
     else
-      @group.subgroups.build
       @conditions = Condition.all.order(:condition)
       render 'edit'
     end
@@ -73,7 +77,7 @@ class Admin::GroupsController < ApplicationController
 
   private
     def group_params
-      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [], subgroups_attributes: [:id, :name, :group_id, :_destroy])
+      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [], subgroup_ids: [])
     end
 
     def generate_csv

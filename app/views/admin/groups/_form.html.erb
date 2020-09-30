@@ -1,16 +1,8 @@
 <%= simple_form_for [:admin, @group] do |f| %>
   <%= f.input :group_name, label: 'Group name' %>
-  <%= f.label 'Subgroup(s):' %>
-  <p class="text-muted">*Note: Subgroups function by appending the subgroup name to the search string (as if an end user typed a word into the search box).</p>
-  <%= f.simple_fields_for :subgroups do |sg| %>
-    <fieldset>
-      <div class="form-inline">
-        <%= sg.input :name, label: false %>
-        <%= sg.hidden_field :_destroy %>
-        <div class='remove-btn'><%= link_to '<i class="fa fa-trash"></i>'.html_safe, '#', class: "remove_fields" %></div>
-      </div>
-    </fieldset>
-  <% end %>
+  <label for="group_tags">Subgroups</label>
+  <input id="group_tags" name="group[tags]" class="form-control" value="<%= f.object.subgroups.map { |g| g.name }.join(',') %>" hint="test">
+  <span class="text-muted">Please enter a comma delimited list of subgroups if applicable.</span>
   <hr/>
   
   <div class="form-group">
@@ -25,7 +17,6 @@
 
   <label>Choose all conditions that apply</label><br>
   <%= f.collection_check_boxes :condition_ids, @conditions, :id, :condition, :item_wrapper_class => 'd-block checkbox' %>
-
   <div class="controls">
     <%= f.submit 'Save Group', class: 'btn btn-school' %>
     <%= link_to 'Back to group admin', admin_groups_path, class: 'btn btn-outline-secondary' %>
@@ -34,17 +25,3 @@
     <% end%>
   </div>
 <% end %>
-
-<script>
-  $(document).ready(function() {
-
-    $('form').on('click', '.remove_fields', function(event) {
-      $(this).parent().prev('input[type=hidden]').val('1');
-      $(this).closest('fieldset').hide();
-      return event.preventDefault();
-    });
-
-    //don't display the last remove button as it's for a new subgroup
-    $('.remove-btn').last().hide();
-  });
-</script>
