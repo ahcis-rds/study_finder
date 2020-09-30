@@ -3,32 +3,33 @@
     <div class="clearfix">
       <div class="row">
 
-        <div class="col-lg-9">
-          <h3 class="pull-left"><i class="fa fa-search"></i><%= text_field_tag 'search[q]', search_value(params[:search], 'q'), class: 'input-search typeahead', autocomplete: 'off' %></h3>
-          <div class="form-group pull-left healthy-volunteers">
-            <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa fa-question-circle"></i></label>
-            <% healthy_voulunteers = params[:search]['healthy_volunteers'] if !params[:search].nil? and !params[:search]['healthy_volunteers'].nil? %>
-            <select id="search_heathy_volunteers" name="search[healthy_volunteers]" class="form-control">
-              <option value=''>Please Select</option>
-              <option value='1' <% if healthy_voulunteers == '1' %>selected<%end%> >Yes</option>
-              <option value='0' <% if healthy_voulunteers == '0' %>selected<%end%> >No</option>
-              <option value=''>No Preference</option>
-            </select>
-          </div>
-          <div class="age-ranges pull-left">
-            <label class="checkbox"><%= check_box_tag 'search[children]', "", (!params[:search].nil? and !params[:search]['children'].nil?) %>Children (age &lt; 18 years)</label>
-            <br>
-            <label class="checkbox"><%= check_box_tag 'search[adults]', "", (!params[:search].nil? and !params[:search]['adults'].nil?) %>Adults (age &ge; 18 years)</label>
-          </div>
-          <% if !params[:search].nil? and !params[:search][:category].nil? %>
-            <input type='hidden' name='search[category]' value="<%=params[:search][:category]%>"></input>
-          <% end %>
+        <div class="col-12 col-lg-4 col-md-5">
+          <h3 class=""><i class="fa fa-search"></i><%= text_field_tag 'search[q]', search_value(params[:search], 'q'), class: 'input-search typeahead', autocomplete: 'off' %></h3>
+        </div>
+        
+        <div class="col-12 col-lg-2 col-md-3">
+          <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa fa-question-circle"></i></label>
+          <% healthy_voulunteers = params[:search]['healthy_volunteers'] if !params[:search].nil? and !params[:search]['healthy_volunteers'].nil? %>
+          <select id="search_heathy_volunteers" name="search[healthy_volunteers]" class="form-control">
+            <option value=''>Please Select</option>
+            <option value='1' <% if healthy_voulunteers == '1' %>selected<%end%> >Yes</option>
+            <option value='0' <% if healthy_voulunteers == '0' %>selected<%end%> >No</option>
+            <option value=''>No Preference</option>
+          </select>
         </div>
 
-        <div class="col-xs-12.hidden-lg.hidden-md"></div>
-
-        <div class="col-lg-3">
-          <div class="buttons">
+        <div class="col-12 col-lg-3 col-md-4">
+          <br/>
+          <label class="checkbox"><%= check_box_tag 'search[children]', "", (!params[:search].nil? and !params[:search]['children'].nil?) %> Children (age &lt; 18 years)</label>
+          <br>
+          <label class="checkbox"><%= check_box_tag 'search[adults]', "", (!params[:search].nil? and !params[:search]['adults'].nil?) %> Adults (age &ge; 18 years)</label>
+        </div>
+          
+        <div class="col-12 col-lg-3">
+          <div class="buttons ">
+            <% if !params[:search].nil? and !params[:search][:category].nil? %>
+              <input type='hidden' name='search[category]' value="<%=params[:search][:category]%>"></input>
+            <% end %>
             <%= submit_tag 'Search', class: 'btn btn-lg btn-school-inverse btn-search' %>
             <%= link_to 'Clear', studies_path, class: 'btn btn-lg btn-light' %>
           </div>
