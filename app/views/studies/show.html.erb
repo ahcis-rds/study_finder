@@ -18,9 +18,16 @@
     <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
   <% end %>
   <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=@study.display_title%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= @study.system_id %>')"><i class="fa fa-envelope"></i> Share via email</div>
-  <% unless c.empty? %>
-    <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+  
+  <% contact_method = determine_contact_method(@study) %>
+  <% if contact_method == 'url' %>
+    <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
+  <% elsif contact_method == 'email' %>
+    <% unless c.empty? %>
+      <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+    <% end %>
   <% end %>
+
   <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
 </div>
 <br>
