@@ -1,8 +1,11 @@
 <%= simple_form_for [:admin, @group] do |f| %>
   <%= f.input :group_name, label: 'Group name' %>
-  <label for="group_tags">Subgroups</label>
-  <input id="group_tags" name="group[tags]" class="form-control" value="<%= f.object.subgroups.map { |g| g.name }.join(',') %>" hint="test">
-  <span class="text-muted">Please enter a comma delimited list of subgroups if applicable.</span>
+  <label for="subgroups">
+    Subgroups
+  </label>
+  <select name="group[subgroups][]" multiple="true" id="subgroups" class="select2 tags">
+    <%= options_for_select(Subgroup.distinct_values, @group.subgroups.map { |sg| sg.name }) %>
+  </select>
   <hr/>
   
   <div class="form-group">

@@ -19,10 +19,8 @@ class Admin::GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
-    
-    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
-      @group.subgroups.build(name: subgroup)
-    end
+
+    build_subgroups
 
     if @group.save(@group)
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
@@ -48,9 +46,7 @@ class Admin::GroupsController < ApplicationController
   def update
     @group = Group.find(params[:id])
 
-    @group.subgroups = params[:group][:tags].to_s.split(',').map do |subgroup|
-      @group.subgroups.build(name: subgroup)
-    end
+    build_subgroups
 
     if @group.update(group_params)
       redirect_to edit_admin_group_path(params[:id]), flash: { success: 'Group updated successfully' }
@@ -77,7 +73,14 @@ class Admin::GroupsController < ApplicationController
 
   private
     def group_params
-      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [], subgroup_ids: [])
+      params.require(:group).permit(:group_name, :children, :adults, :healthy_volunteers, condition_ids: [])
+    end
+
+    def build_subgroups
+      @group.subgroups.destroy_all
+      @group.subgroups = Array(params[:group][:subgroups]).map do |subgroup|
+        @group.subgroups.build(name: subgroup)
+      end
     end
 
     def generate_csv
