@@ -1,7 +1,11 @@
 <%= simple_form_for [:admin, @group] do |f| %>
   <%= f.input :group_name, label: 'Group name' %>
-  <%= f.association :subgroups, collection: @subgroups, input_html: {class: 'select2'} %>
-  
+  <label for="subgroups">
+    Subgroups
+  </label>
+  <select name="group[subgroups][]" multiple="true" id="subgroups" class="select2 tags">
+    <%= options_for_select(Subgroup.distinct_values, @group.subgroups.map { |sg| sg.name }) %>
+  </select>
   <hr/>
   
   <div class="form-group">
@@ -16,7 +20,6 @@
 
   <label>Choose all conditions that apply</label><br>
   <%= f.collection_check_boxes :condition_ids, @conditions, :id, :condition, :item_wrapper_class => 'd-block checkbox' %>
-
   <div class="controls">
     <%= f.submit 'Save Group', class: 'btn btn-school' %>
     <%= link_to 'Back to group admin', admin_groups_path, class: 'btn btn-outline-secondary' %>

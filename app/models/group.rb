@@ -7,6 +7,8 @@ class Group < ApplicationRecord
   has_many :conditions, through: :condition_groups
   has_many :subgroups
 
+  accepts_nested_attributes_for :subgroups, allow_destroy: true, reject_if: :all_blank
+
   def apply_filters
     filters = {}
     filters['children'] = 1 if children
