@@ -69,6 +69,22 @@ module StudiesHelper
     end
   end
 
+  def determine_contact_method(trial)
+    if !trial.contact_url_override.blank? || !trial.contact_url.blank?
+      return 'url'
+    else
+      return 'email'
+    end
+  end
+
+  def render_contact_url(trial)
+    unless trial.contact_url_override.blank?
+      return trial.contact_url_override
+    else
+      return trial.contact_url
+    end
+  end
+
   def default_email
     return [{
       email: @system_info.default_email
