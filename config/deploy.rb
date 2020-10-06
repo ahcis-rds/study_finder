@@ -6,13 +6,13 @@ set :default_environment, { 'PATH' => "/opt/ruby26/bin:$PATH" }
 desc "Run on development server"
 task :staging do
   set :rails_env,   "staging"
-  set :location, "goldfish.ahc.umn.edu" # Web server url.
+  set :location, "goldfish0.ahc.umn.edu" # Web server url.
   role :web, location # Your HTTP server, Apache/etc
 end
 
 task :production do
   set :rails_env,   "production"
-  set :location, "walleye.ahc.umn.edu" # Web server url.
+  set :location, "walleye0.ahc.umn.edu" # Web server url.
   role :web, location # Your HTTP server, Apache/etc
 end
 
