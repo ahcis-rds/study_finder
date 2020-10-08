@@ -45,6 +45,9 @@ class Admin::SystemController < ApplicationController
         :display_keywords,
         :display_groups_page,
         :display_study_show_page,
+        :enable_showcase,
+        :show_showcase_indicators,
+        :show_showcase_controls,
         trial_attribute_settings_attributes: [:id, :attribute_label, :display_label_on_list, :display_on_list, :display_if_null_on_list, :display_label_on_show, :display_on_show, :display_if_null_on_show]
       )
     end

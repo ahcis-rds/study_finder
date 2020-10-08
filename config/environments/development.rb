@@ -29,6 +29,10 @@ Rails.application.configure do
 
   #Whitelist your local/development IPs here for the web-console gem
   #config.web_console.whitelisted_ips = 'xxx.xxx.xxx.xxx'
+  
+  # Store files locally.
+  config.active_storage.service = :local
+
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
