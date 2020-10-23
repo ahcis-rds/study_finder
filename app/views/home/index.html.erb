@@ -18,7 +18,7 @@
                 <% if item.showcase_image.attached? %>
                   <%= image_tag item.showcase_image, class: 'w-100' %>
                 <% elsif !item.url.blank? %>
-                  <div class="embed-responsive embed-responsive-16by9">
+                  <div class="embed-responsive embed-responsive-21by9">
                     <iframe class="embed-responsive-item" src="<%= item.url %>" allowfullscreen></iframe>
                   </div>
                 <% end %>
