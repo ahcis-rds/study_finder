@@ -4,6 +4,7 @@ class StudyMailer < ActionMailer::Base
   def contact_team(to, name, email, phone, message, system_id, brief_title, system_info)
     @name = name
     @email = email
+    @phone = phone
     @message = message
     @system_id = system_id
     @brief_title = brief_title
