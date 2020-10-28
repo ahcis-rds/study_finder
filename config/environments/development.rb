@@ -31,8 +31,7 @@ Rails.application.configure do
   #config.web_console.whitelisted_ips = 'xxx.xxx.xxx.xxx'
   
   # Store files locally.
-  config.active_storage.service = :local
-
+  config.active_storage.service = :temp
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.

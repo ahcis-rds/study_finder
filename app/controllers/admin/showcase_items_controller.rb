@@ -31,9 +31,9 @@ class Admin::ShowcaseItemsController < ApplicationController
   end
 
   def update
-		@item = ShowcaseItem.find(params[:id])
+    @item = ShowcaseItem.find(params[:id])
 
-		if @item.update(item_params)
+    if @item.update(item_params)
       redirect_to admin_showcase_items_path(), flash: { success: 'Item updated successfully' }
     else
       render 'edit'

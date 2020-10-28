@@ -38,6 +38,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Store files in shared directory.
-  config.active_storage.service = :test
+  config.active_storage.service = :temp
 
 end
