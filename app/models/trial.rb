@@ -252,6 +252,14 @@ class Trial < ApplicationRecord
     )
   end
 
+  def self.execute_search(search_hash = {})
+    if search_hash[:q].blank?
+      match_all(search_hash)
+    else
+      match_all_search(search_hash)
+    end
+  end
+
   def self.match_all(search)
     search(
       query: {
