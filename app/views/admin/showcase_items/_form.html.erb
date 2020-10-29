@@ -5,6 +5,7 @@
     <%= f.input :sort_order, as: :integer, label: 'Order' %>
     <%= f.input :title, hint: '<small><i>(Heading for the showcase item.)</i></small>'.html_safe %>
     <%= f.input :caption, hint: '<small><i>(Text for the showcase item.)</i></small>'.html_safe %>
+    <label for="showcase_item_showcase_image">Image Upload</label><br/>
     <%= f.file_field :showcase_image %>
     <%= f.input :url, label: 'Youtube URL', hint: '<small><i>(Embeddable version of the youtube video URL. Ex. "https://www.youtube.com/watch?v=Ie3jNNDqzzc" becomes "https://www.youtube.com/embed/Ie3jNNDqzzc".)</i></small>'.html_safe %>
   </div>
