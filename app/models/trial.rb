@@ -294,7 +294,7 @@ class Trial < ApplicationRecord
               must: [
                 {
                   query_string: {
-                    query: search[:q],
+                    query: search[:q].gsub("/", ""),
                     default_operator: "AND",
                     fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
                   }

@@ -77,8 +77,4 @@ class StudiesController < ApplicationController
   def search_params
     params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender])
   end
-
-    def replace_words(q)
-      q.gsub('head ache', 'headache').gsub('/', ' ').gsub('"', ' ')
-    end
 end
