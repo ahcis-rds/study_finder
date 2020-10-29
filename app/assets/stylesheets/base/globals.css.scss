@@ -172,3 +172,17 @@ footer {
   line-height: .5;
   border-radius: .2rem;
 }
+
+.caption-wrapper {
+  background: rgba(255, 255, 255, .40);
+}
+
+.caption-title {
+  font-weight: bold;
+  color: $school_main_color;
+}
+
+.caption-text{
+  color: #000000;
+}
+

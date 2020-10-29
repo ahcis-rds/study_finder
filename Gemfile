@@ -25,6 +25,7 @@ gem 'httparty'
 gem 'rubyzip', '~> 2.0.0'
 gem 'net-ldap', '~> 0.16.1'
 gem 'figaro'
+gem 'active_storage_validations'
 
 group :development do
   gem 'spring'

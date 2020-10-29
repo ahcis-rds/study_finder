@@ -1,0 +1,35 @@
+<div class="admin">
+  <div class="clearfix">
+    <h3 class="pull-left">Showcase</h3>
+    <div class="pull-right header-button">
+      <%= link_to 'Add Item', new_admin_showcase_item_path, class: 'btn btn-school' %>
+    </div>
+  </div>
+  
+  <p class="description">This section is where administrators can manage showcase images and youtube videos. These items will appear within the homepage carousel. *Please note - this will replace the main image. Ensure photos are of a proper resolution and consistent with a 21:9 aspect ratio. </p>
+
+  <table class="table table-boredered table-trials">
+    <tr>
+      <th>Name</th>
+      <th>Order</th>
+      <th>Active</th>
+      <th></th>
+    </tr>
+    <% if @showcase_items.empty? %>
+      <tr>
+        <td colspan="3">No showcase items found. Add items manually using the add button above.</td>
+      </tr>
+    <% end %>
+    <% @showcase_items.each do |i| %>
+      <tr>
+        <td><%= i.name %></td>
+        <td><%= i.sort_order %></td>
+        <td><%= i.active ? 'Yes' : 'No' %></td>
+        <td style="width: 150px">
+          <%= link_to 'Edit', edit_admin_showcase_item_path(i.id), class: 'btn btn-primary' %>
+          <%= link_to 'Delete', admin_showcase_item_path(i.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this item?" }%>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
