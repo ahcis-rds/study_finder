@@ -33,7 +33,11 @@
 
 <div class="study-results">
   <div class="study-results-info">
-    <h3>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h3>
+    <% if !params[:search][:category].nil? %>
+      <h3><%= @group.group_name + ' Studies' %></h3>
+    <% else %>
+      <h3>Search Results</h3>
+    <% end %>
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
 
     <% if !params[:search].nil? and !params[:search][:category].nil? %>
@@ -111,16 +115,18 @@
           <%= link_to "<i class='fa fa-bookmark'></i> View Study".html_safe, study_path(id: t.id), class: 'btn btn-school'%>
         <% end %>
 
+        <% unless t.recruitment_url.blank? %>
+          <a class="btn btn-school-inverted btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> Visit the Study Website</a>
+        <% end %>
+
         <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
         
         <% unless c.empty? %>
           <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
         <% end %>
 
-        <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
-
-        <% unless t.recruitment_url.blank? %>
-          <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
+        <% if t.recruitment_url.blank? %>
+          <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
         <% end %>
 
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>

@@ -46,12 +46,23 @@ $school_dark_color: #404d5b;
   &:hover {
     color: $body_text;
     background: $school_secondary_color;
+    border: 1px solid $school_main_color;
   }
 }
 
 .btn-school-inverse {
   color: $school_main_color;
   background: $school_secondary_color;
+}
+
+.btn-school-inverted {
+  color: $school_main_color;
+  background: $school_secondary_color;
+
+  &:hover {
+    color: white;
+    background: $school_main_color;
+  }
 }
 
 @media ( max-width: $screen-sm-min ) {

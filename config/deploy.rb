@@ -1,7 +1,11 @@
 set :application, 'study_finder'
 set :scm, :none
 set :repository, "."
-set :default_environment, { 'PATH' => "/opt/ruby26/bin:$PATH" }
+set :default_environment, {
+  'PATH' => "/opt/ruby26/bin:$PATH",
+  "http_proxy" => "http://ctsigate.ahc.umn.edu:3128",
+  "https_proxy" => "https://ctsigate.ahc.umn.edu:3128"
+}
 
 desc "Run on development server"
 task :staging do
