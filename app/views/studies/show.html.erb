@@ -1,5 +1,4 @@
 <% c = determine_contacts(@study) %>
-
 <div class="clearfix">
   <div class="pull-left">
     <h3><%= @study.brief_title %></h3>
@@ -60,6 +59,7 @@
 </div>
 <br>
 
+<%= link_to '<i class="fa fa-print"></i> Print'.html_safe, study_path(@study.id, format: "pdf"), class: 'btn btn-outline-secondary' %>
 <%= link_to 'Back', :back, class: 'btn btn-school' %>
 
 <%= render 'modals' %>

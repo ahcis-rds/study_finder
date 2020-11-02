@@ -25,6 +25,8 @@ gem 'httparty'
 gem 'rubyzip', '~> 2.0.0'
 gem 'net-ldap', '~> 0.16.1'
 gem 'figaro'
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'
 
 group :development do
   gem 'spring'

@@ -49,6 +49,19 @@ class StudiesController < ApplicationController
     end
     @study = Trial.find(params[:id])
     @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "Study-#{@study.system_id}",
+        layout: 'pdf',
+        template: 'studies/show.pdf.erb',
+        disposition: 'attachment',
+        orientation: 'portrait',
+        title:  "StudyFinder Study: #{@study.system_id}",
+        encoding: "utf8"
+      end
+    end
   end
 
   def typeahead
