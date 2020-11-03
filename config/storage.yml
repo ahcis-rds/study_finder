@@ -1,0 +1,7 @@
+temp:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+persistent:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>

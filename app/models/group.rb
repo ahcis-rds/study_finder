@@ -23,12 +23,6 @@ class Group < ApplicationRecord
   end
 
   def study_count
-    if conditions_empty?
-      count = Trial.match_all(apply_filters).results.total
-    else
-      count = VwGroupTrialCount.where({ id: id }).first.trial_count.to_i
-    end
-
-    count
+    VwGroupTrialCount.find(id).trial_count
   end
 end

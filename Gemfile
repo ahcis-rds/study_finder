@@ -27,6 +27,7 @@ gem 'net-ldap', '~> 0.16.1'
 gem 'figaro'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
+gem 'active_storage_validations'
 
 group :development do
   gem 'spring'

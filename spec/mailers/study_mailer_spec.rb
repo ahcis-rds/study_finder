@@ -45,5 +45,9 @@ describe StudyMailer do
     it 'assigns @title in the mail body' do
       expect( mail.body.encoded ).to match(trial.brief_title)
     end
+
+    it "includes phone number" do
+      expect(mail.body).to match("123-453-2345")
+    end
   end
 end

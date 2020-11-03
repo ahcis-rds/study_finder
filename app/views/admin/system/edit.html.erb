@@ -72,6 +72,27 @@
           <i>(Create a landing page for each study)</i>
         </small>
         <%= f.input :display_study_show_page, as: :select, label: false, include_blank: false %>
+
+        <label>Display Showcase</label>
+        <small>
+          <i>(Enable a carousel of uploaded images and videos on the site homepage. ***This replaces the main image.)</i>
+        </small>
+        <%= f.input :enable_showcase, as: :select, label: false, include_blank: false %>
+
+        <div class="card card-body bordered">
+          <label>Enable Indicators</label>
+          <small>
+            <i>(Show indicators for each slide on the carousel)</i>
+          </small>
+          <%= f.input :show_showcase_indicators, as: :select, label: false, include_blank: false %>
+
+          <label>Enable Controls</label>
+          <small>
+            <i>(Add controls to allow users to scroll the carousel)</i>
+          </small>
+          <%= f.input :show_showcase_controls, as: :select, label: false, include_blank: false %>
+
+        </div>
       </div>
       <div class="tab-pane fade" id="trial-display" role="tabpanel" aria-labelledby="trial-display-tab">
         <h4> Study Attribute Display Options</h4>

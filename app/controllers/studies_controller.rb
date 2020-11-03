@@ -4,40 +4,14 @@ class StudiesController < ApplicationController
   respond_to :html, :json
   
   def index
-    @search_parameters = params[:search].deep_dup if !params[:search].nil?
-    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
-    
-    if !params[:search].nil? and !params[:search][:category].nil?
-      @group = Group.find(params[:search][:category])
-      
-      if @group.conditions_empty?
-        @search_parameters = @search_parameters.except!(:category)
-      end
-    end
+    search_hash = search_params.to_h[:search] || {}
 
-    if params[:search].nil? or params[:search][:q].blank?
-      # Show all trials that are visible, there were no search terms entered.
-      @search_parameters = {} if @search_parameters.nil?
-      @trials = Trial.match_all(@search_parameters).page(params[:page]).results
-    else
-      # There is actually a search term here.
-      # phrase_search = Trial.phrase_search(params[:search]).page(params[:page]).results
-      # unless phrase_search.total == 0
-      #   @trials = phrase_search
-      # else
-        params[:search][:q] = replace_words(@search_parameters[:q])
-        @search_parameters[:q] = params[:search][:q]
+    @attribute_settings = @system_info.trial_attribute_settings
+    @group = Group.where(id: search_hash[:category]).first
+    @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
 
-        @trials = Trial.match_all_search(@search_parameters).page(params[:page]).results
-        # if match_all.total == 0
-        #   @trials = Trial.match_synonyms(params[:search]).page(params[:page]).results
-        # else
-        #   @trials = match_all
-        # end  
-      # end
-      if @trials.total == 0
-        @suggestions = Trial.suggestions(@search_parameters[:q])
-      end
+    if @trials.empty?
+      @suggestions = Trial.suggestions(search_hash[:q] || "")
     end
 
     respond_with(@trials)
@@ -112,7 +86,8 @@ class StudiesController < ApplicationController
   end
 
   private
-    def replace_words(q)
-      q.gsub('head ache', 'headache').gsub('/', ' ').gsub('"', ' ')
-    end
+
+  def search_params
+    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender])
+  end
 end
