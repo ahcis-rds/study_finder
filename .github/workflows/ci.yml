@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Start containers
+      run: docker-compose up -d
+    - name: Check containers
+      run: docker-compose ps
+    - name: Prepare test database
+      run: docker-compose exec -T -e RAILS_ENV=test web rake db:create db:migrate
+    - name: Check elasticsearch logs
+      run: docker-compose logs elasticsearch
+    - name: Run tests
+      run: docker-compose exec -T web rspec
