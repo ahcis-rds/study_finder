@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :users
     resources :reports, only: ['index']
     get 'reports/recent_conditions', to: "conditions#recent_as"
+    resources :showcase_items
   end
 
   resources :categories, only: ['index']

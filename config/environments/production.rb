@@ -32,6 +32,9 @@ Rails.application.configure do
   # Generate digests for assets URLs.
   config.assets.digest = true
 
+  # Store files in shared directory.
+  config.active_storage.service = :persistent
+
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Specifies the header that your server uses for sending files.
@@ -75,4 +78,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { address: ENV['smtp_host'], port: 25 }
 end

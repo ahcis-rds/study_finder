@@ -7,6 +7,7 @@ class HomeController < ApplicationController
     @diabetes_category = Group.find_by(group_name: 'Diabetes & Hormone')
     @prevention_category = Group.find_by(group_name: 'Prevention')
     @womens_health_category = Group.find_by(group_name: "Women's Health")
+  	@showcase = ShowcaseItem.where(active: true).order(:sort_order)
   end
 
   def splash
