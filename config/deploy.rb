@@ -56,6 +56,7 @@ namespace :figaro do
   task :symlink do
     run "ln -sf #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -sf #{shared_path}/config/application.yml #{release_path}/config/application.yml"
+    run "ln -sf #{shared_path}/storage #{release_path}/storage"
   end
 
   after "deploy:finalize_update", "figaro:symlink"

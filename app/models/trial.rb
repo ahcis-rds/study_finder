@@ -200,6 +200,8 @@ class Trial < ApplicationRecord
         :gender,
         :healthy_volunteers,
         :visible,
+        :contact_url,
+        :contact_url_override,
         :contact_override,
         :contact_override_first_name,
         :contact_override_last_name,
@@ -250,6 +252,14 @@ class Trial < ApplicationRecord
     )
   end
 
+  def self.execute_search(search_hash = {})
+    if search_hash[:q].blank?
+      match_all(search_hash)
+    else
+      match_all_search(search_hash)
+    end
+  end
+
   def self.match_all(search)
     search(
       query: {
@@ -284,7 +294,7 @@ class Trial < ApplicationRecord
               must: [
                 {
                   query_string: {
-                    query: search[:q],
+                    query: search[:q].gsub("/", ""),
                     default_operator: "AND",
                     fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
                   }

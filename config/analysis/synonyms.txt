@@ -24,6 +24,7 @@ diabetes, type 1, type 2, insulin, glucose, gout, blood sugar
 eye, eyeball, oculus, optic
 glucose, insulin, diabetes, type 1, type 2, gout, blood sugar
 head, brain
+head ache, headache
 heart, valve, atria, cardio, atrium, ventricle, ventricular, fibrilation
 heart attack, cardio, cadriovascular, cardiology, valve, atria, atrium, ventricle, ventricular, flutter, fibrilation, atrial, afib, irregular heartbeat, infarction
 high blood pressure, hypertension, hypertensive
