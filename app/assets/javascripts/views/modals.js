@@ -1,3 +1,5 @@
+$(function() {
+
 // "Email this study information to me" button listener
 $('#email-me-modal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget);
@@ -171,4 +173,6 @@ $('#contact-study-team-modal-submit').on('click', function (event) {
       $('<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top:10px;"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>There was a problem sending your email</div>')
         .insertAfter(parentButton.parent());
     });
+});
+
 });
