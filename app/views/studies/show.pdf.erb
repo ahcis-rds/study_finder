@@ -1,0 +1,39 @@
+<%= image_tag wicked_pdf_asset_base64('logo.png'), class: 'logo' %>
+<%= image_tag wicked_pdf_asset_base64('sf-logo.png'), class: 'logo float-right' %>
+<% c = determine_contacts(@study) %>
+<div id="info">
+  <h3><%= @study.brief_title %></h3>
+  <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status, false) %>
+  <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id, false) %>
+  <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender), false) %>
+  <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study), false) %>
+  <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study), false) %>
+
+  <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description, false) %>
+  <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c), false) %>
+  <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name, false) %>
+  <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id, false) %>
+  <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase, false) %>
+  <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number, false) %>
+</div>
+<br>
+
+<div id="conditions">
+	<h4>Conditions & Interventions</h4>
+  <%= render_attribute(@attribute_settings, 'interventions', 'show', @study.interventions.to_s.gsub(/;/,',').html_safe, true) %>
+  <%= render_attribute(@attribute_settings, 'conditions', 'show', @study.conditions_map.to_s.gsub(/;/,',').html_safe, true) %>
+  <%= render_attribute(@attribute_settings, 'keywords', 'show', @study.keywords.to_s.gsub(/;/,',').html_safe, true) %>
+  <%= render_attribute(@attribute_settings, 'sites', 'show', @study.sites.map{|x| site(x) }.join('; '), true) %>
+  <%= render_attribute(@attribute_settings, 'disease_sites', 'show', @study.disease_sites.map{|x| x.disease_site_name }.join('; '), true) %>
+</div>
+<br>
+
+<div id="eligibility">
+	<h4>Eligibility Criteria</h4>
+  <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+</div>
+
+<hr/>
+<div id="closing" class="text-muted text-hint">
+  <p>Thank you for choosing StudyFinder. Please visit <%= @system_info.default_url %> to find a Study which is right for you and contact <%= @system_info.default_email %> if you have questions or need assistance.</p>
+</div>

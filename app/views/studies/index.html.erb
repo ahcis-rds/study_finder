@@ -128,6 +128,8 @@
           <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
         <% end %>
 
+        <%= link_to '<i class="fa fa-save"></i> Download'.html_safe, study_path(t.id, format: "pdf"), class: 'btn btn-outline-secondary btn-print' %>
+
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
           <div class="btn btn-school btn-all-locations"><i class="fa fa-location-arrow"></i> Show All <%= t.trial_locations.count %> locations</div>
           <div class="field d-none study-locations">
