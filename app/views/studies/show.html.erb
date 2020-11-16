@@ -59,7 +59,7 @@
 </div>
 <br>
 
-<%= link_to '<i class="fa fa-print"></i> Print'.html_safe, study_path(@study.id, format: "pdf"), class: 'btn btn-outline-secondary btn-print' %>
+<%= link_to '<i class="fa fa-save"></i> Download'.html_safe, study_path(@study.id, format: "pdf"), class: 'btn btn-outline-secondary btn-print' %>
 <%= link_to 'Back', :back, class: 'btn btn-school' %>
 
 <%= render 'modals' %>
