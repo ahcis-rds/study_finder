@@ -90,7 +90,23 @@ describe Parsers::Ctgov do
       trial2 = Trial.find_by(system_id: 'NCT01678638')
       expect(trial2.visible).to eq(true)
     end
-    
+
+   it "sets visibility correctly regardless of current value" do
+      trial = Trial.create(system_id: "NCT123", overall_status: "Completed", visible: true)
+      p = Parsers::Ctgov.new("NCT123", 1)
+
+      p.set_contents_from_xml("
+        <clinical_study>
+          <overall_status>Completed</overall_status>
+        </clinical_study>
+      ")
+
+      p.process(true)
+      trial.reload
+
+      expect(trial.visible).to eq(false)
+    end
+
     it "parses age ranges correctly when weeks are involved" do
       url = 'https://clinicaltrials.gov/show/NCT01678638?displayxml=true'
       p = Parsers::Ctgov.new( 'NCT01678638', 1)

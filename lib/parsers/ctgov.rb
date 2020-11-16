@@ -355,19 +355,8 @@ module Parsers
           end
           
           if f == 'overall_status'
-            if @contents[f] == 'Recruiting'
-              trial.recruiting = true
-              # Only set visible to true if overall_status has CHANGED to 'Recruiting'.
-              if previous_status != @contents[f]
-                trial.visible = true
-              end
-            else
-              trial.recruiting = false
-
-              if previous_status != @contents[f]
-                trial.visible = false
-              end
-            end
+            trial.recruiting = @contents[f] == 'Recruiting'
+            trial.visible = trial.recruiting
           end
         end
       end
