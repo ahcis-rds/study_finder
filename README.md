@@ -45,6 +45,7 @@ departmental_cn: 'USERNAME'
 departmental_pw: 'PASSWORD'
 theme: 'umn'
 es_host: 'elastic.umn.edu'
+wkhtmltopdf_binary_path: 'PATH'
 
 ```
 
