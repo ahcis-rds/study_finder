@@ -35,8 +35,8 @@ class Trial < ApplicationRecord
     end
   end
 
-  def self.find_range(start_date, end_date)
-    where('updated_at between ? and ?', start_date, end_date ).order('updated_at DESC')
+  def self.find_range(start_date, end_date, attribute = "updated_at")
+    where("#{Trial.connection.quote_column_name(attribute)} between ? and ?", start_date, end_date ).order("#{Trial.connection.quote_column_name(attribute)} DESC")
   end
 
   def display_title
