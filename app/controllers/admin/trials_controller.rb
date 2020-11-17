@@ -56,10 +56,12 @@ class Admin::TrialsController < ApplicationController
   def recent_as
     @start_date = (params[:start_date].nil?) ? (DateTime.now - 30.days).strftime('%m/%d/%Y') : params[:start_date]
     @end_date = (params[:end_date].nil?) ? DateTime.now.strftime('%m/%d/%Y') : params[:end_date]
-    @trials = Trial.includes(:disease_sites).find_range(@start_date, @end_date)
+    @attribute = params[:attribute] == "created_at" ? "created_at" : "updated_at"
+
+    @trials = Trial.includes(:disease_sites).find_range(@start_date, @end_date, @attribute)
 
     add_breadcrumb 'Trials Administration'
-    add_breadcrumb 'Recently Added'
+    add_breadcrumb 'Recent Updates'
 
     respond_to do |format|
       format.html

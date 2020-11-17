@@ -5,18 +5,20 @@
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:html="http://www.w3.org/TR/REC-html40">
   <Worksheet ss:Name="conditions">
-  	<Table>
+    <Table>
       <Row>
         <Cell><Data ss:Type="String">System ID</Data></Cell>
         <Cell><Data ss:Type="String">Brief Title</Data></Cell>
         <Cell><Data ss:Type="String">Disease Sites</Data></Cell>
+        <Cell><Data ss:Type="String">Date Added</Data></Cell>
         <Cell><Data ss:Type="String">Last Updated</Data></Cell>
       </Row>
       <% @trials.each do |t| %>
-      	<Row>
+        <Row>
           <Cell><Data ss:Type="String"><%= t.system_id %></Data></Cell>
           <Cell><Data ss:Type="String"><%= t.display_title %></Data></Cell>
           <Cell><Data ss:Type="String"><%= t.disease_sites.map { |d| "#{d.disease_site_name}" }.join('; ') %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.try(:created_at).strftime('%m/%d/%Y') %></Data></Cell>
           <Cell><Data ss:Type="String"><%= t.try(:updated_at).strftime('%m/%d/%Y') %></Data></Cell>
         </Row>
       <% end %>
