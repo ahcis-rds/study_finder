@@ -13,7 +13,7 @@
   </script>
 <% end %>
 
-<div class="study-result-hud">
+<div class="study-result-hud hide-on-print">
   <%= render 'shared/refine_search' %>
 </div>
 
@@ -22,7 +22,7 @@
     <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
       <% replacement_search = params[:search][:q].gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
       <% if replacement_search != params[:search][:q] %>
-        <div clsas="suggestions">
+        <div clsas="suggestions hide-on-print">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
           <div class="alert alert-info"><i class="fa fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
         </div>
@@ -37,7 +37,7 @@
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
 
     <% if !params[:search].nil? and !params[:search][:category].nil? %>
-      <a class="btn btn-outline-secondary" href="<%=remove_category_param%>">Search all categories</a>
+      <a class="btn btn-outline-secondary hide-on-print" href="<%=remove_category_param%>">Search all categories</a>
       <hr class="tighten"/>
       <% unless @group.subgroups.empty? %>
         <p class="subgroup-text"><strong>Suggestions within category "<%= @group.group_name %>"</strong></p>
@@ -91,7 +91,7 @@
       <%= render_attribute(@attribute_settings, 'irb_number', 'list', t.irb_number) %>
 
       <% unless t.eligibility_criteria.nil? %>
-        <div class="field important eligibility-buttons">
+        <div class="field important eligibility-buttons hide-on-print">
           <div class="btn btn-xs btn-school-inverse btn-show-full-eligibility"><i class="fa fa-plus"></i> Show full eligibility criteria</div>
           <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility d-none"><i class="fa fa-close"></i> Hide eligibility criteria</div>
         </div>
@@ -106,7 +106,7 @@
       <%= render_attribute(@attribute_settings, 'sites', 'list', t.sites.map{|x| site(x) }.join('; ')) %>
       <%= render_attribute(@attribute_settings, 'disease_sites', 'list', t.disease_sites.map{|x| x.disease_site_name }.join('; ')) %>
 
-      <div class="trial-cta-options">
+      <div class="trial-cta-options hide-on-print">
         <% if @system_info.display_study_show_page %>
           <%= link_to "<i class='fa fa-bookmark'></i> View Study".html_safe, study_path(id: t.id), class: 'btn btn-school'%>
         <% end %>
@@ -127,8 +127,6 @@
         <% unless t.recruitment_url.blank? %>
           <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
         <% end %>
-
-        <%= link_to '<i class="fa fa-save"></i> Download'.html_safe, study_path(t.id, format: "pdf"), class: 'btn btn-outline-secondary btn-print' %>
 
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
           <div class="btn btn-school btn-all-locations"><i class="fa fa-location-arrow"></i> Show All <%= t.trial_locations.count %> locations</div>

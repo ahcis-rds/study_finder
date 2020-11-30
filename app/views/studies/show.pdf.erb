@@ -4,21 +4,18 @@
 <div id="info">
   <h3><%= @study.brief_title %></h3>
   <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status, false) %>
-  <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id, false) %>
-  <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender), false) %>
-  <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study), false) %>
-  <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study), false) %>
-
-  <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description, false) %>
-  <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c), false) %>
-  <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name, false) %>
-  <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id, false) %>
-  <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase, false) %>
-  <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number, false) %>
 </div>
 <br>
 
-<div id="conditions">
+<div id="eligibility">
+  <h4>Eligibility Criteria</h4>
+  <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender), false) %>
+  <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study), false) %>
+  <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study), false) %>
+  <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+</div>
+
+<div id="conditions" class="show-on-print">
 	<h4>Conditions & Interventions</h4>
   <%= render_attribute(@attribute_settings, 'interventions', 'show', @study.interventions.to_s.gsub(/;/,',').html_safe, true) %>
   <%= render_attribute(@attribute_settings, 'conditions', 'show', @study.conditions_map.to_s.gsub(/;/,',').html_safe, true) %>
@@ -28,9 +25,15 @@
 </div>
 <br>
 
-<div id="eligibility">
-	<h4>Eligibility Criteria</h4>
-  <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+<div id="details" class="show-on-print">
+  <h4>More Information</h4>
+  <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description, false) %>
+  <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c), false) %>
+  <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name, false) %>
+  <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id, false) %>
+  <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase, false) %>
+  <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number, false) %>
+  <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id, false) %>
 </div>
 
 <hr/>
