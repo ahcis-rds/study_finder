@@ -331,7 +331,7 @@ class Trial < ApplicationRecord
 
   #  Keyword typeahead
   def self.typeahead(q)
-    search({
+    response_hash = search({
       suggest: {
         keyword_suggest: {
           text: q,
@@ -341,6 +341,12 @@ class Trial < ApplicationRecord
         }
       }
     }).raw_response
+
+    suggestions_hash = Array(response_hash.dig("suggest", "keyword_suggest")).first || {}
+    suggestions = Array((suggestions_hash).dig("options"))
+    unique_suggestions = suggestions.map { |suggestion| suggestion["text"] }.uniq
+
+    unique_suggestions
   end
 
   # Did you mean?

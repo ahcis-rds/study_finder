@@ -83,7 +83,9 @@ function applyTypeahead() {
     },
     {
       name: 'keyword-search',
-      displayKey: 'text',
+      displayKey: function(suggestion) {
+        return suggestion;
+      },
       source: engine.ttAdapter()
     }
   );
