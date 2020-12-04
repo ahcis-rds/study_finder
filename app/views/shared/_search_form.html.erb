@@ -10,6 +10,16 @@
       </select>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label for='gender'>Sex</label>
+      <select id="gender" name="search[gender]" class="form-control">
+        <option value=''>Any</option>
+        <option value='Female'>Female</option>
+        <option value='Male'>Male</option>
+      </select>
+    </div>
+  </div>
   <div class="age-ranges">
     <label class="checkbox"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
     <label class="checkbox"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
