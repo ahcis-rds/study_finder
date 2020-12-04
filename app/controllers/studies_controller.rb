@@ -39,8 +39,7 @@ class StudiesController < ApplicationController
   end
 
   def typeahead
-    typeahead = Trial.typeahead(params[:q])
-    respond_with(typeahead['suggest']['keyword_suggest'][0]['options'])
+    respond_with(Trial.typeahead(params[:q]))
   end
 
   def contact_team
