@@ -39,8 +39,7 @@ class StudiesController < ApplicationController
   end
 
   def typeahead
-    typeahead = Trial.typeahead(params[:q])
-    respond_with(typeahead['suggest']['keyword_suggest'][0]['options'])
+    respond_with(Trial.typeahead(params[:q]))
   end
 
   def contact_team
@@ -88,6 +87,6 @@ class StudiesController < ApplicationController
   private
 
   def search_params
-    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender])
+    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender, :children, :adults])
   end
 end
