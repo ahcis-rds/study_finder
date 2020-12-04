@@ -87,6 +87,6 @@ class StudiesController < ApplicationController
   private
 
   def search_params
-    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender])
+    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender, :children, :adults])
   end
 end
