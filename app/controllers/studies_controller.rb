@@ -18,14 +18,15 @@ class StudiesController < ApplicationController
   end
 
   def show
-    unless @system_info.display_study_show_page
-      redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
-    end
     @study = Trial.find(params[:id])
     @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
 
     respond_to do |format|
-      format.html
+      format.html do
+        unless @system_info.display_study_show_page
+          redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
+        end
+      end
       format.pdf do
         render pdf: "Study-#{@study.system_id}",
         layout: 'pdf',
