@@ -28,7 +28,7 @@ Rails.application.configure do
   config.assets.debug = true
 
   #Whitelist your local/development IPs here for the web-console gem
-  #config.web_console.whitelisted_ips = 'xxx.xxx.xxx.xxx'
+  config.web_console.whitelisted_ips = '172.23.0.1'
   
   # Store files locally.
   config.active_storage.service = :temp

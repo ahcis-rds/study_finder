@@ -18,14 +18,15 @@ class StudiesController < ApplicationController
   end
 
   def show
-    unless @system_info.display_study_show_page
-      redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
-    end
     @study = Trial.find(params[:id])
     @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
 
     respond_to do |format|
-      format.html
+      format.html do
+        unless @system_info.display_study_show_page
+          redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
+        end
+      end
       format.pdf do
         render pdf: "Study-#{@study.system_id}",
         layout: 'pdf',
@@ -39,8 +40,7 @@ class StudiesController < ApplicationController
   end
 
   def typeahead
-    typeahead = Trial.typeahead(params[:q])
-    respond_with(typeahead['suggest']['keyword_suggest'][0]['options'])
+    respond_with(Trial.typeahead(params[:q]))
   end
 
   def contact_team
@@ -88,6 +88,6 @@ class StudiesController < ApplicationController
   private
 
   def search_params
-    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender])
+    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender, :children, :adults])
   end
 end
