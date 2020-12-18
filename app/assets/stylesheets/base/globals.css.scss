@@ -1,11 +1,9 @@
 body {
-  font-family: 'Raleway','Helvetica Neue',Helvetica,Arial,sans-serif;
-  font-size: 14px;
-  font-weight: 300;
   color: $body_text;
 }
 
 h1, h2, h3, h4, h5 {
+  font-family: 'Raleway','Helvetica Neue',Helvetica,Arial,sans-serif;
   color: $school_main_color;
   font-weight: 400;
 }
@@ -211,5 +209,9 @@ footer {
 
 .caption-text{
   color: #000000;
+}
+
+.share-container {
+  margin-top: 1em;
 }
 
