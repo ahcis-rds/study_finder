@@ -31,7 +31,11 @@
     }
   }
 
-  .pagination, .btn-email-me, .btn-contact-study-team {
+  .pagination, .btn-email-me, .btn-contact-study-team, .hide-on-print {
     display: none;
+  }
+
+  .show-on-print {
+    display: inline !important;
   }
 }

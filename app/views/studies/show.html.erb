@@ -1,69 +1,77 @@
 <% c = determine_contacts(@study) %>
-<div class="clearfix">
-  <div class="pull-left">
-    <h3><%= @study.brief_title %></h3>
-    <div class="well">
+
+<div class="container study-results">
+  <div class="row">
+    <div class="col-md-6">
+      <h3><%= @study.brief_title %></h3>
       <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status) %>
-      <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id) %>
-      <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender)) %>
-      <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study)) %>
-      <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study)) %>
+      <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description) %>
+
+
+      <div class="button-holder hide-on-print">
+        <% contact_method = determine_contact_method(@study) %>
+        <% if contact_method == 'url' %>
+          <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
+        <% elsif contact_method == 'email' %>
+          <% unless c.empty? %>
+            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+          <% end %>
+        <% end %>
+        <% unless @study.recruitment_url.blank? %>
+          <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> Visit the Study Website</a>
+        <% end %>
+      </div>
+      <%= render 'social', study: @study %>
+    </div>
+    <div class="col-6 d-none d-md-block">
+      <%= image_tag 'flag.jpg', class: 'bordered' %>
     </div>
   </div>
 </div>
 
-<div class="button-holder">
-  <% unless @study.recruitment_url.blank? %>
-    <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
-  <% end %>
-  <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=@study.display_title%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= @study.system_id %>')"><i class="fa fa-envelope"></i> Share via email</div>
-  
-  <% contact_method = determine_contact_method(@study) %>
-  <% if contact_method == 'url' %>
-    <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
-  <% elsif contact_method == 'email' %>
-    <% unless c.empty? %>
-      <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
-    <% end %>
-  <% end %>
 
-  <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
-</div>
-<br>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item active"><a class="nav-link active" id="conditions-tab" data-toggle="tab" href="#conditions" role="tab" aria-controls="conditions" aria-selected="true">Conditions & Interventions</a></li>
-  <li class="nav-item"><a class="nav-link" id="eligibility-tab" data-toggle="tab" href="#eligibility" role="tab" aria-controls="eligibility" aria-selected="false">Eligibility Criteria</a></li>
-  <li class="nav-item"><a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">Additional Details</a></li>
+<ul class="nav nav-tabs hide-on-print" id="myTab" role="tablist">
+  <li class="nav-item active"><a class="nav-link active" id="eligibility-tab" data-toggle="tab" href="#eligibility" role="tab" aria-controls="eligibility" aria-selected="true">Eligibility Criteria</a></li>
+  <li class="nav-item"><a class="nav-link" id="conditions-tab" data-toggle="tab" href="#conditions" role="tab" aria-controls="conditions" aria-selected="false">Conditions & Interventions</a></li>
+  <li class="nav-item"><a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">More Information</a></li>
 </ul>
 <br>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane active" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
+  <div class="tab-pane active show-on-print" id="eligibility" role="tabpanel" aria-labelledby="eligibility-tab">
+    <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender)) %>
+    <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study)) %>
+    <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study)) %>
+    <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+  </div>
+
+  <div class="tab-pane fade show-on-print" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
     <%= render_attribute(@attribute_settings, 'interventions', 'show', @study.interventions.to_s.gsub(/;/,',').html_safe, true) %>
     <%= render_attribute(@attribute_settings, 'conditions', 'show', @study.conditions_map.to_s.gsub(/;/,',').html_safe, true) %>
     <%= render_attribute(@attribute_settings, 'keywords', 'show', @study.keywords.to_s.gsub(/;/,',').html_safe, true) %>
     <%= render_attribute(@attribute_settings, 'sites', 'show', @study.sites.map{|x| site(x) }.join('; '), true) %>
     <%= render_attribute(@attribute_settings, 'disease_sites', 'show', @study.disease_sites.map{|x| x.disease_site_name }.join('; '), true) %>
   </div>
-  <div class="tab-pane fade" id="eligibility" role="tabpanel" aria-labelledby="eligibility-tab">
-    <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
-  </div>
-  <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
-    <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description) %>
+
+  <div class="tab-pane fade show-on-print" id="details" role="tabpanel" aria-labelledby="details-tab">
     <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c)) %>
     <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name) %>
     <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id) %>
     <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase) %>
     <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number) %>
+    <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id) %>
+
+    <a class="btn btn-school btn-more-inf hide-on-print" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See this study on ClinicalTrials.gov</a>
   </div>
 </div>
 <br>
 
-<%= link_to study_path(@study.id, format: "pdf"), class: 'btn btn-outline-secondary btn-print' do %>
-  <i class="fa fa-save"></i> Download PDF
-<% end %>
+<div id="closing" class="text-muted text-hint show-on-print" style="display:none;">
+  <hr/>
+  <p>Thank you for choosing StudyFinder. Please visit <%= @system_info.default_url %> to find a Study which is right for you and contact <%= @system_info.default_email %> if you have questions or need assistance.</p>
+</div>
 
-<%= link_to 'Back', :back, class: 'btn btn-school' %>
+<%= link_to 'Back', :back, class: 'btn btn-school hide-on-print' %>
 
 <%= render 'modals' %>
 
