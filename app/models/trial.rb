@@ -205,6 +205,7 @@ class Trial < ApplicationRecord
         :contact_override,
         :contact_override_first_name,
         :contact_override_last_name,
+        :contact_first_name,
         :contact_last_name,
         :contact_email,
         :contact_backup_last_name,

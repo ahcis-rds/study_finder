@@ -24,6 +24,7 @@ module StudiesHelper
       if !trial.contact_email.nil? && trial.contact_email.include?(contact_suffix)
         contacts << {
           email: trial.contact_email,
+          first_name: trial.contact_first_name,
           last_name: trial.contact_last_name
         }
       end
@@ -31,6 +32,7 @@ module StudiesHelper
       if !trial.contact_backup_email.nil? && trial.contact_backup_email.include?(contact_suffix)
         contacts << {
           email: trial.contact_backup_email,
+          first_name: trial.contact_backup_first_name,
           last_name: trial.contact_backup_last_name
         }
       end
@@ -43,6 +45,7 @@ module StudiesHelper
       if !trial.contact_email.nil?
         contacts << {
           email: trial.contact_email,
+          first_name: trial.contact_first_name,
           last_name: trial.contact_last_name
         }
       end
@@ -50,6 +53,7 @@ module StudiesHelper
       if !trial.contact_backup_email.nil?
         contacts << {
           email: trial.contact_backup_email,
+          first_name: trial.contact_backup_first_name,
           last_name: trial.contact_backup_last_name
         }
       end
@@ -198,7 +202,7 @@ module StudiesHelper
         contacts << "#{contact[:first_name]} "
       end
       unless contact[:last_name].nil?
-        contacts << "#{contact[:last_name]} -"
+        contacts << "#{contact[:last_name]} - "
       end
       contacts << "#{contact[:email]}<br>"
     end
