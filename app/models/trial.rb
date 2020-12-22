@@ -72,7 +72,13 @@ class Trial < ApplicationRecord
   end
 
   def interventions
-    trial_interventions.map { |t| "#{t.intervention_type}: #{t.intervention}" }.join('; ') if trial_interventions.any?
+    trial_interventions.map do |t|
+      if t.intervention_type.blank?
+        t.intervention
+      else
+        "#{t.intervention_type}: #{t.intervention}"
+      end
+    end.join('; ')
   end
 
   def keywords
