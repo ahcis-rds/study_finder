@@ -1,10 +1,10 @@
 <% content_for :head do %>
   <meta property="og:site_name" content="StudyFinder"/>
-  <meta property="og:title" content="<%=@study.brief_title %>" />
+  <meta property="og:title" content="<%= @study.brief_title %>" />
   <meta property="og:description" content="Learn more about this study with StudyFinder!" />
   <meta property="og:type" content="website">
-  <meta property="og:url" content="<%=CGI.escape(study_url(study.id))%>"/>
-  <meta property="og:image" content="<%= CGI.escape(asset_url('flag.jpg')) %>"/>
+  <meta property="og:url" content="<%= study_url(study.id) %>"/>
+  <meta property="og:image" content="<%= asset_url('flag.jpg') %>"/>
 <% end %>
 
 <div class="hide-on-print share-container">
