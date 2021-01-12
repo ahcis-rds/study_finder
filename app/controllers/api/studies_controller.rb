@@ -1,4 +1,8 @@
 class Api::StudiesController < ApiController
+  def index
+    render json: Trial.all
+  end
+
   def show
     @trial = Trial.find_by(system_id: params[:id])
 
