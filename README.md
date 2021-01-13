@@ -44,7 +44,7 @@ encryption: :simple_tls
 departmental_cn: 'USERNAME'
 departmental_pw: 'PASSWORD'
 theme: 'umn'
-es_host: 'elastic.umn.edu'
+ELASTICSEARCH_URL: 'elastic.umn.edu'
 wkhtmltopdf_binary_path: 'PATH'
 
 ```

@@ -15,7 +15,6 @@ RSpec.describe Admin::GroupsController, :type => :controller do
   describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do
       get :index
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
@@ -30,7 +29,6 @@ RSpec.describe Admin::GroupsController, :type => :controller do
       group = Group.create({ group_name: 'Test' })
       get :edit, params: { id: group.id }
       expect( assigns(:group) ).to eq(group)
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
   end

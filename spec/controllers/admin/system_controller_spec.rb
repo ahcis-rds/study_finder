@@ -25,7 +25,6 @@ RSpec.describe Admin::SystemController, :type => :controller do
       
       get :edit, params: { id: system.id }
       expect( assigns(:system) ).to eq(system)
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
   end
