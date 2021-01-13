@@ -24,7 +24,7 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       - USER=${USER}
-      - es_host=elasticsearch
+      - ELASTICSEARCH_URL=elasticsearch
       - theme=umn
     ports:
       - 3000:3000
