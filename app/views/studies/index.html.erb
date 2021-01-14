@@ -107,12 +107,6 @@
       <%= render_attribute(@attribute_settings, 'disease_sites', 'list', t.disease_sites.map{|x| x.disease_site_name }.join('; ')) %>
 
       <div class="trial-cta-options hide-on-print">
-        <% if @system_info.display_study_show_page %>
-          <%= link_to "<i class='fa fa-bookmark'></i> View Study".html_safe, study_path(id: t.id), class: 'btn btn-school'%>
-        <% end %>
-
-        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Email this study information to me</div>
-        
         <% contact_method = determine_contact_method(t) %>
         <% if contact_method == 'url' %>
           <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
@@ -122,7 +116,9 @@
           <% end %>
         <% end %>
 
-        <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See more information</a>
+        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Share via email</div>
+
+        <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See this study on ClinicalTrials.gov</a>
 
         <% unless t.recruitment_url.blank? %>
           <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
