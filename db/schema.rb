@@ -36,6 +36,13 @@ ActiveRecord::Schema.define(version: 2021_01_14_144059) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "api_keys", force: :cascade do |t|
+    t.string "name"
+    t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "showcase_items", force: :cascade do |t|
     t.string "name"
     t.string "title"
