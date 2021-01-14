@@ -1,6 +1,6 @@
 <div class="contact">
 
-  <%= @system_info.faq_description.html_safe.to_s %>
+  <%= @system_info.faq_description.html_safe unless @system_info.faq_description.nil? %>
 
   <h2>Contact Us</h2>
   <div class="row">  
