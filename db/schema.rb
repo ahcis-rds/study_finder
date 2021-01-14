@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_06_154045) do
+ActiveRecord::Schema.define(version: 2021_01_14_144059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,7 +138,8 @@ ActiveRecord::Schema.define(version: 2020_10_06_154045) do
     t.boolean "display_study_show_page", default: false, null: false
     t.boolean "enable_showcase", default: false, null: false
     t.boolean "show_showcase_indicators", default: true, null: false
-    t.boolean "show_showcase_controls", default: false, null: false
+    t.boolean "show_showcase_controls", default: true, null: false
+    t.text "faq_description"
   end
 
   create_table "study_finder_trial_conditions", id: :serial, force: :cascade do |t|
