@@ -298,7 +298,7 @@ class Trial < ApplicationRecord
                   query_string: {
                     query: search[:q].gsub("/", ""),
                     default_operator: "AND",
-                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
+                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id"]
                   }
                 },
                 { bool: { filter: filters(search) } },
