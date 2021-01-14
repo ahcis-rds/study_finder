@@ -1,41 +1,6 @@
 <div class="contact">
 
-  <h2>Frequently Asked Questions</h2>
-  <h5>I'd like to participate in research but don't know where to start.</h5>
-  <p>To find open studies at the <%= @system_info.school_name %>, go to the <a href="<%= root_path %>">StudyFinder</a> homepage.</p>
-  <ul>
-    <li>Search for studies that are looking for healthy volunteers by using the “Healthy Volunteers” drop down on the lower left and choosing “yes.” </li>
-    <li>Type a disease or condition into the search box and search for something of interest to you.</li>
-    <li>If you’re not sure what you’re looking for, click on “Search for a Study” to find a list of disease/condition categories, and choose one that may fit your needs.</li>
-    <li>To find out more about a specific study, click on “Contact the Study Team.” </li>
-  </ul>
-
-  <h5>I don’t see any studies relating to a specific condition or disease. Do I have other options?</h5>
-  <p>Research studies are added on an ongoing basis. You can check back and filter by “recently added studies.”</p>
-  <p>You can also take a look at <a href="https://www.clinicaltrials.gov/">ClinicalTrials.gov</a>. This is a site that lists clinical studies that are being conducted around the world. <a href="https://www.clinicaltrials.gov/ct2/search/map/click?map.x=1015&map.y=268&map=NA%3AUS&mapw=1879">Here</a> you can find studies that are being conducted by other Minnesota institutions and healthcare systems. We recommend checking StudyFinder and ClinicalTrials.gov often, as the sites are updated as new studies are added.</p>
-  <p>If you’d like to be contacted about future research opportunities, you may be interested in registering with a nation-wide tool called <a href="https://www.researchmatch.org/">ResearchMatch</a>.</p>
-
-  <h5>I'm interested in getting paid for participating in research. How do I find studies providing compensation?</h5>
-  <p>Many research studies provide some sort of compensation for participation; however, we do not have a way to search for compensation on StudyFinder. Each study will have different eligibility requirements, time commitments, and compensation. If you find a study you may be interested in, click on “Contact the Study Team” and include any questions you have about participation. </p>
-
-  <h5>How do I register to be contacted about future studies?</h5>
-  <p>StudyFinder does not maintain a registry of volunteers. If you’d like to be contacted about future research opportunities, you may be interested in registering with <a href="https://www.researchmatch.org/">ResearchMatch</a>. ResearchMatch is a free and secure online tool that allows national registration for individuals interested in participating in research. ResearchMatch works by emailing you about studies that may be a good match for you. It is always your choice to decide what studies may interest you. You are not required to participate in a study if you join ResearchMatch.</p>
-
-  <h5>What does Phase I, Phase II, Phase III, etc. mean?</h5>
-  <p>After a treatment is tested in the laboratory, it can go to human testing. There are four phases of human testing.</p>
-  <p>Phase I: Researchers test a new drug or treatment in a small group of people (20-80) for the first time to test its safety, identify the maximum tolerated dose, find a safe dosage range and identify side effects.</p>
-  <p>Phase II: The drug or treatment is given to a larger group of people (100-300) to see if it is effective, to further evaluate its safety and to gather additional information regarding safe dose range.</p>
-  <p>Phase III: The drug or treatment is given to large groups of people (1,000-3,000) to confirm its effectiveness, monitor side effects, compare it to commonly used treatments and collect information that will allow the drug or treatment to be used safely.</p>
-  <p>Phase IV: During this phase, investigators are looking for additional information, including the drug or treatment’s risks, benefits, and optimal use. This trial may occur after the drug or treatment has been approved for use by the FDA.</p>
-
-  <h5>I contacted a study team but have not heard back. What should I do?</h5>
-  <p>Research coordinators may manage multiple studies at the same time. If you have not heard back within two business days, please contact the StudyFinder team to ask for assistance.</p>
-
-  <h5>What happens if I decide not to participate in a study after contacting the study team?</h5>
-  <p>You can change your mind about participation at any time. Tell the study team contact about your decision and they will no longer contact you.</p>
-
-  <h5>I heard about a <%= @system_info.school_name %> study on tv/radio/podcast. How do I participate?</h5>
-  <p>Depending on the type of study, it may not be listed on StudyFinder, or it may not be actively recruiting. Send any study details you have (e.g. where study was featured, condition being studied, medication or treatment involved, investigator/physician name) to <a href="mailto:sfinder@umn.edu">sfinder@umn.edu</a>, and the StudyFinder team will try to find additional information.</p>
+  <%= @system_info.faq_description.html_safe %>
 
   <h2>Contact Us</h2>
   <div class="row">  
