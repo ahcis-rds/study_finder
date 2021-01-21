@@ -36,7 +36,6 @@ class Api::StudiesController < ApiController
       :pi_name,
       :recruiting,
       :simple_description,
-      :brief_title,
       :visible
     )
   end
