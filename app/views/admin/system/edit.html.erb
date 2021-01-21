@@ -25,6 +25,7 @@
         <%= f.input :system_header %>
         <%= f.input :system_description, as: :text, input_html: { rows: 5 } %>
         <%= f.input :researcher_description, as: :text, input_html: { rows: 5 } %>
+        <%= f.input :faq_description, as: :text, input_html: { rows: 5 }, label: 'FAQ description' %>
         <%= f.input :default_url %>
         <%= f.input :default_email %>
         <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %>

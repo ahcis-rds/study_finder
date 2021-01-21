@@ -72,7 +72,7 @@ class Trial < ApplicationRecord
   end
 
   def interventions
-    trial_interventions.map { |t| "#{t.intervention_type}: #{t.intervention}" }.join('; ') if trial_interventions.any?
+    trial_interventions.join('; ')
   end
 
   def keywords
@@ -205,8 +205,10 @@ class Trial < ApplicationRecord
         :contact_override,
         :contact_override_first_name,
         :contact_override_last_name,
+        :contact_first_name,
         :contact_last_name,
         :contact_email,
+        :contact_backup_first_name,
         :contact_backup_last_name,
         :contact_backup_email,
         :pi_name,
@@ -296,7 +298,7 @@ class Trial < ApplicationRecord
                   query_string: {
                     query: search[:q].gsub("/", ""),
                     default_operator: "AND",
-                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
+                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
                   }
                 },
                 { bool: { filter: filters(search) } },

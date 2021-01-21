@@ -30,7 +30,6 @@ RSpec.describe ResearchersController, :type => :controller do
   describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do
       get :index
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
@@ -43,7 +42,6 @@ RSpec.describe ResearchersController, :type => :controller do
   describe "GET #search" do
     it "responds successfully with an HTTP 200 status code" do
       get :search
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
@@ -60,7 +58,6 @@ RSpec.describe ResearchersController, :type => :controller do
       get :edit, params: { id: trial.system_id }
       
       expect( assigns(:trial) ).to eq(trial)
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
   end
@@ -108,7 +105,6 @@ RSpec.describe ResearchersController, :type => :controller do
       }
       
       put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial }
-      expect(response).to be_success
       expect(response).to have_http_status(200)
       expect(flash[:notice]).to eq('The secret key you entered was incorrect.')
     end
@@ -129,7 +125,6 @@ RSpec.describe ResearchersController, :type => :controller do
       }
       
       put :update, params: { id: trial.system_id, study_finder_trial: study_finder_trial, secret_key: 'invalid_key' }
-      expect(response).to be_success
       expect(response).to have_http_status(200)
       expect(flash[:notice]).to eq('The secret key you entered was incorrect.')
     end

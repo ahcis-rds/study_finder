@@ -5,7 +5,6 @@ RSpec.describe StudiesController, :type => :controller do
   describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do
       get :index
-      expect(response).to be_success
       expect(response).to have_http_status(200)
     end
 
@@ -19,7 +18,7 @@ RSpec.describe StudiesController, :type => :controller do
 
       get :index, params: { search: { category: group.id } }
 
-      expect(response).to be_success
+      expect(response).to have_http_status(200)
     end
   end
 
@@ -49,7 +48,6 @@ RSpec.describe StudiesController, :type => :controller do
       
       get :show, params: { id: @study.id }
 
-      expect(response).to be_success
       expect(response).to have_http_status(200)
       expect(response).to render_template("show")
     end

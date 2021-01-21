@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
   <title><%= @system_info.initials %> - <%= @system_info.system_name %></title>
-  <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700" type="text/css" rel="stylesheet" media="all">
-  <link href="https://fonts.googleapis.com/css?family=Prompt:400,700" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700" type="text/css" rel="stylesheet" media="all" />
+  <link href="https://fonts.googleapis.com/css?family=Prompt:400,700" type="text/css" rel="stylesheet" />
   <%= csrf_meta_tags %>
-​  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= stylesheet_link_tag 'application', media: 'all', rel: 'stylesheet' %>
   <%= javascript_include_tag 'application' %>
-​
-  <meta name=viewport content="width=device-width, initial-scale=1">
-  <meta name=apple-mobile-web-app-capable content=yes>
-  <link rel="apple-touch-icon" sizes="76x76" href="assets/logo76.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="assets/logo120.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="assets/logo152.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="assets/logo180.png">
   <%= yield :head %>
 </head>
 <body>
