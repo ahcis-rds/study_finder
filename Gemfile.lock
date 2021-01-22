@@ -269,7 +269,7 @@ DEPENDENCIES
   json
   mail_form
   net-ldap (~> 0.16.1)
-  nokogiri (>= 1.10.4)
+  nokogiri
   pg
   rails (~> 5.2.3)
   rails-controller-testing

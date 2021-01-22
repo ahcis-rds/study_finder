@@ -12,7 +12,7 @@ gem 'jquery-rails', '4.3.5'
 gem 'json'
 gem 'jbuilder', '~> 2.0'
 gem 'haml'
-gem "nokogiri", ">= 1.10.4"
+gem 'nokogiri'
 gem 'simple_form'
 gem 'breadcrumbs_on_rails'
 gem 'mail_form'
