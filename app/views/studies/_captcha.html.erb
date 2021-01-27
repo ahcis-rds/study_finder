@@ -1,0 +1,14 @@
+<% if @system_info.captcha %>
+  <script>
+    var myselfWidget;
+    var studyTeamWidget;
+    var onloadCallback = function() {
+      myselfWidget = grecaptcha.render('myself-captcha', {
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+      });
+      studyTeamWidget = grecaptcha.render('study-team-captcha', {
+        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
+      });
+    };
+  </script>
+<% end %>
