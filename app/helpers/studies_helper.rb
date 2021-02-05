@@ -146,16 +146,6 @@ module StudiesHelper
     return rendered.html_safe
   end
 
-  def render_study_description(study)
-    if !study.simple_description.nil? && study.simple_description.length > 500
-      rendered = '<div>' + study.simple_description.truncate(500) + '<i class="fa fa-question-circle" class="study-desc-popover" data-toggle="popover" data-title="Study Description" data-content="' + study.simple_description + '" data-placement="top"></i></div>'
-    else 
-      rendered = study.simple_description.to_s
-    end
-    
-    return rendered.html_safe
-  end
-
   def render_age_display(study)
      return (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit)) ? age_display_units(study.min_age_unit, study.max_age_unit) : age_display(study.min_age, study.max_age)
   end

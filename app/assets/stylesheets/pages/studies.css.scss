@@ -74,6 +74,11 @@
     background: $highlight_color;
   }
 
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1em;
+  }
+
   h4{
     a {
       text-decoration: underline;
@@ -239,4 +244,8 @@
 
 .strong {
   font-weight: bold;
+}
+
+.button-holder {
+  margin-top: 1.5em;
 }

@@ -1,0 +1,15 @@
+<%
+  setting = Array(settings.filter { |s| s.attribute_key == "simple_description" }).first
+  page = controller.action_name == "index" ? "list" : controller.action_name
+  display = !!setting.attributes["display_on_#{page}"]
+  display_label = !!setting["display_label_on_#{page}"]
+%>
+
+<% if display && !study.simple_description.blank? %>
+  <div data-attribute-name="simple_description">
+    <% if display_label %>
+      <label class="nomargin strong mb-n1">Description:</label>
+    <% end %>
+    <p><%= study.simple_description %></p>
+  </div>
+<% end %>
