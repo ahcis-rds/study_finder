@@ -74,6 +74,11 @@
     background: $highlight_color;
   }
 
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1em;
+  }
+
   h4{
     a {
       text-decoration: underline;
@@ -200,16 +205,17 @@
   .btn-subgroup {
     margin: 5px;
   }
+}
 
-  .eligibility-line-break {
-    display: block;
-    content: " ";
-    margin: 4px 0;
-  }
 
-  .eligibility-header {
-    margin: 10px 0;
-  }
+.eligibility-line-break {
+  display: block;
+  content: " ";
+  margin: 4px 0;
+}
+
+.eligibility-header {
+  margin: 10px 0;
 }
 
 .trial-cta-options {
@@ -233,6 +239,14 @@
   display: inline-block;
 }
 
+.popover{
+  max-width: 75%;
+}
+
 .strong {
   font-weight: bold;
+}
+
+.button-holder {
+  margin-top: 1.5em;
 }

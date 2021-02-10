@@ -65,7 +65,7 @@
       </h4>
       
       <% c = determine_contacts(t) %>
-      <%= render_attribute(@attribute_settings, 'simple_description', 'list', t.simple_description, true) %>
+      <%= render "description", study: t, settings: @attribute_settings %>
       <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
       <%= render_attribute(@attribute_settings, 'contacts', 'list', contacts_display(c), true) %>
       <%= render_attribute(@attribute_settings, 'principal_investigator', 'list', t.pi_name) %>
