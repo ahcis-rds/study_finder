@@ -1,17 +1,4 @@
-<% if @system_info.captcha %>
-  <script>
-    var myselfWidget;
-    var studyTeamWidget;
-    var onloadCallback = function() {
-      myselfWidget = grecaptcha.render('myself-captcha', {
-        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
-      });
-      studyTeamWidget = grecaptcha.render('study-team-captcha', {
-        'sitekey' : '<%= Recaptcha.configuration.site_key %>'
-      });
-    };
-  </script>
-<% end %>
+<%= render 'captcha' %>
 
 <div class="study-result-hud hide-on-print">
   <%= render 'shared/refine_search' %>
@@ -78,7 +65,7 @@
       </h4>
       
       <% c = determine_contacts(t) %>
-      <%= render_attribute(@attribute_settings, 'simple_description', 'list', t.simple_description, true) %>
+      <%= render "description", study: t, settings: @attribute_settings %>
       <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
       <%= render_attribute(@attribute_settings, 'contacts', 'list', contacts_display(c), true) %>
       <%= render_attribute(@attribute_settings, 'principal_investigator', 'list', t.pi_name) %>
@@ -121,7 +108,7 @@
         <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See this study on ClinicalTrials.gov</a>
 
         <% unless t.recruitment_url.blank? %>
-          <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> See if you are a good fit for this study</a>
+          <a class="btn btn-school btn-recruitment" href="<%=t.recruitment_url%>" target="_blank"><i class="fa fa-users" target="_blank"></i> Visit Study Website</a>
         <% end %>
 
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
