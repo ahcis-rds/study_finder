@@ -1,6 +1,6 @@
 <% flash.each do |type, message| %>
   <% unless message.empty? %>
-  <div class="alert <%= bootstrap_class_for(type) %> fade in">
+  <div class="alert <%= bootstrap_class_for(type) %> fade show">
     <i class="fa <%= bootstrap_icon_for(type) %>"></i>
     <% if message.kind_of? Array %>
       <ul>
