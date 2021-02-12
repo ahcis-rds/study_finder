@@ -9,12 +9,12 @@
           <label>Study Title</label>
           <p class="study-title"></p>
           <div class="form-group">
-            <label>Your email address <small class="text-muted">(required)</small></label>
-            <input class="form-control email" type="text"></input>
+            <label for="email-me-email">Your email address <small class="text-muted">(required)</small></label>
+            <input id="email-me-email" class="form-control email" type="text"></input>
           </div>
           <div class="form-group">
-            <label>Additional Notes</label>
-            <textarea class="form-control notes"></textarea>
+            <label for="email-me-notes">Additional Notes</label>
+            <textarea id="email-me-notes" class="form-control notes"></textarea>
           </div>
           <% if @system_info.captcha %>
             <div class="form-group">
@@ -43,20 +43,20 @@
             Use this form to contact the study team at <a class="study-email"></a>.
           </p>
           <div class="form-group">
-            <label>Your email address <small class="text-muted">(required)</small></label>
-            <input class="form-control email" type="text"></input>
+            <label for="contact-email">Your email address <small class="text-muted">(required)</small></label>
+            <input id="contact-email" class="form-control email" type="text"></input>
           </div>
           <div class="form-group">
-            <label>Your name <small class="text-muted">(required)</small></label>
-            <input class="form-control name" type="text"></input>
+            <label for="contact-name">Your name <small class="text-muted">(required)</small></label>
+            <input id="contact-name" class="form-control name" type="text"></input>
           </div>
           <div class="form-group">
-            <label>Your phone number</label>
-            <input class="form-control phone" type="text"></input>
+            <label for="contact-phone">Your phone number</label>
+            <input id="contact-phone" class="form-control phone" type="text"></input>
           </div>
           <div class="form-group">
-            <label>Anything else you'd like to share with the study team?</label>
-            <textarea class="form-control notes"></textarea>
+            <label for="contact-notes">Anything else you'd like to share with the study team?</label>
+            <textarea id="contact-notes" class="form-control notes"></textarea>
           </div>
           <% if @system_info.captcha %>
             <div class="form-group">
