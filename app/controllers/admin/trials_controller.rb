@@ -85,21 +85,10 @@ class Admin::TrialsController < ApplicationController
   end
 
   def edit
-
-    # If editing, let's take the opportunity to update the trial from ctgov.
-    trial = Parsers::Ctgov.new(params[:id])
-    trial.load
-    trial.process
-
     @trial = Trial.find_by(system_id: params[:id])
 
     if @trial.nil?
       redirect_to admin_trials_path, alert: 'This trial does not exist'
-    end
-
-    if @trial.parser.klass == 'Parsers::Ctgov' && !Parser.find_by({ klass: 'Parsers::Oncore'}).blank?
-      @oncore = Parsers::Oncore.new(@trial.system_id)
-      @oncore.load(true)
     end
 
     add_breadcrumb 'Trials Administration', :admin_trials_path
