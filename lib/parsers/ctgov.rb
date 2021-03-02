@@ -189,9 +189,9 @@ module Parsers
 
       if @contents['eligibility'].has_key?('healthy_volunteers')
         if @contents['eligibility']['healthy_volunteers'] == 'Accepts Healthy Volunteers'
-          trial.healthy_volunteers = true
+          trial.healthy_volunteers_imported = true
         else
-          trial.healthy_volunteers = false
+          trial.healthy_volunteers_imported = false
         end
       end
 

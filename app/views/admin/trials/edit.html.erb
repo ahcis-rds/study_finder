@@ -51,6 +51,7 @@
       <%= f.input :recruitment_url %>
       <%= f.input :irb_number, label: 'IRB Number' %>
     <% end %>
+    <%= f.input :healthy_volunteers_override, as: :select, include_blank: true %>
     <%= f.input :visible, as: :select %>
     <%= f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false %>
     <%= f.input :cancer_yn, as: :select, collection: [['Yes', 'Y'],['No', 'N']], include_blank: true, label: 'Cancer Y/N' %>
