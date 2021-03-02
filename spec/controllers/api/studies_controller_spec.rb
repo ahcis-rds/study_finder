@@ -17,7 +17,7 @@ describe Api::StudiesController do
     it "can read studies" do
       study = Trial.create!(system_id: "NCT123")
 
-      get :show, params: { id: study.system_id }
+      get :show, params: { id: study.system_id, format: :json }
 
       expect(response).to have_http_status(200)
     end
