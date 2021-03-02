@@ -124,6 +124,8 @@ class Trial < ApplicationRecord
         trial_keywords.create(keyword: keyword)
       end
     end
+
+    __elasticsearch__.update_document
   end
 
   # ===============================================
