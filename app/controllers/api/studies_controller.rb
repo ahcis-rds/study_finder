@@ -1,18 +1,21 @@
 class Api::StudiesController < ApiController
   def index
-    render json: Trial.all
+    @trials = Trial.all
   end
 
   def show
     @trial = Trial.find_by(system_id: params[:id])
-
-    render json: @trial
   end
 
   def update
     @trial = Trial.find_by(system_id: params[:id])
 
-    if @trial.update(trial_params)
+    @trial.transaction do
+      @trial.update_keywords!(params[:keywords])
+      @trial.update!(trial_params)
+    end
+
+    if @trial.errors.none?
       head 200
     else
       render json: { error: @trial.errors }, status: 400
