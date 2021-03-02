@@ -4,6 +4,8 @@ class Trial < ApplicationRecord
 
   self.table_name = 'study_finder_trials'
 
+  before_save :update_healthy_volunteers
+
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
@@ -435,5 +437,13 @@ class Trial < ApplicationRecord
       conditions_map: { number_of_fragments: 0 },
       eligibility_criteria: { number_of_fragments: 0 }
     }
+  end
+
+  def update_healthy_volunteers
+    self.healthy_volunteers = if !healthy_volunteers_override.nil?
+                                healthy_volunteers_override
+                              else
+                                healthy_volunteers_imported
+                              end
   end
 end
