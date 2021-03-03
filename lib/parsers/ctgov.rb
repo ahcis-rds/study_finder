@@ -9,7 +9,6 @@ module Parsers
       'official_title',
       'acronym',
       'phase',
-      'overall_status',
       'verification_date',
       'lastchanged_date',
       'firstreceived_date',
@@ -39,6 +38,32 @@ module Parsers
 
     def set_contents_from_xml(xml)
       @contents = Hash.from_xml( Nokogiri::XML( xml ).xpath('clinical_study').to_s )['clinical_study']
+    end
+
+    def location_search_term
+      @location_search_term ||= SystemInfo.first.search_term
+    end
+
+    def locations
+      Array([contents.dig("location")]).flatten.compact
+    end
+
+    def location
+      locations.filter do |location|
+        location.dig("facility", "name").to_s.downcase == location_search_term.downcase
+      end.first || {}
+    end
+
+    def location_status
+      location.dig("status")
+    end
+
+    def overall_status
+      contents.dig("overall_status")
+    end
+
+    def calculated_status
+      location_status || overall_status
     end
 
     def preview
@@ -353,13 +378,12 @@ module Parsers
           else
             trial[f] = @contents[f]
           end
-          
-          if f == 'overall_status'
-            trial.recruiting = @contents[f] == 'Recruiting'
-            trial.visible = trial.recruiting
-          end
         end
       end
+
+      trial.overall_status = calculated_status
+      trial.recruiting = (calculated_status == 'Recruiting')
+      trial.visible = trial.recruiting
     end
 
   end
