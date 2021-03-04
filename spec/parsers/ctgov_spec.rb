@@ -434,4 +434,90 @@ describe Parsers::Ctgov do
       expect(mesh_term.last).to eq("Intervention: Test Intervention Mesh Term 3")
     end
   end
+
+  it "#overall_status" do
+    p = Parsers::Ctgov.new("NCT123")
+    p.set_contents_from_xml("
+      <clinical_study>
+        <overall_status>Recruiting</overall_status>
+      </clinical_study>
+    ")
+
+    expect(p.overall_status).to eq("Recruiting")
+  end
+
+  it "#location_status with one location" do
+    p = Parsers::Ctgov.new("NCT123")
+    p.set_contents_from_xml("
+      <clinical_study>
+        <location>
+          <facility>
+            <name>University of Minnesota</name>
+          </facility>
+          <status>Some status</status>
+        </location>
+      </clinical_study>
+    ")
+    allow(p).to receive(:location_search_term) { "University of Minnesota" }
+
+    expect(p.location_status).to eq("Some status")
+  end
+
+  it "#location_status with multiple locations" do
+    p = Parsers::Ctgov.new("NCT123")
+    p.set_contents_from_xml("
+      <clinical_study>
+        <location>
+          <facility>
+            <name>Somewhere else</name>
+          </facility>
+          <status>Another status</status>
+        </location>
+        <location>
+          <facility>
+            <name>University of Minnesota</name>
+          </facility>
+          <status>Some status</status>
+        </location>
+      </clinical_study>
+    ")
+    allow(p).to receive(:location_search_term) { "University of Minnesota" }
+
+    expect(p.location_status).to eq("Some status")
+  end
+
+  it "#calculated_status" do
+    p = Parsers::Ctgov.new("NCT123")
+    p.set_contents_from_xml("
+      <clinical_study>
+        <overall_status>Not this one</overall_status>
+        <location>
+          <facility>
+            <name>University of Minnesota</name>
+          </facility>
+          <status>This one</status>
+        </location>
+      </clinical_study>
+    ")
+    allow(p).to receive(:location_search_term) { "University of Minnesota" }
+
+    expect(p.calculated_status).to eq("This one")
+  end
+
+  it "#calculated_status with no location status" do
+    p = Parsers::Ctgov.new("NCT123")
+    p.set_contents_from_xml("
+      <clinical_study>
+        <overall_status>Some status</overall_status>
+        <location>
+          <facility>
+            <name>University of Minnesota</name>
+          </facility>
+        </location>
+      </clinical_study>
+    ")
+    allow(p).to receive(:location_search_term) { "University of Minnesota" }
+
+    expect(p.calculated_status).to eq("Some status")
+  end
 end
