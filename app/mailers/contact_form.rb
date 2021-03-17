@@ -6,7 +6,7 @@ class ContactForm < MailForm::Base
   def headers
     system_info = SystemInfo.current
     {
-      subject: 'Study Finder - Contact Us',
+      subject: 'StudyFinder - Contact Us',
       to: system_info.default_email,
       from: system_info.default_email
     }

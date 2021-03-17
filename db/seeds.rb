@@ -9,7 +9,7 @@
 system = {
   initials: 'UMN',
   school_name: 'University of Minnesota',
-  system_name: 'Study Finder',
+  system_name: 'StudyFinder',
   system_header: 'Make A Difference. Get Involved.',
   system_description: "<p>Participating in research is one of the most powerful things you can do to be part of tomorrow's health care breakthroughs. The U of M is always looking for people who are willing to participate in studies, so that our researchers can better understand how to diagnose, treat, and prevent diseases and conditions.</p><p>Use this StudyFinder website to quickly and easily identify U of M studies that need volunteers. Every study is different - some need healthy volunteers, while others are looking for people with a specific condition - so we've created search filters to help you find the study that's right for you. You can also filter by age, and search by keyword to find studies focused on specific conditions and diseases.</p><p>By getting involved with research, you can help transform the lives of millions.</p>",
   researcher_description: "<h2>What researchers need to know about StudyFinder</h2>
