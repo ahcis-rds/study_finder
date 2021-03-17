@@ -90,7 +90,16 @@ module Connectors
       TrialCondition.delete_all
     end
 
+    def stray_trials
+      Trial.where.not(system_id: nct_ids_for_location(@system_info.search_term))
+    end
+
+    def cleanup_stray_trials
+      stray_trials.destroy_all
+    end
+
     private
+
       def extract_zip
         dirname = "#{Rails.root}/tmp/"
         unless File.directory?(dirname)
@@ -108,5 +117,28 @@ module Connectors
           end
         end
       end
+
+    def nct_ids_for_location(location, start = 1, endd = 1000, ids = [])
+      response = HTTParty.get(
+        "https://clinicaltrials.gov/api/query/study_fields",
+        query: {
+          expr: "SEARCH[Location](AREA[LocationFacility]#{location})",
+          fields: "NCTId",
+          min_rnk: start,
+          max_rnk: endd,
+          fmt: "json"
+        }
+      )
+
+      response_ids = Array(JSON.parse(response.body || "{}").dig("StudyFieldsResponse").dig("StudyFields")).map do |result|
+        Array(result.dig("NCTId")).first
+      end
+
+      if response_ids.empty?
+        ids
+      else
+        nct_ids_for_location(location, endd + 1, endd + 1000, ids + response_ids)
+      end
+    end
   end
 end

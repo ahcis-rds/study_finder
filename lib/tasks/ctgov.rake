@@ -18,6 +18,7 @@ namespace :studyfinder do
       connector = Connectors::Ctgov.new
       connector.load((Date.today - args[:days_previous].to_i).strftime('%m/%d/%Y') , Date.today.strftime('%m/%d/%Y') )
       connector.process(true)
+      connector.cleanup_stray_trials
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true
@@ -29,6 +30,7 @@ namespace :studyfinder do
       connector = Connectors::Ctgov.new
       connector.load
       connector.process(true)
+      connector.cleanup_stray_trials
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true
