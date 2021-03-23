@@ -53,8 +53,7 @@
     <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase) %>
     <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number) %>
     <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id) %>
-
-    <a class="btn btn-school btn-more-inf hide-on-print" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See this study on ClinicalTrials.gov</a>
+    <%= render partial: "clinicaltrialsgov_button", locals: { study: @study } %>
   </div>
 </div>
 <br>

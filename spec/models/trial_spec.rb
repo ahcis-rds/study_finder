@@ -11,4 +11,10 @@ describe Trial do
     trial.update(healthy_volunteers_override: true)
     expect(trial.healthy_volunteers).to be true
   end
+
+  it "detects NCT numbers" do
+    expect(Trial.new(system_id: "thisisnotannctnumber").has_nct_number?).to be false
+    expect(Trial.new(system_id: "NCT123").has_nct_number?).to be true
+    expect(Trial.new(system_id: "nct123").has_nct_number?).to be true
+  end
 end
