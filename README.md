@@ -46,6 +46,7 @@ departmental_pw: 'PASSWORD'
 theme: 'umn'
 ELASTICSEARCH_URL: 'elastic.umn.edu'
 wkhtmltopdf_binary_path: 'PATH'
+DEFAULT_URL_HOST: 'yourstudyfinder.example.com' # Used in email links/URLs
 
 ```
 
