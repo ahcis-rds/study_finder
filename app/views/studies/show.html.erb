@@ -11,10 +11,10 @@
   <div class="button-holder hide-on-print">
     <% contact_method = determine_contact_method(@study) %>
     <% if contact_method == 'url' %>
-      <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
+      <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> I'm interested</a>
     <% elsif contact_method == 'email' %>
       <% unless c.empty? %>
-        <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+        <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> I'm interested</div>
       <% end %>
     <% end %>
     <% unless @study.recruitment_url.blank? %>
