@@ -11,10 +11,10 @@
   <div class="button-holder hide-on-print">
     <% contact_method = determine_contact_method(@study) %>
     <% if contact_method == 'url' %>
-      <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
+      <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa fa-envelope"></i> I'm interested</a>
     <% elsif contact_method == 'email' %>
       <% unless c.empty? %>
-        <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+        <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{@study.system_id}')"><i class="fa fa-envelope"></i> I'm interested</div>
       <% end %>
     <% end %>
     <% unless @study.recruitment_url.blank? %>
@@ -53,8 +53,7 @@
     <%= render_attribute(@attribute_settings, 'phase', 'show', @study.phase) %>
     <%= render_attribute(@attribute_settings, 'irb_number', 'show', @study.irb_number) %>
     <%= render_attribute(@attribute_settings, 'system_id', 'show', @study.system_id) %>
-
-    <a class="btn btn-school btn-more-inf hide-on-print" href="https://www.clinicaltrials.gov/ct2/show/study/<%= @study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= @study.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See this study on ClinicalTrials.gov</a>
+    <%= render partial: "clinicaltrialsgov_button", locals: { study: @study } %>
   </div>
 </div>
 <br>

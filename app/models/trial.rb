@@ -388,6 +388,17 @@ class Trial < ApplicationRecord
     }).raw_response
   end
 
+  def has_nct_number?
+    self.class.is_nct_number?(system_id)
+  end
+
+  # This only exists as a class method so we can use this logic in the search
+  # results page without instantiating a Trial object for every result. Actual
+  # Trial instances should use `trial.has_nct_number?`
+  def self.is_nct_number?(value)
+    value.to_s.upcase.starts_with?("NCT")
+  end
+
   private
 
   def self.filters(search)

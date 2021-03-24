@@ -100,19 +100,22 @@
 
         <% contact_method = determine_contact_method(t) %>
         <% if contact_method == 'url' %>
-          <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa fa-envelope"></i> Contact the study team</a>
+          <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa fa-envelope"></i> I'm interested</a>
         <% elsif contact_method == 'email' %>
           <% unless c.empty? %>
-            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> Contact the study team</div>
+            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}')"><i class="fa fa-envelope"></i> I'm interested</div>
           <% end %>
         <% end %>
 
         <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>')"><i class="fa fa-envelope"></i> Share via email</div>
 
-        <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= t.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= t.system_id %>')" target="_blank"><i class="fa fa-info-circle"></i> See this study on ClinicalTrials.gov</a>
+        <%= render partial: "clinicaltrialsgov_button", locals: { study: t } %>
 
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
-          <div class="btn btn-school btn-all-locations"><i class="fa fa-location-arrow"></i> Show All <%= t.trial_locations.count %> locations</div>
+          <div class="btn btn-school btn-all-locations">
+            <i class="fa fa-location-arrow"></i>
+            Show <%= pluralize(t.trial_locations.count, "location") %>
+          </div>
           <div class="field d-none study-locations">
             <hr/>
             <div class="clearfix">
