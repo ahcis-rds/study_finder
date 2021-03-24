@@ -1,0 +1,6 @@
+<% if Trial.is_nct_number?(study.system_id) %>
+  <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= study.system_id %>" onclick="track('send', 'event', 'ctgov', 'click', '<%= study.system_id %>')" target="_blank">
+    <i class="fa fa-info-circle"></i>
+    See this study on ClinicalTrials.gov
+  </a>
+<% end %>
