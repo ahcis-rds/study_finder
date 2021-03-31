@@ -110,17 +110,15 @@
   <br/>
   
   <h2>More ways to get involved</h2>
-  <div class="row">  
-    <div class="col-md-6 rm-link col-right-border">
-      <a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank">
-        <%= image_tag "researchmatch.png", class: 'pull-left' %>
-        <h4 class="hyperlink-header">Research Match</h4>
-      </a>
-      <span>Complete a short questionnaire and you'll get matched to studies that are right for you.</span>
+  <div class="row mt-4">
+    <div class="col-md-1">
+      <%= image_tag "researchmatch.png" %>
     </div>
-    <div class="col-md-6 contact-link">
-      <a href="<%=contact_index_path%>" title="Contact Us"><h4 class="hyperlink-header">Contact Us</h4></a>
-      <span>Get answers to your questions or help finding a study.</span>
+    <div class="col-md-11">
+      <a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank">
+        <h3 class="hyperlink-header">Research Match</h3>
+      </a>
+      <p>Complete a short questionnaire and you'll get matched to studies that are right for you.</p>
     </div>
   </div>
 </div>
