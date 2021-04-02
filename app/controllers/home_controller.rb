@@ -4,7 +4,7 @@ class HomeController < ApplicationController
     
     #TODO - This should be optimized for studyfinder 2.0
     @cancer_category = Group.find_by(group_name: 'Cancer')
-    @diabetes_category = Group.find_by(group_name: 'Diabetes & Hormone')
+    @diabetes_category = Group.find_by(group_name: 'Diabetes & Hormones')
     @prevention_category = Group.find_by(group_name: 'Prevention')
     @womens_health_category = Group.find_by(group_name: "Women's Health")
   	@showcase = ShowcaseItem.where(active: true).order(:sort_order)
