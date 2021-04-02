@@ -76,6 +76,12 @@ module Parsers
 
       retrieve_simple_fields(trial)
 
+      begin
+        trial.added_on = Date.parse(@contents.dig("study_first_posted")) || Date.today
+      rescue ArgumentError, TypeError => e
+        trial.added_on = Date.today
+      end
+
       if @contents.has_key?('eligibility')
         process_eligibility(trial)
       end

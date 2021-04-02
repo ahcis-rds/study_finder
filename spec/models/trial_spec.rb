@@ -17,4 +17,14 @@ describe Trial do
     expect(Trial.new(system_id: "NCT123").has_nct_number?).to be true
     expect(Trial.new(system_id: "nct123").has_nct_number?).to be true
   end
+
+  it "sorts search results by added_on date" do
+    Trial.create(added_on: 5.days.ago, visible: true)
+    Trial.create(added_on: 2.months.ago, visible: true)
+    Trial.create(added_on: 1.day.ago, visible: true)
+
+    result_dates = Trial.execute_search({q: ""}).results.map(&:added_on)
+
+    expect(result_dates).to eq(result_dates.sort.reverse)
+  end
 end
