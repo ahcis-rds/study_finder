@@ -209,6 +209,7 @@ class Trial < ApplicationRecord
       indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
+      indexes :added_on, type: 'date'
     end
 
   end
@@ -242,7 +243,8 @@ class Trial < ApplicationRecord
         :cancer_yn,
         :min_age_unit,
         :max_age_unit,
-        :featured
+        :featured,
+        :added_on
       ],
       include: {
         trial_locations: {
@@ -305,7 +307,10 @@ class Trial < ApplicationRecord
       },
       highlight: {
         fields: highlight_fields
-      }
+      },
+      sort: [
+        { added_on: "desc" }
+      ]
     )
   end
 
@@ -337,7 +342,11 @@ class Trial < ApplicationRecord
       },
       highlight: {
         fields: highlight_fields
-      }
+      },
+      sort: [
+        { added_on: "desc" }
+      ]
+
     )
 
   end
@@ -350,7 +359,10 @@ class Trial < ApplicationRecord
           operator: "and",
           fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
         }
-      }
+      },
+      sort: [
+        { added_on: "desc" }
+      ]
     )
   end
 

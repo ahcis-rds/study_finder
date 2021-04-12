@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_004918) do
+ActiveRecord::Schema.define(version: 2021_04_02_161847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,6 +256,7 @@ ActiveRecord::Schema.define(version: 2021_03_02_004918) do
     t.string "contact_url_override"
     t.boolean "healthy_volunteers_imported"
     t.boolean "healthy_volunteers_override"
+    t.date "added_on"
   end
 
   create_table "study_finder_updaters", id: :serial, force: :cascade do |t|
