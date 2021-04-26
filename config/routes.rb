@@ -43,6 +43,10 @@ Rails.application.routes.draw do
   get 'spotlight', controller: 'home', action: 'spotlight', as: :welcome
   get 'embed', controller: 'search', action: 'embed', as: :embed
 
+  namespace :api do
+    resources :studies, only: [:index, :show, :update]
+  end
+
   root 'home#index'
 
   # Example of regular route:

@@ -107,6 +107,25 @@ class Trial < ApplicationRecord
     trial_mesh_terms.map { |t| "#{t.mesh_term_type}: #{t.mesh_term}"}.join('; ') if trial_mesh_terms.any?
   end
 
+  def keyword_values
+    trial_keywords.map(&:keyword)
+  end
+
+  def update_keywords!(keywords)
+    return if keywords.nil?
+
+    existing_keywords = trial_keywords.map(&:keyword)
+    keywords_to_add = keywords - existing_keywords
+    keywords_to_delete = existing_keywords - keywords
+
+    transaction(requires_new: true) do
+      trial_keywords.where(keyword: keywords_to_delete).delete_all
+      keywords_to_add.each do |keyword|
+        trial_keywords.create(keyword: keyword)
+      end
+    end
+  end
+
   # ===============================================
   # Elasticsearch Configuration & Methods
   # ===============================================
