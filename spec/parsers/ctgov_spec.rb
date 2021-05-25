@@ -16,7 +16,7 @@ describe Parsers::Ctgov do
           <overall_status>Recruiting</overall_status>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(true)
@@ -31,7 +31,7 @@ describe Parsers::Ctgov do
           <overall_status>Not yet Recruiting</overall_status>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
@@ -46,7 +46,7 @@ describe Parsers::Ctgov do
           <overall_status>Recruiting</overall_status>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(true)
@@ -58,7 +58,7 @@ describe Parsers::Ctgov do
           <overall_status>Not yet Recruiting</overall_status>
         </clinical_study>
       ")
-      p2.process(true)
+      p2.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
@@ -73,7 +73,7 @@ describe Parsers::Ctgov do
           <overall_status>Not yet Recruiting</overall_status>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.visible).to eq(false)
@@ -85,7 +85,7 @@ describe Parsers::Ctgov do
           <overall_status>Recruiting</overall_status>
         </clinical_study>
       ")
-      p2.process(true)
+      p2.process
 
       trial2 = Trial.find_by(system_id: 'NCT01678638')
       expect(trial2.visible).to eq(true)
@@ -101,7 +101,7 @@ describe Parsers::Ctgov do
         </clinical_study>
       ")
 
-      p.process(true)
+      p.process
       trial.reload
 
       expect(trial.visible).to eq(false)
@@ -124,7 +124,7 @@ describe Parsers::Ctgov do
           </eligibility>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.minimum_age).to eq(nil)
@@ -148,7 +148,7 @@ describe Parsers::Ctgov do
           </eligibility>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.minimum_age).to eq('0.1')
@@ -174,7 +174,7 @@ describe Parsers::Ctgov do
           </eligibility>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.minimum_age).to eq('1.08')
@@ -201,7 +201,7 @@ describe Parsers::Ctgov do
           <condition>Test Condition</condition>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.conditions.first.condition).to eq('Test Condition')
@@ -228,7 +228,7 @@ describe Parsers::Ctgov do
           <condition>Test Condition 4</condition>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.conditions.size).to eq(4)
@@ -248,7 +248,7 @@ describe Parsers::Ctgov do
           </intervention>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.interventions).to eq('Intervention Type: Intervention Name')
@@ -274,7 +274,7 @@ describe Parsers::Ctgov do
           </intervention>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       interventions = trial.interventions.split("; ")
@@ -293,7 +293,7 @@ describe Parsers::Ctgov do
           <keyword>Test Keyword</keyword>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.keywords).to eq("Test Keyword")
@@ -312,7 +312,7 @@ describe Parsers::Ctgov do
           <keyword>Test Keyword 5</keyword>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       keywords = trial.keywords.split("; ")
@@ -333,7 +333,7 @@ describe Parsers::Ctgov do
           </conditional_browse>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.mesh_terms).to eq("Conditional: Test Conditional Mesh Term")
@@ -352,7 +352,7 @@ describe Parsers::Ctgov do
           </conditional_browse>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       mesh_term = trial.mesh_terms.split("; ")
@@ -373,7 +373,7 @@ describe Parsers::Ctgov do
           </intervention_browse>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       expect(trial.mesh_terms).to eq("Intervention: Test Intervention Mesh Term")
@@ -392,7 +392,7 @@ describe Parsers::Ctgov do
           </intervention_browse>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       mesh_term = trial.mesh_terms.split("; ")
@@ -421,7 +421,7 @@ describe Parsers::Ctgov do
           </intervention_browse>
         </clinical_study>
       ")
-      p.process(true)
+      p.process
 
       trial = Trial.find_by(system_id: 'NCT01678638')
       mesh_term = trial.mesh_terms.split("; ")

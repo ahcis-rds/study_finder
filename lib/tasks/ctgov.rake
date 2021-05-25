@@ -28,7 +28,7 @@ namespace :studyfinder do
 
       connector = Connectors::Ctgov.new
       connector.load
-      connector.process(true)
+      connector.process
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true
@@ -46,7 +46,7 @@ namespace :studyfinder do
       connector = Connectors::Ctgov.new
       connector.clear
       connector.load
-      connector.process(true)
+      connector.process
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true

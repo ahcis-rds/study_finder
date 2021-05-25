@@ -3,5 +3,5 @@ class ConditionGroup < ApplicationRecord
 
   belongs_to :condition
   belongs_to :group
-  belongs_to :trial_condition, foreign_key: :condition_id
+  belongs_to :trial_condition, foreign_key: :condition_id, primary_key: :condition_id
 end
