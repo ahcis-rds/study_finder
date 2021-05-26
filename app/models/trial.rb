@@ -17,6 +17,7 @@ class Trial < ApplicationRecord
 
   has_many :trial_conditions
   has_many :conditions, through: :trial_conditions
+  has_many :condition_groups, through: :trial_conditions
 
   has_many :trial_sites
   has_many :sites, through: :trial_sites
@@ -86,7 +87,7 @@ class Trial < ApplicationRecord
   end
 
   def category_ids
-    VwStudyFinderTrialGroups.where({ trial_id: id }).map(&:group_id)
+    condition_groups.map { |e| e.group_id }
   end
 
   def keyword_suggest

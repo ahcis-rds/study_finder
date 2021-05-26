@@ -56,7 +56,7 @@ module Connectors
       return true
     end
 
-    def process(without_index=nil)
+    def process
       start_load_time = Time.now
       count = 0
       puts "Adding/Updating trials in the database.  If it is a full reload it's going to be awhile...  Maybe get some coffee? :)"
@@ -64,7 +64,7 @@ module Connectors
       Dir.glob("#{Rails.root}/tmp/trials/*.xml") do |file|
         p = Parsers::Ctgov.new( file.gsub("#{Rails.root}/tmp/trials/", "").gsub(".xml", ""), @parser_id)
         p.load(file)
-        p.process(without_index)
+        p.process
         count = count + 1
       end
       end_load_time = Time.now

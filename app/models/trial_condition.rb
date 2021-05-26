@@ -5,5 +5,5 @@ class TrialCondition < ApplicationRecord
   belongs_to :condition
   belongs_to :trial
 
-  has_many :condition_groups, foreign_key: 'condition_id'
+  has_many :condition_groups, foreign_key: 'condition_id', primary_key: 'condition_id'
 end
