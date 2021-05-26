@@ -1,5 +1,4 @@
-# StudyFinder
-[![Build Status](https://travis-ci.org/ahcis-rds/study_finder.svg?branch=master)](https://travis-ci.org/ahcis-rds/study_finder)
+# StudyFinder [![Build Status](https://github.com/ahcis-rds/study_finder/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/ahcis-rds/study_finder/actions/workflows/ci.yml?query=branch%3Amaster)
 
 StudyFinder is a flexible and configurable application that pulls studies from
 clinicaltrials.gov and augments the data from alternate datasources such as a
