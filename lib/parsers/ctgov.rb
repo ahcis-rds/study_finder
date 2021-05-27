@@ -74,13 +74,8 @@ module Parsers
       trial
     end
 
-    def process(without_index=nil)
-      if without_index.nil?
-        trial = Trial.find_or_initialize_by(system_id: @id)
-      else
-        trial = BaseTrial.find_or_initialize_by(system_id: @id)
-      end
-
+    def process()
+      trial = Trial.find_or_initialize_by(system_id: @id)
       
       trial.system_id = @id # i think this is just overwriting system_id from the line above
 

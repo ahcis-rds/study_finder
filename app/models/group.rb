@@ -5,6 +5,8 @@ class Group < ApplicationRecord
 
   has_many :condition_groups
   has_many :conditions, through: :condition_groups
+  has_many :trial_conditions, through: :condition_groups
+  has_many :trials, through: :trial_conditions
   has_many :subgroups
 
   accepts_nested_attributes_for :subgroups, allow_destroy: true, reject_if: :all_blank
@@ -23,6 +25,6 @@ class Group < ApplicationRecord
   end
 
   def study_count
-    VwGroupTrialCount.find(id).trial_count
+    trials.where(visible: true).distinct.count(:id)
   end
 end

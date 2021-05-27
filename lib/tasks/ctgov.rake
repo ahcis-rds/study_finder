@@ -17,8 +17,7 @@ namespace :studyfinder do
       puts "Processing ClinicalTrials.gov data"
       connector = Connectors::Ctgov.new
       connector.load((Date.today - args[:days_previous].to_i).strftime('%m/%d/%Y') , Date.today.strftime('%m/%d/%Y') )
-      connector.process(true)
-      connector.cleanup_stray_trials
+      connector.process
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true
@@ -29,8 +28,7 @@ namespace :studyfinder do
 
       connector = Connectors::Ctgov.new
       connector.load
-      connector.process(true)
-      connector.cleanup_stray_trials
+      connector.process
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true
@@ -48,7 +46,7 @@ namespace :studyfinder do
       connector = Connectors::Ctgov.new
       connector.clear
       connector.load
-      connector.process(true)
+      connector.process
 
       puts "Reindexing all trials into elasticsearch"
       Trial.import force: true

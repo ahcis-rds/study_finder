@@ -1,5 +1,4 @@
-# StudyFinder
-[![Build Status](https://travis-ci.org/ahcis-rds/study_finder.svg?branch=master)](https://travis-ci.org/ahcis-rds/study_finder)
+# StudyFinder [![Build Status](https://github.com/ahcis-rds/study_finder/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/ahcis-rds/study_finder/actions/workflows/ci.yml?query=branch%3Amaster)
 
 StudyFinder is a flexible and configurable application that pulls studies from
 clinicaltrials.gov and augments the data from alternate datasources such as a
@@ -15,7 +14,7 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 
 The easiest way to get started with a development environment is to use `docker-compose`:
 
-1. Run `docker-compose run web rake db:create db:migrate db:seed` to initialize your
+1. Run `docker-compose run web rake db:setup` to initialize your
 database and search index.
 1. Run `docker-compose up -d` to start a development server.
 1. Visit `http://localhost:3000/` to view the application.
