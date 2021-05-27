@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare database
+      run: docker-compose run web rails db:setup
+    - name: Run tests
+      run: docker-compose run web rspec
