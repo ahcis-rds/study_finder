@@ -26,7 +26,7 @@
   </div>
   <div class="row">
     <div class="col-md-10">
-      <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, treatment, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off' %>
+      <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off' %>
     </div>    
   </div>
   <%= hidden_field 'search', 'category', value: @category.id unless @category.nil? %>
