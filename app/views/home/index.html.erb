@@ -46,7 +46,7 @@
   <div class="row home-content mt-4 mb-5">
     <div class="col-md-6 study-highlights">
       <h2>Research at the University of Minnesota</h2>
-      <p>The University of Minnesota has research studies on a wide range of health issues, from <a href='<%= !@cancer_category.nil? ? studies_path(search: { category: @cancer_category.try(:id) }) : studies_path %>'>cancer</a> and <a href='<%= !@diabetes_category.nil? ? studies_path(search: { category: @diabetes_category.try(:id) }) : studies_path %>'>diabetes</a> to <a href='<%= !@prevention_category.nil? ? studies_path(search: { category: @prevention_category.try(:id) }) : studies_path %>'>prevention</a> and <a href='<%= !@womens_health_category.nil? ? studies_path(search: { category: @womens_health_category.try(:id) }) : studies_path %>'>women's health</a>.</p>
+      <p>The University of Minnesota has research studies on a wide range of health issues, from cancer and diabetes to prevention and women's health.</p>
       <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online.</p>
       <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
     </div>
