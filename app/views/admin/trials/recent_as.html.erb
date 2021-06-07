@@ -42,6 +42,7 @@
       <th>System Id</th>
       <th>Brief Title</th>
       <th>Disease Sites</th>
+      <th>Visible?</th>
       <th>Date Added</th>
       <th>Last Updated</th>
     </tr>
@@ -53,6 +54,7 @@
         <td><%= t.system_id %></td>
         <td><%= t.display_title %></td>
         <td><%= t.disease_sites.map { |d| "#{d.disease_site_name}" }.join('; ') %></td>
+        <td><%= t.visible ? "Yes" : "No" %></td>
         <td><%= t.created_at.localtime.strftime('%m/%d/%Y') %></td>
         <td><%= t.updated_at.localtime.strftime('%m/%d/%Y') %></td>
       </tr>
