@@ -4,7 +4,7 @@
 
 <div class="container study-results clearfix">
   <h1><%= @study.brief_title %></h1>
-  <%= image_tag 'flag.jpg', class: 'bordered float-lg-right ml-4 mb-4' %>
+  <%= image_tag @study_photo, class: 'bordered float-lg-right ml-4 mb-4 study-photo' %>
   <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status) %>
   <%= render "description", study: @study, settings: @attribute_settings %>
 
