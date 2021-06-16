@@ -63,6 +63,7 @@
     <%= f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' } %>
 
     <%= f.input :photo, label: "Custom study image", input_html: { class: "form-control" } %>
+    <small class="form-text text-muted study-photo-help">Please upload web-optimized images with a maximum width of 500px.</small>
 
     <% if @trial.photo.attached? %>
       <div class="my-5">
@@ -76,7 +77,9 @@
       </div>
     <% end %>
 
-    <%= f.submit 'Update Trial', class: 'btn btn-school' %>
-    <%= link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-outline-secondary' %>
+    <div class="mt-4">
+      <%= f.submit 'Update Trial', class: 'btn btn-school' %>
+      <%= link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-outline-secondary' %>
+    </div>
   <% end %>
 </div>
