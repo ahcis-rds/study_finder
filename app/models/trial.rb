@@ -30,6 +30,8 @@ class Trial < ApplicationRecord
 
   has_many :trial_mesh_terms
 
+  has_one_attached :photo
+
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
   def self.import_from_file(file)

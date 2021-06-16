@@ -62,6 +62,20 @@
     <%= f.association :sites, label_method: :site_name, value_method: :id, input_html: { class: 'select2' } %>
     <%= f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' } %>
 
+    <%= f.input :photo, label: "Custom study image", input_html: { class: "form-control" } %>
+
+    <% if @trial.photo.attached? %>
+      <div class="my-5">
+        <p>Current image:</p>
+        <%= image_tag @trial.photo, class: "img-fluid" %>
+
+        <div class="form-check">
+          <input type="checkbox" name="delete_photo" id="delete-photo" />
+          <label class="form-check-label" for="delete-photo">Delete this image</label>
+        </div>
+      </div>
+    <% end %>
+
     <%= f.submit 'Update Trial', class: 'btn btn-school' %>
     <%= link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-outline-secondary' %>
   <% end %>
