@@ -108,10 +108,24 @@ class Admin::TrialsController < ApplicationController
   private
     def trial_params
       params.require(:trial).permit(
-        :simple_description, :visible, 
-        :featured, :recruiting, :contact_override, :cancer_yn, :healthy_volunteers_override,
-        :contact_override_first_name, :contact_override_last_name, :pi_name, :pi_id, :recruitment_url, :contact_url_override,
-        :reviewed, :irb_number, site_ids: [], disease_site_ids: [])
+        :cancer_yn,
+        :contact_override,
+        :contact_override_first_name,
+        :contact_override_last_name,
+        :contact_url_override,
+        :featured,
+        :healthy_volunteers_override,
+        :irb_number,
+        :pi_id,
+        :pi_name,
+        :recruiting,
+        :recruitment_url,
+        :reviewed,
+        :simple_description,
+        :visible,
+        disease_site_ids: [],
+        site_ids: []
+      )
     end
 
 end
