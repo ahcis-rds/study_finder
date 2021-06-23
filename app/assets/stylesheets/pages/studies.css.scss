@@ -1,3 +1,5 @@
+@import "../mixins/multiline_truncate";
+
 .study-result-hud {
   padding-left: 0px;
 
@@ -191,6 +193,12 @@
 
     .concept-matched {
       background: #fcf8e3;
+    }
+
+    div[data-attribute-name=simple_description] {
+      p {
+        @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 3, $bgColor: white);
+      }
     }
   }
 
