@@ -114,6 +114,10 @@ class Trial < ApplicationRecord
     trial_keywords.map(&:keyword)
   end
 
+  def condition_values
+    conditions.map(&:condition)
+  end
+
   def update_keywords!(keywords)
     return if keywords.nil?
 
@@ -125,6 +129,24 @@ class Trial < ApplicationRecord
       trial_keywords.where(keyword: keywords_to_delete).delete_all
       keywords_to_add.each do |keyword|
         trial_keywords.create(keyword: keyword)
+      end
+    end
+
+    __elasticsearch__.update_document
+  end
+
+  def update_conditions!(conditions)
+    return if conditions.nil?
+
+    existing_conditions = condition_values
+    conditions_to_add = conditions - existing_conditions
+    conditions_to_delete = existing_conditions - conditions
+
+    transaction(requires_new: true) do
+      trial_conditions.includes(:condition).where(Condition.table_name => { condition: conditions_to_delete }).delete_all
+
+      conditions_to_add.each do |condition|
+        trial_conditions.create(condition: Condition.find_or_initialize_by(condition: condition))
       end
     end
 

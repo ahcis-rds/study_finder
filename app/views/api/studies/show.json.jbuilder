@@ -12,3 +12,4 @@ json.recruiting @trial.recruiting
 json.simple_description @trial.simple_description
 json.visible @trial.visible
 json.keywords @trial.keyword_values
+json.conditions @trial.condition_values

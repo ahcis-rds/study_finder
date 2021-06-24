@@ -47,6 +47,16 @@ describe Api::StudiesController do
         expect(study[attribute]).to eq(value)
       end
     end
+
+    it "can update conditions" do
+      study = Trial.create!(system_id: "ASDF123")
+      conditions = ["A condition", "Another one"]
+
+      post :update, params: { id: "ASDF123", conditions: conditions }
+
+      study.reload
+      expect(study.condition_values.sort).to eq(conditions)
+    end
   end
 end
 
