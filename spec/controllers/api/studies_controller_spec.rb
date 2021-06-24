@@ -48,6 +48,50 @@ describe Api::StudiesController do
       end
     end
 
+    it "can create studies" do
+      attributes = {
+        system_id: "SOME-ID",
+        contact_override: "blah@example.com",
+        contact_override_first_name: "Testy",
+        contact_override_last_name: "McTesterson",
+        irb_number: "1234567890",
+        pi_id: "somepi@example.com",
+        pi_name: "Some PI, M.D.",
+        recruiting: true,
+        simple_description: "This is a short description",
+        brief_title: "This is a brief title",
+        visible: true
+      }
+
+      post :create, params: attributes
+
+      trial = Trial.find_by(system_id: "SOME-ID")
+
+      attributes.each do |attribute, value|
+        expect(trial[attribute]).to eq(value)
+      end
+    end
+
+    it "can create with conditions" do
+      conditions = ["Something", "Something else"]
+
+      post :create, params: { system_id: "BLAH123", conditions: conditions }
+
+      trial = Trial.find_by(system_id: "BLAH123")
+
+      expect(trial.condition_values.sort).to eq(conditions)
+    end
+
+    it "can create with keywords" do
+      keywords = ["Something", "Something else"]
+
+      post :create, params: { system_id: "BLAH123", keywords: keywords }
+
+      trial = Trial.find_by(system_id: "BLAH123")
+
+      expect(trial.keyword_values.sort).to eq(keywords)
+    end
+
     it "can update conditions" do
       study = Trial.create!(system_id: "ASDF123")
       conditions = ["A condition", "Another one"]

@@ -23,6 +23,21 @@ class Api::StudiesController < ApiController
     end
   end
 
+  def create
+    @trial = Trial.new(trial_params)
+
+    if @trial.save
+      @trial.transaction do
+        @trial.update_keywords!(params[:keywords])
+        @trial.update_conditions!(params[:conditions])
+      end
+
+      head 201
+    else
+      render json: { error: @trial.errors }, status: 400
+    end
+  end
+
   private
 
   def trial_params
@@ -37,6 +52,7 @@ class Api::StudiesController < ApiController
       :pi_name,
       :recruiting,
       :simple_description,
+      :system_id,
       :visible
     )
   end

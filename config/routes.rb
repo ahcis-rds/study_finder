@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   get 'embed', controller: 'search', action: 'embed', as: :embed
 
   namespace :api do
-    resources :studies, only: [:index, :show, :update]
+    resources :studies, only: [:index, :show, :update, :create]
   end
 
   root 'home#index'
