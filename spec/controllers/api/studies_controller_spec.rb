@@ -101,6 +101,61 @@ describe Api::StudiesController do
       study.reload
       expect(study.condition_values.sort).to eq(conditions)
     end
+
+    it "can create with locations" do
+      locations = [
+        {
+          "name": "Masonic Cancer Center, University of Minnesota",
+          "city": "Minneapolis",
+          "state": "Minnesota",
+          "zip": "55455",
+          "country": "United States"
+        },
+        {
+          "name": "University of Wisconsin Hospital and Clinics",
+          "city": "Madison",
+          "state": "Wisconsin",
+          "zip": "53792",
+          "country": "United States"
+        }
+      ]
+
+      post :create, params: { system_id: "BLAH123", locations: locations }
+
+      trial = Trial.find_by(system_id: "BLAH123")
+
+      locations.each do |location|
+        expect(trial.locations.as_json).to include(location)
+      end
+    end
+
+    it "can update locations" do
+      trial = Trial.create!(system_id: "ASDF123")
+      locations = [
+        {
+          "name": "Test location 1",
+          "city": "Minneapolis",
+          "state": "Minnesota",
+          "zip": "55455",
+          "country": "United States"
+        },
+        {
+          "name": "Test location 2",
+          "city": "Madison",
+          "state": "Wisconsin",
+          "zip": "53792",
+          "country": "United States"
+        }
+      ]
+
+      post :update, params: { id: "ASDF123", locations: locations }
+
+      trial.reload
+
+      locations.each do |location|
+        expect(trial.locations.as_json).to include(location)
+      end
+    end
   end
 end
 

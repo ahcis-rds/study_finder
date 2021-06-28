@@ -153,6 +153,30 @@ class Trial < ApplicationRecord
     __elasticsearch__.update_document
   end
 
+  def update_locations!(location_data)
+    return if location_data.nil?
+
+    existing_locations = locations.as_json
+    locations_to_add = location_data - existing_locations
+    locations_to_delete = existing_locations - location_data
+
+    transaction(requires_new: true) do
+      locations_to_delete.each do |location_to_delete|
+        locations.where(location: location_to_delete[:name], zip: location_to_delete[:zip]).delete_all
+      end
+
+      locations_to_add.each do |location_to_add|
+        location = locations.find_or_initialize_by(location: location_to_add[:name], zip: location_to_add[:zip])
+        location.city = location_to_add[:city]
+        location.state = location_to_add[:state]
+        location.zip = location_to_add[:zip]
+        location.country = location_to_add[:country]
+      end
+    end
+
+    save!
+  end
+
   # ===============================================
   # Elasticsearch Configuration & Methods
   # ===============================================
