@@ -156,6 +156,49 @@ describe Api::StudiesController do
         expect(trial.locations.as_json).to include(location)
       end
     end
+
+    it "can create with interventions" do
+      interventions = [
+        {
+          type: "Drug",
+          intervention: "Prednisone"
+        },
+        {
+          type: "Procedure",
+          intervention: "Trans-scleral Cryotherapy"
+        }
+      ]
+
+      post :create, params: { system_id: "BLAH123", interventions: interventions }
+
+      trial = Trial.find_by(system_id: "BLAH123")
+
+      interventions.each do |intervention|
+        expect(trial.trial_interventions.as_json).to include(intervention)
+      end
+    end
+
+    it "can update interventions" do
+      trial = Trial.create!(system_id: "ASDF123")
+      interventions = [
+        {
+          type: "Drug",
+          intervention: "Prednisone"
+        },
+        {
+          type: "Procedure",
+          intervention: "Trans-scleral Cryotherapy"
+        }
+      ]
+
+      post :update, params: { id: "ASDF123", interventions: interventions }
+
+      trial.reload
+
+      interventions.each do |intervention|
+        expect(trial.trial_interventions.as_json).to include(intervention)
+      end
+    end
   end
 end
 

@@ -14,3 +14,4 @@ json.visible @trial.visible
 json.keywords @trial.keyword_values
 json.conditions @trial.condition_values
 json.locations @trial.locations
+json.interventions @trial.trial_interventions

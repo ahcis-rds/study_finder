@@ -177,6 +177,29 @@ class Trial < ApplicationRecord
     save!
   end
 
+  def update_interventions!(intervention_data)
+    return if intervention_data.nil?
+
+    existing_interventions = trial_interventions.as_json
+    interventions_to_add = intervention_data - existing_interventions
+    interventions_to_delete = existing_interventions - intervention_data
+
+    transaction(requires_new: true) do
+      interventions_to_delete.each do |intervention_to_delete|
+        interventions.where(intervention_to_delete).delete_all
+      end
+
+      interventions_to_add.each do |intervention_to_add|
+        trial_interventions.find_or_initialize_by(
+          intervention_type: intervention_to_add[:type],
+          intervention: intervention_to_add[:intervention]
+        )
+      end
+    end
+
+    save!
+  end
+
   # ===============================================
   # Elasticsearch Configuration & Methods
   # ===============================================

@@ -10,4 +10,11 @@ class TrialIntervention < ApplicationRecord
       intervention
     end
   end
+
+  def as_json(options = {})
+    {
+      type: self.intervention_type,
+      intervention: self.intervention
+    }
+  end
 end

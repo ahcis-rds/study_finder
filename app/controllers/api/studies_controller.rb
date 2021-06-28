@@ -14,6 +14,7 @@ class Api::StudiesController < ApiController
       @trial.update_keywords!(params[:keywords])
       @trial.update_conditions!(params[:conditions])
       @trial.update_locations!(params[:locations])
+      @trial.update_interventions!(params[:interventions])
       @trial.update!(trial_params)
     end
 
@@ -32,6 +33,7 @@ class Api::StudiesController < ApiController
         @trial.update_keywords!(params[:keywords])
         @trial.update_conditions!(params[:conditions])
         @trial.update_locations!(params[:locations])
+        @trial.update_interventions!(params[:interventions])
       end
 
       head 201
