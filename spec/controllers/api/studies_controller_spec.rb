@@ -157,6 +157,30 @@ describe Api::StudiesController do
       end
     end
 
+    it "can delete locations" do
+      trial = Trial.create!(system_id: "ASDF123")
+      trial.locations.create([
+        {
+          location: "Location 1",
+          zip: "55455",
+        },
+        {
+          location: "Location 2",
+          zip: "55401",
+        },
+      ])
+
+      trial.reload
+
+      expect(trial.locations.first.location).to eq("Location 1")
+
+      post :update, params: { id: "ASDF123", locations: [{ name: "Location 1", zip: "55455" }] }
+
+      trial.reload
+      expect(trial.locations.size).to eq(1)
+      expect(trial.locations.as_json.first.dig(:name)).to eq("Location 1")
+    end
+
     it "can create with interventions" do
       interventions = [
         {
