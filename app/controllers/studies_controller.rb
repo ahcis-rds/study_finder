@@ -20,6 +20,7 @@ class StudiesController < ApplicationController
   def show
     @study = Trial.find(params[:id])
     @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
+    @study_photo = @study.photo.attached? ? @study.photo : "flag.jpg"
 
     respond_to do |format|
       format.html do
