@@ -17,17 +17,15 @@
 </div>
 
 <div class="content home mt-5 p0">
-  <% unless @featured_category.blank? %>
-    <div class="row home-content mb-4">
-      <div class="col-md-2 featured-image">
-        <%= link_to image_tag('covid.jpg'), studies_path(search: { category: @featured_category.try(:id) }), class: 'hyperlink-header', title: @featured_category.group_name %>
-      </div>
-      <div class="col-md-10 featured-content py-auto">
-        <a href="<%=studies_path(search: { category: @featured_category.try(:id) })%>" title="<%=@featured_category.group_name %>"><h2 class="hyperlink-header">COVID-19 studies that need volunteers</h2></a>
-        <p>The University of Minnesota has several clinical trials to test experimental medicines that could help those with coronavirus.</p>
-      </div>
+  <div class="row home-content mb-4">
+    <div class="col-md-2 featured-image">
+      <%= link_to image_tag('covid.jpg'), studies_path(search: { q: "COVID-19" }), class: 'hyperlink-header', title: "COVID-19 studies" %>
     </div>
-  <% end %>
+    <div class="col-md-10 featured-content py-auto">
+      <a href="<%=studies_path(search: { q: "COVID-19" })%>" title="COVID-19 studies"><h2 class="hyperlink-header">COVID-19 studies that need volunteers</h2></a>
+      <p>The University of Minnesota has several clinical trials to test experimental medicines that could help those with coronavirus.</p>
+    </div>
+  </div>
 
   <div class="card card-body bg-light">
     <div class="row">
