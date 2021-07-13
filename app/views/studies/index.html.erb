@@ -83,7 +83,7 @@
           <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility d-none"><i class="fa fa-close"></i> Hide eligibility criteria</div>
         </div>
         <div class="eligibility-criteria d-none card card-body">
-          <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(' - ', '<br class="eligibility-line-break"> &bull;').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+          <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
         </div>
       <% end %>
       
