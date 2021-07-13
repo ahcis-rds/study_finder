@@ -58,6 +58,7 @@ class Api::StudiesController < ApiController
       :min_age_unit,
       :official_title,
       :overall_status,
+      :phase,
       :pi_id,
       :pi_name,
       :recruiting,

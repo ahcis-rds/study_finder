@@ -7,6 +7,7 @@ json.contact_override_first_name @trial.contact_override_first_name
 json.contact_override_last_name @trial.contact_override_last_name
 json.irb_number @trial.irb_number
 json.overall_status @trial.overall_status
+json.phase @trial.phase
 json.pi_id @trial.pi_id
 json.pi_name @trial.pi_name
 json.recruiting @trial.recruiting

@@ -34,7 +34,8 @@ describe Api::StudiesController do
         recruiting: true,
         simple_description: "This is a short description",
         brief_title: "This is a brief title",
-        visible: true
+        visible: true,
+        phase: "Phase I"
       }
 
       patch :update, params: attributes_to_update.merge(id: "NCT345")
@@ -66,7 +67,8 @@ describe Api::StudiesController do
         min_age_unit: "16 years",
         max_age_unit: "99 years",
         healthy_volunteers_imported: true,
-        gender: "Male"
+        gender: "Male",
+        phase: "Phase I"
       }
 
       post :create, params: attributes
