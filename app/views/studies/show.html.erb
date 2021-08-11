@@ -35,7 +35,7 @@
     <%= render_attribute(@attribute_settings, 'gender', 'show', eligibility_display(@study.gender)) %>
     <%= render_attribute(@attribute_settings, 'age', 'show', render_age_display(@study)) %>
     <%= render_attribute(@attribute_settings, 'healthy_volunteers', 'show', render_healthy_volunteers(@study)) %>
-    <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+    <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @study.eligibility_criteria.to_s.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
   </div>
 
   <div class="tab-pane fade show-on-print" id="conditions" role="tabpanel" aria-labelledby="conditions-tab">
