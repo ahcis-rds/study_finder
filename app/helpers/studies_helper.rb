@@ -128,8 +128,6 @@ module StudiesHelper
       else
         gender
       end
-    else
-      'No info available'
     end
   end
 
