@@ -147,7 +147,13 @@ module StudiesHelper
   end
 
   def render_age_display(study)
-     return (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit)) ? age_display_units(study.min_age_unit, study.max_age_unit) : age_display(study.min_age, study.max_age)
+    return nil if study.min_age_unit.nil? && study.max_age_unit.nil?
+
+    if (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit))
+      age_display_units(study.min_age_unit, study.max_age_unit)
+    else
+      age_display(study.min_age, study.max_age)
+    end
   end
 
   def age_display_units(min_age_unit, max_age_unit)
