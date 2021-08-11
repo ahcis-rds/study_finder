@@ -132,6 +132,8 @@ module StudiesHelper
   end
 
   def render_healthy_volunteers(study)
+    return nil if study.healthy_volunteers.nil?
+
     rendered = '<div class="healthy-message" data-toggle="popover" data-title="Healthy Volunteer" data-content="A person who does not have the condition or disease being studied." data-placement="top">'
             
     if study.healthy_volunteers == true
