@@ -111,11 +111,11 @@ class Trial < ApplicationRecord
   end
 
   def keyword_values
-    trial_keywords.map(&:keyword)
+    trial_keywords.map(&:keyword).sort
   end
 
   def condition_values
-    conditions.map(&:condition)
+    conditions.map(&:condition).sort
   end
 
   def update_keywords!(keywords)
