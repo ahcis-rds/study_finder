@@ -19,7 +19,7 @@ json.array! @trials do |trial|
   json.max_age_unit trial.max_age_unit
   json.healthy_volunteers_imported trial.healthy_volunteers_imported
   json.gender trial.gender
-  json.keywords trial.keywords
+  json.keywords trial.keyword_values
   json.conditions trial.condition_values
   json.locations trial.locations
   json.interventions trial.trial_interventions
