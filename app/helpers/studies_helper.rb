@@ -128,12 +128,12 @@ module StudiesHelper
       else
         gender
       end
-    else
-      'No info available'
     end
   end
 
   def render_healthy_volunteers(study)
+    return nil if study.healthy_volunteers.nil?
+
     rendered = '<div class="healthy-message" data-toggle="popover" data-title="Healthy Volunteer" data-content="A person who does not have the condition or disease being studied." data-placement="top">'
             
     if study.healthy_volunteers == true
@@ -147,7 +147,13 @@ module StudiesHelper
   end
 
   def render_age_display(study)
-     return (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit)) ? age_display_units(study.min_age_unit, study.max_age_unit) : age_display(study.min_age, study.max_age)
+    return nil if study.min_age_unit.nil? && study.max_age_unit.nil?
+
+    if (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit))
+      age_display_units(study.min_age_unit, study.max_age_unit)
+    else
+      age_display(study.min_age, study.max_age)
+    end
   end
 
   def age_display_units(min_age_unit, max_age_unit)

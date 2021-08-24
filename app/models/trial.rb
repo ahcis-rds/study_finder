@@ -111,7 +111,11 @@ class Trial < ApplicationRecord
   end
 
   def keyword_values
-    trial_keywords.map(&:keyword)
+    trial_keywords.map(&:keyword).sort
+  end
+
+  def condition_values
+    conditions.map(&:condition).sort
   end
 
   def update_keywords!(keywords)
@@ -129,6 +133,71 @@ class Trial < ApplicationRecord
     end
 
     __elasticsearch__.update_document
+  end
+
+  def update_conditions!(conditions)
+    return if conditions.nil?
+
+    existing_conditions = condition_values
+    conditions_to_add = conditions - existing_conditions
+    conditions_to_delete = existing_conditions - conditions
+
+    transaction(requires_new: true) do
+      trial_conditions.includes(:condition).where(Condition.table_name => { condition: conditions_to_delete }).delete_all
+
+      conditions_to_add.each do |condition|
+        trial_conditions.create(condition: Condition.find_or_initialize_by(condition: condition))
+      end
+    end
+
+    __elasticsearch__.update_document
+  end
+
+  def update_locations!(location_data)
+    return if location_data.nil?
+
+    existing_locations = locations.as_json
+    locations_to_add = location_data - existing_locations
+    locations_to_delete = existing_locations - location_data
+
+    transaction(requires_new: true) do
+      locations_to_delete.each do |location_to_delete|
+        locations.where(location: location_to_delete[:name], zip: location_to_delete[:zip]).delete_all
+      end
+
+      locations_to_add.each do |location_to_add|
+        location = locations.find_or_initialize_by(location: location_to_add[:name], zip: location_to_add[:zip])
+        location.city = location_to_add[:city]
+        location.state = location_to_add[:state]
+        location.zip = location_to_add[:zip]
+        location.country = location_to_add[:country]
+      end
+    end
+
+    save!
+  end
+
+  def update_interventions!(intervention_data)
+    return if intervention_data.nil?
+
+    existing_interventions = trial_interventions.as_json
+    interventions_to_add = intervention_data - existing_interventions
+    interventions_to_delete = existing_interventions - intervention_data
+
+    transaction(requires_new: true) do
+      interventions_to_delete.each do |intervention_to_delete|
+        interventions.where(intervention_to_delete).delete_all
+      end
+
+      interventions_to_add.each do |intervention_to_add|
+        trial_interventions.find_or_initialize_by(
+          intervention_type: intervention_to_add[:type],
+          intervention: intervention_to_add[:intervention]
+        )
+      end
+    end
+
+    save!
   end
 
   # ===============================================

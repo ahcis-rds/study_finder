@@ -39,4 +39,5 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.7.2'
   gem 'capybara'
   gem 'rails-controller-testing'
+  gem 'byebug'
 end
