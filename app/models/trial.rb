@@ -208,7 +208,7 @@ class Trial < ApplicationRecord
     analyzer: {
       en: {
         tokenizer: 'standard',
-        filter: ['asciifolding', 'lowercase', 'english_filter', 'synonym']
+        filter: ['asciifolding', 'lowercase', 'english_filter']
       },
       typeahead: {
         tokenizer: 'standard',
@@ -216,10 +216,6 @@ class Trial < ApplicationRecord
       }
     },
     filter: {
-      synonym: {
-        type: 'synonym',
-        synonyms_path: 'analysis/synonyms.txt'
-      },
       english_filter: {
         type: 'kstem'
       }
