@@ -5,6 +5,18 @@ body {
   color: $body_text;
 }
 
+g#studyfinder-logo-study {
+  fill: $school_main_color;
+}
+g#studyfinder-logo-finder {
+  fill: $school_secondary_color;
+}
+
+.system-logo {
+  /* Disable old PNG logo in themes */
+  background: none !important;
+}
+
 h1, h2, h3, h4, h5 {
   color: $school_main_color;
   font-weight: 400;

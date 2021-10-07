@@ -32,3 +32,10 @@ $school_dark_color: #404d5b;
   color: $school_main_color;
   background: $school_secondary_color;
 }
+
+g#studyfinder-logo-study {
+  fill: $school_main_color;
+}
+g#studyfinder-logo-finder {
+  fill: #424450 !important;
+}
