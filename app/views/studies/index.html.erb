@@ -51,7 +51,19 @@
   <hr/>
 
   <% if @trials.empty? %>
-    <div class="alert"><i class="fa fa-warning"></i> There were no trials that matched your search for <strong><%= params[:search][:q] %></strong></div>
+  <% healthstudies_url = 'https://healthstudiesmn.org/studies?' + {'search[q]': params[:search][:q], commit:'Search'}.to_param %>
+    <div class="alert">
+      <h4 class="alert-heading">
+        No University of Minnesota studies matched your search for <strong><%= params[:search][:q] %></strong>
+      </h4>
+      <div>
+      <p>To find what you’re looking for:</p>
+      <ul>
+        <li>Change your search criteria and try again. </li>
+        <li>Visit <%= link_to "HealthStudiesMN.org", healthstudies_url %> for more opportunities to participate in research.</li>
+      </ul>
+     </div>
+    </div>
   <% end %>
 
   <% @trials.each_with_index do |t, i| %>
