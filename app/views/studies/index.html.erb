@@ -75,7 +75,7 @@
           <%= highlight(t, 'display_title') %>
         <% end %>
       </h4>
-      
+
       <% c = determine_contacts(t) %>
       <%= render "description", study: t, settings: @attribute_settings %>
       <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
@@ -98,7 +98,7 @@
           <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
         </div>
       <% end %>
-      
+
       <%= render_attribute(@attribute_settings, 'interventions', 'list', t.interventions.to_s.gsub(/;/,',').html_safe) %>
       <%= render_attribute(@attribute_settings, 'conditions', 'list', t.conditions_map.to_s.gsub(/;/,',').html_safe) %>
       <%= render_attribute(@attribute_settings, 'keywords', 'list', t.keywords.to_s.gsub(/;/,',').html_safe) %>
