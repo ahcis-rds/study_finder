@@ -12,12 +12,14 @@ task :staging do
   set :rails_env,   "staging"
   set :location, "goldfish0.ahc.umn.edu" # Web server url.
   role :web, location # Your HTTP server, Apache/etc
+  role :db, location, :primary => true
 end
 
 task :production do
   set :rails_env,   "production"
   set :location, "walleye0.ahc.umn.edu" # Web server url.
   role :web, location # Your HTTP server, Apache/etc
+  role :db, location, :primary => true
 end
 
 set :user, "webcluster2" # Remote user name. Must be able to log in via SSH.

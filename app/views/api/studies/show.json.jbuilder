@@ -12,6 +12,7 @@ json.pi_id @trial.pi_id
 json.pi_name @trial.pi_name
 json.recruiting @trial.recruiting
 json.simple_description @trial.simple_description
+json.display_simple_description @trial.display_simple_description
 json.visible @trial.visible
 json.eligibility_criteria @trial.eligibility_criteria
 json.min_age_unit @trial.min_age_unit

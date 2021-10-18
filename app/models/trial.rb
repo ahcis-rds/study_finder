@@ -233,8 +233,8 @@ class Trial < ApplicationRecord
       indexes :phase, type: 'text'
       indexes :cancer_yn, type: 'text'
       indexes :visible, type: 'boolean'
+      indexes :display_simple_description, type: 'boolean'
       indexes :healthy_volunteers
-
       indexes :contact_override
       indexes :contact_override_first_name
       indexes :contact_override_last_name
@@ -292,6 +292,7 @@ class Trial < ApplicationRecord
         :gender,
         :healthy_volunteers,
         :visible,
+        :display_simple_description,
         :contact_url,
         :contact_url_override,
         :contact_override,

@@ -63,6 +63,7 @@ class Api::StudiesController < ApiController
       :pi_name,
       :recruiting,
       :simple_description,
+      :display_simple_description,
       :system_id,
       :visible
     )

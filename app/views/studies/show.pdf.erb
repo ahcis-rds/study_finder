@@ -27,7 +27,9 @@
 
 <div id="details" class="show-on-print">
   <h4>More Information</h4>
-  <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description, false) %>
+  <% if @study.display_simple_description %>
+    <%= render_attribute(@attribute_settings, 'simple_description', 'show', @study.simple_description, false) %>
+  <% end %>
   <%= render_attribute(@attribute_settings, 'contacts', 'show', contacts_display(c), false) %>
   <%= render_attribute(@attribute_settings, 'principal_investigator', 'show', @study.pi_name, false) %>
   <%= render_attribute(@attribute_settings, 'principal_investigator_id', 'show', @study.pi_id, false) %>

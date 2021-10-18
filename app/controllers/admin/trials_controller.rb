@@ -128,7 +128,7 @@ class Admin::TrialsController < ApplicationController
         :reviewed,
         :simple_description,
         :visible,
-        :display_brief_description,
+        :display_simple_description,
         disease_site_ids: [],
         site_ids: []
       )

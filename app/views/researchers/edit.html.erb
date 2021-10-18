@@ -10,6 +10,7 @@
     Your simple description must be IRB approved.
   </p>
   <%= f.input :simple_description, label: false %>
+  <%= f.input :display_simple_description, as: :select, label: "Should this description be visible to the public?", input_html: {class: "col-md-2"} %>
     
   <hr/>
   <label>Contact override email</label>

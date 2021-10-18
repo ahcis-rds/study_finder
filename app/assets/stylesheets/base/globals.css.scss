@@ -222,3 +222,15 @@ footer {
   margin-top: 1em;
 }
 
+/* TODO: We should do this with sass code that adds it for all $theme-colors and bg-variants, alert-variants, etc.
+  That's difficult right now because of how the bootstrap stuff has crept along here over time. Import order etc.
+  Let's clean up and do that when we upgrade to boostrap 5. */
+  
+.bg-light-success {
+  background-color: rgba(#28a745, .5)
+}
+
+.bg-light-warning {
+  background-color: rgba(#ffc107, .5)
+}
+

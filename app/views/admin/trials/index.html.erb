@@ -47,7 +47,13 @@
       <tr>
         <td><%= t.system_id %></td>
         <td><%= t.display_title %></td>
-        <td><%= t.simple_description %></td>
+        <td>
+          <% if t.display_simple_description %>
+            <div class="bg-light-success text-center">Visible</div>
+          <% else %>
+            <div class="bg-light-warning text-center">Hidden</div>
+          <% end %>
+          <%= t.simple_description %></td>
         <td> <%=t.contact_override_last_name %> <%=t.contact_override_first_name %> <%=t.contact_override %></td>
         <td><%= t.overall_status %></td>
         <td><%= t.recruiting? ? 'Yes' : 'No' %></td>
