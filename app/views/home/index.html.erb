@@ -23,7 +23,7 @@
     </div>
     <div class="col-md-10 featured-content py-auto">
       <a href="<%=studies_path(search: { q: "COVID-19" })%>" title="COVID-19 studies"><h2 class="hyperlink-header">COVID-19 studies that need volunteers</h2></a>
-      <p>The University of Minnesota has several clinical trials to test experimental medicines that could help those with coronavirus.</p>
+      <p>The <%= @system_info.school_name %> has several clinical trials to test experimental medicines that could help those with coronavirus.</p>
     </div>
   </div>
 
@@ -43,8 +43,8 @@
 
   <div class="row home-content mt-4 mb-5">
     <div class="col-md-6 study-highlights">
-      <h2>Research at the University of Minnesota</h2>
-      <p>The University of Minnesota has research studies on a wide range of health issues, from cancer and diabetes to prevention and women's health.</p>
+      <h2>Research at the <%= @system_info.school_name %></h2>
+      <p>The <%= @system_info.school_name %> has research studies on a wide range of health issues, from cancer and diabetes to prevention and women's health.</p>
       <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online.</p>
       <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
     </div>
