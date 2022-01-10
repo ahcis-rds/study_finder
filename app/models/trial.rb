@@ -203,12 +203,21 @@ class Trial < ApplicationRecord
   # ===============================================
   # Elasticsearch Configuration & Methods
   # ===============================================
+  if Rails.application.config.respond_to?(:synonyms_path)
+    synonym_list = { synonyms_path: Rails.application.config.synonyms_path }
+  else
+    synonym_list = { synonyms: Modules::TrialSynonyms.as_array }
+  end
 
   settings analysis: {
     analyzer: {
+      search_synonyms: {
+        tokenizer: 'standard',
+        filter: [ "graph_synonyms" ]
+      },
       en: {
         tokenizer: 'standard',
-        filter: ['asciifolding', 'lowercase', 'english_filter', 'synonym']
+        filter: ['asciifolding', 'lowercase', 'english_filter']
       },
       typeahead: {
         tokenizer: 'standard',
@@ -216,9 +225,10 @@ class Trial < ApplicationRecord
       }
     },
     filter: {
-      synonym: {
-        type: 'synonym',
-        synonyms_path: 'analysis/synonyms.txt'
+      graph_synonyms: {
+        type: 'synonym_graph',
+        **synonym_list,
+        updateable: true
       },
       english_filter: {
         type: 'kstem'
@@ -227,8 +237,8 @@ class Trial < ApplicationRecord
   } do
 
     mappings dynamic: 'false' do
-      indexes :display_title, type: 'text', analyzer: 'en'
-      indexes :simple_description, type: 'text', analyzer: 'en'
+      indexes :display_title, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :simple_description, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       # indexes :eligibility_criteria, type: 'text', analyzer: 'snowball'
       indexes :system_id
       indexes :min_age, type: 'float'
@@ -274,9 +284,9 @@ class Trial < ApplicationRecord
         indexes :group_id, type: 'integer'
       end
 
-      indexes :interventions, analyzer: 'en'
-      indexes :conditions_map, analyzer: 'en'
-      indexes :keywords, analyzer: 'en'
+      indexes :interventions, analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :conditions_map, analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :keywords, analyzer: 'en', search_analyzer: 'search_synonyms'
       indexes :min_age_unit, type: 'text'
       indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
@@ -362,66 +372,34 @@ class Trial < ApplicationRecord
 
   def self.match_all(search)
     search(
-      query: {
-        function_score: {
-          query: {
-            bool: {
-              must: [
-                { bool: { filter: filters(search) } },
-                { bool: { should: range_filters(search) } }
-              ]
-            }
-          },
-          field_value_factor: {
-            field: "featured",
-            factor: 15
+        query: {
+          bool: {
+            must: [
+              { bool: { filter: filters(search) } },
+              { bool: { should: range_filters(search) } }
+            ]
           }
         }
-      },
-      highlight: {
-        fields: highlight_fields
-      },
-      sort: [
-        { added_on: "desc" }
-      ]
     )
   end
 
   def self.match_all_search(search)
-
     search(
-      query: {
-        function_score: {
-          query: {
-            bool: {
-              must: [
-                {
-                  query_string: {
-                    query: search[:q].gsub("/", ""),
-                    default_operator: "AND",
-                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
-                  }
-                },
-                { bool: { filter: filters(search) } },
-                { bool: { should: range_filters(search) } }
-              ]
-            }
-          },
-          field_value_factor: {
-            field: "featured",
-            factor: 15
+        query: {
+          bool: {
+            must: [
+              {
+                multi_match: {
+                  query: search[:q],
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
+                }
+              },
+              { bool: { filter: filters(search) } },
+              { bool: { should: range_filters(search) } }
+            ]
           }
         }
-      },
-      highlight: {
-        fields: highlight_fields
-      },
-      sort: [
-        { added_on: "desc" }
-      ]
-
     )
-
   end
 
   def self.match_all_admin(search)
@@ -432,10 +410,7 @@ class Trial < ApplicationRecord
           operator: "and",
           fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
         }
-      },
-      sort: [
-        { added_on: "desc" }
-      ]
+      } 
     )
   end
 
