@@ -82,4 +82,6 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { address: ENV['smtp_host'], port: 25 }
   config.action_mailer.default_url_options = { host: ENV['DEFAULT_URL_HOST'], protocol: ENV['DEFAULT_URL_PROTOCOL'] || 'https' }
+
+ #config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
 end

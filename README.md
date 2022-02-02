@@ -28,11 +28,8 @@ Running Study Finder on a web server requires:
 - ElasticSearch 1.0 to 2.x. (Note: 5.x is currently not supported due to breaking changes in the api)
   [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/guide/current/_installing_elasticsearch.html)
   [Mac Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
-- ElasticSearch synonyms file: (In trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly.  Please copy /config/analysis/synonym.txt to the location below and rename the file accordingly.)
+- ElasticSearch synonyms: the default cofiguration stores these in an array in 'lib/modules/trial_synonyms.rb'. See [ElasticSearch synonyms](#elasticsearch-synonyms) for more details.
 
-```ruby
-  synonyms_path: '/usr/share/elasticsearch/config/analysis/synonyms.txt'.to_s
-```
 - Add config/application.yml for application specific variables with the following format:
 
 ```yaml
@@ -72,6 +69,58 @@ $ rake studyfinder:ctgov:load[10]
 ```
 $ rake studyfinder:trials:reindex
 ```
+
+## ElasticSearch synonyms
+
+The default trial search configuration uses a query-time synonym_graph filter. It supports multi-term synonyms, e.g. 'caloric restrictions' and 'low calorie diet'. When trials are indexed, ElasticSearch creates the search analyzer for this. You *do not* have to re-index trials if the synonyms are updated, because it is a query-time filter. 
+
+The default location for synonyms is in an array defined in 'lib/modules/trial_synonyms.rb'. Updates to the synonyms can be picked up by restarting the Rails service. 
+
+### Synonyms File
+
+If you need to use a synonym list that is very large, there is also support for keeping synonyms in a file on the ElasticSearch server. The default configuration keeps two copies of the synonyms in memory, whereas the file configuration only keeps one copy in memory. Even many thousands of synonyms only take up a few MB, so in practice this generally won't matter enough for the extra work of the separate file to be worth it. 
+
+To use a synonyms file, use the configuration option:
+
+```ruby
+  config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
+```
+
+Remember this file is on the ElasticSearch server, *not* part of the Rails application. In deployed environments, you will need to copy your synonyms file to this location. This isn't necessary in the development docker container, which mounts 'config/analysis' within the Rails app to the above path in the ElasticSearch docker container. This allows easier access for modifying synonyms during development, as you can work with them directly in 'config/analysis/synonyms.txt' within the Rails app structure.
+
+To pick up changes to the synonym file in ElasticSearch 7.3 and above, use the API to reload the search analyzers and clear the cache (note the last part of the index name is the Rails environment):
+
+```
+$ curl -X POST "host:9200/study_finder-trials-development/_reload_search_analyzers?pretty"
+$ curl -X POST "host:9200/study_finder-trials-development/_cache/clear?request=true&pretty"
+```
+
+For older versions, or if you run into issues, restarting the ElasticSearch service will also reload the analyzers. 
+
+If you change the name or location of the synonyms file, rebuilding the index as described in [Loading trials](#loading-trials) is required in order to reflect that change. 
+
+### Preprocessing Synonyms
+
+The following rake tasks convert json output specific to the University of Minnesota's enviroment into either a synonyms module file, or a Solr-formatted synonyms file.
+
+Module (array) version:
+```
+$ rake studyfider:synonyms:to_module
+```
+
+Synonyms file version:
+
+```
+$ rake studyfider:synonyms:to_txt
+```
+
+The default input file name for input is 'synonyms.json' but can be set with an argument:
+
+```
+$ rake studyfider:synonyms:to_module[test-synonyms]
+```
+
+The input file should exist in 'config/analysis', and the output file will also be written there. The module version will always write a file called 'trial_synonyms.rb', because the file name of course must match the name of the class within the module, whereas the synonyms file version will write 'synonyms.txt' by default, or the file argument if supplied.
 
 ## Embed Widget
 
