@@ -17,16 +17,6 @@
 </div>
 
 <div class="content home mt-5 p0">
-  <div class="row home-content mb-4 align-items-center justify-content-center h-100">
-    <div class="col-md-2 featured-image">
-      <%= link_to image_tag('covid.jpg'), studies_path(search: { q: "COVID-19" }), class: 'hyperlink-header', title: "COVID-19 studies" %>
-    </div>
-    <div class="col-md-10 featured-content py-auto">
-      <a href="<%=studies_path(search: { q: "COVID-19" })%>" title="COVID-19 studies"><h2 class="hyperlink-header">COVID-19 studies that need volunteers</h2></a>
-      <!-- <p>The University of Minnesota has several clinical trials to test experimental medicines that could help those with coronavirus.</p> -->
-    </div>
-  </div>
-
   <div class="card card-body bg-light">
     <div class="row">
       <div class="col-md-6 col-right-border px-4 py-2">
@@ -44,15 +34,7 @@
   <hr>
 
   <div class="row home-content mt-4 mb-5">
-
-<!--     <div class="col-md-6 study-highlights">
-      <h2>Research at the University of Minnesota</h2>
-      <p>The University of Minnesota has research studies on a wide range of health issues, from cancer and diabetes to prevention and women's health.</p>
-      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online.</p>
-      <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
-    </div> -->
-
-    <h2 class="mt-3 mt-2 ml-1">Featured Research Opportunities</h2>
+    <h2 class="mt-3 mt-2 ml-1 pl-2">Featured Research Opportunities</h2>
     <div class="col-12 d-none d-md-block">
       <% if @system_info.enable_showcase && @showcase.size > 0 %>
         <div class="d-none d-md-block">
@@ -60,7 +42,6 @@
             <div id="showcase" class="row">
               <% @showcase.each_with_index do |item, ix| %>
                 <div class="col-md-4 card border-0">
-                  
                   <div class="card-text">
                     <% unless !item.showcase_image.attached? && item.url.blank? %>
                       <% if item.showcase_image.attached? %>
@@ -72,7 +53,7 @@
                   <div class="card-header align-items-center justify-content-center h-100"> 
                     <h5 class="caption-title"><%= item.title.to_s %></h5>
                     <span style="float: right; position: relative; bottom: 0;">
-                    <%= link_to 'Learn More', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-primary' %>
+                    <%= link_to 'Learn More', item.url, class: 'btn btn-secondary' %>
                   </span>
                   </div>
                 </div>
@@ -91,9 +72,9 @@
 
   <div class="row">
     <div class="col-md-6 study-highlights">
-      <h2 class="mt-3">Research at The U</h2>
-      <p>The University of Minnesota has research studies on a wide range of health issues, from cancer and diabetes to prevention and women's health.</p>
-      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online.</p>
+      <h2 class="mt-3">Research Participants Have Rights</h2>
+      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online. One thing that is common to all research is that the decision to participate is personal and always voluntary.  Whether agreeing to share your medical data or consenting to an experimental treatment, we want you to know that research participants have rights and protections. </p>
+      <p>Click the link below to access the research participants' Bill of Rights and to learn more about how the University of MInnesota reviews, approves and monitors research studies.</p>
       <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
     </div>
     <div class="col-md-6">
