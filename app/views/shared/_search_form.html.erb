@@ -33,7 +33,7 @@
   <div class="search-controls">
     <%= submit_tag 'Search', class: 'btn btn-lg btn-school btn-search' %>
     <% if @system_info.try(:display_groups_page) == true %>
-      <a class="btn btn-primary btn-not-sure" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Not sure what you're looking for?<br>Click here to browse all research opportunities</a>
+      <a class="btn btn-secondary" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Browse by category</a>
     <% end %>
   </div>
 <% end %>

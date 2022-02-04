@@ -17,16 +17,6 @@
 </div>
 
 <div class="content home mt-5 p0">
-  <div class="row home-content mb-4">
-    <div class="col-md-2 featured-image">
-      <%= link_to image_tag('covid.jpg'), studies_path(search: { q: "COVID-19" }), class: 'hyperlink-header', title: "COVID-19 studies" %>
-    </div>
-    <div class="col-md-10 featured-content py-auto">
-      <a href="<%=studies_path(search: { q: "COVID-19" })%>" title="COVID-19 studies"><h2 class="hyperlink-header">COVID-19 studies that need volunteers</h2></a>
-      <p>The University of Minnesota has several clinical trials to test experimental medicines that could help those with coronavirus.</p>
-    </div>
-  </div>
-
   <div class="card card-body bg-light">
     <div class="row">
       <div class="col-md-6 col-right-border px-4 py-2">
@@ -41,58 +31,32 @@
   </div>
   <br/>
 
+  <hr>
+
   <div class="row home-content mt-4 mb-5">
-    <div class="col-md-6 study-highlights">
-      <h2>Research at the University of Minnesota</h2>
-      <p>The University of Minnesota has research studies on a wide range of health issues, from cancer and diabetes to prevention and women's health.</p>
-      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online.</p>
-      <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
-    </div>
-    <div class="col-6 d-none d-md-block">
-      
+    <h2 class="mt-3 mt-2 ml-1 pl-2">Featured Research Opportunities</h2>
+    <div class="col-12 d-none d-md-block">
       <% if @system_info.enable_showcase && @showcase.size > 0 %>
         <div class="d-none d-md-block">
           <% unless @showcase.empty? %>
-            <div id="showcaseCarousel" class="carousel slide" data-ride="carousel">
-              <% if @system_info.show_showcase_indicators %>
-                <ol class="carousel-indicators">
-                  <% @showcase.each_with_index do |item, ix| %>
+            <div id="showcase" class="row">
+              <% @showcase.each_with_index do |item, ix| %>
+                <div class="col-md-4 card border-0">
+                  <div class="card-text">
                     <% unless !item.showcase_image.attached? && item.url.blank? %>
-                      <li data-target="#showcase" data-slide-to="<%= ix %>" <% if ix == 0 %>class="active"<% end %> ></li>
-                    <% end %>
-                  <% end %>
-                </ol>
-              <% end %>
-              <div class="carousel-inner">
-                <% @showcase.each_with_index do |item, ix| %>
-                  <% unless !item.showcase_image.attached? && item.url.blank? %>
-                    <div class="carousel-item <%= 'active' if ix == 0 %>">
                       <% if item.showcase_image.attached? %>
                         <%= image_tag item.showcase_image, class: 'w-100' %>
-                      <% elsif !item.url.blank? %>
-                        <div class="embed-responsive embed-responsive-16by9">
-                          <iframe class="embed-responsive-item" src="<%= item.url %>" allowfullscreen></iframe>
-                        </div>
                       <% end %>
-                      <div class="carousel-caption">
-                        <div class="caption-wrapper rounded">
-                          <h5 class="caption-title"><%= item.title.to_s %></h5>
-                          <p class="caption-text"><%= item.caption.to_s %></p>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-              </div>
-              <% if @system_info.show_showcase_controls %>
-                <a class="carousel-control-prev" href="#showcaseCarousel" role="button" data-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#showcaseCarousel" role="button" data-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Next</span>
-                </a>
+                      <!-- <a href="<%= item.url.to_s %>" class="stretched-link"><p class="caption-text"><%= item.caption.to_s %></p></a> -->
+                    <% end %>
+                  </div>
+                  <div class="card-header align-items-center justify-content-center h-100"> 
+                    <h5 class="caption-title"><%= item.title.to_s %></h5>
+                    <span style="float: right; position: relative; bottom: 0;">
+                    <%= link_to 'Learn More', item.url, class: 'btn btn-secondary' %>
+                  </span>
+                  </div>
+                </div>
               <% end %>
             </div>
           <% end %>
@@ -100,22 +64,33 @@
       <% else %>
         <%= image_tag 'campus-aerial.jpg', class: 'bordered' %>
       <% end %>
-
     </div>
+
   </div>
 
   <hr />
 
-  <h2 class="mt-3">More ways to get involved</h2>
-  <div class="row mt-5">
-    <div class="col-md-1">
-      <%= image_tag "researchmatch.png" %>
+  <div class="row">
+    <div class="col-md-6 study-highlights">
+      <h2 class="mt-3">Research Participants Have Rights</h2>
+      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online. One thing that is common to all research is that the decision to participate is personal and always voluntary.  Whether agreeing to share your medical data or consenting to an experimental treatment, we want you to know that research participants have rights and protections. </p>
+      <p>Click the link below to access the research participants' Bill of Rights and to learn more about how the University of MInnesota reviews, approves and monitors research studies.</p>
+      <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
     </div>
-    <div class="col-md-11">
-      <a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank">
-        <h3 class="hyperlink-header">ResearchMatch</h3>
-      </a>
-      <p>Join a national registry! ResearchMatch.org connects volunteers with research studies across the country. Volunteers of any age, race, ethnicity, or health status are invited to join. Log on, register, and receive emails when studies might be a good fit for you.</p>
+    <div class="col-md-6">
+      <h2 class="mt-3">Join a national registry!</h2>
+      <div class="row5">
+        <div class="col-md-1">
+          <%= image_tag "researchmatch.png" %>
+        </div>
+        <div >
+          <a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank">
+            <h3 class="hyperlink-header">ResearchMatch</h3>
+          </a>
+          <p>ResearchMatch.org connects volunteers with research studies across the country. Volunteers of any age, race, ethnicity, or health status are invited to join. Log on, register, and receive emails when studies might be a good fit for you.</p>
+        </div>
+      </div>
     </div>
+
   </div>
 </div>
