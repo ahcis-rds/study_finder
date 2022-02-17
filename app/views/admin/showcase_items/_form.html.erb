@@ -4,7 +4,7 @@
     <%= f.input :active, inline_label: 'Display in Showcase' %>
     <%= f.input :sort_order, as: :integer, label: 'Order' %>
     <%= f.input :title, hint: '<small><i>(Heading for the showcase item.)</i></small>'.html_safe %>
-    <!-- <%= f.input :caption, hint: '<small><i>(Text for the showcase item.)</i></small>'.html_safe %> -->
+    <%= f.input :caption, hint: '<small><i>(Text for the showcase item.)</i></small>'.html_safe %>
     <div class="form-group optional">
       <label class="control-label optional" for="showcase_item_showcase_image">Image Upload</label><br/>
       <%= f.file_field :showcase_image %>

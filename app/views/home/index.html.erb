@@ -33,55 +33,23 @@
 
   <hr>
 
-  <div class="row home-content mt-4 mb-5">
-    <h2 class="mt-3 mt-2 ml-1 pl-2">Featured research opportunities</h2>
-    <div class="col-12 d-none d-md-block">
-      <% if @system_info.enable_showcase && @showcase.size > 0 %>
-        <div class="d-none d-md-block">
-          <% unless @showcase.empty? %>
-            <div id="showcase" class="row">
-              <% @showcase.each_with_index do |item, ix| %>
-                <div class="col-md-4 card border-0">
-                  <div class="card-text">
-                    <% unless !item.showcase_image.attached? && item.url.blank? %>
-                      <% if item.showcase_image.attached? %>
-                        <%= image_tag item.showcase_image, class: 'w-100' %>
-                      <% end %>
-                      <!-- <a href="<%= item.url.to_s %>" class="stretched-link"><p class="caption-text"><%= item.caption.to_s %></p></a> -->
-                    <% end %>
-                  </div>
-                  <div class="card-header align-items-center justify-content-center h-100"> 
-                    <h5 class="caption-title"><%= item.title.to_s %></h5>
-                    <span style="float: right; position: relative; bottom: 0;">
-                    <%= link_to 'Learn more', item.url, class: 'btn btn-secondary' %>
-                  </span>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <%= image_tag 'campus-aerial.jpg', class: 'bordered' %>
-      <% end %>
-    </div>
-
-  </div>
+  <%= render 'showcase' %>
 
   <hr />
 
   <div class="row">
     <div class="col-md-6 study-highlights">
       <h2 class="mt-3">Research participants have rights</h2>
-      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online. One thing that is common to all research is that the decision to participate is personal and always voluntary.  Whether agreeing to share your medical data or consenting to an experimental treatment, we want you to know that research participants have rights and protections. </p>
-      <p>Click the link below to access the research participants' Bill of Rights and to learn more about how the University of MInnesota reviews, approves and monitors research studies.</p>
+      <p>Every study is different. Some studies are looking for people with certain conditions, while others are open to healthy volunteers. Some studies involve visits to a clinic, while others can be done online.</p>
+      <p>One thing that is common to all research is that the decision to participate is personal and always voluntary.  Whether agreeing to share your medical data or consenting to an experimental treatment, we want you to know that research participants have rights and protections. </p>
+      <p>Click the link below to read the research participants' Bill of Rights and to learn more about how the University of MInnesota reviews, approves and monitors research studies.</p>
       <%= link_to 'More about volunteering in research', "https://research.umn.edu/units/hrpp/research-participants/volunteering-research", class: 'btn btn-school btn-lg' %>
     </div>
     <div class="col-md-6">
       <h2 class="mt-3">Join a national registry!</h2>
       <div class="row5">
-        <div class="col-md-1">
-          <%= image_tag "researchmatch.png" %>
+        <div class="col-md-12">
+          <%= image_tag "rsm-large.jpg", class: 'img-fluid' %>
         </div>
         <div >
           <a href="https://researchmatch.org?rm=<%= @system_info.research_match_campaign %>" target:"_blank">
