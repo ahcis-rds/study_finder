@@ -13,7 +13,7 @@
       <%= form_tag admin_trials_path, method: :get do %>
         <div class="form-group">
           <label>Search</label>
-          <%= text_field_tag :q, params[:q].downcase, class: 'form-control', style: 'width: 400px' %>
+          <%= text_field_tag :q, params[:q].try(:downcase), class: 'form-control', style: 'width: 400px' %>
         </div>
         <div class="form-group">
           <%= submit_tag 'Search', class: 'btn btn-school' %>
