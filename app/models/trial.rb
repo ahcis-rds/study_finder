@@ -213,7 +213,7 @@ class Trial < ApplicationRecord
     analyzer: {
       search_synonyms: {
         tokenizer: 'standard',
-        filter: [ "graph_synonyms" ]
+        filter: [ 'graph_synonyms', 'asciifolding', 'lowercase' ]
       },
       en: {
         tokenizer: 'standard',
@@ -390,7 +390,7 @@ class Trial < ApplicationRecord
             must: [
               {
                 multi_match: {
-                  query: search[:q],
+                  query: search[:q].downcase,
                   fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
                 }
               },
@@ -406,7 +406,7 @@ class Trial < ApplicationRecord
     search(
       query: {
         multi_match: {
-          query: search[:q],
+          query: search[:q].downcase,
           operator: "and",
           fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
         }

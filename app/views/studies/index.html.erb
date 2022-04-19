@@ -7,11 +7,11 @@
 <% unless @suggestions.nil? %>
   <% unless @suggestions['suggest']['suggestions'].empty? %>
     <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
-      <% replacement_search = params[:search][:q].gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
-      <% if replacement_search != params[:search][:q] %>
+      <% replacement_search = params[:search][:q].downcase.gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
+      <% if replacement_search != params[:search][:q].downcase %>
         <div clsas="suggestions hide-on-print">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
-          <div class="alert alert-info"><i class="fa fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( params[:search][:q].gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
+          <div class="alert alert-info"><i class="fa fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( params[:search][:q].downcase.gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
         </div>
       <% end %>
     <% end %>
@@ -32,7 +32,7 @@
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
           <% p = request.query_parameters.dup %>
           <% @group.subgroups.sort_by{ |l| l.name }.each do |subgroup| %>
-            <% p[:search][:q] = subgroup.name %>
+            <% p[:search][:q].downcase = subgroup.name %>
             <%= link_to subgroup.name, "studies?#{p.to_query}", class: 'btn btn-school btn-subgroup' %>
           <% end %>
         </div>
@@ -51,10 +51,10 @@
   <hr/>
 
   <% if @trials.empty? %>
-  <% healthstudies_url = 'https://healthstudiesmn.org/studies?' + {'search[q]': params[:search][:q], commit:'Search'}.to_param %>
+  <% healthstudies_url = 'https://healthstudiesmn.org/studies?' + {'search[q]': params[:search][:q].downcase, commit:'Search'}.to_param %>
     <div class="alert">
       <h4 class="alert-heading">
-        No University of Minnesota studies matched your search for <strong><%= params[:search][:q] %></strong>
+        No University of Minnesota studies matched your search for <strong><%= params[:search][:q].downcase %></strong>
       </h4>
       <div>
       <p>To find what you’re looking for:</p>

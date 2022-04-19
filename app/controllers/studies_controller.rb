@@ -11,7 +11,7 @@ class StudiesController < ApplicationController
     @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
 
     if @trials.empty?
-      @suggestions = Trial.suggestions(search_hash[:q] || "")
+      @suggestions = Trial.suggestions(search_hash[:q].downcase || "")
     end
 
     respond_with(@trials)
@@ -41,7 +41,7 @@ class StudiesController < ApplicationController
   end
 
   def typeahead
-    respond_with(Trial.typeahead(params[:q]))
+    respond_with(Trial.typeahead(params[:q].downcase))
   end
 
   def contact_team
