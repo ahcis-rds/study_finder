@@ -32,7 +32,7 @@
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
           <% p = request.query_parameters.dup %>
           <% @group.subgroups.sort_by{ |l| l.name }.each do |subgroup| %>
-            <% p[:search][:q].downcase = subgroup.name %>
+            <% p[:search][:q] = subgroup.name.downcase %>
             <%= link_to subgroup.name, "studies?#{p.to_query}", class: 'btn btn-school btn-subgroup' %>
           <% end %>
         </div>
