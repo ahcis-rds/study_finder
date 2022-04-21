@@ -38,9 +38,9 @@ Running Study Finder on a web server requires:
 
 - Ruby 2.4+
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
-- ElasticSearch 1.0 to 2.x. (Note: 5.x is currently not supported due to breaking changes in the api)
-  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/guide/current/_installing_elasticsearch.html)
-  [Mac Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
+- LDAP server that can be used to authenticate StudyFinder users for admin access.  
+- ElasticSearch 7.x (Note: 6.x and 8.x may work, but are not tested.)
+  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/install-elasticsearch.html)
 - ElasticSearch synonyms file. In /app/models/trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly. Please copy /config/analysis/synonyms.txt to the location below **on the ElasticSearch server/container**:
 
 ```ruby
@@ -90,7 +90,7 @@ $ rake studyfinder:trials:reindex
 
 StudyFinder offers a CSS-based theme system. You will find example files in /app/assets/stylesheets/theme. A very basic knowledge of CSS is enough to adapt the examples for branded color schemes, etc. Users experienced in CSS/SASS can achieve a great deal of customization here without touching any of the Ruby/Rails code. 
 
-StudyFinder uses Bootstrap 4, so Bootstrap mixins, classes, etc. are also available to and can be customized by your theme. 
+StudyFinder uses Bootstrap 4, so Bootstrap mixins, classes, etc. are also available to and can be customized by your theme. [Bootstrap Documentation](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
 
 Some of the examples include references to images. E.g., the 'brand' class defines the logo image that appears at the upper left of every page:
 
