@@ -2,6 +2,13 @@ body {
   color: $body_text;
 }
 
+.brand {
+  min-width: 288px;
+  min-height: 38px;
+  display: inline-block;
+  margin-top: 25px;  
+}
+
 g#studyfinder-logo-study {
   fill: $school_main_color;
 }
