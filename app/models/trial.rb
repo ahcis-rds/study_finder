@@ -217,7 +217,7 @@ class Trial < ApplicationRecord
       },
       en: {
         tokenizer: 'standard',
-        filter: ['asciifolding', 'lowercase', 'english_filter']
+        filter: ['asciifolding', 'lowercase', 'custom_stems', 'english_filter']
       },
       typeahead: {
         tokenizer: 'standard',
@@ -229,6 +229,12 @@ class Trial < ApplicationRecord
         type: 'synonym_graph',
         **synonym_list,
         updateable: true
+      },
+      custom_stems: {
+          type: 'stemmer_override',
+          rules:  [
+            'sarcoidosis => sarcoidosis'
+          ]
       },
       english_filter: {
         type: 'kstem'
