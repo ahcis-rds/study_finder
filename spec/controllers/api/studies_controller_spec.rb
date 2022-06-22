@@ -14,6 +14,33 @@ describe Api::StudiesController do
       request.headers["Authorization"] = "bearer #{api_key.token}"
     end
 
+    it "can list params" do
+      get :valid_attributes, params: {format: :json}
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to eq({"valid_attributes" => [
+      "brief_title",
+      "contact_override",
+      "contact_override_first_name",
+      "contact_override_last_name",
+      "eligibility_criteria",
+      "gender",
+      "healthy_volunteers_imported",
+      "irb_number",
+      "max_age_unit",
+      "min_age_unit",
+      "official_title",
+      "overall_status",
+      "phase",
+      "pi_id",
+      "pi_name",
+      "recruiting",
+      "simple_description",
+      "display_simple_description",
+      "system_id",
+      "visible"
+    ]})
+    end
+
     it "can read studies" do
       study = Trial.create!(system_id: "NCT123")
 

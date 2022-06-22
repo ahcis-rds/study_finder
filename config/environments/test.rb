@@ -40,5 +40,5 @@ Rails.application.configure do
   # Store files in shared directory.
   config.active_storage.service = :temp
 
-  config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
+  #config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
 end
