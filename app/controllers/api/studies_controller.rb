@@ -75,6 +75,7 @@ class Api::StudiesController < ApiController
       :minimum_age,
       :max_age_unit,
       :min_age_unit,
+      :nct_id,
       :official_title,
       :overall_status,
       :phase,

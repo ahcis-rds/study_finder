@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_15_150231) do
+ActiveRecord::Schema.define(version: 2022_06_27_214021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 2022_06_15_150231) do
     t.date "added_on"
     t.boolean "display_simple_description", default: true, null: false
     t.boolean "rare_disease_flag"
+    t.string "nct_id"
   end
 
   create_table "study_finder_updaters", id: :serial, force: :cascade do |t|
