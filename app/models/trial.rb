@@ -297,6 +297,7 @@ class Trial < ApplicationRecord
       indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
+      indexes :nct_id, type: 'text'
       indexes :added_on, type: 'date'
     end
 
@@ -328,6 +329,7 @@ class Trial < ApplicationRecord
         :pi_id,
         :recruitment_url,
         :irb_number,
+        :nct_id,
         :phase,
         :cancer_yn,
         :min_age_unit,
@@ -397,7 +399,7 @@ class Trial < ApplicationRecord
               {
                 multi_match: {
                   query: search[:q].downcase,
-                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number", "nct_id"]
                 }
               },
               { bool: { filter: filters(search) } },
