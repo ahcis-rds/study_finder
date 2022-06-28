@@ -11,7 +11,7 @@ class Api::StudiesController < ApiController
     @trial = Trial.find_by(system_id: params[:id])
 
     # Clean up the extra junk that sending JSON from an OpenStruct object adds. 
-    @interventions = params[:interventions].map { |e| e['table'] }
+    @interventions = params[:interventions].blank? ? nil : params[:interventions].map { |e| e['table'] }
     @trial.transaction do
       @trial.update_interventions!(@interventions)
       @trial.update_keywords!(params[:keywords])
