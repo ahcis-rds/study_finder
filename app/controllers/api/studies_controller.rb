@@ -1,6 +1,6 @@
 class Api::StudiesController < ApiController
   def index
-    @trials = Trial.all
+    @trials = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).all
   end
 
   def show
