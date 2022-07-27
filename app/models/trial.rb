@@ -94,7 +94,7 @@ class Trial < ApplicationRecord
 
   def keyword_suggest
     {
-      input: trial_keywords.where.not(keyword: nil).map { |k| k.keyword.downcase }
+      input: trial_keywords.where.not(keyword: nil).map { |k| k.keyword.try(:downcase) }
     }
   end
 
@@ -396,7 +396,7 @@ class Trial < ApplicationRecord
             must: [
               {
                 multi_match: {
-                  query: search[:q].downcase,
+                  query: search[:q].try(:downcase),
                   fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
                 }
               },
@@ -412,7 +412,7 @@ class Trial < ApplicationRecord
     search(
       query: {
         multi_match: {
-          query: search[:q].downcase,
+          query: search[:q].try(:downcase),
           operator: "and",
           fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
         }
@@ -481,7 +481,7 @@ class Trial < ApplicationRecord
       end
 
       if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
-        ret << { terms: { gender: ['all', search[:gender].downcase] }}
+        ret << { terms: { gender: ['all', search[:gender].try(:downcase)] }}
       end
     end
 

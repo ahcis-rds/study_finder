@@ -11,7 +11,7 @@ class StudiesController < ApplicationController
     @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
 
     if @trials.empty?
-      @suggestions = Trial.suggestions(search_hash[:q].downcase || "")
+      @suggestions = Trial.suggestions(search_hash[:q].try(:downcase) || "")
     end
 
     respond_with(@trials)
@@ -19,13 +19,18 @@ class StudiesController < ApplicationController
 
   def show
     @study = Trial.find(params[:id])
+    unless @study.visible 
+      unless is_admin?
+        redirect_to studies_path, flash: { success: 'Apologies, this page is not available.' } and return
+      end
+    end
     @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
     @study_photo = @study.photo.attached? ? @study.photo : "flag.jpg"
 
     respond_to do |format|
       format.html do
         unless @system_info.display_study_show_page
-          redirect_to studies_path, flash: { success: 'Apologies, This page is not available.' } and return
+          redirect_to studies_path, flash: { success: 'Apologies, this page is not available.' } and return
         end
       end
       format.pdf do
@@ -41,7 +46,7 @@ class StudiesController < ApplicationController
   end
 
   def typeahead
-    respond_with(Trial.typeahead(params[:q].downcase))
+    respond_with(Trial.typeahead(params[:q].try(:downcase)))
   end
 
   def contact_team
