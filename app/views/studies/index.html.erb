@@ -75,9 +75,6 @@
           <%= highlight(t, 'display_title') %>
         <% end %>
       </h4>
-      <hr>
-      <%= t.id %>
-      <hr>
       <% c = determine_contacts(t) %>
       <%= render "description", study: t, settings: @attribute_settings %>
       <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
