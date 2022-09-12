@@ -14,8 +14,21 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 
 The easiest way to get started with a development environment is to use `docker-compose`:
 
-1. Run `docker-compose run web rake db:setup` to initialize your
-database and search index.
+1. Run `USER=username docker-compose run web rake db:setup` to initialize your
+database and search index. 
+
+    The username value will be used to create an initial admin user; you should set it to the username you will use with LDAP authentication.
+
+    By default, this loads studies from clinicaltrials.gov based on searching for the location 'University of Minnesota'. To change this for initial setup, edit this line in /app/db/seeds.rb:
+
+    ```
+    system = {
+        ...
+        search_term: 'University of Minnesota',
+        ...
+    }
+    ```
+    (Once the site is up, this is availble as a setting in the front-end admin interface.)
 1. Run `docker-compose up -d` to start a development server.
 1. Visit `http://localhost:3000/` to view the application.
 
@@ -25,10 +38,10 @@ Running Study Finder on a web server requires:
 
 - Ruby 2.4+
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
-- ElasticSearch 1.0 to 2.x. (Note: 5.x is currently not supported due to breaking changes in the api)
-  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/guide/current/_installing_elasticsearch.html)
-  [Mac Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
-- ElasticSearch synonyms file: (In trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly.  Please copy /config/analysis/synonym.txt to the location below and rename the file accordingly.)
+- LDAP server that can be used to authenticate StudyFinder users for admin access.  
+- ElasticSearch 7.x (Note: 6.x and 8.x may work, but are not tested.)
+  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/install-elasticsearch.html)
+- ElasticSearch synonyms file. In /app/models/trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly. Please copy /config/analysis/synonyms.txt to the location below **on the ElasticSearch server/container**:
 
 ```ruby
   synonyms_path: '/usr/share/elasticsearch/config/analysis/synonyms.txt'.to_s
@@ -71,6 +84,38 @@ $ rake studyfinder:ctgov:load[10]
 
 ```
 $ rake studyfinder:trials:reindex
+```
+
+## Themes
+
+StudyFinder offers a CSS-based theme system. You will find example files in /app/assets/stylesheets/theme. A very basic knowledge of CSS is enough to adapt the examples for branded color schemes, etc. Users experienced in CSS/SASS can achieve a great deal of customization here without touching any of the Ruby/Rails code. 
+
+StudyFinder uses Bootstrap 4, so Bootstrap mixins, classes, etc. are also available to and can be customized by your theme. [Bootstrap Documentation](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
+
+Some of the examples include references to images. E.g., the 'brand' class defines the logo image that appears at the upper left of every page:
+
+```
+.brand {
+    background: image-url("logo.png");
+    ...
+}
+```
+
+Any images referenced in your theme CSS should be located in /app/assets/images. 
+
+Themes are the recommended method for customizing the appearance of the site. Users with Ruby/Rails experience can change the template files for infinite customization, but as with any open-source project, local changes to the code make pulling updates much more difficult. 
+
+## Other Site Customization
+
+Many aspects of your site can be customized from the site itself, via the admin interface. To access the admin interface, LDAP authentication must be configured. Click "Sign In" at the bottom of the home page, and then you will see an "Admin" link on the navbar. The first option, "System Administration", allows you to manage what fields do and don't appear on some screens, set label text, define the location search term for data loads from clinicaltrials.gov, and much more. 
+
+## Trademark
+
+"StudyFinder" is a registered trademark of the University of Minnesota. Your instance of StudyFinder should retain the official StudyFinder logo that appears at the upper right of each page. This is an SVG image and **can** be styled with your institution's colors. By default it uses the main and secondary colors that are specified in the theme CSS file: 
+
+```
+$school_main_color: #7a0019;
+$school_secondary_color: #ffd75f;
 ```
 
 ## Embed Widget
