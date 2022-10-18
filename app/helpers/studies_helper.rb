@@ -215,6 +215,19 @@ module StudiesHelper
     contacts.html_safe
   end
 
+  def contacts_excel(c)
+    contacts = ''
+    c.each do |contact|
+      unless contact[:first_name].nil?
+        contacts << "#{contact[:first_name]} "
+      end
+      unless contact[:last_name].nil?
+        contacts << "#{contact[:last_name]} - "
+      end
+      contacts << "#{contact[:email]}"
+    end
+    contacts.to_s
+  end
   def site(site)
     site_name = site.site_name
 

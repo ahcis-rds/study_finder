@@ -108,6 +108,42 @@ class Admin::TrialsController < ApplicationController
       render 'edit'
     end
   end
+  
+  def all_pending_approval
+    @trials = Trial.where(approved: false).where(visible: true).order('created_at DESC')
+    add_breadcrumb 'Trials Administration', :admin_trials_path
+    add_breadcrumb 'All Pending Approvals'
+
+    respond_to do |format|
+      format.html
+
+      format.xls do
+        response.headers['Content-Type'] = 'application/vnd.ms-excel'
+        response.headers['Content-Disposition'] = "attachment; filename=\"all_pending_trials_#{DateTime.now}.xls\""
+        render "all_pending_approval.xls.erb"
+      end
+    end
+  end
+
+  def pending_approval
+    @trial = Trial.find(params[:id])
+    add_breadcrumb 'Trials Administration', :admin_trials_path
+    add_breadcrumb 'All Pending Approvals', :admin_all_trials_pending_approval_path
+    add_breadcrumb 'Pending Approval'
+  end
+
+  def approved
+    @trial = Trial.find(params[:id])
+    if @trial.update(approved: true)
+
+      @approval = Approval.create({:user_id => session[:user]["id"], :trial_id => params[:id], :approved => true})
+
+      redirect_to admin_all_trials_pending_approval_path, flash:  { success: "#{@trial.brief_title} approved" }
+     
+    else
+      redirect_to admin_all_trials_pending_approval_path, flash: { error: 'Something went wrong ' }
+    end
+  end
 
   private
     def trial_params
@@ -128,9 +164,11 @@ class Admin::TrialsController < ApplicationController
         :reviewed,
         :simple_description,
         :visible,
+        :approved,
         :display_simple_description,
         disease_site_ids: [],
         site_ids: []
+        
       )
     end
 

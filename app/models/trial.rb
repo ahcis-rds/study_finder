@@ -32,6 +32,8 @@ class Trial < ApplicationRecord
 
   has_one_attached :photo
 
+  has_one :approval
+
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
   def self.import_from_file(file)
@@ -258,6 +260,7 @@ class Trial < ApplicationRecord
       indexes :contact_override
       indexes :contact_override_first_name
       indexes :contact_override_last_name
+      indexes :approved, type: 'boolean'
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
@@ -335,7 +338,8 @@ class Trial < ApplicationRecord
         :min_age_unit,
         :max_age_unit,
         :featured,
-        :added_on
+        :added_on,
+        :approved
       ],
       include: {
         trial_locations: {
@@ -472,7 +476,7 @@ class Trial < ApplicationRecord
   def self.filters(search)
     ret = []
     ret << { term: { visible: true } }
-
+    ret << { term: { approved: true } }
     if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
       if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
         ret << { term: { healthy_volunteers: true } }

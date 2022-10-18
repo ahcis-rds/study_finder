@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="PendingTrials">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">System ID</Data></Cell>
+        <Cell><Data ss:Type="String">Brief Title</Data></Cell>
+        <Cell><Data ss:Type="String">Simple Description</Data></Cell>
+        <Cell><Data ss:Type="String">Inclusion/Exclusion Criteria</Data></Cell>
+        <Cell><Data ss:Type="String">Study Contact</Data></Cell>
+        <Cell><Data ss:Type="String">PI</Data></Cell>
+        <Cell><Data ss:Type="String">Keywords</Data></Cell>
+        <Cell><Data ss:Type="String">Date Added</Data></Cell>
+      </Row>
+      <% @trials.each do |t| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= t.system_id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.brief_title %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.simple_description %> </Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.eligibility_criteria %> </Data></Cell>
+          <Cell><Data ss:Type="String"> <%=contacts_excel(determine_contacts(t)) %> </Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.pi_name %>  </Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.keywords.to_s %> </Data></Cell>           
+          <Cell><Data ss:Type="String"><%= t.created_at.localtime.strftime('%m/%d/%Y')  %> </Data></Cell>                           
+        </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -3,6 +3,7 @@
     <h3 class="pull-left">Trials</h3>
     <div class="pull-right header-button">
       <%= link_to 'Add Trial', new_admin_trial_path, class: 'btn btn-school'%>
+      <%= link_to 'Pending Trials', admin_all_trials_pending_approval_path, class: 'btn btn-school'%>
       <%= link_to 'Import Trials', admin_trials_import_path, class: 'btn btn-outline-secondary'%>
     </div>
   </div>
@@ -34,6 +35,7 @@
       <th>Status</th>
       <th>Recruiting?</th>
       <th>Visible?</th>
+      <th>Approved?</th>
       <th>Conditions</th>
       <th>Interventions</th>
       <th></th>
@@ -58,6 +60,7 @@
         <td><%= t.overall_status %></td>
         <td><%= t.recruiting? ? 'Yes' : 'No' %></td>
         <td><%= t.visible? ? 'Yes' : 'No' %></td>
+        <td><%= t.approved? ? 'Yes' : 'No' %></td>
         <td>
           <ul>
             <% t.conditions.each do |c| %>

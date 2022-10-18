@@ -1,0 +1,66 @@
+
+  <div class="admin">
+    <div class="clearfix">
+      <h3 class="pull-left">Pending Approvals (<%= @trials.count %>) </h3>
+    <div class="pull-right header-button">
+      <%= link_to 'Approvals History',  admin_approvals_path, class: 'btn btn-school'%>
+      </div>
+  </div>
+  
+  <p class="description">This section is where an administrator can approve pending trials. Pending trials are trials which have been generated through the import process and have not been approved by an administrator.</p>
+
+   <p class="description"> Click on "Approve" to indicate that the pending trial has sufficient information to be made public in the Study Finder results. Click on "Show Details" to see all the details related to a pending trial. "Show Details"  will provide additional options to "Edit" or "Approve"  the pending trial.</p>
+   
+    <p class="description">
+    Once a trial is approved, it can take up to 24 hours for it to appear in search results due to indexing. If a study needs to be made available as soon as possible, the reindexing process will need to be manually run via "Reindex" from the <%= link_to "Admin Groups page", admin_groups_path %>. An approved trial still may not appear in public results if the trial is not determine to be "visible". </p>
+  
+
+ 
+
+  <hr/>
+  <table class="table table-bordered table-trials">
+  <thead>
+      <tr>
+        <th>System Id</th>
+        <th>Brief Title</th>
+        <th>Simple Description</th>
+        <th>Inclusion/Exclusion Criteria</th>
+        <th>Study Contact</th>
+        <th>PI</th>
+        <th>Keywords</th>
+        <th>Date Added</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+    <tbody>
+        <% @trials.each do |t| %>
+       
+      <tr>
+        <td> <%= t.system_id   %> </td>
+        <td> <%= t.brief_title %> </td>
+        <td> <%= t.simple_description %> </td> 
+        <td> <%= t.eligibility_criteria%> </td>
+        <td> <%= contacts_display(determine_contacts(t)) %></td>
+        <td> <%=t.pi_name %> </td>
+       
+        <td>
+          <ul>
+            <% t.trial_keywords.each do |k|  %>
+                <li> <%= k.keyword %> </li>
+            <%end%>
+          <ul>
+         </td>
+          <td><%= t.created_at.localtime.strftime('%m/%d/%Y') %></td>
+        <td>
+          <%= link_to 'Approve', admin_trial_approved_path(t.id), :class => "btn btn-school", :method=> :post%> 
+          <%= link_to 'Show Details', admin_trial_pending_approval_path(t.id), :class => "btn btn-school" %>
+        </td>
+      </tr>
+
+    <%end %>
+    </tbody>
+    </table>
+
+    <%= link_to "Export to Excel", admin_all_trials_pending_approval_path(format: :xls), class: 'btn btn-success' %>
+  </div>

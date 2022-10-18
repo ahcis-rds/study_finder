@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_27_214021) do
+ActiveRecord::Schema.define(version: 2022_10_12_190951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 2022_06_27_214021) do
   create_table "api_keys", force: :cascade do |t|
     t.string "name"
     t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "approvals", force: :cascade do |t|
+    t.integer "trial_id"
+    t.integer "user_id"
+    t.boolean "approved", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -260,6 +268,7 @@ ActiveRecord::Schema.define(version: 2022_06_27_214021) do
     t.boolean "display_simple_description", default: true, null: false
     t.boolean "rare_disease_flag"
     t.string "nct_id"
+    t.boolean "approved", default: false, null: false
   end
 
   create_table "study_finder_updaters", id: :serial, force: :cascade do |t|
