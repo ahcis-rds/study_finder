@@ -302,6 +302,7 @@ class Trial < ApplicationRecord
       indexes :irb_number, type: 'text'
       indexes :nct_id, type: 'text'
       indexes :added_on, type: 'date'
+      indexes :created_at, type: 'date'
     end
 
   end
@@ -339,7 +340,9 @@ class Trial < ApplicationRecord
         :max_age_unit,
         :featured,
         :added_on,
-        :approved
+        :approved,
+        :created_at,
+        :annotations_flag
       ],
       include: {
         trial_locations: {
@@ -423,6 +426,36 @@ class Trial < ApplicationRecord
           fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
         }
       } 
+    )
+  end
+
+  def self.match_all_under_review_admin(search)
+    search(
+      query: {
+        bool: {
+          must: [
+            {multi_match: {
+              query: search[:q].downcase,
+              operator: "and",
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"],
+              }
+            }, 
+            {bool: {
+              filter: {
+                term: {approved: false}
+                }
+              }
+           },
+           {bool:{
+            filter: {
+              term: {visible: true}
+            }}
+          }
+          ] 
+        }
+      }
+
+      
     )
   end
 

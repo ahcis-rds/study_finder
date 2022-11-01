@@ -47,17 +47,17 @@ RSpec.describe Admin::TrialsController, :type => :controller do
     end
   end
 
-  describe "GET #all_pending_approval " do
+  describe "GET #all_under_review " do
 
 
     it "responds succesfully with an HTTP 200 status code" do
-      get :all_pending_approval
+      get :all_under_review
       expect(response).to have_http_status(200)
     end
 
     it "renders the pending_all_approval template" do
-      get :all_pending_approval
-      expect(response).to render_template("all_pending_approval")
+      get :all_under_review
+      expect(response).to render_template("all_under_review")
     end
 
   end
@@ -83,11 +83,11 @@ RSpec.describe Admin::TrialsController, :type => :controller do
 
   end
 
-  describe "get #pending_approval" do 
+  describe "get #under_review" do 
 
     it "responds succesfully with an HTTP 200 status code" do
       trial = Trial.create({ system_id: 'Test', simple_description: "Test" })
-      get :pending_approval, params: {id: trial.id}
+      get :under_review, params: {id: trial.id}
 
       expect(response).to have_http_status(200)
     end
@@ -96,8 +96,8 @@ RSpec.describe Admin::TrialsController, :type => :controller do
     it "renders the pending_all_approval template" do
       trial = Trial.create({ system_id: 'Test', simple_description: "Test" })
 
-      get :pending_approval, params: {id: trial.id}
-      expect(response).to render_template("pending_approval")
+      get :under_review, params: {id: trial.id}
+      expect(response).to render_template("under_review")
     end
 
     

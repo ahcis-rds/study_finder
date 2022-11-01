@@ -11,8 +11,8 @@ Rails.application.routes.draw do
     get 'trials/recent', controller: 'trials', action: 'recent_as', as: 'trial_recent_as'
     post 'trials/review/:id', controller: 'trials', action: 'review', as: 'review_trial'
     post 'trials/preview', controller: 'trials', action: 'preview', as: 'trial_preview'
-    get 'trials/all_pending_approval', controller: 'trials', action: 'all_pending_approval', as: 'all_trials_pending_approval'
-    get 'trials/pending_approval/:id', controller: 'trials', action: 'pending_approval', as: 'trial_pending_approval'
+    get 'trials/all_under_review', controller: 'trials', action: 'all_under_review', as: 'all_trials_under_review'
+    get 'trials/under_review/:id', controller: 'trials', action: 'under_review', as: 'trial_under_review'
     post 'trials/approved/:id', controller: 'trials', action: 'approved', as: 'trial_approved'
     resources :approvals, only: ['index']
     get 'groups/reindex', controller: 'groups', action: 'reindex', as: 'group_reindex'

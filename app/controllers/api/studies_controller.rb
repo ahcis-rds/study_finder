@@ -53,6 +53,7 @@ class Api::StudiesController < ApiController
   def api_params
     [
       :acronym,
+      :annotations_flag,
       :brief_summary,
       :brief_title,
       :contact_display_name,
