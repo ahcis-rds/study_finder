@@ -22,7 +22,7 @@
             </ul>
         <%end%>
        </p>
-       <p> <strong>Annotations Present: </strong><%=@trial.annotations_flag%></p> 
+      
         <p><strong>Date Created:</strong> <%= @trial.created_at.to_date.strftime('%m/%d/%Y') %></p> 
   <%= link_to 'Approve', admin_trial_approved_path(@trial.id), class: 'btn btn-school', :method=> :post %>
         <%= link_to 'Edit', edit_admin_trial_path(@trial.system_id), class: 'btn btn-school' %></td>
