@@ -12,15 +12,15 @@ namespace :studyfinder do
 
     task :load, [:days_previous] => [:environment] do |t, args|
       # Retrieve x amount of trials days previous from today.
-      args.with_defaults(days_previous: 4)
+      # args.with_defaults(days_previous: 4)
 
-      puts "Processing ClinicalTrials.gov data"
-      connector = Connectors::Ctgov.new
-      connector.load((Date.today - args[:days_previous].to_i).strftime('%m/%d/%Y') , Date.today.strftime('%m/%d/%Y') )
-      connector.process
+      # puts "Processing ClinicalTrials.gov data"
+      # connector = Connectors::Ctgov.new
+      # connector.load((Date.today - args[:days_previous].to_i).strftime('%m/%d/%Y') , Date.today.strftime('%m/%d/%Y') )
+      # connector.process
 
-      puts "Reindexing all trials into elasticsearch"
-      Trial.import force: true
+      # puts "Reindexing all trials into elasticsearch"
+      # Trial.import force: true
     end
 
     task refresh_all: :environment do |t, args|
