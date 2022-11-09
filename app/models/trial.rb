@@ -261,6 +261,7 @@ class Trial < ApplicationRecord
       indexes :contact_override_first_name
       indexes :contact_override_last_name
       indexes :approved, type: 'boolean'
+      indexes :annotations_flag, type: 'boolean'
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
