@@ -5,15 +5,17 @@
     <div class="pull-right header-button">
       <%= link_to 'All Trials', admin_trials_path, class: 'btn btn-school'%>
       <%= link_to 'Approvals History',  admin_approvals_path, class: 'btn btn-school'%>
+       <%= link_to "Export All to Excel", admin_all_trials_under_review_path(format: :xls), class: 'btn btn-success' %>
       </div>
   </div>
   
-  <p class="description">This section is where an administrator can approve trials under review.. These are trials which have been generated through the import process and have not been approved by an administrator.</p>
+  <p class="description">This section is where an administrator can approve trials under review. </p>
+  <p class="description">A trial is considered under review if all the following are true: it is open to accrual, the Oncore annotation related to Study Finder is either yes or blank (Annotation #37), and it has not yet been approved. </p>
 
-   <p class="description"> Click on "Approve" to indicate that the trial under review has sufficient information to be made public in the Study Finder results. Click on "Show Details" to see all the details related to a trial. "Show Details"  will provide additional options to "Edit" or "Approve"  the trial.</p>
-   
-    <p class="description">
-    Once a trial is approved, it can take up to 24 hours for it to appear in search results due to indexing. If a study needs to be made available as soon as possible, the reindexing process will need to be manually run via "Reindex" from the <%= link_to "Admin Groups page", admin_groups_path %>. An approved trial still may not appear in public results if the trial is not determine to be "visible". </p>
+  <p class="description"> Click on "Approve" to indicate that the trial under review has sufficient information to be made public in the Study Finder results. Click on "Show Details" to see all the details related to a trial. "Show Details"  will provide additional options to "Edit" or "Approve"  the trial.</p>
+  
+  <p class="description">
+    Once a trial is approved, it can take up to 24 hours for it to appear in search results due to indexing. If a study needs to be made available as soon as possible, the reindexing process will need to be manually run via "Reindex" from the <%= link_to "Admin Groups page", admin_groups_path %>.</p>
   
 
  
@@ -46,8 +48,6 @@
         <th>Simple Description</th>
         <th>Study Contact</th>
         <th>PI</th>
-        <th>Keywords</th>
-        <th>Annotations Present</th>
         <th>Date Added</th>
         <th>Actions</th>
       </tr>
@@ -60,11 +60,8 @@
         <td> <%= t.system_id   %> </td>
         <td> <%= t.display_title.try {truncate(80)} %> </td> 
         <td> <%= t.simple_description.try {truncate(80)}%> </td> 
-    
         <td> <%= contacts_display(determine_contacts(t)) %></td>
         <td> <%=t.pi_name %> </td>
-        <td><%=t.keywords%></td>
-        <td><%=t.annotations_flag%></td>
         <td><%= t.created_at.to_date.strftime('%m/%d/%Y') %></td> 
         <td>
           <%= link_to 'Approve', admin_trial_approved_path(t.id), :class => "btn btn-school", :method=> :post%> 
@@ -76,5 +73,5 @@
     </tbody>
     </table>
 
-    <%= link_to "Export All to Excel", admin_all_trials_under_review_path(format: :xls), class: 'btn btn-success' %>
+   
   </div>

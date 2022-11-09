@@ -24,7 +24,6 @@
           <Cell><Data ss:Type="String"> <%=contacts_excel(determine_contacts(t)) %> </Data></Cell>
           <Cell><Data ss:Type="String"><%= t.pi_name %>  </Data></Cell>
           <Cell><Data ss:Type="String"><%= t.keywords.to_s %> </Data></Cell>         
-          <Cell><Data ss:Type="String"><%= t.annotations_flag %> </Data></Cell>    
           <Cell><Data ss:Type="String"><%= t.created_at.localtime.strftime('%m/%d/%Y')  %> </Data></Cell>                           
         </Row>
       <% end %>

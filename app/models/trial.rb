@@ -341,9 +341,7 @@ class Trial < ApplicationRecord
         :featured,
         :added_on,
         :approved,
-        :created_at,
-        :annotations_flag
-      ],
+        :created_at      ],
       include: {
         trial_locations: {
           only: [
