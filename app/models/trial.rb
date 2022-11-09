@@ -261,6 +261,7 @@ class Trial < ApplicationRecord
       indexes :contact_override_first_name
       indexes :contact_override_last_name
       indexes :approved, type: 'boolean'
+      indexes :annotations_flag, type: 'boolean'
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
@@ -341,7 +342,8 @@ class Trial < ApplicationRecord
         :featured,
         :added_on,
         :approved,
-        :created_at      ],
+        :created_at
+      ],
       include: {
         trial_locations: {
           only: [
@@ -435,20 +437,10 @@ class Trial < ApplicationRecord
             {multi_match: {
               query: search[:q].downcase,
               operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"],
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number"],
               }
             }, 
-            {bool: {
-              filter: {
-                term: {approved: false}
-                }
-              }
-           },
-           {bool:{
-            filter: {
-              term: {visible: true}
-            }}
-          }
+            { bool: { filter: filters_pending(search) } },
           ] 
         }
       }
@@ -522,6 +514,13 @@ class Trial < ApplicationRecord
       end
     end
 
+    ret
+  end
+
+def self.filters_pending(search)
+    ret = []
+    ret << { term: { visible: true } }
+    ret << { term: { approved: false } }
     ret
   end
 
