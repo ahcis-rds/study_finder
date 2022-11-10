@@ -11,17 +11,20 @@
 
   <table class="table table-bordered table-trials">
     <tr>
-      <th>User ID</th>
-      <th>Trial ID</th>
+      <th>Internet ID</th>
+      <th>Trial System ID</th>
+      <th>Trial Brief Title</th>
       <th>Date</th>
     </tr>
-   
+  <% if !@approvals.nil?%>
     <% @approvals.each do |a| %>
       <tr>
-        <td><%= User.find(a.user_id).internet_id %></td>
-        <td><%= Trial.find(a.trial_id).brief_title %></td>
+        <td><%= a.user.internet_id %></td>
+        <td><%= a.trial.try(:system_id) %> </td>
+        <td><%= a.trial.try(:brief_title) %></td>
         <td><%= a.created_at.localtime.strftime('%m/%d/%Y') %></td>
       </tr>
     <% end %>
+  <% end %>
   </table>
 </div>

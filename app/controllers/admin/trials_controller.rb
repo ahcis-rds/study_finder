@@ -124,8 +124,9 @@ class Admin::TrialsController < ApplicationController
 
     respond_to do |format|
       format.html
-
+    
       format.xls do
+        @trials = Trial.where(approved: false).where(visible: true)
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
         response.headers['Content-Disposition'] = "attachment; filename=\"all_under_review_#{DateTime.now}.xls\""
         render "all_under_review.xls.erb"
