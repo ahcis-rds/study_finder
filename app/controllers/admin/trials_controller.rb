@@ -136,6 +136,7 @@ class Admin::TrialsController < ApplicationController
 
   def under_review
     @trial = Trial.find(params[:id])
+    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
     add_breadcrumb 'Trials Administration', :admin_trials_path
     add_breadcrumb 'All Under Review', :admin_all_trials_under_review_path
     add_breadcrumb 'Under Review'

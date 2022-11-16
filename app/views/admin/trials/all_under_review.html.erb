@@ -45,7 +45,7 @@
       <tr>
         <th>System ID</th>
         <th>Brief Title</th>
-        <th>Simple Description</th>
+        <th style="padding-left: 9em; padding-right: 9em">Brief Description</th>
         <th>Study Contact</th>
         <th>PI</th>
         <th>Date Added</th>
@@ -58,8 +58,8 @@
        
       <tr>
         <td> <%= t.system_id   %> </td>
-        <td> <%= t.display_title.try {truncate(80)} %> </td> 
-        <td> <%= t.simple_description.try {truncate(80)}%> </td> 
+        <td> <%= t.display_title.try {truncate(50)} %> </td> 
+        <td> <%= t.simple_description.try {truncate(180)}%> </td> 
         <td> <%= contacts_display(determine_contacts(t)) %></td>
         <td> <%=t.pi_name %> </td>
         <td><%= t.created_at.to_date.strftime('%m/%d/%Y') %></td> 
