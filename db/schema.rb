@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_09_225803) do
+ActiveRecord::Schema.define(version: 2022_11_28_200817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(version: 2022_11_09_225803) do
     t.boolean "rare_disease_flag"
     t.string "nct_id"
     t.boolean "approved", default: false, null: false
+    t.string "protocol_type"
     t.index ["approved"], name: "index_study_finder_trials_on_approved"
     t.index ["recruiting"], name: "index_study_finder_trials_on_recruiting"
     t.index ["reviewed"], name: "index_study_finder_trials_on_reviewed"

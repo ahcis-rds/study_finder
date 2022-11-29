@@ -40,16 +40,18 @@
     </div>
 
 
-  <table class="table table-bordered table-trials">
+  <table class="table table-bordered table-trials-under-review">
   <thead>
       <tr>
         <th>System ID</th>
         <th>Brief Title</th>
-        <th style="padding-left: 9em; padding-right: 9em">Brief Description</th>
+        <%# <th style="padding-left: 50%; padding-right: 50%">Brief Description</th> %>
+        <th class="expand-column">Brief Description</th>
+        <th >Protocol Type</th>
         <th>Study Contact</th>
         <th>PI</th>
-        <th>Date Added</th>
-        <th>Actions</th>
+        <th class="shrink-column" >Date Added</th>
+        <th class="expand-column">Actions</th>
       </tr>
       </thead>
 
@@ -59,7 +61,8 @@
       <tr>
         <td> <%= t.system_id   %> </td>
         <td> <%= t.display_title.try {truncate(50)} %> </td> 
-        <td> <%= t.simple_description.try {truncate(180)}%> </td> 
+        <td data-width="600"> <%= t.simple_description.try {truncate(180)}%> </td> 
+        <td> <%= t.protocol_type%></td>
         <td> <%= contacts_display(determine_contacts(t)) %></td>
         <td> <%=t.pi_name %> </td>
         <td><%= t.created_at.to_date.strftime('%m/%d/%Y') %></td> 

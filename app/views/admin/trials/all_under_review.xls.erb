@@ -10,6 +10,7 @@
         <Cell><Data ss:Type="String">System ID</Data></Cell>
         <Cell><Data ss:Type="String">Brief Title</Data></Cell>
         <Cell><Data ss:Type="String">Brief Description</Data></Cell>
+        <Cell><Data ss:Type="String">Protocol Type</Data></Cell>
         <Cell><Data ss:Type="String">Study Contact</Data></Cell>
         <Cell><Data ss:Type="String">PI</Data></Cell>
         <Cell><Data ss:Type="String">Keywords</Data></Cell>
@@ -20,7 +21,8 @@
           <Cell><Data ss:Type="String"><%= t.system_id%></Data></Cell>
           <Cell><Data ss:Type="String"><%= t.brief_title %></Data></Cell>
           <Cell><Data ss:Type="String"><%= t.simple_description %> </Data></Cell>    
-          <Cell><Data ss:Type="String"> <%=contacts_excel(determine_contacts(t)) %> </Data></Cell>
+          <Cell><Data ss:Type="String"><%= t.protocol_type %> </Data></Cell>    
+          <Cell><Data ss:Type="String"><%= contacts_excel(determine_contacts(t)) %> </Data></Cell>
           <Cell><Data ss:Type="String"><%= t.pi_name %>  </Data></Cell>
           <Cell><Data ss:Type="String"><%= t.keywords.to_s %> </Data></Cell>         
           <Cell><Data ss:Type="String"><%= t.created_at.localtime.strftime('%m/%d/%Y')  %> </Data></Cell>                           

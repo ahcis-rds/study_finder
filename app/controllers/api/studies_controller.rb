@@ -81,6 +81,7 @@ class Api::StudiesController < ApiController
       :phase,
       :pi_id,
       :pi_name,
+      :protocol_type,
       :recruiting,
       :simple_description,
       :display_simple_description,
