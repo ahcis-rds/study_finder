@@ -116,7 +116,7 @@ class Admin::TrialsController < ApplicationController
       
     else
       # @trials = Trial.where(approved: false).where(visible: true).order('created_at DESC')
-      @trials = Trial.paginate(page: params[:page]).where(approved: false).where(visible: true)
+      @trials = Trial.paginate(page: params[:page]).where(approved: false).where(visible: true).where.not(protocol_type: 'Observational - Chart Review')
     end
     
     add_breadcrumb 'Trials Administration', :admin_trials_path
@@ -126,7 +126,7 @@ class Admin::TrialsController < ApplicationController
       format.html
     
       format.xls do
-        @trials = Trial.where(approved: false).where(visible: true)
+        @trials = Trial.where(approved: false).where(visible: true).where.not(protocol_type: 'Observational - Chart Review')
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
         response.headers['Content-Disposition'] = "attachment; filename=\"all_under_review_#{DateTime.now}.xls\""
         render "all_under_review.xls.erb"
