@@ -51,10 +51,10 @@
   <hr/>
 
   <% if @trials.empty? %>
-  <% healthstudies_url = 'https://healthstudiesmn.org/studies?' + {'search[q]': params[:search][:q].downcase, commit:'Search'}.to_param %>
+  <% healthstudies_url = 'https://healthstudiesmn.org/studies?' + {'search[q]': @search_query, commit:'Search'}.to_param %>
     <div class="alert">
       <h4 class="alert-heading">
-        No University of Minnesota studies matched your search for <strong><%= params[:search][:q].downcase %></strong>
+        No University of Minnesota studies matched your search for <strong><%= @search_query %></strong>
       </h4>
       <div>
       <p>To find what you’re looking for:</p>

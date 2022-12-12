@@ -9,9 +9,10 @@ class StudiesController < ApplicationController
     @attribute_settings = @system_info.trial_attribute_settings
     @group = Group.where(id: search_hash[:category]).first
     @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
-
+    @search_query = search_hash[:q].try(:downcase) || ""
+    
     if @trials.empty?
-      @suggestions = Trial.suggestions(search_hash[:q].try(:downcase) || "")
+      @suggestions = Trial.suggestions(@search_query)
     end
 
     respond_with(@trials)
