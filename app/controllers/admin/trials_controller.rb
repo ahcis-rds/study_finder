@@ -78,7 +78,7 @@ class Admin::TrialsController < ApplicationController
     unless params[:q].nil?
       @trials = Trial.match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
     else
-      @trials = Trial.paginate(page: params[:page]).where(approved: true)
+      @trials = Trial.paginate(page: params[:page]).where(approved: true).where(visible: true)
     end
 
     add_breadcrumb 'Trials Administration'

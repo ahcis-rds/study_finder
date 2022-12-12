@@ -421,11 +421,17 @@ class Trial < ApplicationRecord
   def self.match_all_admin(search)
     search(
       query: {
-        multi_match: {
-          query: search[:q].downcase,
-          operator: "and",
-          fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
-        }
+        bool: {
+          must: [
+           { multi_match: {
+              query: search[:q].downcase,
+              operator: "and",
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
+            }
+          },
+            {bool: {filter: filters_admin(search) } }
+          ]
+        }   
       } 
     )
   end
@@ -441,21 +447,16 @@ class Trial < ApplicationRecord
               fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
               }
             }, 
-            { bool: { filter: filters_pending(search) } },
+            { bool: { filter: filters_pending(search) } 
+            }       
           ], 
-          
-        },
-        bool: {
-          must_not: {
-            terms: {
-              protocol_type: [
-                "Observational - Chart Review"
-              ]
+          must_not: [
+            match: {
+              protocol_type:  "Observational - Chart Review"
             }
-          }
+          ]
         }
-      }
-
+     }
     )
   end
 
@@ -527,13 +528,19 @@ class Trial < ApplicationRecord
     ret
   end
 
-def self.filters_pending(search)
-    ret = []
-    ret << { term: { visible: true } }
-    ret << { term: { approved: false } }
-    ret
+  def self.filters_pending(search)
+      ret = []
+      ret << { term: { visible: true } }
+      ret << { term: { approved: false } }
+      ret
   end
 
+  def self.filters_admin(search)
+    ret = []
+    ret << { term: { visible: true } }
+    ret << { term: { approved: true } }
+    ret
+  end
   def self.range_filters(search)
     ret = []
 
