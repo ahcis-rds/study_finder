@@ -450,11 +450,11 @@ class Trial < ApplicationRecord
             { bool: { filter: filters_pending(search) } 
             }       
           ], 
-          must_not: [
-            match: {
-              protocol_type:  "Observational - Chart Review"
+          must_not: {
+            match_phrase: {
+              protocol_type: "Observational - Chart Review"
             }
-          ]
+          }
         }
      }
     )
