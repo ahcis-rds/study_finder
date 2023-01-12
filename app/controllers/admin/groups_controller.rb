@@ -39,7 +39,7 @@ class Admin::GroupsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { send_data generate_csv, filename: "#{friendly_filename(@group.group_name.downcase)}_categories.csv" }
+      format.csv { send_data generate_csv, filename: "#{friendly_filename(@group.group_name.try(:downcase))}_categories.csv" }
     end
   end
 

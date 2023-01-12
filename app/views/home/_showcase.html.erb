@@ -1,14 +1,14 @@
 <div class="row home-content mt-4 mb-5">
   <h2 class="mt-3 mt-2 ml-1 pl-2">Featured research opportunities</h2>
-  <div class="col-12 d-none d-md-block">    
-    <div class="d-none d-md-block">
+  <div class="col-12">    
+    <div class="d-block">
       <% unless @showcase.empty? %>
         <div id="showcase" class="card-deck">
           <% @showcase.each_with_index do |item, ix| %>
             <div class="card">
               <% unless !item.showcase_image.attached? && item.url.blank? %>
                 <% if item.showcase_image.attached? %>
-                  <%= image_tag item.showcase_image, class: 'w-100 card-img-top img-fluid' %>
+                  <%= image_tag item.showcase_image, class: 'w-100 card-img-top img-fluid d-none d-sm-block' %>
                 <% end %>
               <% end %>
               <div class="card-body">
