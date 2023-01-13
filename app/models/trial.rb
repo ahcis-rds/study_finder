@@ -427,7 +427,7 @@ class Trial < ApplicationRecord
         bool: {
           must: [
            { multi_match: {
-              query: search[:q].try(:downcase_,
+              query: search[:q].try(:downcase),
               operator: "and",
               fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
             }
