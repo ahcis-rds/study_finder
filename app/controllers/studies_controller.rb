@@ -12,7 +12,7 @@ class StudiesController < ApplicationController
     @search_query = search_hash[:q].try(:downcase) || ""
     
     if @trials.empty?
-      @suggestions = Trial.suggestions(search_hash[:q].try(:downcase) || "")
+      @suggestions = Trial.suggestions(@search_query)
     end
 
     respond_with(@trials)
