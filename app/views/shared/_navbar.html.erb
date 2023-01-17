@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <%= image_tag 'logo.png', class: 'logo', alt: 'UMN logo' %>
-  <%= render "shared/logo.svg" %>
+  <%= render inline: Rails.root.join('public/logo.svg').read %>
 </div>
 <div id="header-content">
   <div class="alt-header d-block d-md-none"><span>StudyFinder</span></div>
