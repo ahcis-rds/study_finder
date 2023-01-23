@@ -13,7 +13,7 @@ class TrialIntervention < ApplicationRecord
 
   def as_json(options = {})
     {
-      type: self.intervention_type,
+      intervention_type: self.intervention_type,
       intervention: self.intervention
     }
   end

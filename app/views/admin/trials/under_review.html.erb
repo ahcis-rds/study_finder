@@ -1,0 +1,34 @@
+<div class="admin">
+    <div class="clearfix">
+      <h3 class="pull-left"> Under Review </h3>
+    
+  </div>
+  <p class="description">Review the below information for the trial under review.</p>
+
+
+  <hr/>
+<p><strong>System ID:</strong> <%= @trial.system_id%></p>
+      <p><strong>Brief Title:</strong> <%= @trial.display_title %> </p> 
+      <p><strong> Brief Description: </strong><%= @trial.simple_description %> </p> 
+      <p><strong>Study Contact:</strong> <%= contacts_display(determine_contacts(@trial)) %></p>
+      <p><strong>PI:</strong> <%=@trial.pi_name %> </p>
+
+      <p><strong> Keywords: </strong> <%=@trial.keywords%></p>
+      <% if !@trial.eligibility_criteria.nil?%>
+       <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'show', @trial.eligibility_criteria.to_s.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
+      <% else%>
+        <p><strong>Inclusion Criteria:</strong></p>
+        <p><strong>Exclusion Criteria:</strong></p>
+      <%end%>
+      <p> <strong>Conditions: </strong> 
+        <%@trial.conditions.each do |c| %>
+            <ul>
+              <li> <%= c.condition %></li>
+            </ul>
+        <%end%>
+       </p>
+      
+        <p><strong>Date Created:</strong> <%= @trial.created_at.to_date.strftime('%m/%d/%Y') %></p> 
+  <%= link_to 'Approve', admin_trial_approved_path(@trial.id), class: 'btn btn-school', :method=> :post %>
+        <%= link_to 'Edit', edit_admin_trial_path(@trial.system_id), class: 'btn btn-school' %></td>
+</div>

@@ -7,8 +7,33 @@
 .admin {
   padding: 10px;
   
+  .table-trials-under-review {
+    table-layout:fixed;
+    margin-top: 20px;
+    th {width: 170px; }
+    //   word-wrap:break-word}
+    .expand-column {
+      width: 325px;
+    }
+    .shrink-column {
+      width: 130px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0 15px;
+    }
+    li {
+      font-family: Arial;
+      font-size: 11px;
+      padding: 3px 0;
+    }
+  }
+
   .table-trials {
     margin-top: 20px;
+   
+
     ul {
       margin: 0;
       padding: 0 15px;

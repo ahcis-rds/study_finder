@@ -70,6 +70,16 @@ $ rake studyfinder:ctgov:load[10]
 $ rake studyfinder:trials:reindex
 ```
 
+## API
+
+StudyFinder has a basic API which can be used by integrations to load and read trial data. To generate an API key, open a rails console and:
+
+```
+$ ApiKey.new(name: 'some_name').save
+```
+
+Note the value of 'token' that is saved -- this is the value used by an API client to authenticate. 
+
 ## ElasticSearch synonyms
 
 The default trial search configuration uses a query-time synonym_graph filter. It supports multi-term synonyms, e.g. 'caloric restrictions' and 'low calorie diet'. When trials are indexed, ElasticSearch creates the search analyzer for this. You *do not* have to re-index trials if the synonyms are updated, because it is a query-time filter. 

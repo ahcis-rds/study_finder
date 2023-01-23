@@ -8,14 +8,24 @@ class Admin::SystemController < ApplicationController
 
   def edit
     @system = SystemInfo.find(params[:id])
-    @updated = Updater.all.last
+    last_update = Updater.all.last
+    if last_update.blank?
+      @updated_at = 'never'
+    else 
+      @updated_at = last_update.created_at.strftime('%m-%d-%Y')
+    end
 
     add_breadcrumb 'System Administration'
   end
 
   def update
     @system = SystemInfo.find(params[:id])
-    @updated = Updater.all.last
+    last_update = Updater.all.last
+    if last_update.blank?
+      @updated_at = 'never'
+    else 
+      @updated_at = last_update.created_at.strftime('%m-%d-%Y')
+    end
     
     if @system.update(system_params)
       redirect_to edit_admin_system_path(params[:id]), flash: { success: 'System information updated successfully' }

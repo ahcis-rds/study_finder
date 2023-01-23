@@ -1,6 +1,6 @@
 class Api::StudiesController < ApiController
   def index
-    @trials = Trial.all
+    @trials = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).all
   end
 
   def show
@@ -10,14 +10,15 @@ class Api::StudiesController < ApiController
   def update
     @trial = Trial.find_by(system_id: params[:id])
 
+    # Clean up the extra junk that sending JSON from an OpenStruct object adds. 
+    @interventions = params[:interventions].blank? ? nil : params[:interventions].map { |e| e['table'] }
     @trial.transaction do
+      @trial.update_interventions!(@interventions)
       @trial.update_keywords!(params[:keywords])
       @trial.update_conditions!(params[:conditions])
       @trial.update_locations!(params[:locations])
-      @trial.update_interventions!(params[:interventions])
       @trial.update!(trial_params)
     end
-
     if @trial.errors.none?
       head 200
     else
@@ -42,30 +43,55 @@ class Api::StudiesController < ApiController
     end
   end
 
+  def valid_attributes
+    render json: { valid_attributes: api_params }
+  end
+
   private
 
-  def trial_params
-    params.permit(
+  # TODO implement handling for contact display name, which is not currently a thing
+  def api_params
+    [
+      :acronym,
+      :brief_summary,
       :brief_title,
+      :contact_display_name,
+      :contact_last_name,
+      :contact_first_name,
+      :contact_email,
+      :contact_backup_display_name,
+      :contact_backup_last_name,
+      :contact_backup_first_name,
+      :contact_backup_email,
       :contact_override,
       :contact_override_first_name,
       :contact_override_last_name,
+      :detailed_description,
       :eligibility_criteria,
       :gender,
       :healthy_volunteers_imported,
       :irb_number,
+      :maximum_age,
+      :minimum_age,
       :max_age_unit,
       :min_age_unit,
+      :nct_id,
       :official_title,
       :overall_status,
       :phase,
       :pi_id,
       :pi_name,
+      :protocol_type,
       :recruiting,
       :simple_description,
       :display_simple_description,
       :system_id,
+      :verification_date,
       :visible
-    )
+    ]
+  end
+
+  def trial_params
+    params.permit(api_params)
   end
 end

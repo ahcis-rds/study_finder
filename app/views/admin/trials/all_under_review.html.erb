@@ -1,0 +1,80 @@
+
+  <div class="admin">
+    <div class="clearfix">
+      <h3 class="pull-left">Under Review (<%= @trials.count%>)  </h3> 
+    <div class="pull-right header-button">
+      <%= link_to 'All Trials', admin_trials_path, class: 'btn btn-school'%>
+      <%= link_to 'Approvals History',  admin_approvals_path, class: 'btn btn-school'%>
+       <%= link_to "Export All to Excel", admin_all_trials_under_review_path(format: :xls), class: 'btn btn-success' %>
+      </div>
+  </div>
+  
+  <p class="description">This section is where an administrator can approve trials under review. </p>
+  <p class="description">A trial is considered under review if all the following are true: it is open to accrual, the Oncore annotation related to Study Finder is either yes or blank (Annotation #37), and it has not yet been approved. </p>
+
+  <p class="description"> Click on "Approve" to indicate that the trial under review has sufficient information to be made public in the Study Finder results. Click on "Show Details" to see all the details related to a trial. "Show Details"  will provide additional options to "Edit" or "Approve"  the trial.</p>
+  
+  <p class="description">
+    Once a trial is approved, it can take up to 24 hours for it to appear in search results due to indexing. If a study needs to be made available as soon as possible, the reindexing process will need to be manually run via "Reindex" from the <%= link_to "Admin Groups page", admin_groups_path %>.</p>
+  
+
+ 
+
+  <hr/>
+  <div class="clearfix">
+      <div class="pull-left">
+        <%= form_tag admin_all_trials_under_review_path, method: :get do %>
+          <div class="form-group">
+            <label>Search</label>
+            <%= text_field_tag :q, params[:q].try(:downcase), class: 'form-control', style: 'width: 400px' %>
+          </div>
+          <div class="form-group">
+            <%= submit_tag 'Search', class: 'btn btn-school' %>
+            <%= link_to 'Clear', admin_all_trials_under_review_path, class: 'btn btn-outline-secondary' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="pull-right"> 
+        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %> 
+     </div>
+    </div>
+
+
+  <table class="table table-bordered table-trials-under-review">
+  <thead>
+      <tr>
+        <th>System ID</th>
+        <th>Brief Title</th>
+        <%# <th style="padding-left: 50%; padding-right: 50%">Brief Description</th> %>
+        <th class="expand-column">Brief Description</th>
+        <th >Protocol Type</th>
+        <th>Study Contact</th>
+        <th>PI</th>
+        <th class="shrink-column" >Date Added</th>
+        <th class="expand-column">Actions</th>
+      </tr>
+      </thead>
+
+    <tbody>
+        <% @trials.each do |t| %>
+       
+      <tr>
+        <td> <%= t.system_id   %> </td>
+        <td> <%= t.display_title.try {truncate(50)} %> </td> 
+        <td data-width="600"> <%= t.simple_description.try {truncate(180)}%> </td> 
+        <td> <%= t.protocol_type%></td>
+        <td> <%= contacts_display(determine_contacts(t)) %></td>
+        <td> <%=t.pi_name %> </td>
+        <td><%= t.created_at.to_date.strftime('%m/%d/%Y') %></td> 
+        <td>
+          <%= link_to 'Approve', admin_trial_approved_path(t.id), :class => "btn btn-school", :method=> :post%> 
+          <%= link_to 'Show Details', admin_trial_under_review_path(t.id), :class => "btn btn-school" %>
+        </td>
+      </tr>
+
+    <%end %>
+    </tbody>
+    </table>
+
+   
+  </div>

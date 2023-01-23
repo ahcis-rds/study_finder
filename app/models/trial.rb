@@ -32,6 +32,8 @@ class Trial < ApplicationRecord
 
   has_one_attached :photo
 
+  has_one :approval
+
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
   def self.import_from_file(file)
@@ -179,14 +181,14 @@ class Trial < ApplicationRecord
 
   def update_interventions!(intervention_data)
     return if intervention_data.nil?
-
     existing_interventions = trial_interventions.as_json
+
     interventions_to_add = intervention_data - existing_interventions
     interventions_to_delete = existing_interventions - intervention_data
 
     transaction(requires_new: true) do
       interventions_to_delete.each do |intervention_to_delete|
-        interventions.where(intervention_to_delete).delete_all
+        trial_interventions.where(intervention_to_delete).delete_all
       end
 
       interventions_to_add.each do |intervention_to_add|
@@ -261,6 +263,8 @@ class Trial < ApplicationRecord
       indexes :contact_override
       indexes :contact_override_first_name
       indexes :contact_override_last_name
+      indexes :approved, type: 'boolean'
+      indexes :protocol_type
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
@@ -300,7 +304,9 @@ class Trial < ApplicationRecord
       indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
+      indexes :nct_id, type: 'text'
       indexes :added_on, type: 'date'
+      indexes :created_at, type: 'date'
     end
 
   end
@@ -331,12 +337,16 @@ class Trial < ApplicationRecord
         :pi_id,
         :recruitment_url,
         :irb_number,
+        :nct_id,
         :phase,
         :cancer_yn,
         :min_age_unit,
         :max_age_unit,
         :featured,
-        :added_on
+        :added_on,
+        :approved,
+        :protocol_type,
+        :created_at
       ],
       include: {
         trial_locations: {
@@ -414,12 +424,42 @@ class Trial < ApplicationRecord
   def self.match_all_admin(search)
     search(
       query: {
-        multi_match: {
-          query: search[:q].try(:downcase),
-          operator: "and",
-          fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
-        }
+        bool: {
+          must: [
+           { multi_match: {
+              query: search[:q].try(:downcase),
+              operator: "and",
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
+            }
+          },
+            {bool: {filter: filters_admin(search) } }
+          ]
+        }   
       } 
+    )
+  end
+
+  def self.match_all_under_review_admin(search)
+    search(
+      query: {
+        bool: {
+          must: [
+            {multi_match: {
+              query: search[:q].downcase,
+              operator: "and",
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
+              }
+            }, 
+            { bool: { filter: filters_pending(search) } 
+            }       
+          ], 
+          must_not: {
+            match_phrase: {
+              protocol_type: "Observational - Chart Review"
+            }
+          }
+        }
+     }
     )
   end
 
@@ -473,7 +513,7 @@ class Trial < ApplicationRecord
   def self.filters(search)
     ret = []
     ret << { term: { visible: true } }
-
+    ret << { term: { approved: true } }
     if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
       if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
         ret << { term: { healthy_volunteers: true } }
@@ -491,6 +531,19 @@ class Trial < ApplicationRecord
     ret
   end
 
+  def self.filters_pending(search)
+      ret = []
+      ret << { term: { visible: true } }
+      ret << { term: { approved: false } }
+      ret
+  end
+
+  def self.filters_admin(search)
+    ret = []
+    ret << { term: { visible: true } }
+    ret << { term: { approved: true } }
+    ret
+  end
   def self.range_filters(search)
     ret = []
 

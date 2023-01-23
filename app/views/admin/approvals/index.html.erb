@@ -1,0 +1,30 @@
+<div class="admin">
+  <div class="clearfix">
+    <h3 class="pull-left">Approvals History</h3>
+    <div class="pull-right header-button">
+    <%= link_to 'Under Review', admin_all_trials_under_review_path, class: 'btn btn-school'%>
+    </div>
+  </div>
+   
+  <p class="description">This section is a history of the approval of trials under review.</p>
+  <hr/>
+
+  <table class="table table-bordered table-trials">
+    <tr>
+      <th>Internet ID</th>
+      <th>Trial System ID</th>
+      <th>Trial Brief Title</th>
+      <th>Date</th>
+    </tr>
+  <% if !@approvals.nil?%>
+    <% @approvals.each do |a| %>
+      <tr>
+        <td><%= a.user.internet_id %></td>
+        <td><%= a.trial.try(:system_id) %> </td>
+        <td><%= a.trial.try(:brief_title) %></td>
+        <td><%= a.created_at.localtime.strftime('%m/%d/%Y') %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  </table>
+</div>

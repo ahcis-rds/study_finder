@@ -12,7 +12,7 @@ class StudyMailer < ActionMailer::Base
 
     from = %("#{name}" <#{email}>)
 
-    mail(from: @system_info.default_email, to: to, reply_to: email, subject: "Someone is interested in your study")
+    mail(from: @system_info.default_email, to: to, bcc: @system_info.default_email, reply_to: email, subject: "Someone is interested in your study")
   end
 
   def email_me(email, message, trial, contacts, eligibility, age)
@@ -26,6 +26,6 @@ class StudyMailer < ActionMailer::Base
     @interventions = @trial.interventions
     system_info = SystemInfo.current
 
-    mail(from: system_info.default_email, to: email, reply_to: email, subject: "StudyFinder - #{trial.brief_title}")
+    mail(from: system_info.default_email, to: email, bcc: @system_info.default_email, reply_to: email, subject: "StudyFinder - #{trial.brief_title}")
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_13_194126) do
+ActiveRecord::Schema.define(version: 2022_11_28_200817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 2021_10_13_194126) do
   create_table "api_keys", force: :cascade do |t|
     t.string "name"
     t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "approvals", force: :cascade do |t|
+    t.integer "trial_id"
+    t.integer "user_id"
+    t.boolean "approved", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -258,7 +266,14 @@ ActiveRecord::Schema.define(version: 2021_10_13_194126) do
     t.boolean "healthy_volunteers_override"
     t.date "added_on"
     t.boolean "display_simple_description", default: true, null: false
-
+    t.boolean "rare_disease_flag"
+    t.string "nct_id"
+    t.boolean "approved", default: false, null: false
+    t.string "protocol_type"
+    t.index ["approved"], name: "index_study_finder_trials_on_approved"
+    t.index ["recruiting"], name: "index_study_finder_trials_on_recruiting"
+    t.index ["reviewed"], name: "index_study_finder_trials_on_reviewed"
+    t.index ["visible"], name: "index_study_finder_trials_on_visible"
   end
 
   create_table "study_finder_updaters", id: :serial, force: :cascade do |t|
