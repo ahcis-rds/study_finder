@@ -34,7 +34,9 @@ group :development do
   gem 'puma'
   gem 'listen'
   gem 'spring'
-  gem 'capistrano', '~> 3.17.0'
+  gem 'capistrano', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-passenger'
   gem 'web-console', '>= 3.7.0' # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 end
 
