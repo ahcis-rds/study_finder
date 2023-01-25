@@ -12,7 +12,7 @@ class StudyMailer < ActionMailer::Base
 
     from = %("#{name}" <#{email}>)
 
-    mail(from: @system_info.default_email, to: to, bcc: @system_info.default_email, reply_to: email, subject: "Someone is interested in your study")
+    mail(from: @system_info.default_email, to: to, bcc: "sfinder+study-team-emails@umn.edu", reply_to: email, subject: "Someone is interested in your study")
   end
 
   def email_me(email, message, trial, contacts, eligibility, age)
