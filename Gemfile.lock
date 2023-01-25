@@ -192,7 +192,7 @@ GEM
     net-imap (0.3.4)
       date
       net-protocol
-    net-ldap (0.16.3)
+    net-ldap (0.17.1)
     net-pop (0.1.2)
       net-protocol
     net-protocol (0.2.1)
@@ -273,7 +273,7 @@ GEM
       rspec-support (~> 3.11)
     rspec-support (3.12.0)
     ruby2_keywords (0.0.5)
-    rubyzip (2.0.0)
+    rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -348,7 +348,7 @@ DEPENDENCIES
   json
   listen
   mail_form
-  net-ldap (~> 0.16.1)
+  net-ldap
   nokogiri
   pg (~> 1.2.0)
   puma
@@ -357,12 +357,12 @@ DEPENDENCIES
   recaptcha
   responders
   rspec-rails
-  rubyzip (~> 2.0.0)
+  rubyzip
   sass-rails (~> 5.0)
   simple_form
   spring
   sprockets-rails
-  uglifier (>= 1.3.0)
+  uglifier
   web-console (>= 3.7.0)
   wicked_pdf
   will_paginate
