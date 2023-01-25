@@ -24,14 +24,14 @@ namespace :studyfinder do
     end
 
     task refresh_all: :environment do |t, args|
-      puts "Refreshing all ClinicalTrials.gov data"
+      # puts "Refreshing all ClinicalTrials.gov data"
 
-      connector = Connectors::Ctgov.new
-      connector.load
-      connector.process
+      # connector = Connectors::Ctgov.new
+      # connector.load
+      # connector.process
 
-      puts "Reindexing all trials into elasticsearch"
-      Trial.import force: true
+      # puts "Reindexing all trials into elasticsearch"
+      # Trial.import force: true
     end
 
     # ==============================================================================================
@@ -41,15 +41,15 @@ namespace :studyfinder do
     # ==============================================================================================
 
     task reload_all: :environment do |t, args|
-      puts "Reloading all ClinicalTrials.gov data"
+      # puts "Reloading all ClinicalTrials.gov data"
 
-      connector = Connectors::Ctgov.new
-      connector.clear
-      connector.load
-      connector.process
+      # connector = Connectors::Ctgov.new
+      # connector.clear
+      # connector.load
+      # connector.process
 
-      puts "Reindexing all trials into elasticsearch"
-      Trial.import force: true
+      # puts "Reindexing all trials into elasticsearch"
+      # Trial.import force: true
     end
 
   end
