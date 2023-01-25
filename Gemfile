@@ -5,7 +5,7 @@ gem "rails", "~> 7.0.0"
 gem "sprockets-rails"
 gem "foreman"
 
-gem 'pg'
+gem 'pg', '~> 1.3.0'
 gem 'responders'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
