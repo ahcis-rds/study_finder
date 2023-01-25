@@ -2,7 +2,7 @@ set :application, 'study_finder'
 set :scm, :none
 set :repository, "."
 set :default_environment, {
-  'PATH' => "/opt/ruby26/bin:$PATH",
+  'PATH' => "/opt/ruby31/bin:$PATH",
   "http_proxy" => "http://ctsigate.ahc.umn.edu:3128",
   "https_proxy" => "https://ctsigate.ahc.umn.edu:3128"
 }
