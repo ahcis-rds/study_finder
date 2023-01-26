@@ -459,7 +459,8 @@ class Trial < ApplicationRecord
             }
           }
         }
-     }
+     }, 
+      sort: {created_at: "desc"} 
     )
   end
 
