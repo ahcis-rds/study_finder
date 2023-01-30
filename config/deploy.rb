@@ -2,7 +2,7 @@
 lock "3.17.1"
 
 set :application, "study_finder"
-set :repo_url, "git@github.umn.edu:hst-rds/study_finder_umn.git"
+set :repo_url, "https://github.umn.edu/hst-rds/study_finder_umn"
 set :deploy_to, "/var/www/webapps/study_finder"
 set :default_env, { path: "/opt/ruby31/bin:$PATH" }
 set :passenger_restart_with_touch, true
