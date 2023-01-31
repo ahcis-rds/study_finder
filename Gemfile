@@ -29,6 +29,7 @@ gem 'figaro'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'active_storage_validations'
+gem "font-awesome-sass", "~> 6.2.1"
 
 group :development do
   gem 'puma'

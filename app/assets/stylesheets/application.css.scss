@@ -11,8 +11,9 @@
  * file per style scope.
  *
  *= require bootstrap.min
- *= require font-awesome.min
  *= require select2.min
  *= require bootstrap-datepicker.min
  *= require study_finder
  */
+
+@import "font-awesome";
