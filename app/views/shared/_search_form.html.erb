@@ -1,7 +1,7 @@
 <%= form_tag studies_path, method: :get, class: 'search-form', target: (params[:action] == 'embed' ? '_blank' : nil) do %>
   <div class="row">
     <div class="col-md-6">
-      <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa fa-question-circle"></i></label>
+      <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa-solid fa-question-circle"></i></label>
       <select id="search_heathy_volunteers" name="search[healthy_volunteers]" class="form-control">
         <option value=''>Please Select</option>
         <option value='1'>Yes</option>

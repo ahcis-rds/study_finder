@@ -8,10 +8,10 @@
 <% end %>
 
 <div class="hide-on-print share-container">
-  <a href="https://www.facebook.com/sharer/sharer.php?u=<%=CGI.escape(study_url(study.id))%>" target="_blank" class="btn btn-sm btn-sq btn-primary"><i class="fa fa-facebook" alt="Share on Facebook"></i> Facebook</a>
-  <a href="http://twitter.com/share?text=check%20out%20this%20study!&url=<%=CGI.escape(study_url(study.id))%>&hashtags=studyfinder" target="_blank" class="btn btn-sm btn-sq btn-primary"><i class="fa fa-twitter share-icon" alt="Share on Twitter"></i> Twitter</a>
-  <div class="btn btn-primary btn-sm btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=study.display_title%>" data-trial-id="<%=study.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= study.system_id %>')"><i class="fa fa-envelope"></i> Email</div>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=<%=CGI.escape(study_url(study.id))%>" target="_blank" class="btn btn-sm btn-sq btn-primary"><i class="fa-solid fa-facebook" alt="Share on Facebook"></i> Facebook</a>
+  <a href="http://twitter.com/share?text=check%20out%20this%20study!&url=<%=CGI.escape(study_url(study.id))%>&hashtags=studyfinder" target="_blank" class="btn btn-sm btn-sq btn-primary"><i class="fa-solid fa-twitter share-icon" alt="Share on Twitter"></i> Twitter</a>
+  <div class="btn btn-primary btn-sm btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=study.display_title%>" data-trial-id="<%=study.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= study.system_id %>')"><i class="fa-solid fa-envelope"></i> Email</div>
   <%= link_to study_path(@study.id, format: "pdf"), class: 'btn btn-primary btn-sm btn-print' do %>
-    <i class="fa fa-save"></i> Download PDF
+    <i class="fa-solid fa-save"></i> Download PDF
   <% end %>
 </div>
