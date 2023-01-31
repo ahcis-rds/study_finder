@@ -137,9 +137,9 @@ module StudiesHelper
     rendered = '<div class="healthy-message" data-toggle="popover" data-title="Healthy Volunteer" data-content="A person who does not have the condition or disease being studied." data-placement="top">'
             
     if study.healthy_volunteers == true
-      rendered = rendered + '<i class="fa-solid fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa-solid fa-question-circle"></i>'
+      rendered = rendered + '<i class="fa-solid fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa-solid fa-circle-question"></i>'
     else
-      rendered = rendered + '<i class="fa-solid fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa-solid fa-question-circle"></i>'
+      rendered = rendered + '<i class="fa-solid fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa-solid fa-circle-question"></i>'
     end
     rendered = rendered + '</div>'
 

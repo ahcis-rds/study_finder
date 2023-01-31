@@ -12,7 +12,7 @@
     <label>Filters</label>
     <%= f.input :children, label: 'Children (age < 18 years)' %>
     <%= f.input :adults, label: 'Adults (age >= 18 years)' %>
-    <label for='group_heathy_volunteers' data-toggle= 'popover' data-title= 'Healthy Volunteer' data-content= 'A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa-solid fa-question-circle"></i></label>
+    <label for='group_heathy_volunteers' data-toggle= 'popover' data-title= 'Healthy Volunteer' data-content= 'A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa-solid fa-circle-question"></i></label>
     <%= f.input :healthy_volunteers, as: :select, collection: [['Please Select',''],['Yes',true],['No',false]], label: false, include_blank: false %>
   </div>
 
