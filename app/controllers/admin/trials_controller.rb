@@ -69,7 +69,7 @@ class Admin::TrialsController < ApplicationController
       format.xls do
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
         response.headers['Content-Disposition'] = "attachment; filename=\"trials_#{DateTime.now}.xls\""
-        render "recent_as.xls.erb"
+        render "recent_as"
       end
     end
   end
@@ -129,7 +129,7 @@ class Admin::TrialsController < ApplicationController
         @trials = Trial.where(approved: false).where(visible: true).where.not(protocol_type: 'Observational - Chart Review')
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
         response.headers['Content-Disposition'] = "attachment; filename=\"all_under_review_#{DateTime.now}.xls\""
-        render "all_under_review.xls.erb"
+        render "all_under_review"
       end
     end
   end
