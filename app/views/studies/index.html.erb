@@ -39,10 +39,10 @@
       <% end %>
     <% end %>
     <div class="clearfix">
-      <div class="pull-left study-count">
+      <div class="float-left study-count">
         <span><%= @trials.empty? ? 0 : @trials.total %></span> Study Matches
       </div>
-      <div class="pull-right top-paginate">
+      <div class="float-right top-paginate">
         <%= will_paginate @trials, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %>
       </div>
     </div>
@@ -130,8 +130,8 @@
           <div class="field d-none study-locations">
             <hr/>
             <div class="clearfix">
-              <h4 class="pull-left">Study Locations</h4>
-              <div class="btn btn-school btn-hide pull-right"><i class="fa-solid fa-close"></i> Hide all locations</div>
+              <h4 class="float-left">Study Locations</h4>
+              <div class="btn btn-school btn-hide float-right"><i class="fa-solid fa-close"></i> Hide all locations</div>
             </div>
             <table class="table table-bordered">
               <tr>
