@@ -11,7 +11,7 @@ class Trial < ApplicationRecord
 
   index_name "study_finder-trials-#{Rails.env}"
 
-  belongs_to :parser
+  belongs_to :parser, optional: true
   has_many :trial_interventions
   has_many :trial_keywords
 
