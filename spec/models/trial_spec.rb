@@ -65,4 +65,36 @@ describe Trial do
 
     expect(result_dates).to eq(result_dates.sort.reverse)
   end
+
+  it "validates the presence of a system_id" do
+    no_system_id = Trial.new(system_id: "")
+    expect(no_system_id).not_to be_valid
+    no_system_id.errors[:system_id].should include("can't be blank")
+  end
+
+  it "enforces uniqueness on system_id" do
+    Trial.create!(system_id: "123abc")
+    duplicated_system_id = Trial.new(system_id: "123abc")
+    duplicated_system_id.should_not be_valid
+    duplicated_system_id.errors[:system_id].should include('has already been taken')
+  end
+
+  it "does not allow non-alphanumeric white space character to be present for system_id" do
+    white_space_system_id = Trial.new(system_id: "123abc ")
+    expect(white_space_system_id).not_to be_valid 
+    expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
+  end
+
+  it "does not allow non-alphanumeric tab character to be present for system_id" do
+    white_space_system_id = Trial.new(system_id: "123abc\t")
+    expect(white_space_system_id).not_to be_valid 
+    expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
+  end
+
+  it "does not allow non-alphanumeric white space comma character to be present for system_id" do
+    white_space_system_id = Trial.new(system_id: "123abc, something else ")
+    expect(white_space_system_id).not_to be_valid 
+    expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
+  end
+
 end

@@ -8,7 +8,11 @@ class Trial < ApplicationRecord
 
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
-
+  
+  validates :system_id, presence: true
+  validates :system_id, uniqueness: true
+  validates :system_id, format: { with: /\A[a-zA-Z0-9]+\z/, message: "only allows alphanumeric characters" }
+  
   index_name "study_finder-trials-#{Rails.env}"
 
   belongs_to :parser, optional: true
