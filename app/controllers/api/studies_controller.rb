@@ -35,10 +35,15 @@ class Api::StudiesController < ApiController
         @trial.update_conditions!(params[:conditions])
         @trial.update_locations!(params[:locations])
         @trial.update_interventions!(params[:interventions])
-      end
-
+      end 
+    end
+    if @trial.errors.none?
       head 201
     else
+      errors = @trial.errors.messages[:system_id]
+      unless errors.include? "can't be blank"
+        AdminMailer.system_id_error(@trial.system_id, errors).deliver_later
+      end
       render json: { error: @trial.errors }, status: 400
     end
   end
