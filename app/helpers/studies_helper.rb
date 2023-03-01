@@ -6,40 +6,14 @@ module StudiesHelper
   end
 
   def determine_contacts(trial)
-    contact_suffix = @system_info.contact_email_suffix
-
     if !trial.contact_override.blank?
       # Always use the override, if available.
       return [{ 
         email: trial.contact_override,
         first_name: trial.contact_override_first_name,
         last_name: trial.contact_override_last_name
-      }]
-    elsif !contact_suffix.nil? and (
-        ( !trial.contact_email.nil? and trial.contact_email.include?(contact_suffix) ) or
-        ( !trial.contact_backup_email.nil? and trial.contact_backup_email.include?(contact_suffix) )
-      )
-
-      contacts = []
-      if !trial.contact_email.nil? && trial.contact_email.include?(contact_suffix)
-        contacts << {
-          email: trial.contact_email,
-          first_name: trial.contact_first_name,
-          last_name: trial.contact_last_name
-        }
-      end
-
-      if !trial.contact_backup_email.nil? && trial.contact_backup_email.include?(contact_suffix)
-        contacts << {
-          email: trial.contact_backup_email,
-          first_name: trial.contact_backup_first_name,
-          last_name: trial.contact_backup_last_name
-        }
-      end
-
-      return contacts
-    
-    elsif (!trial.contact_email.nil? or !trial.contact_backup_email.nil?) and contact_suffix.nil?
+      }]    
+    elsif !trial.contact_email.nil? or !trial.contact_backup_email.nil?
       # Use the overall contacts, if appropriate.
       contacts = []
       if !trial.contact_email.nil?
@@ -59,7 +33,7 @@ module StudiesHelper
       end
 
       return contacts
-    elsif !trial.trial_locations.empty? && !contact_suffix.nil?
+    elsif !trial.trial_locations.empty?
       # Overall contacts didn't work, search within locations.
       contacts = contacts_by_location(trial.trial_locations)
       if !contacts.empty?
