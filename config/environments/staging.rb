@@ -45,7 +45,7 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -84,11 +84,4 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: ENV['DEFAULT_URL_HOST'], protocol: ENV['DEFAULT_URL_PROTOCOL'] || 'https' }
 
  #config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
- config.after_initialize do
-    Bullet.enable = true
-    Bullet.console = true
-    Bullet.rails_logger = true
-    Bullet.add_footer = true
-    Bullet.skip_html_injection = false
-  end
 end

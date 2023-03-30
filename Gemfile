@@ -30,7 +30,6 @@ gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'active_storage_validations'
 gem "font-awesome-sass", "~> 6.2.1"
-gem 'bullet'
 
 group :development do
   gem 'puma'
@@ -47,4 +46,5 @@ group :development, :test do
   gem 'capybara'
   gem 'rails-controller-testing'
   gem 'byebug'
+  gem 'bullet'
 end
