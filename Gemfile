@@ -46,4 +46,5 @@ group :development, :test do
   gem 'capybara'
   gem 'rails-controller-testing'
   gem 'byebug'
+  gem 'bullet'
 end

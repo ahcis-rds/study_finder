@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_17_172213) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_29_195205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -79,6 +79,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_17_172213) do
     t.string "condition", limit: 1000
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.integer "condition_groups_count"
   end
 
   create_table "study_finder_disease_sites", id: :serial, force: :cascade do |t|
