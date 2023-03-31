@@ -4,16 +4,14 @@ class Api::StudiesController < ApiController
   end
 
   def show
-    @trial = Trial.find_by(system_id: params[:id])
+    @trial = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).find_by(system_id: params[:id])
   end
 
   def update
     @trial = Trial.find_by(system_id: params[:id])
 
-    # Clean up the extra junk that sending JSON from an OpenStruct object adds. 
-    @interventions = params[:interventions].blank? ? nil : params[:interventions].map { |e| e['table'] }
     @trial.transaction do
-      @trial.update_interventions!(@interventions)
+      @trial.update_interventions!(params[:interventions].to_a)
       @trial.update_keywords!(params[:keywords])
       @trial.update_conditions!(params[:conditions])
       @trial.update_locations!(params[:locations])
@@ -42,7 +40,9 @@ class Api::StudiesController < ApiController
     else
       errors = @trial.errors.messages[:system_id]
       unless errors.include? "can't be blank"
-        AdminMailer.system_id_error(@trial.system_id, errors).deliver_later
+        if @trial.visible
+          AdminMailer.system_id_error(@trial.system_id, errors).deliver_later
+        end
       end
       render json: { error: @trial.errors }, status: 400
     end

@@ -1,5 +1,6 @@
 class TrialIntervention < ApplicationRecord
   self.table_name = 'study_finder_trial_intervents'
+  belongs_to :trial
 
   def to_s
     if !intervention_type.blank? && !intervention.blank?

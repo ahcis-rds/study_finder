@@ -197,7 +197,8 @@ class Trial < ApplicationRecord
 
       interventions_to_add.each do |intervention_to_add|
         trial_interventions.find_or_initialize_by(
-          intervention_type: intervention_to_add[:type],
+          trial_id: self.id,
+          intervention_type: intervention_to_add[:intervention_type],
           intervention: intervention_to_add[:intervention]
         )
       end
