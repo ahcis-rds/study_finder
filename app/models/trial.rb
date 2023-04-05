@@ -63,23 +63,19 @@ class Trial < ApplicationRecord
   end
 
   def min_age
-    if minimum_age.nil?
-      age = 0
-    else
+    if minimum_age =~ /\d/
       age = minimum_age.to_f
+    else
+      age = 0.0
     end
-
-    age
   end
 
   def max_age
-    if maximum_age.nil?
-      age = 1000
-    else
+    if maximum_age =~ /\d/
       age = maximum_age.to_f
+    else
+      age = 1000.0
     end
-
-    age
   end
 
   def interventions
@@ -553,7 +549,7 @@ class Trial < ApplicationRecord
     ret = []
 
     if search.has_key?('children')
-      ret << { range: { min_age: { lt: 18 } } }
+      ret << { range: { max_age: { lte: 17 } } }
     end
 
     if search.has_key?('adults')
