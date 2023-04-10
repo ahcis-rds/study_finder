@@ -41,7 +41,8 @@ class Api::StudiesController < ApiController
       errors = @trial.errors.messages[:system_id]
       unless errors.include? "can't be blank"
         if @trial.visible
-          AdminMailer.system_id_error(@trial.system_id, errors).deliver_later
+          # Temporarily disable mailer until we modify integration to not iterate over all old studies. 
+          #AdminMailer.system_id_error(@trial.system_id, errors).deliver_later
         end
       end
       render json: { error: @trial.errors }, status: 400
