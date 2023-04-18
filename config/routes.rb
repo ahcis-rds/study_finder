@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     resources :studies, only: [:index, :show, :update, :create] do
       collection do
         get 'valid_attributes'
+        get 'visible'
       end
     end
   end
