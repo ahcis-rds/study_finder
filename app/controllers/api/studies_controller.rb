@@ -3,17 +3,20 @@ class Api::StudiesController < ApiController
     @trials = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).all
   end
 
+  def visible
+    @trials = Trial.where(visible: true).pluck(:system_id)
+    render json: { system_ids: @trials }, status: 200
+  end
+
   def show
-    @trial = Trial.find_by(system_id: params[:id])
+    @trial = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).find_by(system_id: params[:id])
   end
 
   def update
     @trial = Trial.find_by(system_id: params[:id])
 
-    # Clean up the extra junk that sending JSON from an OpenStruct object adds. 
-    @interventions = params[:interventions].blank? ? nil : params[:interventions].map { |e| e['table'] }
     @trial.transaction do
-      @trial.update_interventions!(@interventions)
+      @trial.update_interventions!(params[:interventions].to_a)
       @trial.update_keywords!(params[:keywords])
       @trial.update_conditions!(params[:conditions])
       @trial.update_locations!(params[:locations])
