@@ -37,7 +37,7 @@ class StudiesController < ApplicationController
       format.pdf do
         render pdf: "Study-#{@study.system_id}",
         layout: 'pdf',
-        template: 'studies/show.pdf.erb',
+        template: 'studies/show',
         disposition: 'attachment',
         orientation: 'portrait',
         title:  "StudyFinder Study: #{@study.system_id}",
