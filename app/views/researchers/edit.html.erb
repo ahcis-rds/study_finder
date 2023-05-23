@@ -1,17 +1,19 @@
 <h3>Edit Trial</h3>
 <p class="lead"><%= @trial.display_title %></p>
 <%= simple_form_for @trial, url: researcher_path, method: :put do |f| %>
-  <label>Simple Description</label>
-  <p class="help-block">
-    <strong>FORMAT:</strong>
-    This is a study of (population)  with/without (condition) between ages (X-Y) years old. This study is trying to figure out (aim of study).
-    <br/>
-    <strong>Note:</strong>
-    Your simple description must be IRB approved.
-  </p>
-  <%= f.input :simple_description, label: false %>
-  <%= f.input :display_simple_description, as: :select, label: "Should this description be visible to the public?", input_html: {class: "col-md-2"} %>
-    
+  <% if f.object.simple_description_from_source.blank? %>
+    <label>Simple Description</label>
+    <p class="help-block">
+      <strong>FORMAT:</strong>
+      This is a study of (population)  with/without (condition) between ages (X-Y) years old. This study is trying to figure out (aim of study).
+      <br/>
+      <strong>Note:</strong>
+      Your simple description must be IRB approved.
+    </p>
+    <%= f.input :simple_description_override, label: false %>
+    <%= f.input :display_simple_description, as: :select, label: "Should this description be visible to the public?", input_html: {class: "col-md-2"} %>
+  <% end %>
+
   <hr/>
   <label>Contact override email</label>
   <small>

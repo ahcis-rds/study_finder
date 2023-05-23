@@ -9,50 +9,19 @@
   <label>System ID</label>
   <p><%= @trial.system_id %></p>
 
-  <% if !@oncore.nil? && !@oncore.contents.blank? %>
-    <hr/>
-    <div class="well">
-      <h4><i class="fa-solid fa-info-circle"></i>Trial also exists in Oncore</h4>
-      <p>If the simple description field is not populated, the value will be updated from Oncore.  Additionally, if a Protocol Contact or Principal Investigator exist the contact override fields will be populated as we are assuming the data from Oncore is of better quality.</p>
-      <hr/>
-      <label>Protocol No</label>
-      <p><%= @oncore.contents['protocol_no'] %></p>
-      <label>Status</label>
-      <p><%= @oncore.contents['status'] %></p>
-      <label>Simple Description</label>
-      <p><%= @oncore.contents['lay_description'] %></p>
-      <% if !@oncore.contents['contacts'].empty? %>
-        <% contact = @Oncore.contents['contacts'][0] %>
-        <label><%= contact['staff_role'] %></label>
-        <p><%= contact['first_name'] %>, <%= contact['last_name'] %> (<%= contact['email_address'] %>)</p>
-      <% end %>
-    </div>
-  <% end %>
-
-  <hr/>
-
   <%= simple_form_for @trial, url: admin_trial_path, method: :put do |f| %>
-    <% if !@oncore.nil? && !@oncore.contents.blank? %>
-      <% if f.object.simple_description.nil? %>
-        <%= f.input :simple_description, input_html: { value: @oncore.contents['lay_description'] } %>
-      <% else %>
-        <%= f.input :simple_description %>
-      <% end %>
-      <%= f.input :display_simple_description, as: :select %>
-      <% contact = @oncore.contents['contacts'][0] %>
-      <%= f.input :contact_override, input_html: { value: contact['email_address'] } %>
-      <%= f.input :contact_override_first_name, input_html: { value: contact['first_name'] } %>
-      <%= f.input :contact_override_last_name, input_html: { value: contact['last_name'] } %>
+    <% if f.object.simple_description_from_source.blank? %>
+      <%= f.input :simple_description_override %>
     <% else %>
-      <%= f.input :simple_description %>
-      <%= f.input :display_simple_description, as: :select %>
-      <%= f.input :contact_override %>
-      <%= f.input :contact_override_first_name %>
-      <%= f.input :contact_override_last_name %>
-      <%= f.input :contact_url_override, hint: 'If supplied, the "Contact the Study Team" button will redirect to the specified URL instead of opening the contact modal.' %>
-      <%= f.input :recruitment_url %>
-      <%= f.input :irb_number, label: 'IRB Number' %>
+      Simple Description from Ethos: <i><%= f.object.simple_description %><br><br>
     <% end %>
+    <%= f.input :display_simple_description, as: :select %>
+    <%= f.input :contact_override %>
+    <%= f.input :contact_override_first_name %>
+    <%= f.input :contact_override_last_name %>
+    <%= f.input :contact_url_override, hint: 'If supplied, the "Contact the Study Team" button will redirect to the specified URL instead of opening the contact modal.' %>
+    <%= f.input :recruitment_url %>
+    <%= f.input :irb_number, label: 'IRB Number' %>
     <%= f.input :healthy_volunteers_override, as: :select, include_blank: true %>
     <%= f.input :visible, as: :select %>
     <%= f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false %>

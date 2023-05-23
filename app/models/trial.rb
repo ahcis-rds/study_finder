@@ -50,6 +50,14 @@ class Trial < ApplicationRecord
     where("#{Trial.connection.quote_column_name(attribute)} between ? and ?", start_date, end_date ).order("#{Trial.connection.quote_column_name(attribute)} DESC")
   end
 
+  def simple_description
+    self[:simple_description] || simple_description_override
+  end
+
+  def simple_description_from_source
+    self[:simple_description]
+  end
+
   def display_title
     display = brief_title
     unless acronym.nil?
@@ -583,4 +591,5 @@ class Trial < ApplicationRecord
                                 healthy_volunteers_imported
                               end
   end
+
 end

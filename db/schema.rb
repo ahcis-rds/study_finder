@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_29_195205) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_22_180204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -278,6 +278,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_195205) do
     t.boolean "approved", default: false, null: false
     t.string "annotations_flag"
     t.string "protocol_type"
+    t.string "simple_description_override"
     t.index ["approved"], name: "index_study_finder_trials_on_approved"
     t.index ["recruiting"], name: "index_study_finder_trials_on_recruiting"
     t.index ["reviewed"], name: "index_study_finder_trials_on_reviewed"
