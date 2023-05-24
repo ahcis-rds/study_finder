@@ -56,7 +56,7 @@ class ResearchersController < ApplicationController
 
   private
     def trial_params
-      params.require(:trial).permit(:simple_description, :display_simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name)
+      params.require(:trial).permit(:simple_description_override, :display_simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name)
     end
 
 end
