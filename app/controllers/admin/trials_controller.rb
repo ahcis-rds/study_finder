@@ -172,7 +172,7 @@ class Admin::TrialsController < ApplicationController
         :recruiting,
         :recruitment_url,
         :reviewed,
-        :simple_description,
+        :simple_description_override,
         :visible,
         :approved,
         :display_simple_description,

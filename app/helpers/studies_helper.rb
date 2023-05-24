@@ -22,9 +22,9 @@ module StudiesHelper
           first_name: trial.contact_first_name,
           last_name: trial.contact_last_name
         }
-      end
+      
 
-      if !trial.contact_backup_email.nil?
+      elsif !trial.contact_backup_email.nil?
         contacts << {
           email: trial.contact_backup_email,
           first_name: trial.contact_backup_first_name,
