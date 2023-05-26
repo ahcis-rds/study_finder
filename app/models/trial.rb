@@ -461,12 +461,7 @@ class Trial < ApplicationRecord
             }, 
             { bool: { filter: filters_pending(search) } 
             }       
-          ], 
-          must_not: {
-            match_phrase: {
-              protocol_type: "Observational - Chart Review"
-            }
-          }
+          ]
         }
      }, 
       sort: {created_at: "desc"} 
