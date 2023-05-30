@@ -78,7 +78,10 @@ class Admin::TrialsController < ApplicationController
     unless params[:q].nil?
       @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
     else
-      @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(approved: true, visible: true)
+      @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(visible: true)
+      if @system_info.trial_approval
+        @trials.merge(Trial.where(approved: true))
+      end
     end
 
     add_breadcrumb 'Trials Administration'
@@ -110,12 +113,10 @@ class Admin::TrialsController < ApplicationController
   end
   
   def all_under_review
-
     unless params[:q].nil?
       @trials = Trial.includes(:trial_locations).match_all_under_review_admin({ q: params[:q].downcase }).page(params[:page])
       
     else
-      # @trials = Trial.where(approved: false).where(visible: true).order('created_at DESC')
       @trials = Trial.includes(:trial_locations).paginate(page: params[:page]).where(approved: false).where(visible: true).order(created_at: :desc)
     end
     
@@ -145,11 +146,8 @@ class Admin::TrialsController < ApplicationController
   def approved
     @trial = Trial.find(params[:id])
     if @trial.update(approved: true)
-
       @approval = Approval.create({:user_id => session[:user]["id"], :trial_id => params[:id], :approved => true})
-
       redirect_to admin_all_trials_under_review_path, flash:  { success: "#{@trial.brief_title} approved" }
-     
     else
       redirect_to admin_all_trials_under_review_path, flash: { error: 'Something went wrong ' }
     end

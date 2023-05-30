@@ -3,7 +3,9 @@
     <h3 class="float-left">Trials (<%=@trials.count %>)</h3>
     <div class="float-right header-button">
       <%= link_to 'Add Trial', new_admin_trial_path, class: 'btn btn-school'%>
-      <%= link_to 'Under Review', admin_all_trials_under_review_path, class: 'btn btn-school'%>
+      <% if @system_info.trial_approval %>
+        <%= link_to 'Under Review', admin_all_trials_under_review_path, class: 'btn btn-school'%>
+      <% end %>
       <%= link_to 'Import Trials', admin_trials_import_path, class: 'btn btn-outline-secondary'%>
     </div>
   </div>
