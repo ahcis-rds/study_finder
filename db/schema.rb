@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_22_180204) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_26_194741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -162,6 +162,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_22_180204) do
     t.boolean "show_showcase_indicators", default: true, null: false
     t.boolean "show_showcase_controls", default: false, null: false
     t.text "faq_description"
+    t.boolean "trial_approval", default: false, null: false
   end
 
   create_table "study_finder_trial_conditions", id: :serial, force: :cascade do |t|
