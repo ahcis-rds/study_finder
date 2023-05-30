@@ -15,7 +15,7 @@ module Connectors
     def load(start_date=nil, end_date=nil)
       start_load_time = Time.now
 
-      url = "https://clinicaltrials.gov/search?locn=#{URI::encode(@system_info.search_term)}&studyxml=true"
+      url = "https://clinicaltrials.gov/ct2/results/download_studies?locn=#{URI::encode(@system_info.search_term)}"
 
       if !start_date.nil? and !end_date.nil?
         puts "Loading clinicaltrials.gov results for #{@system_info.search_term} ... from #{start_date} to #{end_date}"
