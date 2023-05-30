@@ -37,6 +37,7 @@ class Admin::SystemController < ApplicationController
   private
     def system_params
       params.require(:system_info).permit(
+        :alert_on_empty_system_id,
         :initials,
         :school_name,
         :system_name,

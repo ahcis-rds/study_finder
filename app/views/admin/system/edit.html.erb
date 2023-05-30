@@ -41,6 +41,9 @@
           <i>(Turning on will hide imported trials from public view. Trials will appear in a 'Under Review' queue in the admin panel, where they can be reviewed and approved.)</i>
         </small>
         <%= f.input :trial_approval, as: :select, label: false %>
+
+        <label>Notify admin when the API receives a study creation request with an empty System ID</label>
+        <%= f.input :alert_on_empty_system_id, as: :select, label: false %>
       </div>
       <div class="tab-pane fade" id="override" role="tabpanel" aria-labelledby="override-tab">
         <h4> System Override Options</h4>
