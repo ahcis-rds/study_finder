@@ -9,4 +9,8 @@ class SystemInfo < ApplicationRecord
   def self.current
     self.first
   end
+
+  def self.trial_approval
+    self.first.trial_approval
+  end
 end
