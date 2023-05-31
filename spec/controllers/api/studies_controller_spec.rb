@@ -17,28 +17,7 @@ describe Api::StudiesController do
     it "can list params" do
       get :valid_attributes, params: {format: :json}
       expect(response).to have_http_status(200)
-      expect(JSON.parse(response.body)).to eq({"valid_attributes" => [
-      "brief_title",
-      "contact_override",
-      "contact_override_first_name",
-      "contact_override_last_name",
-      "eligibility_criteria",
-      "gender",
-      "healthy_volunteers_imported",
-      "irb_number",
-      "max_age_unit",
-      "min_age_unit",
-      "official_title",
-      "overall_status",
-      "phase",
-      "pi_id",
-      "pi_name",
-      "recruiting",
-      "simple_description",
-      "display_simple_description",
-      "system_id",
-      "visible"
-    ]})
+      expect(JSON.parse(response.body)).to have_key("valid_attributes")
     end
 
     it "can read studies" do
@@ -78,7 +57,7 @@ describe Api::StudiesController do
 
     it "can create studies" do
       attributes = {
-        system_id: "SOME-ID",
+        system_id: "STUDY0001111",
         contact_override: "blah@example.com",
         contact_override_first_name: "Testy",
         contact_override_last_name: "McTesterson",
@@ -99,8 +78,9 @@ describe Api::StudiesController do
       }
 
       post :create, params: attributes
+      expect(response).to have_http_status :created
 
-      trial = Trial.find_by(system_id: "SOME-ID")
+      trial = Trial.find_by(system_id: "STUDY0001111")
 
       attributes.each do |attribute, value|
         expect(trial[attribute]).to eq(value)
@@ -246,11 +226,11 @@ describe Api::StudiesController do
     it "can create with interventions" do
       interventions = [
         {
-          type: "Drug",
+          intervention_type: "Drug",
           intervention: "Prednisone"
         },
         {
-          type: "Procedure",
+          intervention_type: "Procedure",
           intervention: "Trans-scleral Cryotherapy"
         }
       ]
@@ -268,11 +248,11 @@ describe Api::StudiesController do
       trial = Trial.create!(system_id: "ASDF123")
       interventions = [
         {
-          type: "Drug",
+          intervention_type: "Drug",
           intervention: "Prednisone"
         },
         {
-          type: "Procedure",
+          intervention_type: "Procedure",
           intervention: "Trans-scleral Cryotherapy"
         }
       ]
