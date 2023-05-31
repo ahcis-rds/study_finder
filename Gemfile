@@ -47,4 +47,5 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'byebug'
   gem 'bullet'
+  gem 'factory_bot_rails'
 end
