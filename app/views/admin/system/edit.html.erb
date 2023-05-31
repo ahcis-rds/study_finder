@@ -28,6 +28,11 @@
         <%= f.input :faq_description, as: :text, input_html: { rows: 5 }, label: 'FAQ description' %>
         <%= f.input :default_url %>
         <%= f.input :default_email %>
+        <%= f.input :study_contact_bcc %>
+        <small>
+          <i>An address to be BCCd when a user sends a message to a study team contact address. This may be used by staff to collect and monitor contact requests.</i>
+        </small>
+
         <!-- <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %> -->
 
         <label>Add Captcha to email forms</label>

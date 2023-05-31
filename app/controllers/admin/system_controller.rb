@@ -60,6 +60,7 @@ class Admin::SystemController < ApplicationController
         :enable_showcase,
         :show_showcase_indicators,
         :show_showcase_controls,
+        :study_contact_bcc,
         :trial_approval,
         trial_attribute_settings_attributes: [:id, :attribute_label, :display_label_on_list, :display_on_list, :display_if_null_on_list, :display_label_on_show, :display_on_show, :display_if_null_on_show]
       )
