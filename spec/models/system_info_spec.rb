@@ -17,6 +17,14 @@ describe SystemInfo do
       expect(SystemInfo.trial_approval).to be_falsey
       system_info.destroy
     end
+
+    it "returns appropriate value for alert_on_empty_system_id boolean" do
+      system_info = create(:system_info, alert_on_empty_system_id: true)
+      expect(SystemInfo.alert_on_empty_system_id).to be_truthy
+      system_info.update(alert_on_empty_system_id: false)
+      expect(SystemInfo.alert_on_empty_system_id).to be_falsey
+      system_info.destroy
+    end
   end  
 
 end
