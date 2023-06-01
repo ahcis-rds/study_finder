@@ -9,4 +9,8 @@ class SystemInfo < ApplicationRecord
   def self.current
     self.first
   end
+
+  def self.protect_simple_description
+    self.first.protect_simple_description
+  end
 end

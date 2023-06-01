@@ -1,5 +1,7 @@
 require "rails_helper"
 
+#TODO expect appropriate attrs can be updated based on protect_simple_description
+
 RSpec.describe ResearchersController, :type => :controller do
 
   before {

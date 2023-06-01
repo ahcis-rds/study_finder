@@ -155,7 +155,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:trial).permit(
+      param_list = [
         :cancer_yn,
         :contact_override,
         :contact_override_first_name,
@@ -170,14 +170,18 @@ class Admin::TrialsController < ApplicationController
         :recruiting,
         :recruitment_url,
         :reviewed,
-        :simple_description_override,
         :visible,
         :approved,
         :display_simple_description,
         disease_site_ids: [],
         site_ids: []
-        
-      )
+      ]
+      if SystemInfo.protect_simple_description
+        param_list.unshift(:simple_description_override)
+      else
+        param_list.unshift(:simple_description)
+      end
+      params.require(:trial).permit(*param_list)
     end
 
 end
