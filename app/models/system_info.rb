@@ -12,7 +12,8 @@ class SystemInfo < ApplicationRecord
 
   def self.protect_simple_description
     self.first.protect_simple_description
-
+  end
+  
   def self.trial_approval
     self.first.trial_approval
   end
@@ -20,4 +21,9 @@ class SystemInfo < ApplicationRecord
   def self.alert_on_empty_system_id
     self.first.alert_on_empty_system_id
   end
+
+  def self.secret_key
+    self.first.secret_key
+  end
+
 end

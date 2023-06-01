@@ -79,7 +79,7 @@ class Admin::TrialsController < ApplicationController
       @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
     else
       @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(visible: true)
-      if @system_info.trial_approval
+      if SystemInfo.trial_approval
         @trials.merge(Trial.where(approved: true))
       end
     end
@@ -137,7 +137,7 @@ class Admin::TrialsController < ApplicationController
 
   def under_review
     @trial = Trial.find(params[:id])
-    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
+    @attribute_settings = TrialAttributeSetting.where(system_info_id: SystemInfo.current.id)
     add_breadcrumb 'Trials Administration', :admin_trials_path
     add_breadcrumb 'All Under Review', :admin_all_trials_under_review_path
     add_breadcrumb 'Under Review'

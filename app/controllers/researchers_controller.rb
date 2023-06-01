@@ -16,32 +16,32 @@ class ResearchersController < ApplicationController
   end
 
   def edit
-    redirect_to root_path, flash: { error: 'You do not have access to that page.' }
-    return
-    # @trial = Trial.find_by(system_id: params[:id])
+    # redirect_to root_path, flash: { error: 'You do not have access to that page.' }
+    # return
+    @trial = Trial.find_by(system_id: params[:id])
 
-    # add_breadcrumb 'Home', :root_path
-    # add_breadcrumb 'For Researchers', :researchers_path
-    # add_breadcrumb 'Lookup', :search_trials_researchers_path
-    # add_breadcrumb 'Edit Trial'
+    add_breadcrumb 'Home', :root_path
+    add_breadcrumb 'For Researchers', :researchers_path
+    add_breadcrumb 'Lookup', :search_trials_researchers_path
+    add_breadcrumb 'Edit Trial'
   end
 
   def update
-    redirect_to root_path, flash: { error: 'You do not have access to that page.' }
-    return
-    # @trial = Trial.find_by(system_id: params[:id])
+    # redirect_to root_path, flash: { error: 'You do not have access to that page.' }
+    # return
+    @trial = Trial.find_by(system_id: params[:id])
 
-    # if !params[:secret_key].blank? && params[:secret_key] == @system_info.secret_key
-    #   if @trial.update(trial_params)
-    #     redirect_to edit_researcher_path(params[:id]), flash: { success: 'Trial updated successfully' }
-    #   else
-    #     flash[:notice] = 'There was an error updating the record.'
-    #     render 'edit'
-    #   end
-    # else
-    #   flash[:notice] = 'The secret key you entered was incorrect.'
-    #   render 'edit'
-    # end
+    if !params[:secret_key].blank? && params[:secret_key] == SystemInfo.secret_key
+      if @trial.update(trial_params)
+        redirect_to edit_researcher_path(params[:id]), flash: { success: 'Trial updated successfully' }
+      else
+        flash[:notice] = 'There was an error updating the record.'
+        render 'edit'
+      end
+    else
+      flash[:notice] = 'The secret key you entered was incorrect.'
+      render 'edit'
+    end
   end
 
   def search_results

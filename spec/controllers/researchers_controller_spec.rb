@@ -12,21 +12,6 @@ RSpec.describe ResearchersController, :type => :controller do
       last_name: 'Kadrmas',
       role: 'researcher'
     })
-
-    @system_info = SystemInfo.create({
-      initials: 'UMN',
-      school_name: 'University of Minnesota',
-      system_name: 'Study Finder',
-      system_header: 'Make A Difference. Get Involved.',
-      system_description: "Test Description",
-      researcher_description: "Test",
-      search_term: 'University of Minnesota',
-      default_url: 'http://studyfinder.umn.edu',
-      default_email: 'sfinder@umn.edu',
-      display_all_locations: false,
-      secret_key: 'test',
-      contact_email_suffix: '@umn.edu'
-    })
   }
 
   describe "GET #index" do
@@ -55,7 +40,7 @@ RSpec.describe ResearchersController, :type => :controller do
 
   describe "GET #edit" do
     it "responds to an edit request" do
-      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       get :edit, params: { id: trial.system_id }
       
@@ -65,8 +50,53 @@ RSpec.describe ResearchersController, :type => :controller do
   end
 
   describe "PUT #update" do
+    it "successfully changes trial attribute" do
+      create(:system_info, protect_simple_description: false)
+      trial = create(:trial, contact_override_last_name: "Test Name")
+      put :update, params: { id: trial.system_id, trial: { contact_override_last_name: "Updated value" }, secret_key: SystemInfo.secret_key}
+      trial.reload
+      expect( trial.contact_override_last_name).to eq('Updated value')
+    end
+
+    context "given an attempt to update simple_description" do
+      it "should succeed if SystemInfo.protect_simple_description is false" do
+        create(:system_info, protect_simple_description: false)
+        trial = create(:trial, simple_description: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
+        trial.reload
+        expect( trial.simple_description).to eq('Updated value')
+      end
+
+      it "should succeed but not update the attr if SystemInfo.protect_simple_description is true" do
+        create(:system_info, protect_simple_description: true)
+        trial = create(:trial, simple_description: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
+        trial.reload
+        expect( trial.simple_description).to eq('Original Description')
+      end
+    end
+
+    context "given an attempt to update simple_description_override" do
+      it "should succeed if SystemInfo.protect_simple_description is true" do
+        create(:system_info, protect_simple_description: true)
+        trial = create(:trial, simple_description_override: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
+        trial.reload
+        expect( trial.simple_description_override).to eq('Updated value')
+      end
+
+      it "should succeed but not update the attr if SystemInfo.protect_simple_description is false" do
+        create(:system_info, protect_simple_description: false)
+        trial = create(:trial, simple_description_override: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
+        trial.reload
+        expect( trial.simple_description_override).to eq('Original Description')
+      end
+    end
+
     it "trial with override information" do
-      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      create(:system_info, protect_simple_description: false)
+      trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001' )
 
       simple_description = 'Testing adding a simple_description'
       contact_override = 'jim@aol.com'
@@ -80,7 +110,7 @@ RSpec.describe ResearchersController, :type => :controller do
         contact_override_last_name: contact_override_last_name
       }
       
-      put :update, params: { id: trial.system_id, trial: study_finder_trial, secret_key: @system_info.secret_key }
+      put :update, params: { id: trial.system_id, trial: study_finder_trial, secret_key: SystemInfo.secret_key }
       
       expect( assigns(:trial).simple_description ).to eq(simple_description)
       expect( assigns(:trial).contact_override ).to eq(contact_override)
@@ -92,7 +122,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when a secret_key is not provided" do
-      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       simple_description = 'Testing adding a simple_description'
       contact_override = 'jim@aol.com'
@@ -112,7 +142,8 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when an invalid secret_key is added" do
-      trial = Trial.create({ brief_title: 'Testing a title', system_id: 'NCT000001' })
+      create(:system_info, protect_simple_description: false)
+      trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       simple_description = 'Testing adding a simple_description'
       contact_override = 'jim@aol.com'
@@ -131,25 +162,4 @@ RSpec.describe ResearchersController, :type => :controller do
       expect(flash[:notice]).to eq('The secret key you entered was incorrect.')
     end
   end
-
-  # describe "PUT #update" do
-  #   before :each do
-  #     @group = Group.create({ group_name: 'Test' })
-  #     @condition = Condition.create({ condition: 'Test Condition' })
-  #   end
-
-  #   it "successfully changes group's attributes" do
-  #     put :update, id: @group, group_name: 'Testing...', condition_ids: [@condition.id]
-  #     @group.reload
-      
-  #     expect( @group.group_name ).to eq('Testing...')
-  #     expect( @group.conditions.size ).to eq(1)
-  #   end
-
-  #   it "redirects to the updated contact" do
-  #     put :update, id: @group, group_name: 'Testing...', condition_ids: [@condition.id]
-  #     expect( redirect_to @group )
-  #   end
-
-  # end
 end
