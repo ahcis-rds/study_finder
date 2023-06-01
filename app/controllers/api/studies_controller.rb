@@ -44,7 +44,7 @@ class Api::StudiesController < ApiController
     else
       errors = @trial.errors.messages[:system_id]
       unless errors.include? "can't be blank"
-        if @trial.visible && SystemInfo.first.alert_on_empty_system_id
+        if @trial.visible && SystemInfo.alert_on_empty_system_id
           AdminMailer.system_id_error(@trial.system_id, errors).deliver_later
         end
       end
