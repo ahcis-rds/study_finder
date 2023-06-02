@@ -49,3 +49,7 @@ group :development, :test do
   gem 'bullet'
   gem 'factory_bot_rails'
 end
+
+group :test do
+  gem 'faker'
+end
