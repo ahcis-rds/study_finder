@@ -79,7 +79,7 @@ class Admin::TrialsController < ApplicationController
       @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
     else
       @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(visible: true)
-      if @system_info.trial_approval
+      if SystemInfo.trial_approval
         @trials.merge(Trial.where(approved: true))
       end
     end
@@ -137,7 +137,7 @@ class Admin::TrialsController < ApplicationController
 
   def under_review
     @trial = Trial.find(params[:id])
-    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
+    @attribute_settings = TrialAttributeSetting.where(system_info_id: SystemInfo.current.id)
     add_breadcrumb 'Trials Administration', :admin_trials_path
     add_breadcrumb 'All Under Review', :admin_all_trials_under_review_path
     add_breadcrumb 'Under Review'
@@ -155,7 +155,7 @@ class Admin::TrialsController < ApplicationController
 
   private
     def trial_params
-      params.require(:trial).permit(
+      param_list = [
         :cancer_yn,
         :contact_override,
         :contact_override_first_name,
@@ -170,14 +170,18 @@ class Admin::TrialsController < ApplicationController
         :recruiting,
         :recruitment_url,
         :reviewed,
-        :simple_description_override,
         :visible,
         :approved,
         :display_simple_description,
         disease_site_ids: [],
         site_ids: []
-        
-      )
+      ]
+      if SystemInfo.protect_simple_description
+        param_list.unshift(:simple_description_override)
+      else
+        param_list.unshift(:simple_description)
+      end
+      params.require(:trial).permit(*param_list)
     end
 
 end
