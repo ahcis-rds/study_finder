@@ -12,6 +12,7 @@ RSpec.describe Admin::TrialsController, :type => :controller do
 
   describe "GET #index" do
     before :each do
+      SystemInfo.destroy_all
       create(:system_info)
     end
 
@@ -28,6 +29,7 @@ RSpec.describe Admin::TrialsController, :type => :controller do
 
   describe "GET #edit" do
     before :each do
+      SystemInfo.destroy_all
       create(:system_info)
     end
 
@@ -40,6 +42,10 @@ RSpec.describe Admin::TrialsController, :type => :controller do
   end
 
   describe "PUT #update" do
+    before :each do
+      SystemInfo.destroy_all
+    end
+    
     it "successfully changes a trial attribute" do
       create(:system_info)
       trial = create(:trial, pi_name: "Test Name")

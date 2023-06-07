@@ -1,6 +1,10 @@
 require "rails_helper"
 
 describe Api::StudiesController do
+  before {
+    create(:system_info)
+  }
+
   context "unauthenticated requests" do
     it "are rejected" do
       get :show, params: { id: "NCT123" }
@@ -10,7 +14,7 @@ describe Api::StudiesController do
 
   context "authenticated requests" do
     before do
-      api_key = ApiKey.create!(name: "blah")
+      api_key = create(:api_key)
       request.headers["Authorization"] = "bearer #{api_key.token}"
     end
 
@@ -21,7 +25,7 @@ describe Api::StudiesController do
     end
 
     it "can read studies" do
-      study = Trial.create!(system_id: "NCT123")
+      study = create(:trial)
 
       get :show, params: { id: study.system_id, format: :json }
 
@@ -29,7 +33,7 @@ describe Api::StudiesController do
     end
 
     it "can update studies" do
-      study = Trial.create!(system_id: "NCT345")
+      study = create(:trial, system_id: "NCT345")
       attributes_to_update = {
         contact_override: "blah@example.com",
         contact_override_first_name: "Testy",
@@ -135,13 +139,14 @@ describe Api::StudiesController do
     end
 
     it "can update conditions" do
-      study = Trial.create!(system_id: "ASDF123")
+      t = create(:trial, system_id: "FOOBAR")
       conditions = ["A condition", "Another one"]
 
-      post :update, params: { id: "ASDF123", conditions: conditions }
+      post :update, params: { id: "FOOBAR", conditions: conditions }
 
-      study.reload
-      expect(study.condition_values.sort).to eq(conditions)
+      trial = Trial.find_sole_by(system_id: "FOOBAR")
+
+      expect(trial.condition_values.sort).to eq(conditions)
     end
 
     it "can create with locations" do
@@ -172,7 +177,7 @@ describe Api::StudiesController do
     end
 
     it "can update locations" do
-      trial = Trial.create!(system_id: "ASDF123")
+      trial = create(:trial, system_id: "ASDF123")
       locations = [
         {
           "name": "Test location 1",
@@ -200,7 +205,7 @@ describe Api::StudiesController do
     end
 
     it "can delete locations" do
-      trial = Trial.create!(system_id: "ASDF123")
+      trial = create(:trial, system_id: "ASDF123")
       trial.locations.create([
         {
           location: "Location 1",
@@ -245,7 +250,7 @@ describe Api::StudiesController do
     end
 
     it "can update interventions" do
-      trial = Trial.create!(system_id: "ASDF123")
+      trial = create(:trial, system_id: "ASDF123")
       interventions = [
         {
           intervention_type: "Drug",

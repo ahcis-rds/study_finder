@@ -1,6 +1,9 @@
 require "rails_helper"
 
 describe SystemInfo do
+  before :each do
+    SystemInfo.destroy_all
+  end
 
   context "given a system info row exists" do
     it "returns a valid settings object" do

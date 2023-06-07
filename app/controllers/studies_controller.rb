@@ -6,7 +6,7 @@ class StudiesController < ApplicationController
   def index
     search_hash = search_params.to_h[:search] || {}
 
-    @attribute_settings = @system_info.trial_attribute_settings
+    @attribute_settings = SystemInfo.trial_attribute_settings
     @group = Group.where(id: search_hash[:category]).first
     @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
     @search_query = search_hash[:q].try(:downcase) || ""
@@ -25,12 +25,12 @@ class StudiesController < ApplicationController
         redirect_to studies_path, flash: { success: 'Apologies, this page is not available.' } and return
       end
     end
-    @attribute_settings = TrialAttributeSetting.where(system_info_id: @system_info.id)
+    @attribute_settings = SystemInfo.trial_attribute_settings
     @study_photo = @study.photo.attached? ? @study.photo : "flag.jpg"
 
     respond_to do |format|
       format.html do
-        unless @system_info.display_study_show_page
+        unless SystemInfo.display_study_show_page
           redirect_to studies_path, flash: { success: 'Apologies, this page is not available.' } and return
         end
       end
@@ -54,7 +54,7 @@ class StudiesController < ApplicationController
     @trial = Trial.find params[:id]
     should_send = true
 
-    if @system_info.captcha
+    if SystemInfo.captcha
       should_send = verify_recaptcha
     end
 
@@ -67,7 +67,7 @@ class StudiesController < ApplicationController
         params[:notes],
         @trial.system_id,
         @trial.brief_title,
-        @system_info
+        SystemInfo.current
       ).deliver
     end
 
@@ -81,7 +81,7 @@ class StudiesController < ApplicationController
     age = age_display(@trial.min_age, @trial.max_age)
     should_send = true
 
-    if @system_info.captcha
+    if SystemInfo.captcha
       should_send = verify_recaptcha
     end
 

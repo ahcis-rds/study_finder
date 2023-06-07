@@ -79,7 +79,6 @@ class Api::StudiesController < ApiController
       :eligibility_criteria,
       :gender,
       :healthy_volunteers_imported,
-      :id,
       :irb_number,
       :maximum_age,
       :minimum_age,

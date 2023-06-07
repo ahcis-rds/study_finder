@@ -3,13 +3,9 @@ require "rails_helper"
 RSpec.describe Admin::GroupsController, :type => :controller do
 
   before {
-    session.update({
-      email: 'kadrm002@umn.edu',
-      internet_id: 'kadrm002',
-      first_name: 'Jason',
-      last_name: 'Kadrmas',
-      role: 'admin'
-    })
+    @user = create(:user)
+    session[:user] = @user
+    session[:role] = 'admin'
   }
 
   describe "GET #index" do
@@ -26,7 +22,7 @@ RSpec.describe Admin::GroupsController, :type => :controller do
 
   describe "GET #edit" do
     it "responds to an edit request" do
-      group = Group.create({ group_name: 'Test' })
+      group = create(:group)
       get :edit, params: { id: group.id }
       expect( assigns(:group) ).to eq(group)
       expect(response).to have_http_status(200)
@@ -35,8 +31,8 @@ RSpec.describe Admin::GroupsController, :type => :controller do
 
   describe "PUT #update" do
     before :each do
-      @group = Group.create({ group_name: 'Test' })
-      @condition = Condition.create({ condition: 'Test Condition' })
+      @group = create(:group)
+      @condition = create(:condition)
     end
 
     it "successfully changes group's attributes" do

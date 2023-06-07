@@ -266,6 +266,7 @@ class Trial < ApplicationRecord
       indexes :gender
       indexes :phase, type: 'text'
       indexes :cancer_yn, type: 'text'
+      indexes :recruiting, type: 'boolean'
       indexes :visible, type: 'boolean'
       indexes :display_simple_description, type: 'boolean'
       indexes :healthy_volunteers
@@ -329,6 +330,7 @@ class Trial < ApplicationRecord
         :system_id,
         :gender,
         :healthy_volunteers,
+        :recruiting,
         :visible,
         :display_simple_description,
         :contact_url,

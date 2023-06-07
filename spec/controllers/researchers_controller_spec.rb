@@ -5,13 +5,11 @@ require "rails_helper"
 RSpec.describe ResearchersController, :type => :controller do
 
   before {
-    session.update({
-      email: 'kadrm002@umn.edu',
-      internet_id: 'kadrm002',
-      first_name: 'Jason',
-      last_name: 'Kadrmas',
-      role: 'researcher'
-    })
+    SystemInfo.destroy_all
+    create(:system_info)
+    @user = create(:user)
+    session[:user] = @user
+    session[:role] = 'researcher'
   }
 
   describe "GET #index" do
@@ -50,6 +48,10 @@ RSpec.describe ResearchersController, :type => :controller do
   end
 
   describe "PUT #update" do
+    before :each do
+      SystemInfo.destroy_all
+    end
+    
     it "successfully changes trial attribute" do
       create(:system_info, protect_simple_description: false)
       trial = create(:trial, contact_override_last_name: "Test Name")
@@ -122,6 +124,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when a secret_key is not provided" do
+      create(:system_info, protect_simple_description: false)
       trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       simple_description = 'Testing adding a simple_description'

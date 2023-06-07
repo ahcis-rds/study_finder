@@ -26,4 +26,16 @@ class SystemInfo < ApplicationRecord
     self.first.secret_key
   end
 
+  def self.trial_attribute_settings
+    self.first.trial_attribute_settings
+  end
+
+  def self.display_study_show_page
+    self.first.display_study_show_page
+  end
+
+  def self.captcha
+    self.first.captcha
+  end
+
 end
