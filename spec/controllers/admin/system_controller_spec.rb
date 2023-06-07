@@ -2,14 +2,10 @@ require "rails_helper"
 
 RSpec.describe Admin::SystemController, :type => :controller do
 
-  before {
+  before :each do
     @user = create(:user)
     session[:user] = @user
     session[:role] = 'admin'
-  }
-
-  before :each do
-    SystemInfo.destroy_all
   end
 
   describe "GET #index" do

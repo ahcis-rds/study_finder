@@ -2,11 +2,11 @@ require "rails_helper"
 
 RSpec.describe Admin::GroupsController, :type => :controller do
 
-  before {
+  before :each do
     @user = create(:user)
     session[:user] = @user
     session[:role] = 'admin'
-  }
+  end
 
   describe "GET #index" do
     it "responds successfully with an HTTP 200 status code" do

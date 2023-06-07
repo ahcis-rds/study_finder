@@ -1,9 +1,9 @@
 require "rails_helper"
 
 describe Api::StudiesController do
-  before {
+  before :each do
     create(:system_info)
-  }
+  end
 
   context "unauthenticated requests" do
     it "are rejected" do

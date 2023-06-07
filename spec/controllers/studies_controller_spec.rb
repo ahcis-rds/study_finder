@@ -4,7 +4,6 @@ RSpec.describe StudiesController, :type => :controller do
 
   describe "GET #index" do
     before :each do
-      SystemInfo.destroy_all
       create(:system_info)
       @study = create(:trial)
     end
@@ -29,10 +28,6 @@ RSpec.describe StudiesController, :type => :controller do
   end
 
   describe "GET #show" do 
-    before :each do
-      SystemInfo.destroy_all
-    end
-    
     it "redirects study show page if study is not visible" do
       create(:system_info, display_study_show_page: true)
       @study = create(:trial, visible: false)

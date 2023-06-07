@@ -1,10 +1,6 @@
 require "rails_helper"
 
 describe "search/embed" do
-  before :each do
-    SystemInfo.destroy_all
-  end
-
   it "does not break the regular search form" do
     allow(view).to receive(:params).and_return({action: 'search'})
 

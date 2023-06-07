@@ -36,33 +36,80 @@ describe Group do
     expect(f['healthy_volunteers']).not_to eq(1)
   end
 
-  it "returns accurate count of trials which reference this group" do
-    group = create(:group, group_name: 'test name')
-    expect(group.study_count).to eq(0)
-    condition = create(:condition)
+  context "given trial_approval is enabled" do
+    it "returns accurate count of trials which reference this group" do
+      create(:system_info, trial_approval: true)
+      group = create(:group, group_name: 'test name')
+      expect(group.study_count).to eq(0)
+      condition = create(:condition)
 
-    # Non-visible trial
-    t0 = create(:trial, visible: false)
-    tc = create(:trial_condition, trial: t0, condition: condition)
-    cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
-    expect(group.study_count).to eq(0)
+      # Non-visible trial
+      t0 = create(:trial, visible: false, approved: true)
+      tc = create(:trial_condition, trial: t0, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
+      expect(group.study_count).to eq(0)
 
-    # First trial
-    t = create(:trial, visible: true)
-    tc = create(:trial_condition, trial: t, condition: condition)
-    cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
-    expect(group.study_count).to eq(1)
+      # Non-approved trial
+      t1 = create(:trial, visible: true, approved: false)
+      tc = create(:trial_condition, trial: t1, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
+      expect(group.study_count).to eq(0)
 
-    # Separate but duplicated trial condition, same trial
-    tc1 = create(:trial_condition, trial: t, condition: condition)
-    cg = create(:condition_group, condition: condition, group: group, trial_condition: tc1)
-    expect(group.study_count).to eq(1)
+      # First trial
+      t = create(:trial, visible: true, approved: true)
+      tc = create(:trial_condition, trial: t, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
+      expect(group.study_count).to eq(1)
 
-    # Second trial
-    t2 = create(:trial, visible: true)
-    tc2 = create(:trial_condition, trial: t2, condition: condition)
-    cg2 = create(:condition_group, condition: condition, group: group, trial_condition: tc2)
-    expect(group.study_count).to eq(2)
+      # Separate but duplicated trial condition, same trial
+      tc1 = create(:trial_condition, trial: t, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc1)
+      expect(group.study_count).to eq(1)
+
+      # Second trial
+      t2 = create(:trial, visible: true, approved: true)
+      tc2 = create(:trial_condition, trial: t2, condition: condition)
+      cg2 = create(:condition_group, condition: condition, group: group, trial_condition: tc2)
+      expect(group.study_count).to eq(2)
+    end
+  end
+
+  context "given trial_approval is disabled" do
+    it "returns accurate count of trials which reference this group" do
+      create(:system_info, trial_approval: false)
+      group = create(:group, group_name: 'test name')
+      expect(group.study_count).to eq(0)
+      condition = create(:condition)
+
+      # Non-visible trial
+      t0 = create(:trial, visible: false, approved: true)
+      tc = create(:trial_condition, trial: t0, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
+      expect(group.study_count).to eq(0)
+
+      # Non-approved trial
+      t1 = create(:trial, visible: true, approved: false)
+      tc = create(:trial_condition, trial: t1, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
+      expect(group.study_count).to eq(1)
+
+      # Second trial
+      t = create(:trial, visible: true)
+      tc = create(:trial_condition, trial: t, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc)
+      expect(group.study_count).to eq(2)
+
+      # Separate but duplicated trial condition, same trial
+      tc1 = create(:trial_condition, trial: t, condition: condition)
+      cg = create(:condition_group, condition: condition, group: group, trial_condition: tc1)
+      expect(group.study_count).to eq(2)
+
+      # Third trial
+      t2 = create(:trial, visible: true)
+      tc2 = create(:trial_condition, trial: t2, condition: condition)
+      cg2 = create(:condition_group, condition: condition, group: group, trial_condition: tc2)
+      expect(group.study_count).to eq(3)
+    end
   end
 
 end

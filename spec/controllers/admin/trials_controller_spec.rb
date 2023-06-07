@@ -4,15 +4,14 @@ require "rails_helper"
 
 RSpec.describe Admin::TrialsController, :type => :controller do
 
-  before {
+  before :each do 
     @user = create(:user)
     session[:user] = @user
     session[:role] = 'admin'
-  }
+  end
 
   describe "GET #index" do
     before :each do
-      SystemInfo.destroy_all
       create(:system_info)
     end
 
@@ -28,12 +27,8 @@ RSpec.describe Admin::TrialsController, :type => :controller do
   end
 
   describe "GET #edit" do
-    before :each do
-      SystemInfo.destroy_all
-      create(:system_info)
-    end
-
     it "responds to an edit request" do
+      create(:system_info)
       trial = create(:trial, system_id: 'Test')
       get :edit, params: { id: trial.system_id }
       expect( assigns(:trial) ).to eq(trial)
@@ -42,10 +37,6 @@ RSpec.describe Admin::TrialsController, :type => :controller do
   end
 
   describe "PUT #update" do
-    before :each do
-      SystemInfo.destroy_all
-    end
-    
     it "successfully changes a trial attribute" do
       create(:system_info)
       trial = create(:trial, pi_name: "Test Name")
@@ -54,39 +45,39 @@ RSpec.describe Admin::TrialsController, :type => :controller do
       expect( trial.pi_name).to eq('Updated value')
     end
 
-    context "given an attempt to update simple_description" do
-      it "should succeed if SystemInfo.protect_simple_description is false" do
-        si = create(:system_info, protect_simple_description: false)
+    context "given SystemInfo.protect_simple_description is false" do
+      it "should successfully update simple_description" do
+        create(:system_info, protect_simple_description: false)
         trial = create(:trial, simple_description: "Original Description")
         put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }}
         trial.reload
         expect( trial.simple_description).to eq('Updated value')
       end
 
-      it "should succeed but not update the attr if SystemInfo.protect_simple_description is true" do
-        si = create(:system_info, protect_simple_description: true)
-        trial = create(:trial, simple_description: "Original Description")
-        put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }}
+      it "should issue HTTP 200 but not update simple_description_override" do
+        create(:system_info, protect_simple_description: false)
+        trial = create(:trial, simple_description_override: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }}
         trial.reload
-        expect( trial.simple_description).to eq('Original Description')
+        expect( trial.simple_description_override).to eq('Original Description')
       end
     end
 
-    context "given an attempt to update simple_description_override" do
-      it "should succeed if SystemInfo.protect_simple_description is true" do
-        si = create(:system_info, protect_simple_description: true)
+    context "given SystemInfo.protect_simple_description is true" do
+      it "should successfully update simple_description_override" do
+        create(:system_info, protect_simple_description: true)
         trial = create(:trial, simple_description_override: "Original Description")
         put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }}
         trial.reload
         expect( trial.simple_description_override).to eq('Updated value')
       end
 
-      it "should succeed but not update the attr if SystemInfo.protect_simple_description is false" do
-        si = create(:system_info, protect_simple_description: false)
-        trial = create(:trial, simple_description_override: "Original Description")
-        put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }}
+      it "should issue HTTP 200 but not update simple_description" do
+        create(:system_info, protect_simple_description: true)
+        trial = create(:trial, simple_description: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }}
         trial.reload
-        expect( trial.simple_description_override).to eq('Original Description')
+        expect( trial.simple_description).to eq('Original Description')
       end
     end
   end
