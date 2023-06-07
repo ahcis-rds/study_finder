@@ -1,8 +1,17 @@
 require "rails_helper"
 
 describe Trial do
+  it "creates associated conditions" do
+    trial = create(:trial)
+    trial.update_conditions!(["First Condition", "Second Condition"])
+    trial.reload
+
+    expect(trial.condition_values).to include("First Condition")
+    expect(trial.condition_values).to include("Second Condition")
+  end
+
   it "updates keywords from an array of strings" do
-    trial = Trial.create
+    trial = create(:trial)
     trial.update_keywords!(["one", "two"])
     trial.reload
 
@@ -12,7 +21,7 @@ describe Trial do
   end
 
   it "deletes keywords from an array of strings" do
-    trial = Trial.create
+    trial = create(:trial)
     trial.update_keywords!(["one", "two"])
     trial.reload
 
@@ -27,7 +36,7 @@ describe Trial do
 
 
   it "ignores keyword updates with nil" do
-    trial = Trial.create
+    trial = create(:trial)
     trial.update_keywords!(["one"])
     trial.reload
 
@@ -40,26 +49,25 @@ describe Trial do
   end
 
   it "calculates healthy_volunteers" do
-    trial = Trial.create(healthy_volunteers_imported: false)
+    trial = create(:trial, healthy_volunteers_imported: false, healthy_volunteers_override: nil)
     expect(trial.healthy_volunteers).to be false
   end
 
   it "overrides healthy_volunteers" do
-    trial = Trial.create(healthy_volunteers_imported: false)
-    trial.update(healthy_volunteers_override: true)
+    trial = create(:trial, healthy_volunteers_imported: false, healthy_volunteers_override: true)
     expect(trial.healthy_volunteers).to be true
   end
 
   it "detects NCT numbers" do
-    expect(Trial.new(system_id: "thisisnotannctnumber").has_nct_number?).to be false
-    expect(Trial.new(system_id: "NCT123").has_nct_number?).to be true
-    expect(Trial.new(system_id: "nct123").has_nct_number?).to be true
+    expect(build(:trial, system_id: "thisisnotannctnumber").has_nct_number?).to be false
+    expect(build(:trial, system_id: "NCT123").has_nct_number?).to be true
+    expect(build(:trial, system_id: "nct123").has_nct_number?).to be true
   end
 
   it "sorts search results by added_on date" do
-    Trial.create(added_on: 5.days.ago, visible: true)
-    Trial.create(added_on: 2.months.ago, visible: true)
-    Trial.create(added_on: 1.day.ago, visible: true)
+    create(:trial, added_on: 5.days.ago, visible: true)
+    create(:trial, added_on: 2.months.ago, visible: true)
+    create(:trial, added_on: 1.day.ago, visible: true)
 
     result_dates = Trial.execute_search({q: ""}).results.map(&:added_on)
 
@@ -67,16 +75,16 @@ describe Trial do
   end
 
   it "validates the presence of a system_id" do
-    no_system_id = Trial.new(system_id: "")
+    no_system_id = build(:trial, system_id: "")
     expect(no_system_id).not_to be_valid
-    no_system_id.errors[:system_id].should include("can't be blank")
+    expect(no_system_id.errors[:system_id]).to include("can't be blank")
   end
 
   it "enforces uniqueness on system_id" do
-    Trial.create!(system_id: "123abc")
-    duplicated_system_id = Trial.new(system_id: "123abc")
-    duplicated_system_id.should_not be_valid
-    duplicated_system_id.errors[:system_id].should include('has already been taken')
+    create(:trial, system_id: "123abc")
+    duplicated_system_id = build(:trial, system_id: "123abc")
+    expect(duplicated_system_id).not_to be_valid
+    expect(duplicated_system_id.errors[:system_id]).to include('has already been taken')
   end
 
   it "does not allow non-alphanumeric white space character to be present for system_id" do

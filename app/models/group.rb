@@ -25,6 +25,10 @@ class Group < ApplicationRecord
   end
 
   def study_count
-    trials.where(visible: true, approved: true).distinct.count(:id)
+    if SystemInfo.trial_approval
+      trials.where(visible: true, approved: true).distinct.count(:id)
+    else
+      trials.where(visible: true).distinct.count(:id)
+    end
   end
 end

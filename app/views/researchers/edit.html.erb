@@ -10,7 +10,15 @@
       <strong>Note:</strong>
       Your simple description must be IRB approved.
     </p>
-    <%= f.input :simple_description_override, label: false %>
+    <% if @system_info.protect_simple_description %>
+      <% if f.object.simple_description_from_source.blank? %>
+        <%= f.input :simple_description_override %>
+      <% else %>
+        Simple Description (imported, protected): <i><%= f.object.simple_description %><br><br>
+      <% end %>
+    <% else %>
+      <%= f.input :simple_description %>
+    <% end %>
     <%= f.input :display_simple_description, as: :select, label: "Should this description be visible to the public?", input_html: {class: "col-md-2"} %>
   <% end %>
 
