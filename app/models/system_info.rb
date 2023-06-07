@@ -11,19 +11,31 @@ class SystemInfo < ApplicationRecord
   end
 
   def self.protect_simple_description
-    self.first.protect_simple_description
+    self.first.try(:protect_simple_description)
   end
   
   def self.trial_approval
-    self.first.trial_approval
+    self.first.try(:trial_approval)
   end
 
   def self.alert_on_empty_system_id
-    self.first.alert_on_empty_system_id
+    self.first.try(:alert_on_empty_system_id)
   end
 
   def self.secret_key
-    self.first.secret_key
+    self.first.try(:secret_key)
+  end
+
+  def self.trial_attribute_settings
+    self.first.try(:trial_attribute_settings)
+  end
+
+  def self.display_study_show_page
+    self.first.try(:display_study_show_page)
+  end
+
+  def self.captcha
+    self.first.try(:captcha)
   end
 
 end

@@ -4,17 +4,17 @@ require "rails_helper"
 
 RSpec.describe ResearchersController, :type => :controller do
 
-  before {
-    session.update({
-      email: 'kadrm002@umn.edu',
-      internet_id: 'kadrm002',
-      first_name: 'Jason',
-      last_name: 'Kadrmas',
-      role: 'researcher'
-    })
-  }
+  before :each do
+    @user = create(:user)
+    session[:user] = @user
+    session[:role] = 'researcher'
+  end
 
   describe "GET #index" do
+    before :each do 
+      create(:system_info)
+    end
+
     it "responds successfully with an HTTP 200 status code" do
       get :index
       expect(response).to have_http_status(200)
@@ -27,6 +27,10 @@ RSpec.describe ResearchersController, :type => :controller do
   end
 
   describe "GET #search" do
+    before :each do 
+      create(:system_info)
+    end
+
     it "responds successfully with an HTTP 200 status code" do
       get :search
       expect(response).to have_http_status(200)
@@ -39,6 +43,10 @@ RSpec.describe ResearchersController, :type => :controller do
   end
 
   describe "GET #edit" do
+    before :each do 
+      create(:system_info)
+    end
+
     it "responds to an edit request" do
       trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
@@ -58,8 +66,9 @@ RSpec.describe ResearchersController, :type => :controller do
       expect( trial.contact_override_last_name).to eq('Updated value')
     end
 
-    context "given an attempt to update simple_description" do
-      it "should succeed if SystemInfo.protect_simple_description is false" do
+
+    context "given SystemInfo.protect_simple_description is false" do
+      it "should successfully update simple_description" do
         create(:system_info, protect_simple_description: false)
         trial = create(:trial, simple_description: "Original Description")
         put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
@@ -67,17 +76,17 @@ RSpec.describe ResearchersController, :type => :controller do
         expect( trial.simple_description).to eq('Updated value')
       end
 
-      it "should succeed but not update the attr if SystemInfo.protect_simple_description is true" do
-        create(:system_info, protect_simple_description: true)
-        trial = create(:trial, simple_description: "Original Description")
-        put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
+      it "should issue HTTP 200 but not update simple_description_override" do
+        create(:system_info, protect_simple_description: false)
+        trial = create(:trial, simple_description_override: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
         trial.reload
-        expect( trial.simple_description).to eq('Original Description')
+        expect( trial.simple_description_override).to eq('Original Description')
       end
     end
 
-    context "given an attempt to update simple_description_override" do
-      it "should succeed if SystemInfo.protect_simple_description is true" do
+    context "given SystemInfo.protect_simple_description is true" do
+      it "should successfully update simple_description_override" do
         create(:system_info, protect_simple_description: true)
         trial = create(:trial, simple_description_override: "Original Description")
         put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
@@ -85,12 +94,12 @@ RSpec.describe ResearchersController, :type => :controller do
         expect( trial.simple_description_override).to eq('Updated value')
       end
 
-      it "should succeed but not update the attr if SystemInfo.protect_simple_description is false" do
-        create(:system_info, protect_simple_description: false)
-        trial = create(:trial, simple_description_override: "Original Description")
-        put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
+      it "should issue HTTP 200 but not update simple_description" do
+        create(:system_info, protect_simple_description: true)
+        trial = create(:trial, simple_description: "Original Description")
+        put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
         trial.reload
-        expect( trial.simple_description_override).to eq('Original Description')
+        expect( trial.simple_description).to eq('Original Description')
       end
     end
 
@@ -122,6 +131,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when a secret_key is not provided" do
+      create(:system_info, protect_simple_description: false)
       trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       simple_description = 'Testing adding a simple_description'

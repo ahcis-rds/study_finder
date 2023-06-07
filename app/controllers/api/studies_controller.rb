@@ -31,7 +31,6 @@ class Api::StudiesController < ApiController
 
   def create
     @trial = Trial.new(trial_params)
-
     if @trial.save
       @trial.transaction do
         @trial.update_keywords!(params[:keywords])

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'parsers/ctgov'
 
 describe Parsers::Ctgov do
 
@@ -92,7 +93,7 @@ describe Parsers::Ctgov do
     end
 
    it "sets visibility correctly regardless of current value" do
-      trial = Trial.create(system_id: "NCT123", overall_status: "Completed", visible: true)
+      trial = create(:trial, system_id: "NCT123", overall_status: "Completed", visible: true)
       p = Parsers::Ctgov.new("NCT123", 1)
 
       p.set_contents_from_xml("
