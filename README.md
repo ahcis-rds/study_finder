@@ -14,8 +14,21 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 
 The easiest way to get started with a development environment is to use `docker-compose`:
 
-1. Run `docker-compose run web rake db:setup` to initialize your
-database and search index.
+1. Run `USER=username docker-compose run web rake db:setup` to initialize your
+database and search index. 
+
+    The username value will be used to create an initial admin user; you should set it to the username you will use with LDAP authentication.
+
+    By default, this loads studies from clinicaltrials.gov based on searching for the location 'University of Minnesota'. To change this for initial setup, edit this line in /app/db/seeds.rb:
+
+    ```
+    system = {
+        ...
+        search_term: 'University of Minnesota',
+        ...
+    }
+    ```
+    (Once the site is up, this is availble as a setting in the front-end admin interface.)
 1. Run `docker-compose up -d` to start a development server.
 1. Visit `http://localhost:3000/` to view the application.
 
@@ -25,11 +38,14 @@ Running Study Finder on a web server requires:
 
 - Ruby 2.4+
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
-- ElasticSearch 1.0 to 2.x. (Note: 5.x is currently not supported due to breaking changes in the api)
-  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/guide/current/_installing_elasticsearch.html)
-  [Mac Installation instructions](http://red-badger.com/blog/2013/11/08/getting-started-with-elasticsearch/)
-- ElasticSearch synonyms: the default cofiguration stores these in an array in 'lib/modules/trial_synonyms.rb'. See [ElasticSearch synonyms](#elasticsearch-synonyms) for more details.
+- LDAP server that can be used to authenticate StudyFinder users for admin access.  
+- ElasticSearch 7.x (Note: 6.x and 8.x may work, but are not tested.)
+  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/install-elasticsearch.html)
+- ElasticSearch synonyms file. In /app/models/trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly. Please copy /config/analysis/synonyms.txt to the location below **on the ElasticSearch server/container**:
 
+```ruby
+  synonyms_path: '/usr/share/elasticsearch/config/analysis/synonyms.txt'.to_s
+```
 - Add config/application.yml for application specific variables with the following format:
 
 ```yaml
@@ -70,67 +86,37 @@ $ rake studyfinder:ctgov:load[10]
 $ rake studyfinder:trials:reindex
 ```
 
-## API
+## Themes
 
-StudyFinder has a basic API which can be used by integrations to load and read trial data. To generate an API key, open a rails console and:
+StudyFinder offers a CSS-based theme system. You will find example files in /app/assets/stylesheets/theme. A very basic knowledge of CSS is enough to adapt the examples for branded color schemes, etc. Users experienced in CSS/SASS can achieve a great deal of customization here without touching any of the Ruby/Rails code. 
 
-```
-$ ApiKey.new(name: 'some_name').save
-```
+StudyFinder uses Bootstrap 4, so Bootstrap mixins, classes, etc. are also available to and can be customized by your theme. [Bootstrap Documentation](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
 
-Note the value of 'token' that is saved -- this is the value used by an API client to authenticate. 
-
-## ElasticSearch synonyms
-
-The default trial search configuration uses a query-time synonym_graph filter. It supports multi-term synonyms, e.g. 'caloric restrictions' and 'low calorie diet'. When trials are indexed, ElasticSearch creates the search analyzer for this. You *do not* have to re-index trials if the synonyms are updated, because it is a query-time filter. 
-
-The default location for synonyms is in an array defined in 'lib/modules/trial_synonyms.rb'. Updates to the synonyms can be picked up by restarting the Rails service. 
-
-### Synonyms File
-
-If you need to use a synonym list that is very large, there is also support for keeping synonyms in a file on the ElasticSearch server. The default configuration keeps two copies of the synonyms in memory, whereas the file configuration only keeps one copy in memory. Even many thousands of synonyms only take up a few MB, so in practice this generally won't matter enough for the extra work of the separate file to be worth it. 
-
-To use a synonyms file, use the configuration option:
-
-```ruby
-  config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
-```
-
-Remember this file is on the ElasticSearch server, *not* part of the Rails application. In deployed environments, you will need to copy your synonyms file to this location. This isn't necessary in the development docker container, which mounts 'config/analysis' within the Rails app to the above path in the ElasticSearch docker container. This allows easier access for modifying synonyms during development, as you can work with them directly in 'config/analysis/synonyms.txt' within the Rails app structure.
-
-To pick up changes to the synonym file in ElasticSearch 7.3 and above, use the API to reload the search analyzers and clear the cache (note the last part of the index name is the Rails environment):
+Some of the examples include references to images. E.g., the 'brand' class defines the logo image that appears at the upper left of every page:
 
 ```
-$ curl -X POST "host:9200/study_finder-trials-development/_reload_search_analyzers?pretty"
-$ curl -X POST "host:9200/study_finder-trials-development/_cache/clear?request=true&pretty"
+.brand {
+    background: image-url("logo.png");
+    ...
+}
 ```
 
-For older versions, or if you run into issues, restarting the ElasticSearch service will also reload the analyzers. 
+Any images referenced in your theme CSS should be located in /app/assets/images. 
 
-If you change the name or location of the synonyms file, rebuilding the index as described in [Loading trials](#loading-trials) is required in order to reflect that change. 
+Themes are the recommended method for customizing the appearance of the site. Users with Ruby/Rails experience can change the template files for infinite customization, but as with any open-source project, local changes to the code make pulling updates much more difficult. 
 
-### Preprocessing Synonyms
+## Other Site Customization
 
-The following rake tasks convert json output specific to the University of Minnesota's enviroment into either a synonyms module file, or a Solr-formatted synonyms file.
+Many aspects of your site can be customized from the site itself, via the admin interface. To access the admin interface, LDAP authentication must be configured. Click "Sign In" at the bottom of the home page, and then you will see an "Admin" link on the navbar. The first option, "System Administration", allows you to manage what fields do and don't appear on some screens, set label text, define the location search term for data loads from clinicaltrials.gov, and much more. 
 
-Module (array) version:
-```
-$ rake studyfider:synonyms:to_module
-```
+## Trademark
 
-Synonyms file version:
+"StudyFinder" is a registered trademark of the University of Minnesota. Your instance of StudyFinder should retain the official StudyFinder logo that appears at the upper right of each page. This is an SVG image and **can** be styled with your institution's colors. By default it uses the main and secondary colors that are specified in the theme CSS file: 
 
 ```
-$ rake studyfider:synonyms:to_txt
+$school_main_color: #7a0019;
+$school_secondary_color: #ffd75f;
 ```
-
-The default input file name for input is 'synonyms.json' but can be set with an argument:
-
-```
-$ rake studyfider:synonyms:to_module[test-synonyms]
-```
-
-The input file should exist in 'config/analysis', and the output file will also be written there. The module version will always write a file called 'trial_synonyms.rb', because the file name of course must match the name of the class within the module, whereas the synonyms file version will write 'synonyms.txt' by default, or the file argument if supplied.
 
 ## Embed Widget
 
