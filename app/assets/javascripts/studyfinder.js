@@ -107,6 +107,17 @@ function determineStandalone() {
   }
 }
 
+function track4(event, category, data) {
+  if(gtag) {
+    gtag(event, category, data)
+  }
+
+    // gtag('event', 'screen_view', {
+    //   'app_name': 'myAppName',
+    //   'screen_name': 'Home'
+    //  });
+}
+
 function track(method, event, category, action, data) {
   if(ga) {
     ga(method, event, category, action, data);
