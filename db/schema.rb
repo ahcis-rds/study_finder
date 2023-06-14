@@ -206,6 +206,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_220402) do
     t.string "investigator_role"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.index ["location_id"], name: "index_study_finder_trial_locations_on_location_id"
+    t.index ["trial_id"], name: "index_study_finder_trial_locations_on_trial_id"
   end
 
   create_table "study_finder_trial_mesh_terms", id: :serial, force: :cascade do |t|
