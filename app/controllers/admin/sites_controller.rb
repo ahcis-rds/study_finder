@@ -16,7 +16,7 @@ class Admin::SitesController < ApplicationController
 
   def create
     @site = Site.new(site_params)
-    if @site.save(@site)
+    if @site.save
       redirect_to admin_sites_path, flash: { success: 'Site added successfully' }
     else
       render action: 'new'

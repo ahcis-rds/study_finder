@@ -1,6 +1,10 @@
 require "rails_helper"
 
 describe Api::StudiesController do
+  before :each do
+    create(:system_info)
+  end
+
   context "unauthenticated requests" do
     it "are rejected" do
       get :show, params: { id: "NCT123" }
@@ -10,12 +14,18 @@ describe Api::StudiesController do
 
   context "authenticated requests" do
     before do
-      api_key = ApiKey.create!(name: "blah")
+      api_key = create(:api_key)
       request.headers["Authorization"] = "bearer #{api_key.token}"
     end
 
+    it "can list params" do
+      get :valid_attributes, params: {format: :json}
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to have_key("valid_attributes")
+    end
+
     it "can read studies" do
-      study = Trial.create!(system_id: "NCT123")
+      study = create(:trial)
 
       get :show, params: { id: study.system_id, format: :json }
 
@@ -23,7 +33,7 @@ describe Api::StudiesController do
     end
 
     it "can update studies" do
-      study = Trial.create!(system_id: "NCT345")
+      study = create(:trial, system_id: "NCT345")
       attributes_to_update = {
         contact_override: "blah@example.com",
         contact_override_first_name: "Testy",
@@ -51,7 +61,39 @@ describe Api::StudiesController do
 
     it "can create studies" do
       attributes = {
-        system_id: "SOME-ID",
+        system_id: "STUDY0001111",
+        contact_override: "blah@example.com",
+        contact_override_first_name: "Testy",
+        contact_override_last_name: "McTesterson",
+        irb_number: "1234567890",
+        pi_id: "somepi@example.com",
+        pi_name: "Some PI, M.D.",
+        recruiting: true,
+        simple_description: "This is a short description",
+        brief_title: "This is a brief title",
+        official_title: "This is an official title",
+        visible: true,
+        eligibility_criteria: "This is eligibility criteria",
+        min_age_unit: "16 years",
+        max_age_unit: "99 years",
+        healthy_volunteers_imported: true,
+        gender: "Male",
+        phase: "Phase I"
+      }
+
+      post :create, params: attributes
+      expect(response).to have_http_status :created
+
+      trial = Trial.find_by(system_id: "STUDY0001111")
+
+      attributes.each do |attribute, value|
+        expect(trial[attribute]).to eq(value)
+      end
+    end
+
+    it "can returns 400 if a system id is not alphanumeric" do
+        attributes = {
+        system_id: " bad id ",
         contact_override: "blah@example.com",
         contact_override_first_name: "Testy",
         contact_override_last_name: "McTesterson",
@@ -73,11 +115,7 @@ describe Api::StudiesController do
 
       post :create, params: attributes
 
-      trial = Trial.find_by(system_id: "SOME-ID")
-
-      attributes.each do |attribute, value|
-        expect(trial[attribute]).to eq(value)
-      end
+      expect(response).to have_http_status(:bad_request)
     end
 
     it "can create with conditions" do
@@ -101,13 +139,14 @@ describe Api::StudiesController do
     end
 
     it "can update conditions" do
-      study = Trial.create!(system_id: "ASDF123")
+      t = create(:trial, system_id: "FOOBAR")
       conditions = ["A condition", "Another one"]
 
-      post :update, params: { id: "ASDF123", conditions: conditions }
+      post :update, params: { id: "FOOBAR", conditions: conditions }
 
-      study.reload
-      expect(study.condition_values.sort).to eq(conditions)
+      trial = Trial.find_sole_by(system_id: "FOOBAR")
+
+      expect(trial.condition_values.sort).to eq(conditions)
     end
 
     it "can create with locations" do
@@ -138,7 +177,7 @@ describe Api::StudiesController do
     end
 
     it "can update locations" do
-      trial = Trial.create!(system_id: "ASDF123")
+      trial = create(:trial, system_id: "ASDF123")
       locations = [
         {
           "name": "Test location 1",
@@ -166,7 +205,7 @@ describe Api::StudiesController do
     end
 
     it "can delete locations" do
-      trial = Trial.create!(system_id: "ASDF123")
+      trial = create(:trial, system_id: "ASDF123")
       trial.locations.create([
         {
           location: "Location 1",
@@ -192,11 +231,11 @@ describe Api::StudiesController do
     it "can create with interventions" do
       interventions = [
         {
-          type: "Drug",
+          intervention_type: "Drug",
           intervention: "Prednisone"
         },
         {
-          type: "Procedure",
+          intervention_type: "Procedure",
           intervention: "Trans-scleral Cryotherapy"
         }
       ]
@@ -211,14 +250,14 @@ describe Api::StudiesController do
     end
 
     it "can update interventions" do
-      trial = Trial.create!(system_id: "ASDF123")
+      trial = create(:trial, system_id: "ASDF123")
       interventions = [
         {
-          type: "Drug",
+          intervention_type: "Drug",
           intervention: "Prednisone"
         },
         {
-          type: "Procedure",
+          intervention_type: "Procedure",
           intervention: "Trans-scleral Cryotherapy"
         }
       ]

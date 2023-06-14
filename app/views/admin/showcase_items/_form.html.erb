@@ -9,46 +9,26 @@
       <label class="control-label optional" for="showcase_item_showcase_image">Image Upload</label><br/>
       <%= f.file_field :showcase_image %>
     </div>
-    <%= f.input :url, label: 'Youtube URL', hint: '<small><i>(Embeddable version of the youtube video URL. Ex. "https://www.youtube.com/watch?v=Ie3jNNDqzzc" becomes "https://www.youtube.com/embed/Ie3jNNDqzzc".)</i></small>'.html_safe %>
+    <%= f.input :url, label: 'URL', hint: '<small><i>(URL that the "Learn More" button will link to.)</i></small>'.html_safe %>
   </div>
 
   <% if @item.showcase_image.attached? || !@item.url.blank? %>
-  	<div class="preview_container col-6 d-none d-md-block">
   		<h4>Preview</h4>
 
-      <div id="showcaseCarousel" class="carousel slide" data-ride="carousel">
-        <% if @system_info.show_showcase_indicators %>
-          <ol class="carousel-indicators">
-            <li data-target="#showcaseCarousel" data-slide-to="0" class="active"></li>
-          </ol>
-        <% end %>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
+      <div class="col-md-4 card border-0">
+        <div class="card-text">
+          <% unless !@item.showcase_image.attached? && @item.url.blank? %>
             <% if @item.showcase_image.attached? %>
               <%= image_tag @item.showcase_image, class: 'w-100' %>
-            <% elsif !@item.url.blank? %>
-              <div class="embed-responsive embed-responsive-16by9">asdf
-                <iframe class="embed-responsive-item" src="<%= @item.url %>" allowfullscreen></iframe>
-              </div>
             <% end %>
-            <div class="carousel-caption">
-              <div class="caption-wrapper rounded">
-                <h5 class="caption-title"><%= @item.title.to_s %></h5>
-                <p class="caption-text"><%= @item.caption.to_s %></p>
-              </div>
-            </div>
-          </div>
+          <% end %>
         </div>
-        <% if @system_info.show_showcase_controls %>
-          <a class="carousel-control-prev" href="#showcaseCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#showcaseCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        <% end %>
+        <div class="card-header align-items-center justify-content-center h-100"> 
+          <h5 class="caption-title"><%= @item.title.to_s %></h5>
+          <span style="float: right; position: relative; bottom: 0;">
+          <%= link_to 'Learn More', @item.url, class: 'btn btn-secondary' %>
+        </span>
+        </div>
       </div>
   	</div>
   <% end %>

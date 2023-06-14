@@ -6,40 +6,14 @@ module StudiesHelper
   end
 
   def determine_contacts(trial)
-    contact_suffix = @system_info.contact_email_suffix
-
     if !trial.contact_override.blank?
       # Always use the override, if available.
       return [{ 
         email: trial.contact_override,
         first_name: trial.contact_override_first_name,
         last_name: trial.contact_override_last_name
-      }]
-    elsif !contact_suffix.nil? and (
-        ( !trial.contact_email.nil? and trial.contact_email.include?(contact_suffix) ) or
-        ( !trial.contact_backup_email.nil? and trial.contact_backup_email.include?(contact_suffix) )
-      )
-
-      contacts = []
-      if !trial.contact_email.nil? && trial.contact_email.include?(contact_suffix)
-        contacts << {
-          email: trial.contact_email,
-          first_name: trial.contact_first_name,
-          last_name: trial.contact_last_name
-        }
-      end
-
-      if !trial.contact_backup_email.nil? && trial.contact_backup_email.include?(contact_suffix)
-        contacts << {
-          email: trial.contact_backup_email,
-          first_name: trial.contact_backup_first_name,
-          last_name: trial.contact_backup_last_name
-        }
-      end
-
-      return contacts
-    
-    elsif (!trial.contact_email.nil? or !trial.contact_backup_email.nil?) and contact_suffix.nil?
+      }]    
+    elsif !trial.contact_email.nil? or !trial.contact_backup_email.nil?
       # Use the overall contacts, if appropriate.
       contacts = []
       if !trial.contact_email.nil?
@@ -48,9 +22,9 @@ module StudiesHelper
           first_name: trial.contact_first_name,
           last_name: trial.contact_last_name
         }
-      end
+      
 
-      if !trial.contact_backup_email.nil?
+      elsif !trial.contact_backup_email.nil?
         contacts << {
           email: trial.contact_backup_email,
           first_name: trial.contact_backup_first_name,
@@ -59,7 +33,7 @@ module StudiesHelper
       end
 
       return contacts
-    elsif !trial.trial_locations.empty? && !contact_suffix.nil?
+    elsif !trial.trial_locations.empty?
       # Overall contacts didn't work, search within locations.
       contacts = contacts_by_location(trial.trial_locations)
       if !contacts.empty?
@@ -137,9 +111,9 @@ module StudiesHelper
     rendered = '<div class="healthy-message" data-toggle="popover" data-title="Healthy Volunteer" data-content="A person who does not have the condition or disease being studied." data-placement="top">'
             
     if study.healthy_volunteers == true
-      rendered = rendered + '<i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>'
+      rendered = rendered + '<i class="fa-solid fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa-solid fa-circle-question"></i>'
     else
-      rendered = rendered + '<i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>'
+      rendered = rendered + '<i class="fa-solid fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa-solid fa-circle-question"></i>'
     end
     rendered = rendered + '</div>'
 
@@ -215,6 +189,19 @@ module StudiesHelper
     contacts.html_safe
   end
 
+  def contacts_excel(c)
+    contacts = ''
+    c.each do |contact|
+      unless contact[:first_name].nil?
+        contacts << "#{contact[:first_name]} "
+      end
+      unless contact[:last_name].nil?
+        contacts << "#{contact[:last_name]} - "
+      end
+      contacts << "#{contact[:email]}"
+    end
+    contacts.to_s
+  end
   def site(site)
     site_name = site.site_name
 

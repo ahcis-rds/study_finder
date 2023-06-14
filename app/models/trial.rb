@@ -8,10 +8,14 @@ class Trial < ApplicationRecord
 
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
-
+  
+  validates :system_id, presence: true
+  validates :system_id, uniqueness: true
+  validates :system_id, format: { with: /\A[a-zA-Z0-9]+\z/, message: "only allows alphanumeric characters" }
+  
   index_name "study_finder-trials-#{Rails.env}"
 
-  belongs_to :parser
+  belongs_to :parser, optional: true
   has_many :trial_interventions
   has_many :trial_keywords
 
@@ -32,6 +36,8 @@ class Trial < ApplicationRecord
 
   has_one_attached :photo
 
+  has_one :approval
+
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
   def self.import_from_file(file)
@@ -42,6 +48,14 @@ class Trial < ApplicationRecord
 
   def self.find_range(start_date, end_date, attribute = "updated_at")
     where("#{Trial.connection.quote_column_name(attribute)} between ? and ?", start_date, end_date ).order("#{Trial.connection.quote_column_name(attribute)} DESC")
+  end
+
+  def simple_description
+    self[:simple_description] || simple_description_override
+  end
+
+  def simple_description_from_source
+    self[:simple_description]
   end
 
   def display_title
@@ -57,23 +71,19 @@ class Trial < ApplicationRecord
   end
 
   def min_age
-    if minimum_age.nil?
-      age = 0
-    else
+    if minimum_age =~ /\d/
       age = minimum_age.to_f
+    else
+      age = 0.0
     end
-
-    age
   end
 
   def max_age
-    if maximum_age.nil?
-      age = 1000
-    else
+    if maximum_age =~ /\d/
       age = maximum_age.to_f
+    else
+      age = 1000.0
     end
-
-    age
   end
 
   def interventions
@@ -94,7 +104,7 @@ class Trial < ApplicationRecord
 
   def keyword_suggest
     {
-      input: trial_keywords.where.not(keyword: nil).map { |k| k.keyword.downcase }
+      input: trial_keywords.where.not(keyword: nil).map { |k| k.keyword.try(:downcase) }
     }
   end
 
@@ -179,19 +189,20 @@ class Trial < ApplicationRecord
 
   def update_interventions!(intervention_data)
     return if intervention_data.nil?
-
     existing_interventions = trial_interventions.as_json
+
     interventions_to_add = intervention_data - existing_interventions
     interventions_to_delete = existing_interventions - intervention_data
 
     transaction(requires_new: true) do
       interventions_to_delete.each do |intervention_to_delete|
-        interventions.where(intervention_to_delete).delete_all
+        trial_interventions.where(intervention_to_delete).delete_all
       end
 
       interventions_to_add.each do |intervention_to_add|
         trial_interventions.find_or_initialize_by(
-          intervention_type: intervention_to_add[:type],
+          trial_id: self.id,
+          intervention_type: intervention_to_add[:intervention_type],
           intervention: intervention_to_add[:intervention]
         )
       end
@@ -203,12 +214,21 @@ class Trial < ApplicationRecord
   # ===============================================
   # Elasticsearch Configuration & Methods
   # ===============================================
+  if Rails.application.config.respond_to?(:synonyms_path)
+    synonym_list = { synonyms_path: Rails.application.config.synonyms_path }
+  else
+    synonym_list = { synonyms: Modules::TrialSynonyms.as_array }
+  end
 
   settings analysis: {
     analyzer: {
+      search_synonyms: {
+        tokenizer: 'standard',
+        filter: [ 'graph_synonyms', 'asciifolding', 'lowercase' ]
+      },
       en: {
         tokenizer: 'standard',
-        filter: ['asciifolding', 'lowercase', 'english_filter', 'synonym']
+        filter: ['asciifolding', 'lowercase', 'custom_stems', 'english_filter']
       },
       typeahead: {
         tokenizer: 'standard',
@@ -216,9 +236,19 @@ class Trial < ApplicationRecord
       }
     },
     filter: {
-      synonym: {
-        type: 'synonym',
-        synonyms_path: 'analysis/synonyms.txt'
+      graph_synonyms: {
+        type: 'synonym_graph',
+        **synonym_list,
+        updateable: true
+      },
+      custom_stems: {
+          type: 'stemmer_override',
+          rules:  [
+            'sarcoidosis => sarcoidosis',
+            'racism => racism',
+            'african => african',
+            'american => american'
+          ]
       },
       english_filter: {
         type: 'kstem'
@@ -227,8 +257,8 @@ class Trial < ApplicationRecord
   } do
 
     mappings dynamic: 'false' do
-      indexes :display_title, type: 'text', analyzer: 'en'
-      indexes :simple_description, type: 'text', analyzer: 'en'
+      indexes :display_title, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :simple_description, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       # indexes :eligibility_criteria, type: 'text', analyzer: 'snowball'
       indexes :system_id
       indexes :min_age, type: 'float'
@@ -236,12 +266,15 @@ class Trial < ApplicationRecord
       indexes :gender
       indexes :phase, type: 'text'
       indexes :cancer_yn, type: 'text'
+      indexes :recruiting, type: 'boolean'
       indexes :visible, type: 'boolean'
+      indexes :display_simple_description, type: 'boolean'
       indexes :healthy_volunteers
-
       indexes :contact_override
       indexes :contact_override_first_name
       indexes :contact_override_last_name
+      indexes :approved, type: 'boolean'
+      indexes :protocol_type
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
@@ -274,14 +307,16 @@ class Trial < ApplicationRecord
         indexes :group_id, type: 'integer'
       end
 
-      indexes :interventions, analyzer: 'en'
-      indexes :conditions_map, analyzer: 'en'
-      indexes :keywords, analyzer: 'en'
+      indexes :interventions, analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :conditions_map, analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :keywords, analyzer: 'en', search_analyzer: 'search_synonyms'
       indexes :min_age_unit, type: 'text'
       indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
+      indexes :nct_id, type: 'text'
       indexes :added_on, type: 'date'
+      indexes :created_at, type: 'date'
     end
 
   end
@@ -295,7 +330,9 @@ class Trial < ApplicationRecord
         :system_id,
         :gender,
         :healthy_volunteers,
+        :recruiting,
         :visible,
+        :display_simple_description,
         :contact_url,
         :contact_url_override,
         :contact_override,
@@ -311,12 +348,16 @@ class Trial < ApplicationRecord
         :pi_id,
         :recruitment_url,
         :irb_number,
+        :nct_id,
         :phase,
         :cancer_yn,
         :min_age_unit,
         :max_age_unit,
         :featured,
-        :added_on
+        :added_on,
+        :approved,
+        :protocol_type,
+        :created_at
       ],
       include: {
         trial_locations: {
@@ -361,80 +402,71 @@ class Trial < ApplicationRecord
 
   def self.match_all(search)
     search(
-      query: {
-        function_score: {
-          query: {
-            bool: {
-              must: [
-                { bool: { filter: filters(search) } },
-                { bool: { should: range_filters(search) } }
-              ]
-            }
-          },
-          field_value_factor: {
-            field: "featured",
-            factor: 15
+        query: {
+          bool: {
+            must: [
+              { bool: { filter: filters(search) } },
+              { bool: { should: range_filters(search) } }
+            ]
           }
         }
-      },
-      highlight: {
-        fields: highlight_fields
-      },
-      sort: [
-        { added_on: "desc" }
-      ]
     )
   end
 
   def self.match_all_search(search)
-
     search(
-      query: {
-        function_score: {
-          query: {
-            bool: {
-              must: [
-                {
-                  query_string: {
-                    query: search[:q].gsub("/", ""),
-                    default_operator: "AND",
-                    fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
-                  }
-                },
-                { bool: { filter: filters(search) } },
-                { bool: { should: range_filters(search) } }
-              ]
-            }
-          },
-          field_value_factor: {
-            field: "featured",
-            factor: 15
+        query: {
+          bool: {
+            must: [
+              {
+                multi_match: {
+                  query: search[:q].try(:downcase),
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
+                }
+              },
+              { bool: { filter: filters(search) } },
+              { bool: { should: range_filters(search) } }
+            ]
           }
         }
-      },
-      highlight: {
-        fields: highlight_fields
-      },
-      sort: [
-        { added_on: "desc" }
-      ]
-
     )
-
   end
 
   def self.match_all_admin(search)
     search(
       query: {
-        multi_match: {
-          query: search[:q],
-          operator: "and",
-          fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name"]
+        bool: {
+          must: [
+           { multi_match: {
+              query: search[:q].try(:downcase),
+              operator: "and",
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
+            }
+          },
+            {bool: {filter: filters_admin(search) } }
+          ]
+        }   
+      } 
+    )
+  end
+
+  def self.match_all_under_review_admin(search)
+    search(
+      query: {
+        bool: {
+          must: [
+            {multi_match: {
+              query: search[:q].downcase,
+              operator: "and",
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
+              }
+            }, 
+            { bool: { filter: filters_pending(search) } 
+            }       
+          ]
         }
-      },
-      sort: [
-        { added_on: "desc" }
-      ]
+     }, 
+      sort: {created_at: "desc"} 
     )
   end
 
@@ -488,7 +520,7 @@ class Trial < ApplicationRecord
   def self.filters(search)
     ret = []
     ret << { term: { visible: true } }
-
+    ret << { term: { approved: true } }
     if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
       if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
         ret << { term: { healthy_volunteers: true } }
@@ -499,18 +531,31 @@ class Trial < ApplicationRecord
       end
 
       if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
-        ret << { terms: { gender: ['all', search[:gender].downcase] }}
+        ret << { terms: { gender: ['all', search[:gender].try(:downcase)] }}
       end
     end
 
     ret
   end
 
+  def self.filters_pending(search)
+      ret = []
+      ret << { term: { visible: true } }
+      ret << { term: { approved: false } }
+      ret
+  end
+
+  def self.filters_admin(search)
+    ret = []
+    ret << { term: { visible: true } }
+    ret << { term: { approved: true } }
+    ret
+  end
   def self.range_filters(search)
     ret = []
 
     if search.has_key?('children')
-      ret << { range: { min_age: { lt: 18 } } }
+      ret << { range: { max_age: { lte: 17 } } }
     end
 
     if search.has_key?('adults')
@@ -543,4 +588,5 @@ class Trial < ApplicationRecord
                                 healthy_volunteers_imported
                               end
   end
+
 end

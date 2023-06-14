@@ -69,16 +69,19 @@ class Admin::TrialsController < ApplicationController
       format.xls do
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
         response.headers['Content-Disposition'] = "attachment; filename=\"trials_#{DateTime.now}.xls\""
-        render "recent_as.xls.erb"
+        render "recent_as"
       end
     end
   end
 
   def index
     unless params[:q].nil?
-      @trials = Trial.match_all_admin({ q: params[:q] }).page(params[:page]).records
+      @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
     else
-      @trials = Trial.paginate(page: params[:page])
+      @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(visible: true)
+      if SystemInfo.trial_approval
+        @trials.merge(Trial.where(approved: true))
+      end
     end
 
     add_breadcrumb 'Trials Administration'
@@ -108,10 +111,51 @@ class Admin::TrialsController < ApplicationController
       render 'edit'
     end
   end
+  
+  def all_under_review
+    unless params[:q].nil?
+      @trials = Trial.includes(:trial_locations).match_all_under_review_admin({ q: params[:q].downcase }).page(params[:page])
+      
+    else
+      @trials = Trial.includes(:trial_locations).paginate(page: params[:page]).where(approved: false).where(visible: true).order(created_at: :desc)
+    end
+    
+    add_breadcrumb 'Trials Administration', :admin_trials_path
+    add_breadcrumb 'All Under Review'
+
+    respond_to do |format|
+      format.html
+    
+      format.xls do
+        @trials = Trial.where(approved: false).where(visible: true).order(created_at: :desc)
+        response.headers['Content-Type'] = 'application/vnd.ms-excel'
+        response.headers['Content-Disposition'] = "attachment; filename=\"all_under_review_#{DateTime.now}.xls\""
+        render "all_under_review"
+      end
+    end
+  end
+
+  def under_review
+    @trial = Trial.find(params[:id])
+    @attribute_settings = TrialAttributeSetting.where(system_info_id: SystemInfo.current.id)
+    add_breadcrumb 'Trials Administration', :admin_trials_path
+    add_breadcrumb 'All Under Review', :admin_all_trials_under_review_path
+    add_breadcrumb 'Under Review'
+  end
+
+  def approved
+    @trial = Trial.find(params[:id])
+    if @trial.update(approved: true)
+      @approval = Approval.create({:user_id => session[:user]["id"], :trial_id => params[:id], :approved => true})
+      redirect_to admin_all_trials_under_review_path, flash:  { success: "#{@trial.brief_title} approved" }
+    else
+      redirect_to admin_all_trials_under_review_path, flash: { error: 'Something went wrong ' }
+    end
+  end
 
   private
     def trial_params
-      params.require(:trial).permit(
+      param_list = [
         :cancer_yn,
         :contact_override,
         :contact_override_first_name,
@@ -126,11 +170,18 @@ class Admin::TrialsController < ApplicationController
         :recruiting,
         :recruitment_url,
         :reviewed,
-        :simple_description,
         :visible,
+        :approved,
+        :display_simple_description,
         disease_site_ids: [],
         site_ids: []
-      )
+      ]
+      if SystemInfo.protect_simple_description
+        param_list.unshift(:simple_description_override)
+      else
+        param_list.unshift(:simple_description)
+      end
+      params.require(:trial).permit(*param_list)
     end
 
 end

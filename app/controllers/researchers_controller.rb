@@ -16,6 +16,8 @@ class ResearchersController < ApplicationController
   end
 
   def edit
+    # redirect_to root_path, flash: { error: 'You do not have access to that page.' }
+    # return
     @trial = Trial.find_by(system_id: params[:id])
 
     add_breadcrumb 'Home', :root_path
@@ -25,9 +27,11 @@ class ResearchersController < ApplicationController
   end
 
   def update
+    # redirect_to root_path, flash: { error: 'You do not have access to that page.' }
+    # return
     @trial = Trial.find_by(system_id: params[:id])
 
-    if !params[:secret_key].blank? && params[:secret_key] == @system_info.secret_key
+    if !params[:secret_key].blank? && params[:secret_key] == SystemInfo.secret_key
       if @trial.update(trial_params)
         redirect_to edit_researcher_path(params[:id]), flash: { success: 'Trial updated successfully' }
       else
@@ -52,7 +56,13 @@ class ResearchersController < ApplicationController
 
   private
     def trial_params
-      params.require(:trial).permit(:simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name)
+      param_list = [:display_simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name]
+      if SystemInfo.protect_simple_description
+        param_list.unshift(:simple_description_override)
+      else
+        param_list.unshift(:simple_description)
+      end
+      params.require(:trial).permit(*param_list)
     end
 
 end

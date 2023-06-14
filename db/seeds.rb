@@ -47,6 +47,14 @@ system_info.contact_email_suffix = system[:contact_email_suffix]
 system_info.save!
 
 # ============================================
+# API Key
+# ============================================
+
+k = ApiKey.new(name: 'test_api_key')
+k.save
+puts "API Key: #{k.token}"
+
+# ============================================
 # Parsers
 # ============================================
 
@@ -94,7 +102,7 @@ end
 # Trials
 # ============================================
 
-Rake::Task['studyfinder:ctgov:load'].invoke
+# Rake::Task['studyfinder:ctgov:load'].invoke
 
 # ============================================
 # Trial attribute settings
