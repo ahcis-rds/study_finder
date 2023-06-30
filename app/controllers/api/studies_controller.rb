@@ -62,6 +62,7 @@ class Api::StudiesController < ApiController
   def api_params
     [
       :acronym,
+      :age,
       :brief_summary,
       :brief_title,
       :contact_display_name,

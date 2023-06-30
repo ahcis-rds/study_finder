@@ -278,7 +278,7 @@ class Trial < ApplicationRecord
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
-
+      indexes :age
       indexes :category_ids
       indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead'
 
@@ -357,7 +357,8 @@ class Trial < ApplicationRecord
         :added_on,
         :approved,
         :protocol_type,
-        :created_at
+        :created_at,
+        :age
       ],
       include: {
         trial_locations: {
@@ -388,7 +389,7 @@ class Trial < ApplicationRecord
           ]
         }
       },
-      methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
+      methods: [:display_title, :min_age, :age, :max_age, :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
     )
   end
 
@@ -555,16 +556,13 @@ class Trial < ApplicationRecord
     ret = []
 
     if search.has_key?('children')
-      ret << { range: { max_age: { lte: 17 } } }
+      ret << { match_phrase: { age:  "Under 18" }}
     end
 
     if search.has_key?('adults')
-      ret << { range: { max_age: { gte: 18 } } }
+      ret << { match_phrase: { age:  "18 or older"} }
     end
 
-    if search.has_key?('seniors')
-      ret << { range: { max_age: { gte: 66 } } }
-    end
 
     ret
   end
