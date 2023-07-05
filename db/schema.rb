@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_29_201512) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_05_104947) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -237,8 +237,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_29_201512) do
     t.text "brief_summary"
     t.text "detailed_description"
     t.string "gender"
-    t.string "minimum_age"
-    t.string "maximum_age"
     t.boolean "healthy_volunteers"
     t.string "simple_description", limit: 4000
     t.string "contact_override"
@@ -263,8 +261,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_29_201512) do
     t.string "contact_backup_email"
     t.text "eligibility_criteria"
     t.string "recruitment_url"
-    t.string "min_age_unit"
-    t.string "max_age_unit"
     t.string "lastchanged_date"
     t.string "firstreceived_date"
     t.boolean "reviewed"

@@ -78,7 +78,7 @@ class StudiesController < ApplicationController
     @trial = Trial.find params[:id]
     contacts = contacts_display(determine_contacts(@trial))
     eligibility = eligibility_display(@trial.gender)
-    age = age_display(@trial.min_age, @trial.max_age)
+    age = @trial.age
     should_send = true
 
     if SystemInfo.captcha

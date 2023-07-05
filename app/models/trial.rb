@@ -70,22 +70,6 @@ class Trial < ApplicationRecord
     where({ visible: true })
   end
 
-  def min_age
-    if minimum_age =~ /\d/
-      age = minimum_age.to_f
-    else
-      age = 0.0
-    end
-  end
-
-  def max_age
-    if maximum_age =~ /\d/
-      age = maximum_age.to_f
-    else
-      age = 1000.0
-    end
-  end
-
   def interventions
     trial_interventions.join('; ')
   end
@@ -261,8 +245,6 @@ class Trial < ApplicationRecord
       indexes :simple_description, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       # indexes :eligibility_criteria, type: 'text', analyzer: 'snowball'
       indexes :system_id
-      indexes :min_age, type: 'float'
-      indexes :max_age, type: 'float'
       indexes :gender
       indexes :phase, type: 'text'
       indexes :cancer_yn, type: 'text'
@@ -310,8 +292,6 @@ class Trial < ApplicationRecord
       indexes :interventions, analyzer: 'en', search_analyzer: 'search_synonyms'
       indexes :conditions_map, analyzer: 'en', search_analyzer: 'search_synonyms'
       indexes :keywords, analyzer: 'en', search_analyzer: 'search_synonyms'
-      indexes :min_age_unit, type: 'text'
-      indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
       indexes :nct_id, type: 'text'
@@ -351,8 +331,6 @@ class Trial < ApplicationRecord
         :nct_id,
         :phase,
         :cancer_yn,
-        :min_age_unit,
-        :max_age_unit,
         :featured,
         :added_on,
         :approved,
@@ -389,7 +367,7 @@ class Trial < ApplicationRecord
           ]
         }
       },
-      methods: [:display_title, :min_age, :age, :max_age, :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
+      methods: [:display_title,  :age,  :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
     )
   end
 

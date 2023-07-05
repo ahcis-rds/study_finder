@@ -105,41 +105,6 @@ describe Trial do
     expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
   end
 
-  it "returns the float 0.0 when minimum_age is N/A" do 
-    age_value = 'N/A'
-    trial_with_age = Trial.new(minimum_age: age_value)
-    expect(trial_with_age.min_age).to be(0.0) 
-  end
-
-  it "returns the float 0.0 when minimum_age is nil" do 
-    age_value= nil
-    trial_with_age = Trial.new(minimum_age: age_value)
-    expect(trial_with_age.min_age).to be(0.0) 
-  end
-
-  it "returns the float of a value for minimum_age" do 
-    age_string = '17'
-    trial_with_age = Trial.new(minimum_age: age_string)
-    expect(trial_with_age.min_age).to be(17.0) 
-  end
-
-  it "returns the float 1000.0 when maximum_age is N/A" do 
-    age_value = 'N/A'
-    trial_with_age = Trial.new(maximum_age: age_value)
-    expect(trial_with_age.max_age).to be(1000.0) 
-  end
-
-  it "returns the float 0.0 when maximum_age is nil" do 
-    age_value= nil
-    trial_with_age = Trial.new(maximum_age: age_value)
-    expect(trial_with_age.max_age).to be(1000.0) 
-  end
-
-  it "returns the float of a value for maximum_age" do 
-    age_string = '72'
-    trial_with_age = Trial.new(maximum_age: age_string)
-    expect(trial_with_age.max_age).to be(72.0) 
-  end
 
 
   it 'returns only records that have an age value of "Under 18" ' do
@@ -149,7 +114,7 @@ describe Trial do
     Trial.create(system_id: "789", age: "Under 18", visible: true, approved: true)
     Trial.create(system_id: "011", visible: true, approved: true)
     Trial.__elasticsearch__.refresh_index!
-    search_results = Trial.execute_search({"q"=> "", "children"=> ""}).results.map(&:max_age)
+    search_results = Trial.execute_search({"q"=> "", "children"=> ""}).results.map(&:age)
     expect(search_results.count).to eq(1)
   end
 
@@ -160,7 +125,7 @@ describe Trial do
     Trial.create(system_id: "789", age: "18 or older", visible: true, approved: true)
     Trial.create(system_id: "011",age: "18 or older", visible: true, approved: true)
     Trial.__elasticsearch__.refresh_index!
-    search_results = Trial.execute_search("q"=> "", "adults"=> "1").results.map(&:max_age)
+    search_results = Trial.execute_search("q"=> "", "adults"=> "1").results.map(&:age)
     expect(search_results.count).to eq(2)
   end
     

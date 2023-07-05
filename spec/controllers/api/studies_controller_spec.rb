@@ -74,8 +74,6 @@ describe Api::StudiesController do
         official_title: "This is an official title",
         visible: true,
         eligibility_criteria: "This is eligibility criteria",
-        min_age_unit: "16 years",
-        max_age_unit: "99 years",
         healthy_volunteers_imported: true,
         gender: "Male",
         phase: "Phase I"
@@ -106,8 +104,6 @@ describe Api::StudiesController do
         official_title: "This is an official title",
         visible: true,
         eligibility_criteria: "This is eligibility criteria",
-        min_age_unit: "16 years",
-        max_age_unit: "99 years",
         healthy_volunteers_imported: true,
         gender: "Male",
         phase: "Phase I"
