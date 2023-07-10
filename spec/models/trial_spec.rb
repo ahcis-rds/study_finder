@@ -1,6 +1,52 @@
 require "rails_helper"
 
 describe Trial do
+  context "when rendering display_title" do
+    it "returns nil if brief_title and acronym are both nil or empty" do
+      t = build(:trial, brief_title: nil, acronym: nil)
+      expect(t.display_title).to eq(nil)
+
+      t = build(:trial, brief_title: "", acronym: nil)
+      expect(t.display_title).to eq(nil)
+
+      t = build(:trial, brief_title: nil, acronym: "")
+      expect(t.display_title).to eq(nil)
+
+      t = build(:trial, brief_title: "", acronym: "")
+      expect(t.display_title).to eq(nil)
+    end
+
+    it "returns brief_title if brief_title has value and acronym is nil or empty" do
+      t = build(:trial, brief_title: "Test Title", acronym: nil)
+      expect(t.display_title).to eq("Test Title")
+
+      t = build(:trial, brief_title: "Test Title", acronym: "")
+      expect(t.display_title).to eq("Test Title")
+    end
+
+    it "returns concatenated brief_title and acronym in parens if both have a non-blank value" do
+      t = build(:trial, brief_title: "Test Title", acronym: "TT")
+      expect(t.display_title).to eq("Test Title (TT)")
+    end
+
+    it "returns nil if brief_title is nil or blank and acronym has a non-blank value " do
+      t = build(:trial, brief_title: nil, acronym: "TT")
+      expect(t.display_title).to eq(nil)
+
+      t = build(:trial, brief_title: "", acronym: "TT")
+      expect(t.display_title).to eq(nil)
+    end
+
+  end
+
+  def display_title
+    display = brief_title || nil
+    unless acronym.nil?
+      display += ' (' + acronym + ')'
+    end
+    display.blank? ? nil : display
+  end
+
   it "creates associated conditions" do
     trial = create(:trial)
     trial.update_conditions!(["First Condition", "Second Condition"])
@@ -33,7 +79,6 @@ describe Trial do
 
     expect(trial.keyword_values).to eq(["two"])
   end
-
 
   it "ignores keyword updates with nil" do
     trial = create(:trial)
