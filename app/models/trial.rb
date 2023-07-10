@@ -59,8 +59,9 @@ class Trial < ApplicationRecord
   end
 
   def display_title
+    return nil if brief_title.blank? 
     display = brief_title
-    unless acronym.nil?
+    unless acronym.blank?
       display += ' (' + acronym + ')'
     end
     display
