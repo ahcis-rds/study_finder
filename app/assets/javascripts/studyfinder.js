@@ -107,9 +107,9 @@ function determineStandalone() {
   }
 }
 
-function track(method, event, category, action, data) {
-  if(ga) {
-    ga(method, event, category, action, data);
+function track4(event, category, data) {
+  if(gtag) {
+    gtag(event, category, data)
   }
 }
 
