@@ -233,7 +233,6 @@ class Trial < ApplicationRecord
       custom_stems: {
           type: 'stemmer_override',
           rules:  [
-            'sarcoidosis => sarcoidosis',
             'racism => racism',
             'african => african',
             'american => american'
