@@ -22,7 +22,7 @@ class Admin::GroupsController < ApplicationController
 
     build_subgroups
 
-    if @group.save(@group)
+    if @group.save
       redirect_to admin_groups_path, flash: { success: 'Group added successfully' }
     else
       @conditions = Condition.all.order(:condition)

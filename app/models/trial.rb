@@ -443,7 +443,7 @@ class Trial < ApplicationRecord
               fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
             }
           },
-            {bool: {filter: filters_admin(search) } }
+            {bool: {filter: filters_admin_all } }
           ]
         }   
       } 
@@ -461,7 +461,7 @@ class Trial < ApplicationRecord
               fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
               }
             }, 
-            { bool: { filter: filters_pending(search) } 
+            { bool: { filter: filters_admin_pending } 
             }       
           ]
         }
@@ -538,19 +538,22 @@ class Trial < ApplicationRecord
     ret
   end
 
-  def self.filters_pending(search)
+  def self.filters_admin_pending
       ret = []
       ret << { term: { visible: true } }
       ret << { term: { approved: false } }
       ret
   end
 
-  def self.filters_admin(search)
+  def self.filters_admin_all
     ret = []
     ret << { term: { visible: true } }
-    ret << { term: { approved: true } }
+    if SystemInfo.trial_approval
+      ret << { term: { approved: true } }
+    end
     ret
   end
+
   def self.range_filters(search)
     ret = []
 
