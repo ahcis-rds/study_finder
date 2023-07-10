@@ -215,6 +215,10 @@ class Trial < ApplicationRecord
         tokenizer: 'standard',
         filter: ['asciifolding', 'lowercase', 'custom_stems', 'english_filter']
       },
+      no_stem: {
+        tokenizer: 'standard',
+        filter: ['asciifolding', 'lowercase']
+      },
       typeahead: {
         tokenizer: 'standard',
         filter: ['asciifolding', 'lowercase']
@@ -290,9 +294,9 @@ class Trial < ApplicationRecord
         indexes :group_id, type: 'integer'
       end
 
-      indexes :interventions, analyzer: 'en', search_analyzer: 'search_synonyms'
-      indexes :conditions_map, analyzer: 'en', search_analyzer: 'search_synonyms'
-      indexes :keywords, analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :interventions, analyzer: 'no_stem', search_analyzer: 'search_synonyms'
+      indexes :conditions_map, analyzer: 'no_stem', search_analyzer: 'search_synonyms'
+      indexes :keywords, analyzer: 'no_stem', search_analyzer: 'search_synonyms'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
       indexes :nct_id, type: 'text'
