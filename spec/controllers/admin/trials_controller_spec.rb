@@ -11,18 +11,140 @@ RSpec.describe Admin::TrialsController, :type => :controller do
   end
 
   describe "GET #index" do
-    before :each do
-      create(:system_info)
+    context "trial_approval system setting is off" do
+      before :each do
+        create(:system_info, trial_approval: false)
+      end
+
+      it "responds successfully with an HTTP 200 status code" do
+        get :index
+        expect(response).to have_http_status(200)
+      end
+
+      it "renders the index template" do
+        get :index
+        expect(response).to render_template("index")
+      end
+
+      it "returns trials where visible is true, ignoring approved" do
+        t1 = create(:trial, visible: true, approved: false)
+        t2 = create(:trial, visible: false, approved: false)
+        t3 = create(:trial, visible: true, approved: true)
+        t4 = create(:trial, visible: false, approved: true)
+        get :index
+        expect(assigns(:trials).count).to eq(2)
+
+        t5 = create(:trial, visible: true, approved: false)
+        get :index
+        expect(assigns(:trials).count).to eq(3)
+
+        t6 = create(:trial, visible: true, approved: true)
+        get :index
+        expect(assigns(:trials).count).to eq(4)
+      end
     end
 
-    it "responds successfully with an HTTP 200 status code" do
-      get :index
-      expect(response).to have_http_status(200)
+    context "trial_approval system setting is on" do
+      before :each do
+        create(:system_info, trial_approval: true)
+      end
+
+      it "responds successfully with an HTTP 200 status code" do
+        get :index
+        expect(response).to have_http_status(200)
+      end
+
+      it "renders the index template" do
+        get :index
+        expect(response).to render_template("index")
+      end
+
+      it "returns trials where visible is true and approved is true" do
+        t1 = create(:trial, visible: true, approved: false)
+        t2 = create(:trial, visible: false, approved: false)
+        t3 = create(:trial, visible: true, approved: true)
+        t4 = create(:trial, visible: false, approved: true)
+        get :index
+        expect(assigns(:trials).count).to eq(1)
+
+        t5 = create(:trial, visible: true, approved: false)
+        get :index
+        expect(assigns(:trials).count).to eq(1)
+
+        t6 = create(:trial, visible: true, approved: true)
+        get :index
+        expect(assigns(:trials).count).to eq(2)
+      end
+    end
+  end
+
+  describe "GET #index with search term" do
+    context "trial_approval system setting is off" do
+      before :each do
+        create(:system_info, trial_approval: false)
+      end
+
+      it "returns trials where visible is true and search term matches, ignoring approved" do
+        t1 = create(:trial, brief_title: 'FOOBAR', visible: true, approved: false)
+        t2 = create(:trial, brief_title: 'FOOBAR', visible: false, approved: false)
+        t3 = create(:trial, brief_title: 'BARBAZ', visible: true, approved: true)
+        t4 = create(:trial, brief_title: 'BAZBOO', visible: false, approved: true)
+        sleep 2
+
+        get :index, params: { q: 'FOOBAR' }
+        expect(assigns(:trials).count).to eq(1)
+
+        get :index, params: { q: 'BARBAZ' }
+        expect(assigns(:trials).count).to eq(1)
+
+        get :index, params: { q: 'BAZBOO' }
+        expect(assigns(:trials).count).to eq(0)
+
+        t4.update(visible: true)
+        get :index, params: { q: 'BAZBOO' }
+        expect(assigns(:trials).count).to eq(0)
+
+        get :index, params: { q: 'BINGO' }
+        expect(assigns(:trials).count).to eq(0)
+
+        t5 = create(:trial, brief_title: 'BINGO', visible: true, approved: false)
+        sleep 2
+
+        get :index, params: { q: 'BINGO' }
+        expect(assigns(:trials).count).to eq(1)
+      end
     end
 
-    it "renders the index template" do
-      get :index
-      expect(response).to render_template("index")
+    context "trial_approval system setting is on" do
+      before :each do
+        create(:system_info, trial_approval: true)
+      end
+
+      it "returns trials where visible is true, approved is true, and search term matches" do
+        t1 = create(:trial, brief_title: 'FOOBAR', visible: true, approved: true)
+        t2 = create(:trial, brief_title: 'FOOBAR', visible: true, approved: false)
+        t3 = create(:trial, brief_title: 'BARBAZ', visible: false, approved: true)
+        t4 = create(:trial, brief_title: 'BAZBOO', visible: false, approved: false)
+        sleep 2
+
+        get :index, params: { q: 'FOOBAR' }
+        expect(assigns(:trials).count).to eq(1)
+
+        get :index, params: { q: 'BARBAZ' }
+        expect(assigns(:trials).count).to eq(0)
+
+        get :index, params: { q: 'BAZBOO' }
+        expect(assigns(:trials).count).to eq(0)
+
+        get :index, params: { q: 'BINGO' }
+        expect(assigns(:trials).count).to eq(0)
+
+        t5 = create(:trial, brief_title: 'BINGO', visible: true, approved: true)
+        sleep 2
+
+        get :index, params: { q: 'BINGO' }
+        expect(assigns(:trials).count).to eq(1)
+      end
     end
   end
 
@@ -82,9 +204,9 @@ RSpec.describe Admin::TrialsController, :type => :controller do
     end
   end
 
-  describe "GET #all_under_review " do
+  describe "GET #all_under_review" do
     before :each do
-      create(:system_info)
+      create(:system_info, trial_approval: true)
     end
 
     it "responds succesfully with an HTTP 200 status code" do
@@ -97,6 +219,48 @@ RSpec.describe Admin::TrialsController, :type => :controller do
       expect(response).to render_template("all_under_review")
     end
 
+    it "returns trials where visible is true and approved is false" do
+      t1 = create(:trial, visible: true, approved: false)
+      t2 = create(:trial, visible: false, approved: false)
+      t3 = create(:trial, visible: true, approved: true)
+      t4 = create(:trial, visible: false, approved: true)
+      get :all_under_review
+      expect(assigns(:trials).count).to eq(1)
+
+      t5 = create(:trial, visible: true, approved: false)
+      get :all_under_review
+      expect(assigns(:trials).count).to eq(2)
+
+      t6 = create(:trial, visible: true, approved: true)
+      get :all_under_review
+      expect(assigns(:trials).count).to eq(2)
+    end
+
+    it "returns trials where visible is true, approved is false, and search term matches" do
+      t1 = create(:trial, brief_title: 'FOOBAR', visible: true, approved: true)
+      t2 = create(:trial, brief_title: 'FOOBAR', visible: true, approved: false)
+      t3 = create(:trial, brief_title: 'BARBAZ', visible: false, approved: true)
+      t4 = create(:trial, brief_title: 'BAZBOO', visible: false, approved: false)
+      sleep 2
+
+      get :all_under_review, params: { q: 'FOOBAR' }
+      expect(assigns(:trials).count).to eq(1)
+
+      get :all_under_review, params: { q: 'BARBAZ' }
+      expect(assigns(:trials).count).to eq(0)
+
+      get :all_under_review, params: { q: 'BAZBOO' }
+      expect(assigns(:trials).count).to eq(0)
+
+      get :all_under_review, params: { q: 'BINGO' }
+      expect(assigns(:trials).count).to eq(0)
+
+      t5 = create(:trial, brief_title: 'BINGO', visible: true, approved: false)
+      sleep 2
+
+      get :all_under_review, params: { q: 'BINGO' }
+      expect(assigns(:trials).count).to eq(1)
+    end
   end
 
   describe "approval" do
