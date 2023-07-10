@@ -114,11 +114,11 @@
           <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
         <% elsif contact_method == 'email' %>
           <% unless c.empty? %>
-            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}');track4('event', 'email_study_team', {'action':'open','system_id':'#{t.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
+            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track4('event', 'email_study_team', {'action':'open','system_id':'#{t.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
           <% end %>
         <% end %>
 
-        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>');track4('event', 'email_me', {'action':'open','system_id':'<%= t.system_id %>'});"><i class="fa-solid fa-envelope"></i> Share via email</div>
+        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track4('event', 'email_me', {'action':'open','system_id':'<%= t.system_id %>'});"><i class="fa-solid fa-envelope"></i> Share via email</div>
 
         <%= render partial: "clinicaltrialsgov_button", locals: { study: t } %>
 
