@@ -69,7 +69,7 @@ $('#email-me-modal-submit').on('click', function (event) {
       .insertAfter(parentButton.parent());
 
     // Track to analytics
-    track('send', 'event', 'email_me', 'sent', trial_id);
+    track4('event', 'email_me', {'action':'sent','trial_id':trial_id})
   })
     .fail(function() {
       // clear the form
@@ -162,7 +162,7 @@ $('#contact-study-team-modal-submit').on('click', function (event) {
       .insertAfter(parentButton.parent());
 
     // Track to analytics
-    track('send', 'event', 'email_study_team', 'sent', trial_id);
+    track4('event', 'email_study_team', {'action':'sent','trial_id':trial_id})
   })
     .fail(function() {
       // clear the form

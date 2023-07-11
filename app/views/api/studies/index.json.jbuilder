@@ -19,10 +19,7 @@ json.array! @trials do |trial|
   json.visible trial.visible
   json.display_simple_description trial.display_simple_description
   json.eligibility_criteria trial.eligibility_criteria
-  json.min_age_unit trial.min_age_unit
-  json.max_age_unit trial.max_age_unit
-  json.minimum_age trial.minimum_age
-  json.maximum_age trial.maximum_age
+  json.age trial.age
   json.healthy_volunteers_imported trial.healthy_volunteers_imported
   json.gender trial.gender
   json.detailed_description trial.detailed_description

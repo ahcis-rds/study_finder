@@ -75,13 +75,13 @@ class Admin::TrialsController < ApplicationController
   end
 
   def index
-    unless params[:q].nil?
-      @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
-    else
+    if params[:q].blank?
       @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(visible: true)
       if SystemInfo.trial_approval
-        @trials.merge(Trial.where(approved: true))
+        @trials = @trials.where(approved: true)
       end
+    else
+      @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
     end
 
     add_breadcrumb 'Trials Administration'
@@ -113,11 +113,10 @@ class Admin::TrialsController < ApplicationController
   end
   
   def all_under_review
-    unless params[:q].nil?
-      @trials = Trial.includes(:trial_locations).match_all_under_review_admin({ q: params[:q].downcase }).page(params[:page])
-      
-    else
+    if params[:q].blank?
       @trials = Trial.includes(:trial_locations).paginate(page: params[:page]).where(approved: false).where(visible: true).order(created_at: :desc)
+    else
+      @trials = Trial.includes(:trial_locations).match_all_under_review_admin({ q: params[:q].downcase }).page(params[:page]).records
     end
     
     add_breadcrumb 'Trials Administration', :admin_trials_path
@@ -127,7 +126,6 @@ class Admin::TrialsController < ApplicationController
       format.html
     
       format.xls do
-        @trials = Trial.where(approved: false).where(visible: true).order(created_at: :desc)
         response.headers['Content-Type'] = 'application/vnd.ms-excel'
         response.headers['Content-Disposition'] = "attachment; filename=\"all_under_review_#{DateTime.now}.xls\""
         render "all_under_review"
