@@ -121,10 +121,60 @@ module StudiesHelper
   end
 
   def render_age_display(study)
-    return nil if study.age.nil? 
-    return study.age
+    return nil if study.min_age_unit.nil? && study.max_age_unit.nil?
+
+    if (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit))
+      age_display_units(study.min_age_unit, study.max_age_unit)
+    else
+      age_display(study.min_age, study.max_age)
+    end
   end
- 
+
+  def age_display_units(min_age_unit, max_age_unit)
+    if min_age_unit == 'N/A' and max_age_unit != 'N/A'
+      return "up to #{max_age_unit} old"
+    elsif min_age_unit != 'N/A' and max_age_unit == 'N/A'
+      return "#{min_age_unit} and over"
+    elsif min_age_unit == 'N/A' and max_age_unit == 'N/A'
+      return "Not specified"
+    else
+      return "#{min_age_unit} to #{max_age_unit} old"
+    end
+  end
+
+  def age_display(min_age, max_age)
+    age = ''
+    unless (min_age.nil? and max_age.nil?) or (min_age == 0 and max_age == 1000)
+      unless min_age.nil? or min_age == 0
+        unless (min_age % 1).zero?
+          # There is a decimal value.  Let's convert it.
+          age << "#{(min_age * 12).round} month(s)"
+        else
+          age << "#{min_age.to_i} year(s)"
+        end
+      else
+        age << 'up to '
+      end
+
+      unless max_age.nil? or max_age == 1000
+        unless age.include?('to')
+          age << " to "
+        end
+        unless (max_age % 1).zero?
+          # There is a decimal value.  Let's convert it.
+          age << "#{(max_age * 12).round} month(s) old"
+        else
+          age << "#{max_age.to_i} year(s) old"
+        end
+      else
+        age << ' and over'
+      end
+    else
+      age << 'Not specified'
+    end
+    age
+  end
+
   def contacts_display(c)
     contacts = ''
     c.each do |contact|
