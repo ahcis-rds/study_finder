@@ -535,7 +535,7 @@ class Trial < ApplicationRecord
       end
 
       if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
-        ret << { terms: { gender: ['all', search[:gender].try(:downcase)] }}
+        ret << { terms: { gender: ['all', 'Both', search[:gender].try(:downcase)] }}
       end
     end
 
@@ -562,11 +562,11 @@ class Trial < ApplicationRecord
     ret = []
 
     if search.has_key?('children')
-      ret << { range: { max_age: { lte: 17 } } }
+      ret << { range: { min_age: { lt: 18 } } }
     end
 
     if search.has_key?('adults')
-      ret << { range: { max_age: { gte: 18 } } }
+      ret << { range: { max_age: { gte: 19 } } }
     end
 
     if search.has_key?('seniors')
