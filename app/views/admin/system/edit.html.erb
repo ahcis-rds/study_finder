@@ -34,7 +34,16 @@
         </small>
 
         <!-- <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %> -->
-
+        <label>Display "Healthy Volunteers" Filter</label>
+        <small>
+          <i>Turning on will enable the Healthy Volunteer filter for studies.</i>
+        </small>
+        <%= f.input :healthy_volunteers_filter, as: :select, label: false %>
+        <label>Display "Gender" Filter</label>
+        <small>
+          <i>Turning on will enable the Gender filter for studies.</i>
+        </small>
+        <%= f.input :gender_filter, as: :select, label: false %>
         <label>Add Captcha to email forms</label>
         <small>
           <i>Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.</i>

@@ -1,4 +1,15 @@
 <%= form_tag studies_path, method: :get, class: 'search-form', target: (params[:action] == 'embed' ? '_blank' : nil) do %>
+    <div class="row">
+    <div class="col-md-10">
+      <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off' %>
+    </div>    
+    
+  </div>
+
+  <hr>
+  <h3><%= (@system_info.try(:healthy_volunteers_filter) == false && @system_info.try(:gender_filter) == false) ? "Age Options":  "Advanced Search"%></h3>
+  <% if @system_info.try(:healthy_volunteers_filter) == true %>
+  
   <div class="row">
     <div class="col-md-6">
       <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa-solid fa-circle-question"></i></label>
@@ -10,6 +21,8 @@
       </select>
     </div>
   </div>
+  <% end%>
+   <% if @system_info.try(:gender_filter) == true %>
   <div class="row">
     <div class="col-md-6">
       <label for='gender'>Sex</label>
@@ -20,14 +33,12 @@
       </select>
     </div>
   </div>
+  <% end %>
+
+
   <div class="age-ranges">
     <label class="checkbox"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
     <label class="checkbox"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
-  </div>
-  <div class="row">
-    <div class="col-md-10">
-      <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off' %>
-    </div>    
   </div>
   <%= hidden_field 'search', 'category', value: @category.id unless @category.nil? %>
   <div class="search-controls">
