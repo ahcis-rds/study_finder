@@ -2,12 +2,23 @@
   margin-top: 20px;
 
   .search-form {
-    
+
     .age-ranges {
-      margin: 15px 0;
+      margin: 0px 0;
     }
 
-    .checkbox {
+    .search-label {
+      margin-top: 0.5rem;
+
+    }
+
+    .age-label {
+      font-weight: bold;
+      font-size: 16px;
+
+    }
+
+    .checkbox-right {
       margin: 3px 0 0 20px;
     }
 
