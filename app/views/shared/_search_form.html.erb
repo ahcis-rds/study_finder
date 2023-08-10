@@ -4,45 +4,6 @@
       <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off' %>
     </div>    
   </div>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class='search-label'>
-        <% if (@system_info.try(:healthy_volunteers_filter) || @system_info.try(:gender_filter)) %>
-          <h3>Advanced Search</h3>
-        <%else %>
-          <h3 class='age-label'>Filter by age</h3>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <% if @system_info.try(:healthy_volunteers_filter) == true %>
-   <div class="row">
-  <div class="col-md-12">
-      <label class="checkbox" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'> <%= check_box_tag 'search[healthy_volunteers]' %> Only show me studies that need healthy volunteers <i class="fa-solid fa-circle-question"></i> </label>
-    </div>
-     </div>
-  <% end %>
-  <% if @system_info.try(:gender_filter) == true %>
-    <div class="row">
-      <div class="col-md-6">
-        <label for='gender'>Sex</label>
-        <select id="gender" name="search[gender]" class="form-control">
-          <option value=''>Any</option>
-          <option value='Female'>Female</option>
-          <option value='Male'>Male</option>
-        </select>
-      </div>
-    </div>
-  <% end %>
-
-
-  
-  <div class="age-ranges">
-    <label class="checkbox"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
-    <label class="checkbox-right"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
-  </div>
   <%= hidden_field 'search', 'category', value: @category.id unless @category.nil? %>
   <div class="search-controls">
     <%= submit_tag 'Search', class: 'btn btn-lg btn-school btn-search' %>
@@ -50,4 +11,44 @@
       <a class="btn btn-secondary btn-not-sure" href="<%=(@category.nil? ? categories_path : studies_path({ search: { category: @category.id } }) )%>" target="(params[:action] == 'embed' ? '_blank' : nil)">Not sure what you're looking for?<br>Click here to browse by category.</a>
     <% end %>
   </div>
-<% end %>
+
+  
+  <div class="row">
+    <div class="col-md-6">
+      <div class='search-label'>
+        <% if (@system_info.try(:healthy_volunteers_filter) || @system_info.try(:gender_filter)) %>
+           <h3 class='age-label'>Advanced Search</h3>
+        <%else %>
+          <h3 class='age-label'>Filter by age</h3>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @system_info.try(:gender_filter) == true %>
+    <div class="row">
+      <div class="col-md-6">
+        <label for='gender'>Sex</label>
+          <select id="gender" name="search[gender]" class="form-control">
+            <option value=''>Any</option>
+            <option value='Female'>Female</option>
+            <option value='Male'>Male</option>
+          </select>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @system_info.try(:healthy_volunteers_filter) == true %>
+    <div class="row">
+      <div class="col-md-12">
+        <label class="checkbox" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'> <%= check_box_tag 'search[healthy_volunteers]' %> Only show me studies that need healthy volunteers <i class="fa-solid fa-circle-question"></i> </label>
+      </div>
+    </div>
+  <% end %>
+  
+
+  <div class="age-ranges">
+    <label class="checkbox"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
+    <label class="checkbox-right"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
+  </div>
+  <% end %>
