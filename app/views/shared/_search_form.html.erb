@@ -18,17 +18,11 @@
   </div>
 
   <% if @system_info.try(:healthy_volunteers_filter) == true %>
-    <div class="row">
-      <div class="col-md-6">
-        <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa-solid fa-circle-question"></i></label>
-        <select id="search_heathy_volunteers" name="search[healthy_volunteers]" class="form-control">
-          <option value=''>Please Select</option>
-          <option value='1'>Yes</option>
-          <option value='0'>No</option>
-          <option value=''>No Preference</option>
-        </select>
-      </div>
+   <div class="row">
+  <div class="col-md-12">
+      <label class="checkbox" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'> <%= check_box_tag 'search[healthy_volunteers]' %> Only show me studies that need healthy volunteers <i class="fa-solid fa-circle-question"></i> </label>
     </div>
+     </div>
   <% end %>
   <% if @system_info.try(:gender_filter) == true %>
     <div class="row">
