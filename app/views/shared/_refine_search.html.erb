@@ -4,35 +4,8 @@
       <div class="row">
 
         <div class="col-12 col-lg-4 col-md-5">
-          <h3 class=""><i class="fa-solid fa-search"></i><%= text_field_tag 'search[q]', search_value(params[:search], 'q'), class: 'input-search typeahead', autocomplete: 'off' %></h3>
-        </div>
-        
-        <div class="col-12 col-lg-2 col-md-3">
-          <label for="search_healthy_volunteers" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'>Healthy Volunteers <i class="fa-solid fa-circle-question"></i></label>
-          <% healthy_voulunteers = params[:search]['healthy_volunteers'] if !params[:search].nil? and !params[:search]['healthy_volunteers'].nil? %>
-          <select id="search_heathy_volunteers" name="search[healthy_volunteers]" class="form-control">
-            <option value=''>Please Select</option>
-            <option value='1' <% if healthy_voulunteers == '1' %>selected<%end%> >Yes</option>
-            <option value='0' <% if healthy_voulunteers == '0' %>selected<%end%> >No</option>
-            <option value=''>No Preference</option>
-          </select>
-         <label class="gender-label" for="gender">Sex</label>
-          <% gender = params[:search]['gender'] if !params[:search].nil? and !params[:search]['gender'].nil? %>
-          <select id="gender" name="search[gender]" class="form-control">
-            <option value=''>Any</option>
-            <option value='Female' <% if gender == 'Female' %>selected<%end%> >Female</option>
-            <option value='Male' <% if gender == 'Male' %>selected<%end%> >Male</option>
-          </select>
-        </div>
+          <h3 class=""><i class="fa-solid fa-search"></i><%=  text_field_tag 'search[q]', search_value(params[:search], 'q'), placeholder: 'keywords, conditions, etc', class: 'input-search refine-search typeahead', autocomplete: 'off' %></h3>
 
-        <div class="col-12 col-lg-3 col-md-4">
-          <br/>
-          <label class="checkbox"><%= check_box_tag 'search[children]', "", (!params[:search].nil? and !params[:search]['children'].nil?) %> Children (age &lt; 18 years)</label>
-          <br>
-          <label class="checkbox"><%= check_box_tag 'search[adults]', "", (!params[:search].nil? and !params[:search]['adults'].nil?) %> Adults (age &ge; 18 years)</label>
-        </div>
-          
-        <div class="col-12 col-lg-3">
           <div class="buttons ">
             <% if !params[:search].nil? and !params[:search][:category].nil? %>
               <input type='hidden' name='search[category]' value="<%=params[:search][:category]%>"></input>
@@ -40,8 +13,31 @@
             <%= submit_tag 'Search', class: 'btn btn-lg btn-school-inverse btn-search' %>
             <%= link_to 'Clear', studies_path, class: 'btn btn-lg btn-light' %>
           </div>
-        </div>
+       </div>
 
+        <% if @system_info.gender_filter %>
+          <div class="col-12 col-lg-2">
+            <div>
+              <label class="gender-label" for="gender">Sex</label>
+              <% gender = params[:search]['gender'] if !params[:search].nil? and !params[:search]['gender'].nil? %>
+                <select id="gender" name="search[gender]" class="form-control">
+                  <option value=''>Any</option>
+                  <option value='Female' <% if gender == 'Female' %>selected<%end%> >Female</option>
+                  <option value='Male' <% if gender == 'Male' %>selected<%end%> >Male</option>
+                </select>
+            </div>
+          </div>
+       <%end %>
+       
+        <div class="col-12 col-lg-4 col-md-3">
+          <label class="checkbox"><%= check_box_tag 'search[children]', 1, (!params[:search].nil? and !params[:search]['children'].nil?) %> Children (age &lt; 18 years)</label>
+          <label class="checkbox"><%= check_box_tag 'search[adults]', 1, (!params[:search].nil? and !params[:search]['adults'].nil?) %> Adults (age &ge; 18 years)</label>
+          <% if @system_info.healthy_volunteers_filter %>
+            <div>
+              <label data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top' class="checkbox"><%= check_box_tag 'search[healthy_volunteers]', 1, (!params[:search].nil? and !params[:search]['healthy_volunteers'].nil?) %> Only show me studies that need healthy volunteers <i class="fa-solid fa-circle-question"></i> </label>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
