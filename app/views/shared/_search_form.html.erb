@@ -26,7 +26,7 @@
   </div>
 
   <% if @system_info.try(:gender_filter) == true %>
-    <div class="row">
+    <div class="row genderfilter">
       <div class="col-md-6">
         <label for='gender'>Sex</label>
           <select id="gender" name="search[gender]" class="form-control">
@@ -48,7 +48,11 @@
   
 
   <div class="age-ranges">
-    <label class="checkbox"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
-    <label class="checkbox-right"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
+    <div class="row">
+      <div class="col-md-12">
+        <label class="checkbox-left"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
+        <label class="checkbox"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
+      </div>
+    </div>
   </div>
   <% end %>
