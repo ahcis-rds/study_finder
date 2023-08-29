@@ -24,8 +24,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track4('event', 'email_me', {'action':'close'});">Close</button>
-        <button class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" onclick="track4('event', 'email_me', {'action':'submit'});">Send</button>
+        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track('send', 'event', 'email_me_close', 'close');track4('event', 'email_me', {'action':'close'});">Close</button>
+        <button class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_me_submit', 'submit');track4('event', 'email_me', {'action':'submit'});">Send</button>
       </div>
     </div>
   </div>
@@ -66,8 +66,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track4('event', 'email_study_team', {'action':'close'});">Close</button>
-        <button class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" onclick="track4('event', 'email_study_team', {'action':'submit'});">Send</button>
+        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track('send', 'event', 'email_study_team_close', 'close');track4('event', 'email_study_team', {'action':'close'});">Close</button>
+        <button class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_study_team_submit', 'submit');track4('event', 'email_study_team', {'action':'submit'});">Send</button>
       </div>
     </div>
   </div>
