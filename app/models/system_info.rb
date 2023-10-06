@@ -9,10 +9,6 @@ class SystemInfo < ApplicationRecord
   def self.current
     self.first
   end
-
-  def self.protect_simple_description
-    self.first.try(:protect_simple_description)
-  end
   
   def self.trial_approval
     self.first.try(:trial_approval)

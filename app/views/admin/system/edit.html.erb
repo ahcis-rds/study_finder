@@ -56,12 +56,6 @@
         </small>
         <%= f.input :trial_approval, as: :select, label: false %>
 
-        <label>Protect imported Brief Description</label>
-        <small>
-          <i>Turning on will disable editing of the Brief Description as imported from an external data source. If enabled and there is no imported Simple Description for a study, a Brief Description Override field will display in the Admin and Researcher study edit screens so one can be added. Use this when your IRB requires this description to appear as-approved.</i>
-        </small>
-        <%= f.input :protect_simple_description, as: :select, label: false %>
-
         <label>Notify admin when the API receives a study creation request with an empty System ID</label>
         <%= f.input :alert_on_empty_system_id, as: :select, label: false %>
 

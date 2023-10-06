@@ -171,14 +171,10 @@ class Admin::TrialsController < ApplicationController
         :visible,
         :approved,
         :display_simple_description,
+        :simple_description_override,
         disease_site_ids: [],
         site_ids: []
       ]
-      if SystemInfo.protect_simple_description
-        param_list.unshift(:simple_description_override)
-      else
-        param_list.unshift(:simple_description)
-      end
       params.require(:trial).permit(*param_list)
     end
 

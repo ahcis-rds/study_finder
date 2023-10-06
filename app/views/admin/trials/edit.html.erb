@@ -10,15 +10,8 @@
   <p><%= @trial.system_id %></p>
 
   <%= simple_form_for @trial, url: admin_trial_path, method: :put do |f| %>
-    <% if @system_info.protect_simple_description %>
-      <% if f.object.simple_description_from_source.blank? %>
-        <%= f.input :simple_description_override %>
-      <% else %>
-        Simple Description (imported, protected): <i><%= f.object.simple_description %><br><br>
-      <% end %>
-    <% else %>
-      <%= f.input :simple_description %>
-    <% end %>
+    <%= f.input :simple_description_override %>
+    Simple Description (imported): <i><%= f.object.simple_description %><br><br>
     <%= f.input :display_simple_description, as: :select %>
     <%= f.input :contact_override %>
     <%= f.input :contact_override_first_name %>

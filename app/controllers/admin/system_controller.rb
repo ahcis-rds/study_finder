@@ -58,7 +58,6 @@ class Admin::SystemController < ApplicationController
         :display_groups_page,
         :display_study_show_page,
         :enable_showcase,
-        :protect_simple_description,
         :show_showcase_indicators,
         :show_showcase_controls,
         :study_contact_bcc,

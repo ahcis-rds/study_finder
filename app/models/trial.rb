@@ -51,7 +51,7 @@ class Trial < ApplicationRecord
   end
 
   def simple_description
-    self[:simple_description] || simple_description_override
+    simple_description_override || simple_description_from_source
   end
 
   def simple_description_from_source
@@ -263,6 +263,7 @@ class Trial < ApplicationRecord
     mappings dynamic: 'false' do
       indexes :display_title, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       indexes :simple_description, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :simple_description_override, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       # indexes :eligibility_criteria, type: 'text', analyzer: 'snowball'
       indexes :system_id
       indexes :min_age, type: 'float'
@@ -329,6 +330,7 @@ class Trial < ApplicationRecord
     self.as_json(
       only: [
         :simple_description,
+        :simple_description_override,
         :overall_status,
         :eligibility_criteria,
         :system_id,
@@ -425,7 +427,7 @@ class Trial < ApplicationRecord
               {
                 multi_match: {
                   query: search[:q].try(:downcase),
-                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "simple_description_override", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
                 }
               },
               { bool: { filter: filters(search) } },
@@ -444,7 +446,7 @@ class Trial < ApplicationRecord
            { multi_match: {
               query: search[:q].try(:downcase),
               operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "simple_description_override", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
             }
           },
             {bool: {filter: filters_admin_all } }
@@ -462,7 +464,7 @@ class Trial < ApplicationRecord
             {multi_match: {
               query: search[:q].downcase,
               operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "simple_description_override", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
               }
             }, 
             { bool: { filter: filters_admin_pending } 
@@ -583,6 +585,7 @@ class Trial < ApplicationRecord
       interventions: { number_of_fragments: 0 },
       keywords: { number_of_fragments: 0 },
       simple_description: { number_of_fragments: 0 },
+      simple_description_override: { number_of_fragments: 0},
       conditions_map: { number_of_fragments: 0 },
       eligibility_criteria: { number_of_fragments: 0 }
     }
