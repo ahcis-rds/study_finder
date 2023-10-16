@@ -40,6 +40,17 @@ class Trial < ApplicationRecord
 
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
+  def self.update_irb_numbers
+    CSV.foreach("lib/irb_numbers.csv", headers: true) do |row|
+      old_irb = row[1]
+      new_irb = row[2]
+      trial = Trial.find_by(system_id: old_irb)
+      next if trial.blank?
+      p "#{trial.id}: #{trial.system_id} will change to #{new_irb}"
+      trial.update(system_id: new_irb, irb_number: new_irb)
+    end
+  end
+
   def self.import_from_file(file)
     CSV.foreach(file.path, headers: true) do |row|
       Trial.create! row.to_hash
