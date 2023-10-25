@@ -120,7 +120,7 @@ module Connectors
 
     def nct_ids_for_location(location, start = 1, endd = 1000, ids = [])
       response = HTTParty.get(
-        "https://clinicaltrials.gov/api/query/study_fields",
+        "https://classic.clinicaltrials.gov/api/query/study_fields",
         query: {
           expr: "SEARCH[Location](AREA[LocationFacility]#{location})",
           fields: "NCTId",
