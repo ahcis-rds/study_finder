@@ -58,11 +58,12 @@ class Admin::SystemController < ApplicationController
         :display_groups_page,
         :display_study_show_page,
         :enable_showcase,
-        :protect_simple_description,
         :show_showcase_indicators,
         :show_showcase_controls,
         :study_contact_bcc,
         :trial_approval,
+        :healthy_volunteers_filter,
+        :gender_filter,
         trial_attribute_settings_attributes: [:id, :attribute_label, :display_label_on_list, :display_on_list, :display_if_null_on_list, :display_label_on_show, :display_on_show, :display_if_null_on_show]
       )
     end

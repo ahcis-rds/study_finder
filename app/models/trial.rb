@@ -40,6 +40,17 @@ class Trial < ApplicationRecord
 
   scope :recent_as, ->(duration){ where('updated_at > ?', Time.zone.today - duration ).order('updated_at DESC') }
 
+  def self.update_irb_numbers
+    CSV.foreach("lib/irb_numbers.csv", headers: true) do |row|
+      old_irb = row[1]
+      new_irb = row[2]
+      trial = Trial.find_by(system_id: old_irb)
+      next if trial.blank?
+      p "#{trial.id}: #{trial.system_id} will change to #{new_irb}"
+      trial.update(system_id: new_irb, irb_number: new_irb)
+    end
+  end
+
   def self.import_from_file(file)
     CSV.foreach(file.path, headers: true) do |row|
       Trial.create! row.to_hash
@@ -51,7 +62,7 @@ class Trial < ApplicationRecord
   end
 
   def simple_description
-    self[:simple_description] || simple_description_override
+    simple_description_override || simple_description_from_source
   end
 
   def simple_description_from_source
@@ -69,6 +80,22 @@ class Trial < ApplicationRecord
 
   def self.active_trials
     where({ visible: true })
+  end
+
+  def min_age
+    if minimum_age =~ /\d/
+      age = minimum_age.to_f
+    else
+      age = 0.0
+    end
+  end
+
+  def max_age
+    if maximum_age =~ /\d/
+      age = maximum_age.to_f
+    else
+      age = 1000.0
+    end
   end
 
   def interventions
@@ -247,8 +274,11 @@ class Trial < ApplicationRecord
     mappings dynamic: 'false' do
       indexes :display_title, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       indexes :simple_description, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
+      indexes :simple_description_override, type: 'text', analyzer: 'en', search_analyzer: 'search_synonyms'
       # indexes :eligibility_criteria, type: 'text', analyzer: 'snowball'
       indexes :system_id
+      indexes :min_age, type: 'float'
+      indexes :max_age, type: 'float'
       indexes :gender
       indexes :phase, type: 'text'
       indexes :cancer_yn, type: 'text'
@@ -264,7 +294,7 @@ class Trial < ApplicationRecord
 
       indexes :pi_name, type: 'text', analyzer: 'en'
       indexes :pi_id
-      indexes :age
+
       indexes :category_ids
       indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead'
 
@@ -296,6 +326,8 @@ class Trial < ApplicationRecord
       indexes :interventions, analyzer: 'no_stem', search_analyzer: 'search_synonyms'
       indexes :conditions_map, analyzer: 'no_stem', search_analyzer: 'search_synonyms'
       indexes :keywords, analyzer: 'no_stem', search_analyzer: 'search_synonyms'
+      indexes :min_age_unit, type: 'text'
+      indexes :max_age_unit, type: 'text'
       indexes :featured, type: 'integer'
       indexes :irb_number, type: 'text'
       indexes :nct_id, type: 'text'
@@ -309,6 +341,7 @@ class Trial < ApplicationRecord
     self.as_json(
       only: [
         :simple_description,
+        :simple_description_override,
         :overall_status,
         :eligibility_criteria,
         :system_id,
@@ -335,12 +368,13 @@ class Trial < ApplicationRecord
         :nct_id,
         :phase,
         :cancer_yn,
+        :min_age_unit,
+        :max_age_unit,
         :featured,
         :added_on,
         :approved,
         :protocol_type,
-        :created_at,
-        :age
+        :created_at
       ],
       include: {
         trial_locations: {
@@ -371,7 +405,7 @@ class Trial < ApplicationRecord
           ]
         }
       },
-      methods: [:display_title,  :age,  :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
+      methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
     )
   end
 
@@ -404,7 +438,7 @@ class Trial < ApplicationRecord
               {
                 multi_match: {
                   query: search[:q].try(:downcase),
-                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
+                  fields: ["display_title", "interventions", "conditions_map", "simple_description", "simple_description_override", "eligibility_criteria", "system_id", "keywords", "pi_name", "pi_id", "irb_number"]
                 }
               },
               { bool: { filter: filters(search) } },
@@ -423,7 +457,7 @@ class Trial < ApplicationRecord
            { multi_match: {
               query: search[:q].try(:downcase),
               operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "simple_description_override", "eligibility_criteria", "system_id", "keywords", "pi_name", "protocol_type"]
             }
           },
             {bool: {filter: filters_admin_all } }
@@ -441,7 +475,7 @@ class Trial < ApplicationRecord
             {multi_match: {
               query: search[:q].downcase,
               operator: "and",
-              fields: ["display_title", "interventions", "conditions_map", "simple_description", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
+              fields: ["display_title", "interventions", "conditions_map", "simple_description", "simple_description_override", "eligibility_criteria", "system_id", "keywords", "pi_name", "irb_number", "protocol_type"],
               }
             }, 
             { bool: { filter: filters_admin_pending } 
@@ -514,7 +548,7 @@ class Trial < ApplicationRecord
       end
 
       if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
-        ret << { terms: { gender: ['all', search[:gender].try(:downcase)] }}
+        ret << { terms: { gender: ['all', 'Both', search[:gender].try(:downcase)] }}
       end
     end
 
@@ -541,13 +575,16 @@ class Trial < ApplicationRecord
     ret = []
 
     if search.has_key?('children')
-      ret << { match_phrase: { age:  "Under 18" }}
+      ret << { range: { min_age: { lt: 18 } } }
     end
 
     if search.has_key?('adults')
-      ret << { match_phrase: { age:  "18 or older"} }
+      ret << { range: { max_age: { gte: 19 } } }
     end
 
+    if search.has_key?('seniors')
+      ret << { range: { max_age: { gte: 66 } } }
+    end
 
     ret
   end
@@ -559,6 +596,7 @@ class Trial < ApplicationRecord
       interventions: { number_of_fragments: 0 },
       keywords: { number_of_fragments: 0 },
       simple_description: { number_of_fragments: 0 },
+      simple_description_override: { number_of_fragments: 0},
       conditions_map: { number_of_fragments: 0 },
       eligibility_criteria: { number_of_fragments: 0 }
     }

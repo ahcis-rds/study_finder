@@ -62,7 +62,6 @@ class Api::StudiesController < ApiController
   def api_params
     [
       :acronym,
-      :age,
       :brief_summary,
       :brief_title,
       :contact_display_name,
@@ -81,6 +80,10 @@ class Api::StudiesController < ApiController
       :gender,
       :healthy_volunteers_imported,
       :irb_number,
+      :maximum_age,
+      :minimum_age,
+      :max_age_unit,
+      :min_age_unit,
       :nct_id,
       :official_title,
       :overall_status,

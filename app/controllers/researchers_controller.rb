@@ -56,12 +56,7 @@ class ResearchersController < ApplicationController
 
   private
     def trial_params
-      param_list = [:display_simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name]
-      if SystemInfo.protect_simple_description
-        param_list.unshift(:simple_description_override)
-      else
-        param_list.unshift(:simple_description)
-      end
+      param_list = [:display_simple_description, :contact_override, :contact_override_first_name, :contact_override_last_name, :simple_description_override]
       params.require(:trial).permit(*param_list)
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_05_104947) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_164537) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -166,6 +166,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_104947) do
     t.boolean "alert_on_empty_system_id", default: false, null: false
     t.string "study_contact_bcc"
     t.boolean "protect_simple_description", default: false, null: false
+    t.boolean "healthy_volunteers_filter", default: true, null: false
+    t.boolean "gender_filter", default: true, null: false
   end
 
   create_table "study_finder_trial_conditions", id: :serial, force: :cascade do |t|
@@ -237,6 +239,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_104947) do
     t.text "brief_summary"
     t.text "detailed_description"
     t.string "gender"
+    t.string "minimum_age"
+    t.string "maximum_age"
     t.boolean "healthy_volunteers"
     t.string "simple_description", limit: 4000
     t.string "contact_override"
@@ -261,6 +265,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_104947) do
     t.string "contact_backup_email"
     t.text "eligibility_criteria"
     t.string "recruitment_url"
+    t.string "min_age_unit"
+    t.string "max_age_unit"
     t.string "lastchanged_date"
     t.string "firstreceived_date"
     t.boolean "reviewed"
@@ -278,9 +284,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_104947) do
     t.boolean "rare_disease_flag"
     t.string "nct_id"
     t.boolean "approved", default: false, null: false
+    t.string "annotations_flag"
     t.string "protocol_type"
     t.string "simple_description_override"
-    t.string "age"
     t.index ["approved"], name: "index_study_finder_trials_on_approved"
     t.index ["recruiting"], name: "index_study_finder_trials_on_recruiting"
     t.index ["reviewed"], name: "index_study_finder_trials_on_reviewed"
