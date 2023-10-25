@@ -1,6 +1,6 @@
 class Api::StudiesController < ApiController
   def index
-    @trials = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).all
+    @trials = Trial.includes(:trial_keywords, :conditions, :subgroups, :trial_interventions, :locations).all
   end
 
   def visible
@@ -9,7 +9,7 @@ class Api::StudiesController < ApiController
   end
 
   def show
-    @trial = Trial.includes(:trial_keywords, :conditions, :trial_interventions, :locations).find_by(system_id: params[:id])
+    @trial = Trial.includes(:trial_keywords, :conditions, :subgroups, :trial_interventions, :locations).find_by(system_id: params[:id])
   end
 
   def update
@@ -19,6 +19,7 @@ class Api::StudiesController < ApiController
       @trial.update_interventions!(params[:interventions].to_a)
       @trial.update_keywords!(params[:keywords])
       @trial.update_conditions!(params[:conditions])
+      @trial.update_subgroups!(params[:subgroups])
       @trial.update_locations!(params[:locations])
       @trial.update!(trial_params)
     end
@@ -35,6 +36,7 @@ class Api::StudiesController < ApiController
       @trial.transaction do
         @trial.update_keywords!(params[:keywords])
         @trial.update_conditions!(params[:conditions])
+        @trial.update_subgroups!(params[:subgroups])
         @trial.update_locations!(params[:locations])
         @trial.update_interventions!(params[:interventions])
       end 
@@ -93,6 +95,7 @@ class Api::StudiesController < ApiController
       :protocol_type,
       :recruiting,
       :simple_description,
+      :subgroups,
       :display_simple_description,
       :system_id,
       :verification_date,
