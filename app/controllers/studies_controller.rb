@@ -8,6 +8,7 @@ class StudiesController < ApplicationController
 
     @attribute_settings = SystemInfo.trial_attribute_settings
     @group = Group.where(id: search_hash[:category]).first
+    @subgroup = Subgroup.where(id: search_hash[:subcat]).first
     @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
     @search_query = search_hash[:q].try(:downcase) || ""
     
@@ -95,6 +96,6 @@ class StudiesController < ApplicationController
   private
 
   def search_params
-    params.permit(:page, search: [:category, :q, :healthy_volunteers, :gender, :children, :adults])
+    params.permit(:page, search: [:category, :subcat, :q, :healthy_volunteers, :gender, :children, :adults])
   end
 end
