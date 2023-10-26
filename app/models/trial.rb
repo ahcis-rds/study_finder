@@ -22,6 +22,9 @@ class Trial < ApplicationRecord
   has_many :conditions, through: :trial_conditions
   has_many :condition_groups, through: :trial_conditions
 
+  has_many :trial_subgroups
+  has_many :subgroups, through: :trial_subgroups
+
   has_many :trial_sites
   has_many :sites, through: :trial_sites
 
@@ -102,6 +105,10 @@ class Trial < ApplicationRecord
     condition_groups.map { |e| e.group_id }.uniq
   end
 
+  def subcategory_ids
+    trial_subgroups.map { |e| e.subgroup_id }
+  end
+
   def keyword_suggest
     {
       input: trial_keywords.where.not(keyword: nil).map { |k| k.keyword.try(:downcase) }
@@ -126,6 +133,28 @@ class Trial < ApplicationRecord
 
   def condition_values
     conditions.map(&:condition).sort
+  end
+
+  def subgroup_values
+    subgroups.map(&:name).sort
+  end
+
+  def update_subgroups!(subgroups)
+    return if subgroups.nil?
+
+    existing_subgroups = subgroup_values
+    subgroups_to_add = subgroups - existing_subgroups
+    subgroups_to_delete = existing_subgroups - subgroups
+
+    transaction(requires_new: true) do
+      trial_subgroups.includes(:subgroup).where(Subgroup.table_name => { name: subgroups_to_delete }).delete_all
+
+      subgroups_to_add.each do |subgroup|
+        trial_subgroups.create(subgroup: Subgroup.find_or_initialize_by(name: subgroup, group_id: category_ids))
+      end
+    end
+
+    __elasticsearch__.update_document
   end
 
   def update_keywords!(keywords)
@@ -284,6 +313,7 @@ class Trial < ApplicationRecord
       indexes :pi_id
 
       indexes :category_ids
+      indexes :subcategory_ids
       indexes :keyword_suggest, type: 'completion', analyzer: 'typeahead', search_analyzer: 'typeahead'
 
 
@@ -393,7 +423,7 @@ class Trial < ApplicationRecord
           ]
         }
       },
-      methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :category_ids, :keywords, :keyword_suggest]
+      methods: [:display_title, :min_age, :max_age, :interventions, :conditions_map, :category_ids, :subcategory_ids, :keywords, :keyword_suggest]
     )
   end
 
@@ -526,13 +556,17 @@ class Trial < ApplicationRecord
     ret = []
     ret << { term: { visible: true } }
     ret << { term: { approved: true } }
-    if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('gender')
+    if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('subcat') or search.has_key?('gender')
       if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
         ret << { term: { healthy_volunteers: true } }
       end
 
       if search.has_key?('category')
         ret << { term: { category_ids: search[:category] } }
+      end
+
+      if search.has_key?('subcat')
+        ret << { term: { subcategory_ids: search[:subcat] } }
       end
 
       if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
