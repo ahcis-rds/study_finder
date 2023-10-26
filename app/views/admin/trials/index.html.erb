@@ -37,7 +37,9 @@
       <th>Status</th>
       <th>Recruiting?</th>
       <th>Visible?</th>
-      <th>Approved?</th>
+      <% if SystemInfo.trial_approval %>
+        <th>Approved?</th>
+      <% end %>
       <th>Conditions</th>
       <th>Interventions</th>
       <th></th>
@@ -62,7 +64,9 @@
         <td><%= t.overall_status %></td>
         <td><%= t.recruiting? ? 'Yes' : 'No' %></td>
         <td><%= t.visible? ? 'Yes' : 'No' %></td>
-        <td><%= t.approved? ? 'Yes' : 'No' %></td>
+        <% if SystemInfo.trial_approval %>
+          <td><%= t.approved? ? 'Yes' : 'No' %></td>
+        <% end %>
         <td>
           <ul>
             <% t.conditions.each do |c| %>

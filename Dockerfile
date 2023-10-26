@@ -1,4 +1,4 @@
-FROM hst-docker.artifactory.umn.edu/ruby:3.1
+FROM ruby:3.2
 
 RUN apt-get update -qq && apt-get install -y \
   nodejs \

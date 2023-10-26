@@ -15,11 +15,11 @@ module Connectors
     def load(start_date=nil, end_date=nil)
       start_load_time = Time.now
 
-      url = "https://clinicaltrials.gov/ct2/results/download_studies?locn=#{URI::encode(@system_info.search_term)}"
+      url = "https://clinicaltrials.gov/ct2/results/download_studies?locn=#{ERB::Util.url_encode(@system_info.search_term)}"
 
       if !start_date.nil? and !end_date.nil?
         puts "Loading clinicaltrials.gov results for #{@system_info.search_term} ... from #{start_date} to #{end_date}"
-        url = url + "&lup_s=#{URI::encode(start_date)}&lup_e=#{URI::encode(end_date)}"
+        url = url + "&lup_s=#{ERB::Util.url_encode(start_date)}&lup_e=#{ERB::Util.url_encode(end_date)}"
       else
         puts "Loading all clinicaltrials.gov results for #{@system_info.search_term} ..."
       end

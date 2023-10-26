@@ -34,4 +34,8 @@ class SystemInfo < ApplicationRecord
     self.first.try(:captcha)
   end
 
+  def self.ga_version
+    self.first.try(:google_analytics_version)
+  end
+
 end

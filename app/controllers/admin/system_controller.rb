@@ -50,6 +50,7 @@ class Admin::SystemController < ApplicationController
         :research_match_campaign,
         :contact_email_suffix,
         :google_analytics_id,
+        :google_analytics_version,
         :display_all_locations,
         :researcher_description,
         :faq_description,

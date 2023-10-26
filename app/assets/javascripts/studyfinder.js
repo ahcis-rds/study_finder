@@ -108,6 +108,16 @@ function determineStandalone() {
 }
 
 function track(method, event, category, action, data) {
+  if (GA_VERSION == 3) {
+    track3(method, event, category, action, data[Object.keys(data)[0]])
+  } else if (GA_VERSION == 4) {
+    track4(event, category, {'action': action, ...data})
+  } else {
+
+  }
+}
+
+function track3(method, event, category, action, data) {
   if(ga) {
     ga(method, event, category, action, data);
   }

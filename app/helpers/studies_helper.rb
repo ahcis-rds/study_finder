@@ -91,7 +91,9 @@ module StudiesHelper
 
   def remove_category_param
     p = params.dup
-    p[:search] = p[:search].except('category')
+    if p[:search]
+      p[:search] = p[:search].except('category')
+    end
     return "#{request.path}?#{p.to_unsafe_h.to_query}"
   end
 

@@ -16,8 +16,6 @@ class ResearchersController < ApplicationController
   end
 
   def edit
-    # redirect_to root_path, flash: { error: 'You do not have access to that page.' }
-    # return
     @trial = Trial.find_by(system_id: params[:id])
 
     add_breadcrumb 'Home', :root_path
@@ -27,8 +25,6 @@ class ResearchersController < ApplicationController
   end
 
   def update
-    # redirect_to root_path, flash: { error: 'You do not have access to that page.' }
-    # return
     @trial = Trial.find_by(system_id: params[:id])
 
     if !params[:secret_key].blank? && params[:secret_key] == SystemInfo.secret_key

@@ -4,14 +4,14 @@
   <%= render 'shared/refine_search' %>
 </div>
 
-<% unless @suggestions.nil? || params[:search][:q].blank? %>
+<% unless @suggestions.nil? || @search_query.blank? %>
   <% unless @suggestions['suggest']['suggestions'].empty? %>
     <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
-      <% replacement_search = params[:search][:q].downcase.gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
-      <% if replacement_search != params[:search][:q].downcase %>
+      <% replacement_search = @search_query.downcase.gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
+      <% if replacement_search != @search_query.downcase %>
         <div clsas="suggestions hide-on-print">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
-          <div class="alert alert-info"><i class="fa-solid fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( params[:search][:q].downcase.gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
+          <div class="alert alert-info"><i class="fa-solid fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( @search_query.downcase.gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
         </div>
       <% end %>
     <% end %>
@@ -20,13 +20,13 @@
 
 <div class="study-results">
   <div class="study-results-info">
-    <h3>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h3>
+    <h3>Search Results <%= (@group.blank? || @search_category.blank?) ? '' : 'Within Category "' + @group.group_name + '"' %></h3>
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
 
-    <% if !params[:search].nil? and !params[:search][:category].nil? %>
+    <% unless @search_category.blank? %>
       <a class="btn btn-outline-secondary hide-on-print" href="<%=remove_category_param%>">Search all categories</a>
       <hr class="tighten"/>
-      <% unless @group.subgroups.empty? %>
+      <% unless @group.blank? || @group.subgroups.empty? %>
         <p class="subgroup-text"><strong>Suggestions within category "<%= @group.group_name %>"</strong></p>
         <div class="subgroups">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
@@ -51,19 +51,7 @@
   <hr/>
 
   <% if @trials.empty? %>
-  <% healthstudies_url = 'https://healthstudiesmn.org/studies?' + {'search[q]': params[:search][:q].try(:downcase), commit:'Search'}.to_param %>
-    <div class="alert">
-      <h4 class="alert-heading">
-        No University of Minnesota studies matched your search for <strong><%= params[:search][:q].try(:downcase) %></strong>
-      </h4>
-      <div>
-      <p>To find what you’re looking for:</p>
-      <ul>
-        <li>Change your search criteria and try again. </li>
-        <li>Visit <%= link_to "HealthStudiesMN.org", healthstudies_url %> for more opportunities to participate in research.</li>
-      </ul>
-     </div>
-    </div>
+    <div class="alert"><i class="fa fa-warning"></i> There were no trials that matched your search for <strong><%= @search_query %></strong></div>
   <% end %>
 
   <% @trials.each_with_index do |t, i| %>
@@ -114,11 +102,11 @@
           <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
         <% elsif contact_method == 'email' %>
           <% unless c.empty? %>
-            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', '#{t.system_id}');track4('event', 'email_study_team', {'action':'open','system_id':'#{t.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
+            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{t.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
           <% end %>
         <% end %>
 
-        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', '<%= t.system_id %>');track4('event', 'email_me', {'action':'open','system_id':'<%= t.system_id %>'});"><i class="fa-solid fa-envelope"></i> Share via email</div>
+        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', {'system_id':'<%= t.system_id %>'});"><i class="fa-solid fa-envelope"></i> Share via email</div>
 
         <%= render partial: "clinicaltrialsgov_button", locals: { study: t } %>
 

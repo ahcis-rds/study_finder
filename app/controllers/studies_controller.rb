@@ -10,6 +10,7 @@ class StudiesController < ApplicationController
     @group = Group.where(id: search_hash[:category]).first
     @trials = Trial.execute_search(search_hash).page(search_params[:page]).results
     @search_query = search_hash[:q].try(:downcase) || ""
+    @search_category = search_hash[:category].to_i
     
     if @trials.empty?
       @suggestions = Trial.suggestions(@search_query)

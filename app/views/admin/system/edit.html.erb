@@ -160,6 +160,7 @@
         <h4> Analytics/Tracking Options</h4>
         <label>Google analytics tracking ID</label>
         <%= f.input :google_analytics_id, label: false %>
+        <%= f.input :google_analytics_version, collection: [['Universal',3],['GA 4',4]] %>
         <%= f.input :research_match_campaign %>
         <div class="form-group string optional">
           <label class="string optional control-label" for="campaign_source"}>Campaign Source</label>

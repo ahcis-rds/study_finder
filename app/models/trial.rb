@@ -11,7 +11,6 @@ class Trial < ApplicationRecord
   
   validates :system_id, presence: true
   validates :system_id, uniqueness: true
-  validates :system_id, format: { with: /\A[a-zA-Z0-9]+\z/, message: "only allows alphanumeric characters" }
   
   index_name "study_finder-trials-#{Rails.env}"
 
@@ -100,7 +99,7 @@ class Trial < ApplicationRecord
   end
 
   def category_ids
-    condition_groups.map { |e| e.group_id }
+    condition_groups.map { |e| e.group_id }.uniq
   end
 
   def keyword_suggest
