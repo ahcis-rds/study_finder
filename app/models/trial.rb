@@ -555,7 +555,9 @@ class Trial < ApplicationRecord
   def self.filters(search)
     ret = []
     ret << { term: { visible: true } }
-    ret << { term: { approved: true } }
+    if SystemInfo.trial_approval
+      ret << { term: { approved: true } }
+    end
     if (search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1") or search.has_key?('category') or search.has_key?('subcat') or search.has_key?('gender')
       if search.has_key?('healthy_volunteers') and search[:healthy_volunteers] == "1"
         ret << { term: { healthy_volunteers: true } }
