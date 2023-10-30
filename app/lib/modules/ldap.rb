@@ -5,14 +5,14 @@ module Modules
 
     ###################
     # 1. Authenicate with our departmental LDAP account
-    # 2. If successful, look up the user by x500 in LDAP
+    # 2. If successful, look up the user by username in LDAP
     # 3. If found, authenticate with their LDAP username string and the password they entered into our login form
     # 4. If successful, check if the user exists in Study Finder
     # 5. If not found, create them
     # 6. If found, log them into the Study Finder
     ###################
 
-    def authenticate(x500, password)
+    def authenticate(username, password)
       # initialize our return hash with some defaults
       _return = Hash.new
       _return[:ldap_user] = nil
@@ -35,7 +35,7 @@ module Modules
       if departmental_ldap.bind
 
         # now search for the user logging in
-        filter = Net::LDAP::Filter.eq( "uid", x500 ) # is this correct?
+        filter = Net::LDAP::Filter.eq( "uid", username ) # is this correct?
         user_search = departmental_ldap.search( base: ENV['base'], filter: filter ).first
 
         # departmental_ldap.search( :base => ENV['base'], :filter => filter ) do |entry|

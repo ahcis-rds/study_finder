@@ -57,61 +57,24 @@ RSpec.describe ResearchersController, :type => :controller do
 
   describe "PUT #update" do
     it "successfully changes trial attribute" do
-      create(:system_info, protect_simple_description: false)
+      create(:system_info)
       trial = create(:trial, contact_override_last_name: "Test Name")
       put :update, params: { id: trial.system_id, trial: { contact_override_last_name: "Updated value" }, secret_key: SystemInfo.secret_key}
       trial.reload
       expect( trial.contact_override_last_name).to eq('Updated value')
     end
 
-
-    # context "given SystemInfo.protect_simple_description is false" do
-    #   it "should successfully update simple_description" do
-    #     create(:system_info, protect_simple_description: false)
-    #     trial = create(:trial, simple_description: "Original Description")
-    #     put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
-    #     trial.reload
-    #     expect( trial.simple_description).to eq('Updated value')
-    #   end
-
-    #   it "should issue HTTP 200 but not update simple_description_override" do
-    #     create(:system_info, protect_simple_description: false)
-    #     trial = create(:trial, simple_description_override: "Original Description")
-    #     put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
-    #     trial.reload
-    #     expect( trial.simple_description_override).to eq('Original Description')
-    #   end
-    # end
-
-    # context "given SystemInfo.protect_simple_description is true" do
-    #   it "should successfully update simple_description_override" do
-    #     create(:system_info, protect_simple_description: true)
-    #     trial = create(:trial, simple_description_override: "Original Description")
-    #     put :update, params: { id: trial.system_id, trial: { simple_description_override: "Updated value" }, secret_key: SystemInfo.secret_key}
-    #     trial.reload
-    #     expect( trial.simple_description_override).to eq('Updated value')
-    #   end
-
-    #   it "should issue HTTP 200 but not update simple_description" do
-    #     create(:system_info, protect_simple_description: true)
-    #     trial = create(:trial, simple_description: "Original Description")
-    #     put :update, params: { id: trial.system_id, trial: { simple_description: "Updated value" }, secret_key: SystemInfo.secret_key}
-    #     trial.reload
-    #     expect( trial.simple_description).to eq('Original Description')
-    #   end
-    # end
-
     it "trial with override information" do
-      create(:system_info, protect_simple_description: false)
+      create(:system_info)
       trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001' )
 
-      simple_description = 'Testing adding a simple_description'
+      simple_description_override = 'Testing adding a simple_description_override'
       contact_override = 'jim@aol.com'
       contact_override_first_name = 'Jim'
       contact_override_last_name = 'Smith'
 
       study_finder_trial = {
-        simple_description: simple_description, 
+        simple_description_override: simple_description_override, 
         contact_override: contact_override, 
         contact_override_first_name: contact_override_first_name, 
         contact_override_last_name: contact_override_last_name
@@ -119,7 +82,7 @@ RSpec.describe ResearchersController, :type => :controller do
       
       put :update, params: { id: trial.system_id, trial: study_finder_trial, secret_key: SystemInfo.secret_key }
       
-      expect( assigns(:trial).simple_description ).to eq(simple_description)
+      expect( assigns(:trial).simple_description_override).to eq(simple_description_override)
       expect( assigns(:trial).contact_override ).to eq(contact_override)
       expect( assigns(:trial).contact_override_first_name ).to eq(contact_override_first_name)
       expect( assigns(:trial).contact_override_last_name ).to eq(contact_override_last_name)
@@ -129,7 +92,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when a secret_key is not provided" do
-      create(:system_info, protect_simple_description: false)
+      create(:system_info)
       trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       simple_description = 'Testing adding a simple_description'
@@ -150,7 +113,7 @@ RSpec.describe ResearchersController, :type => :controller do
     end
 
     it "fails when an invalid secret_key is added" do
-      create(:system_info, protect_simple_description: false)
+      create(:system_info)
       trial = create(:trial, brief_title: 'Testing a title', system_id: 'NCT000001')
 
       simple_description = 'Testing adding a simple_description'

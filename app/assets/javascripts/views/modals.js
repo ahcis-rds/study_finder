@@ -89,7 +89,7 @@ $('#contact-study-team-modal').on('show.bs.modal', function (event) {
   var trialId = button.data('trial-id');
   var modal = $(this);
   // pass some trial attributes from the search results into the modal
-  modal.find('.study-email').text(studyEmail).attr('href', 'mailto:' + studyEmail + "?bcc=sfinder+study-team-emails@umn.edu");
+  modal.find('.study-email').text(studyEmail).attr('href', 'mailto:' + studyEmail + "?bcc=" + STUDY_CONTACT_BCC);
   modal.find('#contact-study-team-modal-submit').data('trial_id', trialId).data('button', button);
 
   if(window.studyTeamWidget !== undefined) {

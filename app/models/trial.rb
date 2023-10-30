@@ -564,11 +564,10 @@ class Trial < ApplicationRecord
       end
 
       if search.has_key?('category')
-        ret << { term: { category_ids: search[:category] } }
+        ret << { term: { category_ids: search['category'] } }
       end
-
       if search.has_key?('subcat')
-        ret << { term: { subcategory_ids: search[:subcat] } }
+        ret << { term: { subcategory_ids: search['subcat'] } }
       end
 
       if (search.has_key?('gender')) and (search[:gender] == 'Male' or search[:gender] == 'Female')
@@ -603,11 +602,11 @@ class Trial < ApplicationRecord
     end
 
     if search.has_key?('adults')
-      ret << { range: { max_age: { gte: 19 } } }
+      ret << { range: { max_age: { gte: 18 } } }
     end
 
     if search.has_key?('seniors')
-      ret << { range: { max_age: { gte: 66 } } }
+      ret << { range: { max_age: { gte: 65 } } }
     end
 
     ret

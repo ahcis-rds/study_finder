@@ -10,6 +10,10 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 - Have any questions about StudyFinder, or
 - Want to learn more about updates or enhancements of the tool.
 
+## Upgrade notes for 2.1
+
+The main page carousel/video feature was an accessibility and usability issue, and has been replaced with a three-wide panel of "featured studies". These can be configured in the admin panel, where the carousel configuration formerly was.
+
 ## Development
 
 The easiest way to get started with a development environment is to use `docker-compose`:

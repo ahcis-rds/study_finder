@@ -2,8 +2,8 @@
 lock "3.17.1"
 
 set :application, "study_finder"
-set :repo_url, "https://github.umn.edu/hst/study_finder_umn.git"
-set :deploy_to, "/var/www/webapps/study_finder"
+set :repo_url, "https://your-repo.com/study_finder_umn.git"
+set :deploy_to, "/your/deploy/dir/study_finder"
 set :default_env, { path: "/opt/ruby31/bin:$PATH" }
 set :passenger_restart_with_touch, true
 set :branch, ENV.fetch("GIT_BRANCH", "master").sub(/^origin\//, "")

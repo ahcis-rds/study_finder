@@ -1,1 +1,1 @@
-server "goldfish0.ahc.umn.edu", user: "webcluster2", roles: %w{app db web}
+server "staging-server", user: "deploy-user", roles: %w{app db web}

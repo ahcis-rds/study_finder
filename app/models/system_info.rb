@@ -38,4 +38,12 @@ class SystemInfo < ApplicationRecord
     self.first.try(:google_analytics_version)
   end
 
+  def self.default_email
+    self.first.try(:default_email)
+  end
+
+  def self.study_contact_bcc
+    self.first.try(:study_contact_bcc)
+  end
+
 end

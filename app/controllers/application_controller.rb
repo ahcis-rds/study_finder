@@ -40,6 +40,10 @@ class ApplicationController < ActionController::Base
   end
   helper_method :authorize_researcher
 
+  def page_param
+    params[:page].to_i > 0 ? params[:page].to_i : 1
+  end
+
   private
     def system
       @system_info = SystemInfo.current

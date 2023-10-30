@@ -165,7 +165,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_25_203753) do
     t.boolean "trial_approval", default: false, null: false
     t.boolean "alert_on_empty_system_id", default: false, null: false
     t.string "study_contact_bcc"
-    t.boolean "protect_simple_description", default: false, null: false
     t.boolean "healthy_volunteers_filter", default: true, null: false
     t.boolean "gender_filter", default: true, null: false
     t.integer "google_analytics_version"

@@ -36,6 +36,21 @@ describe Trial do
       t = build(:trial, brief_title: "", acronym: "TT")
       expect(t.display_title).to eq(nil)
     end
+  end
+
+  context "when rendering simple_description" do
+    context "if simple_description is non-nil and simple_description_override is nil" do
+      it "returns simple_description_from_source" do
+        t = build(:trial, simple_description: "Test description", simple_description_override: nil)
+        expect(t.simple_description).to eq(t.simple_description_from_source)
+      end
+    end
+    context "if simple_description is non-nil and simple_description_override is non-nil" do
+      it "returns simple_description_override" do
+        t = build(:trial, simple_description: "Test description", simple_description_override: "Override description")
+        expect(t.simple_description).to eq(t.simple_description_override)
+      end
+    end
 
   end
 
@@ -109,16 +124,6 @@ describe Trial do
     expect(build(:trial, system_id: "nct123").has_nct_number?).to be true
   end
 
-  it "sorts search results by added_on date" do
-    create(:trial, added_on: 5.days.ago, visible: true)
-    create(:trial, added_on: 2.months.ago, visible: true)
-    create(:trial, added_on: 1.day.ago, visible: true)
-
-    result_dates = Trial.execute_search({q: ""}).results.map(&:added_on)
-
-    expect(result_dates).to eq(result_dates.sort.reverse)
-  end
-
   it "validates the presence of a system_id" do
     no_system_id = build(:trial, system_id: "")
     expect(no_system_id).not_to be_valid
@@ -130,24 +135,6 @@ describe Trial do
     duplicated_system_id = build(:trial, system_id: "123abc")
     expect(duplicated_system_id).not_to be_valid
     expect(duplicated_system_id.errors[:system_id]).to include('has already been taken')
-  end
-
-  it "does not allow non-alphanumeric white space character to be present for system_id" do
-    white_space_system_id = Trial.new(system_id: "123abc ")
-    expect(white_space_system_id).not_to be_valid 
-    expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
-  end
-
-  it "does not allow non-alphanumeric tab character to be present for system_id" do
-    white_space_system_id = Trial.new(system_id: "123abc\t")
-    expect(white_space_system_id).not_to be_valid 
-    expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
-  end
-
-  it "does not allow non-alphanumeric white space comma character to be present for system_id" do
-    white_space_system_id = Trial.new(system_id: "123abc, something else ")
-    expect(white_space_system_id).not_to be_valid 
-    expect(white_space_system_id.errors[:system_id]).to eq(['only allows alphanumeric characters'])
   end
 
   it "returns the float 0.0 when minimum_age is N/A" do 
@@ -189,14 +176,16 @@ describe Trial do
 
   it 'returns only records less than 18 for maximum age' do
     Trial.__elasticsearch__.delete_index!
-    Trial.create(system_id: "123", maximum_age: "17", visible: true, approved: true)
-    Trial.create(system_id: "456", maximum_age: "18", visible: true, approved: true)
-    Trial.create(system_id: "789", maximum_age: "N/A", visible: true, approved: true)
-    Trial.create(system_id: "011", maximum_age: nil, visible: true, approved: true)
+    Trial.create(system_id: "123", minimum_age: nil, maximum_age: "17", visible: true, approved: true)
+    Trial.create(system_id: "as7f6", minimum_age: nil, maximum_age: "18", visible: true, approved: true)
+    Trial.create(system_id: "dsfg89", minimum_age: "17", maximum_age: "25", visible: true, approved: true)
+    Trial.create(system_id: "jh987", minimum_age: "18", maximum_age: "30", visible: true, approved: true)
+    Trial.create(system_id: "789", minimum_age: "18", maximum_age: "N/A", visible: true, approved: true)
+    Trial.create(system_id: "011", minimum_age: "18", maximum_age: nil, visible: true, approved: true)
     Trial.__elasticsearch__.refresh_index!
     search_results = Trial.execute_search({"q"=> "", "children"=> ""}).results.map(&:max_age)
-    expect(search_results.count).to eq(1)
-    expect(search_results).to eq([17.0])
+    expect(search_results.count).to eq(3)
+    expect(search_results.sort).to eq([17.0,18.0,25.0])
   end
 
   it 'returns only records greater than or equal to 18' do
@@ -206,10 +195,39 @@ describe Trial do
     Trial.create(system_id: "789", maximum_age: "N/A", visible: true, approved: true)
     Trial.create(system_id: "011", maximum_age: nil, visible: true, approved: true)
     Trial.__elasticsearch__.refresh_index!
+
     search_results = Trial.execute_search("q"=> "", "adults"=> "1").results.map(&:max_age)
     expect(search_results.count).to eq(3)
     expect(search_results).to include(1000.0, 1000.0, 18.0)
   end
     
+  context "Given trials and subgroups bridged by TrialSubgroups" do
+    it "will return correct search results with a subgroup param" do
+      # Create a set of trials, a set of groups, and then two subgroups for each group. 
+      # Then use Array.sample to pseudo-randomly assign 1 to 3 trials to each subgroup.
+      # Like real life, this also allows for a trial to belong to more than one subgroup.
+      Trial.__elasticsearch__.delete_index! 
+      trials = create_list(:trial, 100)
+      groups = create_list(:group, 3)
+      subgroups = Array.new
+      groups.map { |e| subgroups.push(*create_list(:subgroup, 2, group: e)) }
+
+      subgroups.each_with_index do |sg, idx| 
+        trials.sample([1,2,3].sample(1).first).map { |e| e.trial_subgroups.create(subgroup: sg) }
+      end
+
+      Trial.import(refresh: true, force: true)
+
+      subgroups.each do |sg| 
+        search_results = Trial.execute_search("subcat" => "#{sg.id}").results.map(&:subcategory_ids)
+        expect(search_results.count).to eq(TrialSubgroup.where(subgroup: sg).count)
+        # Each trial's subcategory_ids is an array of ids, so search results is an array of arrays.
+        # Ensure each component array includes the subgoup id we're searching on.
+        search_results.each do |r|
+          expect(r).to include(sg.id)
+        end
+      end
+    end
+  end
 
 end

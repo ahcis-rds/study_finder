@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :trial_subgroup do
-    subgroup { nil }
-    trial { nil }
+    association :subgroup
+    association :trial
   end
 end

@@ -24,12 +24,15 @@ describe StudyMailer do
         contact_email_suffix: '@umn.edu'
       )
 
+      @to_address = Faker::Internet.email
+      @phone_number = Faker::PhoneNumber.phone_number
+
       @mail = StudyMailer.contact_team(
-        'jim@aol.com', 
-        'Jason Kadrmas',
-        'kadrm002@umn.edu',
-        '123-453-2345',
-        'This is a test',
+        @to_address,
+        Faker::Name.name,
+        Faker::Internet.email,
+        @phone_number,
+        Faker::GreekPhilosophers.quote,
         @trial.system_id,
         @trial.brief_title,
         @system_info)
@@ -40,7 +43,7 @@ describe StudyMailer do
     end
 
     it 'renders the reciever email' do
-      expect( @mail.to[0] ).to eq('jim@aol.com')
+      expect( @mail.to[0] ).to eq(@to_address)
     end
 
     it 'assigns @title in the mail body' do
@@ -48,7 +51,7 @@ describe StudyMailer do
     end
 
     it "includes phone number" do
-      expect(@mail.body).to match("123-453-2345")
+      expect(@mail.body.raw_source).to match(@phone_number)
     end
 
     after {

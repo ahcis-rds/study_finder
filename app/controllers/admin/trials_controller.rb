@@ -76,12 +76,12 @@ class Admin::TrialsController < ApplicationController
 
   def index
     if params[:q].blank?
-      @trials = Trial.includes(:trial_interventions, :conditions).paginate(page: params[:page]).where(visible: true)
+      @trials = Trial.includes(:trial_interventions, :conditions).page(page_param).where(visible: true)
       if SystemInfo.trial_approval
         @trials = @trials.where(approved: true)
       end
     else
-      @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(params[:page]).records
+      @trials = Trial.includes(:trial_interventions, :conditions).match_all_admin({ q: params[:q].downcase }).page(page_param).records
     end
 
     add_breadcrumb 'Trials Administration'
@@ -114,9 +114,9 @@ class Admin::TrialsController < ApplicationController
   
   def all_under_review
     if params[:q].blank?
-      @trials = Trial.includes(:trial_locations).paginate(page: params[:page]).where(approved: false).where(visible: true).order(created_at: :desc)
+      @trials = Trial.includes(:trial_locations).page(page_param).where(approved: false).where(visible: true).order(created_at: :desc)
     else
-      @trials = Trial.includes(:trial_locations).match_all_under_review_admin({ q: params[:q].downcase }).page(params[:page]).records
+      @trials = Trial.includes(:trial_locations).match_all_under_review_admin({ q: params[:q].downcase }).page(page_param).records
     end
     
     add_breadcrumb 'Trials Administration', :admin_trials_path

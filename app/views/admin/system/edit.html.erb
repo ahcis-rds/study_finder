@@ -33,7 +33,7 @@
           <i>An address to be BCCd when a user sends a message to a study team contact address. This may be used by staff to collect and monitor contact requests.</i>
         </small>
 
-        <!-- <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %> -->
+        <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %>
         <label>Display "Healthy Volunteers" Filter</label>
         <small>
           <i>Turning on will enable the Healthy Volunteer filter for studies.</i>
@@ -179,10 +179,12 @@
     if(window.localStorage.getItem('utm_source')) {
       campaignElement.value = window.localStorage.getItem('utm_source');
     }
-    var formElement = document.getElementById('edit_study_finder_system_info_1');
+    var formElement = document.getElementById('edit_system_info_1');
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
       window.localStorage.setItem('utm_source', campaignElement.value);
       this.submit();
     }, false);
+  });
+
 </script>

@@ -11,7 +11,7 @@ namespace :studyfinder do
     # ==============================================================================================
 
     task :load, [:days_previous] => [:environment] do |t, args|
-      Retrieve x amount of trials days previous from today.
+      # Retrieve x amount of trials days previous from today.
       args.with_defaults(days_previous: 4)
 
       puts "Processing ClinicalTrials.gov data"

@@ -51,7 +51,7 @@
   <hr/>
 
   <% if @trials.empty? %>
-    <div class="alert"><i class="fa fa-warning"></i> There were no trials that matched your search for <strong><%= @search_query %></strong></div>
+    <div class="alert"><i class="fa-solid fa-warning"></i> There were no trials that matched your search for <strong><%= @search_query %></strong></div>
   <% end %>
 
   <% @trials.each_with_index do |t, i| %>
