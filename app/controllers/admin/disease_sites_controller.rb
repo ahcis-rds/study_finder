@@ -15,7 +15,7 @@ class Admin::DiseaseSitesController < ApplicationController
 
   def create
     @site = DiseaseSite.new(site_params)
-    if @site.save(@site)
+    if @site.save
       redirect_to admin_disease_sites_path, flash: { success: 'Site added successfully' }
     else
       render action: 'new'

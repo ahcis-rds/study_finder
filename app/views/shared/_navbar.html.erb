@@ -1,6 +1,6 @@
 <div class="container-fluid">
-  <div class="brand"></div>
-  <%= render "shared/logo.svg" %>
+  <%= image_tag 'logo.png', class: 'logo', alt: 'UMN logo' %>
+  <%= render inline: Rails.root.join('public/logo.svg').read %>
 </div>
 <div id="header-content">
   <div class="alt-header d-block d-md-none"><span>StudyFinder</span></div>
@@ -26,7 +26,7 @@
       <% if is_admin? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle <%= 'active' if params[:controller].include? 'admin' %>" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-cog"></i> Admin
+            <i class="fa-solid fa-cog"></i> Admin
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="width: 250px;">
             <%= link_to 'System Administration', admin_system_index_path, class: 'nav-link' %>
@@ -35,8 +35,9 @@
             <%= link_to 'Site Administration', admin_sites_path, class: 'nav-link' %>
             <%= link_to 'Disease Site Administration', admin_disease_sites_path, class: 'nav-link' %>
             <%= link_to 'Trial Administration', admin_trials_path, class: 'nav-link' %>
-            <%= link_to 'Showcase', admin_showcase_items_path, class: 'nav-link' if @system_info.enable_showcase %>
+            <%= link_to 'Showcase', admin_showcase_items_path, class: 'nav-link' %>
             <%= link_to 'Reports', admin_reports_path, class: 'nav-link' %>
+           
           </div>
         </li>
       <% end %>

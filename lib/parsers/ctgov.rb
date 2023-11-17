@@ -50,7 +50,7 @@ module Parsers
 
     def location
       locations.filter do |location|
-        location.dig("facility", "name").to_s.downcase == location_search_term.downcase
+        location.dig("facility", "name").to_s.try(:downcase) == location_search_term.try(:downcase)
       end.first || {}
     end
 

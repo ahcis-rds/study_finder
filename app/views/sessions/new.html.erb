@@ -1,11 +1,11 @@
 <div class="sign-in-container">
   <div class="sign-in-content">
-    <i class="fa fa-user"></i>
+    <i class="fa-solid fa-user"></i>
     <h2>Sign in</h2>
 
     <%= simple_form_for @user, url: sessions_path do |f| %>
       <div class="form-inputs">
-        <%= f.input :internet_id, required: false, autofocus: true, label: 'Internet ID' %>
+        <%= f.input :internet_id, required: false, autofocus: true, label: username_string %>
         <%= f.input :password, required: false %>
       </div>
 

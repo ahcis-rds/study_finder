@@ -16,7 +16,7 @@ class Admin::ShowcaseItemsController < ApplicationController
   def create
     @item = ShowcaseItem.new(item_params)
     
-    if @item.save(@item)
+    if @item.save
       redirect_to admin_showcase_items_path, flash: { success: 'Item added successfully' }
     else
       render action: 'new'

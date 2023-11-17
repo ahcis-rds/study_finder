@@ -1,19 +1,22 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="pull-left">Trials</h3>
-    <div class="pull-right header-button">
+    <h3 class="float-left">Trials (<%=@trials.count %>)</h3>
+    <div class="float-right header-button">
       <%= link_to 'Add Trial', new_admin_trial_path, class: 'btn btn-school'%>
+      <% if @system_info.trial_approval %>
+        <%= link_to 'Under Review', admin_all_trials_under_review_path, class: 'btn btn-school'%>
+      <% end %>
       <%= link_to 'Import Trials', admin_trials_import_path, class: 'btn btn-outline-secondary'%>
     </div>
   </div>
-  <p class="description">This section is where the administrator can configure trials within StudyFinder. To add a new trial from clincialtrials.gov click the "Add Trial" button above.  Otherwise, use the search box to find a specific trial and then click the "Edit" button to edit specific information related to that trial. You may also see a list of new trials and <a href="<%= admin_trial_recent_as_path %>">Review</a> them.</p>
+  <p class="description">This section is where the administrator can configure trials within StudyFinder. To add a new trial from clinicaltrials.gov click the "Add Trial" button above.  Otherwise, use the search box to find a specific trial and then click the "Edit" button to edit specific information related to that trial. You may also see a list of new trials and <a href="<%= admin_trial_recent_as_path %>">Review</a> them.</p>
   <hr/>
   <div class="clearfix">
-    <div class="pull-left">
+    <div class="float-left">
       <%= form_tag admin_trials_path, method: :get do %>
         <div class="form-group">
           <label>Search</label>
-          <%= text_field_tag :q, params[:q], class: 'form-control', style: 'width: 400px' %>
+          <%= text_field_tag :q, params[:q].try(:downcase), class: 'form-control', style: 'width: 400px' %>
         </div>
         <div class="form-group">
           <%= submit_tag 'Search', class: 'btn btn-school' %>
@@ -21,7 +24,7 @@
         </div>
       <% end %>
     </div>
-    <div class="pull-right">
+    <div class="float-right">
       <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %>
     </div>
   </div>
@@ -34,6 +37,9 @@
       <th>Status</th>
       <th>Recruiting?</th>
       <th>Visible?</th>
+      <% if SystemInfo.trial_approval %>
+        <th>Approved?</th>
+      <% end %>
       <th>Conditions</th>
       <th>Interventions</th>
       <th></th>
@@ -41,17 +47,26 @@
     <% if @trials.empty? && params[:q].nil? %>
       <tr><td colspan="9">There are no trials loaded.  Please make sure the nightly job is running, or add trials manually using the add button above.</td></tr>
     <% elsif @trials.empty? && !params[:q].nil? %>
-      <tr><td colspan="9">No trials found with search criteria <strong><%= params[:q] %></strong></td></tr>
+      <tr><td colspan="9">No trials found with search criteria <strong><%= params[:q].try(:downcase) %></strong></td></tr>
     <% end %>
     <% @trials.each do |t| %>
       <tr>
         <td><%= t.system_id %></td>
         <td><%= t.display_title %></td>
-        <td><%= t.simple_description %></td>
+        <td>
+          <% if t.display_simple_description %>
+            <div class="bg-light-success text-center">Visible</div>
+          <% else %>
+            <div class="bg-light-warning text-center">Hidden</div>
+          <% end %>
+          <%= t.simple_description.try {truncate(180)} %></td>
         <td> <%=t.contact_override_last_name %> <%=t.contact_override_first_name %> <%=t.contact_override %></td>
         <td><%= t.overall_status %></td>
         <td><%= t.recruiting? ? 'Yes' : 'No' %></td>
         <td><%= t.visible? ? 'Yes' : 'No' %></td>
+        <% if SystemInfo.trial_approval %>
+          <td><%= t.approved? ? 'Yes' : 'No' %></td>
+        <% end %>
         <td>
           <ul>
             <% t.conditions.each do |c| %>

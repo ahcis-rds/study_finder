@@ -1,13 +1,13 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="pull-left">Recent Trials (<%= @trials.size %>)</h3>
+    <h3 class="float-left">Recent Trials (<%= @trials.size %>)</h3>
   </div>
   <p class="description">This section is where the administrator can review recent trials within StudyFinder. This report details Trials having recently been imported or modified.</p>
   <hr/>
   <div class="clearfix">
-    <div class="pull-left">
+    <div class="float-left">
       <%= form_tag admin_trial_recent_as_path, method: :get do %>
-        <div class="pull-left row">
+        <div class="float-left row">
           <div class="col-md-3">
             <label>Start Date</label>
             <input id="start_date" name="start_date" class="form-control datepicker" type="text", value="<%=@start_date%>">
@@ -33,7 +33,7 @@
         </div>
       <% end %>
     </div>
-    <div class="pull-right">
+    <div class="float-right">
       <%= link_to 'Back to Reports', admin_reports_path, class: 'btn btn-outline-secondary' %>
     </div>
   </div>

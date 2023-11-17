@@ -40,7 +40,10 @@ module ApplicationHelper
     else
       record['_source'][key]
     end
-
   end
   
+  def username_string
+    ENV['username_string']
+  end
+
 end

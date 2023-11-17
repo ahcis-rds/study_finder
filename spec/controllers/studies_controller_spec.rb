@@ -3,6 +3,11 @@ require "rails_helper"
 RSpec.describe StudiesController, :type => :controller do
 
   describe "GET #index" do
+    before :each do
+      create(:system_info)
+      @study = create(:trial)
+    end
+
     it "responds successfully with an HTTP 200 status code" do
       get :index
       expect(response).to have_http_status(200)
@@ -22,30 +27,28 @@ RSpec.describe StudiesController, :type => :controller do
     end
   end
 
-  describe "GET #show" do
-    
-    before {
-      @study = Trial.create({
-        system_id: 'NCT001test',
-        brief_title: 'test',
-        official_title: 'test'
-      })
-    }
-
-    it "redirects study show page if disabled" do
-      SystemInfo.destroy_all
-      @system_info = SystemInfo.create({ initials: 'UMN', school_name: 'University of Minnesota', system_name: 'StudyFinder', secret_key: 'test', default_email: 'noreply@umn.edu', display_study_show_page: false})
-      
+  describe "GET #show" do 
+    it "redirects study show page if study is not visible" do
+      create(:system_info, display_study_show_page: true)
+      @study = create(:trial, visible: false)
       get :show, params: { id: @study.id }
 
       expect(response).to redirect_to(studies_url)
-      expect(flash[:success]).to eq('Apologies, This page is not available.')
+      expect(flash[:success]).to eq('Apologies, this page is not available.')
+    end 
+
+    it "redirects study show page if disabled" do
+      create(:system_info, display_study_show_page: false)
+      @study = create(:trial, visible: true)
+      get :show, params: { id: @study.id }
+
+      expect(response).to redirect_to(studies_url)
+      expect(flash[:success]).to eq('Apologies, this page is not available.')
     end
 
-    it "successfully renders study show page if enabled" do
-      SystemInfo.destroy_all
-      @system_info = SystemInfo.create({ initials: 'UMN', school_name: 'University of Minnesota', system_name: 'StudyFinder', secret_key: 'test', default_email: 'noreply@umn.edu', display_study_show_page: true})
-      
+    it "successfully renders study show page if enabled and study is visible" do
+      create(:system_info, display_study_show_page: true)
+      @study = create(:trial, visible: true)
       get :show, params: { id: @study.id }
 
       expect(response).to have_http_status(200)

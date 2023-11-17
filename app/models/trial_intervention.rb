@@ -1,5 +1,6 @@
 class TrialIntervention < ApplicationRecord
   self.table_name = 'study_finder_trial_intervents'
+  belongs_to :trial
 
   def to_s
     if !intervention_type.blank? && !intervention.blank?
@@ -13,7 +14,7 @@ class TrialIntervention < ApplicationRecord
 
   def as_json(options = {})
     {
-      type: self.intervention_type,
+      intervention_type: self.intervention_type,
       intervention: self.intervention
     }
   end

@@ -17,7 +17,7 @@ system = {
     <p>To help potential participants better navigate and connect with University research opportunities, we encourage you to periodically review your studies and update the description and contact information, as appropriate.</p><p>Please also be aware that people may email you via StudyFinder to inquire about a study. We urge you to work directly with these potential participants, and to contact the StudyFinder team with any questions.</p><h3>How to update your study</h3><p>You can update select study information on this website or directly in the source data (<a href=\"http://clinicaltrials.gov\">ClinicalTrials.gov</a> and/or OnCore).</p><p>To update your study on StudyFinder: </p>
     <ul>
       <li>Click on the maroon  \"Look up/Edit Study Information\" button toward the bottom of this page.</li>
-      <li>Log in using your x500.</li>
+      <li>Log in using your Internet ID.</li>
       <li>Look up your study information by entering the System ID, which is either Study NCT ID from <a href=\"http://clinicaltrials.gov\">ClinicalTrials.gov</a>, or Protocol ID from OnCore.</li>
       <li>Ensure the primary contact is a suitable person for potential participants to reach out to via email.</li>
       <li>Save your changes by entering the secret key, and clicking the \"Update Trial\" button at the bottom of the page.</li>
@@ -45,6 +45,14 @@ system_info.secret_key = system[:secret_key]
 system_info.contact_email_suffix = system[:contact_email_suffix]
 
 system_info.save!
+
+# ============================================
+# API Key
+# ============================================
+
+k = ApiKey.new(name: 'test_api_key')
+k.save
+puts "API Key: #{k.token}"
 
 # ============================================
 # Parsers

@@ -2,8 +2,8 @@
   <h2>Edit System Information</h2>
   <p class="description">This section is where the administrator can configure how StudyFinder works.</p>
   <div class="last-updated">
-    <i class="fa fa-info-circle big-icon"></i>
-    <strong>Trials Last Updated: <%= @updated.created_at.strftime('%m-%d-%Y') %></strong>
+    <i class="fa-solid fa-info-circle big-icon"></i>
+    <strong>Trials Last Updated: <%= @updated_at %></strong>
   </div>
 
   <br/>
@@ -28,13 +28,37 @@
         <%= f.input :faq_description, as: :text, input_html: { rows: 5 }, label: 'FAQ description' %>
         <%= f.input :default_url %>
         <%= f.input :default_email %>
-        <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %>
+        <%= f.input :study_contact_bcc %>
+        <small>
+          <i>An address to be BCCd when a user sends a message to a study team contact address. This may be used by staff to collect and monitor contact requests.</i>
+        </small>
 
+        <%= f.input :secret_key, hint: 'Secret key will be required by researchers to add or update trials.' %>
+        <label>Display "Healthy Volunteers" Filter</label>
+        <small>
+          <i>Turning on will enable the Healthy Volunteer filter for studies.</i>
+        </small>
+        <%= f.input :healthy_volunteers_filter, as: :select, label: false %>
+        <label>Display "Gender" Filter</label>
+        <small>
+          <i>Turning on will enable the Gender filter for studies.</i>
+        </small>
+        <%= f.input :gender_filter, as: :select, label: false %>
         <label>Add Captcha to email forms</label>
         <small>
-          <i>(Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.)</i>
+          <i>Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.</i>
         </small>
         <%= f.input :captcha, as: :select, label: false %>
+
+        <label>Require admin approval for imported trials</label>
+        <small>
+          <i>Turning on will hide imported trials from public view. Trials will appear in a 'Under Review' queue in the admin panel, where they can be reviewed and approved.</i>
+        </small>
+        <%= f.input :trial_approval, as: :select, label: false %>
+
+        <label>Notify admin when the API receives a study creation request with an empty System ID</label>
+        <%= f.input :alert_on_empty_system_id, as: :select, label: false %>
+
       </div>
       <div class="tab-pane fade" id="override" role="tabpanel" aria-labelledby="override-tab">
         <h4> System Override Options</h4>
@@ -76,24 +100,9 @@
 
         <label>Display Showcase</label>
         <small>
-          <i>(Enable a carousel of uploaded images and videos on the site homepage. ***This replaces the main image.)</i>
+          <i>(Enable a section of uploaded images with headers, captions, and links on the site homepage. ***This replaces the main image.)</i>
         </small>
         <%= f.input :enable_showcase, as: :select, label: false, include_blank: false %>
-
-        <div class="card card-body bordered">
-          <label>Enable Indicators</label>
-          <small>
-            <i>(Show indicators for each slide on the carousel)</i>
-          </small>
-          <%= f.input :show_showcase_indicators, as: :select, label: false, include_blank: false %>
-
-          <label>Enable Controls</label>
-          <small>
-            <i>(Add controls to allow users to scroll the carousel)</i>
-          </small>
-          <%= f.input :show_showcase_controls, as: :select, label: false, include_blank: false %>
-
-        </div>
       </div>
       <div class="tab-pane fade" id="trial-display" role="tabpanel" aria-labelledby="trial-display-tab">
         <h4> Study Attribute Display Options</h4>
@@ -151,6 +160,7 @@
         <h4> Analytics/Tracking Options</h4>
         <label>Google analytics tracking ID</label>
         <%= f.input :google_analytics_id, label: false %>
+        <%= f.input :google_analytics_version, collection: [['Universal',3],['GA 4',4]] %>
         <%= f.input :research_match_campaign %>
         <div class="form-group string optional">
           <label class="string optional control-label" for="campaign_source"}>Campaign Source</label>
@@ -169,10 +179,12 @@
     if(window.localStorage.getItem('utm_source')) {
       campaignElement.value = window.localStorage.getItem('utm_source');
     }
-    var formElement = document.getElementById('edit_study_finder_system_info_1');
+    var formElement = document.getElementById('edit_system_info_1');
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
       window.localStorage.setItem('utm_source', campaignElement.value);
       this.submit();
     }, false);
+  });
+
 </script>

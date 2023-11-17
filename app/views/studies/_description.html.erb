@@ -5,7 +5,7 @@
   display_label = !!setting["display_label_on_#{page}"]
 %>
 
-<% if display && !study.simple_description.blank? %>
+<% if display && !study.simple_description.blank? && study.display_simple_description %>
   <div data-attribute-name="simple_description">
     <% if display_label %>
       <label class="nomargin strong mb-n1">Description:</label>

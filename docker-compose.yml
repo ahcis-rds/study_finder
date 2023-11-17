@@ -1,24 +1,27 @@
 version: '3'
 services:
   elasticsearch:
-    image: elasticsearch:7.4.2
+    image: elasticsearch:8.10.2
     environment:
       - "discovery.type=single-node"
       - "xpack.security.enabled=false"
+      - "xpack.ml.enabled=false"
     volumes:
       - ./config/analysis:/usr/share/elasticsearch/config/analysis
       - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "127.0.0.1:9200:9200"
   postgres:
-    image: postgres:11
+    image: postgres:15
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "127.0.0.1:5432:5432"
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -rf tmp/cache/* && rm -f tmp/pids/server.pid && bin/dev"
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
@@ -27,7 +30,7 @@ services:
       - ELASTICSEARCH_URL=elasticsearch
       - theme=umn
     ports:
-      - 3000:3000
+      - "127.0.0.1:3000:3000"
     depends_on:
       - elasticsearch
       - postgres

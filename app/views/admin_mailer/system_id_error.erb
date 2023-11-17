@@ -1,0 +1,15 @@
+<h4 style="text-decoration:underline">System ID - "<%= @system_id %>"</h4>
+
+
+<p>System ID "<%= @system_id %>" could not be created because it has the following errors:
+
+<ul>
+  <%@errors.each do |e|%>
+    <li>System ID <%= e %></li>
+  <%end%>
+</ul>
+
+<p>This record will need to be manually updated in OnCore in order to resolve the issue.</p>
+
+<p>Once the is updated in Oncore, additional clean up may be required.</p>
+

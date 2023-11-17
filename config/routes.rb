@@ -11,7 +11,10 @@ Rails.application.routes.draw do
     get 'trials/recent', controller: 'trials', action: 'recent_as', as: 'trial_recent_as'
     post 'trials/review/:id', controller: 'trials', action: 'review', as: 'review_trial'
     post 'trials/preview', controller: 'trials', action: 'preview', as: 'trial_preview'
-
+    get 'trials/all_under_review', controller: 'trials', action: 'all_under_review', as: 'all_trials_under_review'
+    get 'trials/under_review/:id', controller: 'trials', action: 'under_review', as: 'trial_under_review'
+    post 'trials/approved/:id', controller: 'trials', action: 'approved', as: 'trial_approved'
+    resources :approvals, only: ['index']
     get 'groups/reindex', controller: 'groups', action: 'reindex', as: 'group_reindex'
     resources :groups
     resources :sites
@@ -44,7 +47,12 @@ Rails.application.routes.draw do
   get 'embed', controller: 'search', action: 'embed', as: :embed
 
   namespace :api do
-    resources :studies, only: [:index, :show, :update, :create]
+    resources :studies, only: [:index, :show, :update, :create] do
+      collection do
+        get 'valid_attributes'
+        get 'visible'
+      end
+    end
   end
 
   root 'home#index'

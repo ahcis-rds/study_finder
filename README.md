@@ -10,6 +10,10 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 - Have any questions about StudyFinder, or
 - Want to learn more about updates or enhancements of the tool.
 
+## Upgrade notes for 2.1
+
+The main page carousel/video feature was an accessibility and usability issue, and has been replaced with a three-wide panel of "featured studies". These can be configured in the admin panel, where the carousel configuration formerly was.
+
 ## Development
 
 The easiest way to get started with a development environment is to use `docker-compose`:
@@ -39,8 +43,7 @@ Running Study Finder on a web server requires:
 - Ruby 2.4+
 - A configured database w/ connection.  Doesn't really matter which type (Postgres, Oracle, MySQL)
 - LDAP server that can be used to authenticate StudyFinder users for admin access.  
-- ElasticSearch 7.x (Note: 6.x and 8.x may work, but are not tested.)
-  [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/install-elasticsearch.html)
+- ElasticSearch 8.x [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html)
 - ElasticSearch synonyms file. In /app/models/trial.rb there is a configuration path to the synonyms file that is needed for elasticsearch to work properly. Please copy /config/analysis/synonyms.txt to the location below **on the ElasticSearch server/container**:
 
 ```ruby
@@ -108,6 +111,20 @@ Themes are the recommended method for customizing the appearance of the site. Us
 ## Other Site Customization
 
 Many aspects of your site can be customized from the site itself, via the admin interface. To access the admin interface, LDAP authentication must be configured. Click "Sign In" at the bottom of the home page, and then you will see an "Admin" link on the navbar. The first option, "System Administration", allows you to manage what fields do and don't appear on some screens, set label text, define the location search term for data loads from clinicaltrials.gov, and much more. 
+
+## ElasticSearch synonyms
+
+The default trial search configuration uses a query-time synonym_graph filter. It supports multi-term synonyms, e.g. 'caloric restrictions' and 'low calorie diet'. When trials are indexed, ElasticSearch creates the search analyzer for this. You *do not* have to re-index trials if the synonyms are updated, because it is a query-time filter. 
+
+The default location for synonyms is in an array defined in 'lib/modules/trial_synonyms.rb'. Updates to the synonyms can be picked up by restarting the Rails service. 
+
+Alternately, you can use a synonyms file. To use a synonyms file, use the configuration option:
+
+```ruby
+  config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
+```
+
+This file is on the ElasticSearch server, *not* part of the Rails application. In deployed environments, you will need to copy your synonyms file to this location. This isn't necessary in the development docker container; just put your file in 'config/analysis/'. Docker-compose which mounts 'config/analysis' within the Rails app to the above path in the ElasticSearch  container. This allows easier access for modifying synonyms during development, as you can work with them directly in 'config/analysis/synonyms.txt' within the Rails app structure.
 
 ## Trademark
 

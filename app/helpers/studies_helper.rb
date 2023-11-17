@@ -6,40 +6,14 @@ module StudiesHelper
   end
 
   def determine_contacts(trial)
-    contact_suffix = @system_info.contact_email_suffix
-
     if !trial.contact_override.blank?
       # Always use the override, if available.
       return [{ 
         email: trial.contact_override,
         first_name: trial.contact_override_first_name,
         last_name: trial.contact_override_last_name
-      }]
-    elsif !contact_suffix.nil? and (
-        ( !trial.contact_email.nil? and trial.contact_email.include?(contact_suffix) ) or
-        ( !trial.contact_backup_email.nil? and trial.contact_backup_email.include?(contact_suffix) )
-      )
-
-      contacts = []
-      if !trial.contact_email.nil? && trial.contact_email.include?(contact_suffix)
-        contacts << {
-          email: trial.contact_email,
-          first_name: trial.contact_first_name,
-          last_name: trial.contact_last_name
-        }
-      end
-
-      if !trial.contact_backup_email.nil? && trial.contact_backup_email.include?(contact_suffix)
-        contacts << {
-          email: trial.contact_backup_email,
-          first_name: trial.contact_backup_first_name,
-          last_name: trial.contact_backup_last_name
-        }
-      end
-
-      return contacts
-    
-    elsif (!trial.contact_email.nil? or !trial.contact_backup_email.nil?) and contact_suffix.nil?
+      }]    
+    elsif !trial.contact_email.nil? or !trial.contact_backup_email.nil?
       # Use the overall contacts, if appropriate.
       contacts = []
       if !trial.contact_email.nil?
@@ -48,9 +22,9 @@ module StudiesHelper
           first_name: trial.contact_first_name,
           last_name: trial.contact_last_name
         }
-      end
+      
 
-      if !trial.contact_backup_email.nil?
+      elsif !trial.contact_backup_email.nil?
         contacts << {
           email: trial.contact_backup_email,
           first_name: trial.contact_backup_first_name,
@@ -59,7 +33,7 @@ module StudiesHelper
       end
 
       return contacts
-    elsif !trial.trial_locations.empty? && !contact_suffix.nil?
+    elsif !trial.trial_locations.empty?
       # Overall contacts didn't work, search within locations.
       contacts = contacts_by_location(trial.trial_locations)
       if !contacts.empty?
@@ -117,7 +91,9 @@ module StudiesHelper
 
   def remove_category_param
     p = params.dup
-    p[:search] = p[:search].except('category')
+    if p[:search]
+      p[:search] = p[:search].except('category')
+    end
     return "#{request.path}?#{p.to_unsafe_h.to_query}"
   end
 
@@ -137,9 +113,9 @@ module StudiesHelper
     rendered = '<div class="healthy-message" data-toggle="popover" data-title="Healthy Volunteer" data-content="A person who does not have the condition or disease being studied." data-placement="top">'
             
     if study.healthy_volunteers == true
-      rendered = rendered + '<i class="fa fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa fa-question-circle"></i>'
+      rendered = rendered + '<i class="fa-solid fa-check-circle"></i>This study is also accepting healthy volunteers <i class="fa-solid fa-circle-question"></i>'
     else
-      rendered = rendered + '<i class="fa fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa fa-question-circle"></i>'
+      rendered = rendered + '<i class="fa-solid fa-exclamation-triangle"></i>This study is NOT accepting healthy volunteers <i class="fa-solid fa-circle-question"></i>'
     end
     rendered = rendered + '</div>'
 
@@ -148,8 +124,7 @@ module StudiesHelper
 
   def render_age_display(study)
     return nil if study.min_age_unit.nil? && study.max_age_unit.nil?
-
-    if (study.respond_to?(:min_age_unit) && study.respond_to?(:max_age_unit))
+    if (!study.min_age_unit.nil? && !study.max_age_unit.nil?)
       age_display_units(study.min_age_unit, study.max_age_unit)
     else
       age_display(study.min_age, study.max_age)
@@ -158,25 +133,29 @@ module StudiesHelper
 
   def age_display_units(min_age_unit, max_age_unit)
     if min_age_unit == 'N/A' and max_age_unit != 'N/A'
-      return "up to #{max_age_unit} old"
+      return "up to #{max_age_unit} old".downcase.capitalize
     elsif min_age_unit != 'N/A' and max_age_unit == 'N/A'
-      return "#{min_age_unit} and over"
+      return "#{min_age_unit} and over".downcase.capitalize
     elsif min_age_unit == 'N/A' and max_age_unit == 'N/A'
       return "Not specified"
     else
-      return "#{min_age_unit} to #{max_age_unit} old"
+      return "#{min_age_unit} to #{max_age_unit} old".downcase.capitalize
     end
   end
 
   def age_display(min_age, max_age)
     age = ''
-    unless (min_age.nil? and max_age.nil?) or (min_age == 0 and max_age == 1000)
-      unless min_age.nil? or min_age == 0
+    unless (min_age.nil? and max_age.nil?) or (min_age == 0.0 and max_age == 1000.0)
+      unless min_age.nil? or min_age == 0.0
         unless (min_age % 1).zero?
           # There is a decimal value.  Let's convert it.
           age << "#{(min_age * 12).round} month(s)"
         else
-          age << "#{min_age.to_i} year(s)"
+          if min_age.to_i == 1
+            age << "#{min_age.to_i} year"
+          else 
+            age << "#{min_age.to_i} years"
+          end
         end
       else
         age << 'up to '
@@ -190,7 +169,7 @@ module StudiesHelper
           # There is a decimal value.  Let's convert it.
           age << "#{(max_age * 12).round} month(s) old"
         else
-          age << "#{max_age.to_i} year(s) old"
+          age << "#{max_age.to_i} years old"
         end
       else
         age << ' and over'
@@ -198,7 +177,7 @@ module StudiesHelper
     else
       age << 'Not specified'
     end
-    age
+    age.downcase.capitalize
   end
 
   def contacts_display(c)
@@ -215,6 +194,19 @@ module StudiesHelper
     contacts.html_safe
   end
 
+  def contacts_excel(c)
+    contacts = ''
+    c.each do |contact|
+      unless contact[:first_name].nil?
+        contacts << "#{contact[:first_name]} "
+      end
+      unless contact[:last_name].nil?
+        contacts << "#{contact[:last_name]} - "
+      end
+      contacts << "#{contact[:email]}"
+    end
+    contacts.to_s
+  end
   def site(site)
     site_name = site.site_name
 

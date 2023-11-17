@@ -23,7 +23,7 @@ Rails.application.configure do
   config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(:harmony => true)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -79,7 +79,10 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # LOCAL
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { address: ENV['smtp_host'], port: 25 }
   config.action_mailer.default_url_options = { host: ENV['DEFAULT_URL_HOST'], protocol: ENV['DEFAULT_URL_PROTOCOL'] || 'https' }
+
+ #config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
 end

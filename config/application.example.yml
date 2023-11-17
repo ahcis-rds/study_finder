@@ -8,3 +8,4 @@ theme: 'umn'
 ELASTICSEARCH_URL: 'elastic.umn.edu'
 wkhtmltopdf_binary_path: 'PATH'
 DEFAULT_URL_HOST: 'yourstudyfinder.example.com' # Used in email links/URLs
+username_string: 'Internet ID' # What a login 'username' is called at your institution. Appears in various templates.
