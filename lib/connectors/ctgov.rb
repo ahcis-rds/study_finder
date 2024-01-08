@@ -101,7 +101,7 @@ module Connectors
 
     def cleanup_stray_trials(nct_ids = nil)
       nct_ids ||= site_nct_ids
-      stray_trials(nct_ids).update(visible: false)
+      stray_trials(nct_ids).update!(visible: false)
     end
 
     def nct_ids_for_location(location, page_token = nil)
