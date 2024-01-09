@@ -127,7 +127,7 @@ module Connectors
       payload = JSON.parse(response.body || "{}")
 
       response_ids = Array(payload.dig("studies")).map do |result|
-       result.dig("protocolSection").dig("identificationModule").dig("nctId")
+        result.dig("protocolSection").dig("identificationModule").dig("nctId")
       end
 
       # Add the ids we just received, and ...
