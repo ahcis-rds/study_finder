@@ -34,6 +34,14 @@ namespace :studyfinder do
       Trial.import force: true
     end
 
+    task cleanup_strays: :environment do |t, args|
+      puts "Cleaning up stray trials"
+      connector = Connectors::Ctgov.new
+      trials = connector.cleanup_stray_trials
+      puts "Have un-published (system_ids): "
+      puts trials.map{ |e| " #{e.system_id}\n" }
+    end
+
     # ==============================================================================================
     # studyfinder:ctgov:reload_all
     # Note: Dangerous business here!!  This will delete and reload data from every

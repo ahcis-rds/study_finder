@@ -90,55 +90,74 @@ module Connectors
       TrialCondition.delete_all
     end
 
+    def site_nct_ids
+      nct_ids_for_location(SystemInfo.search_term)
+    end
+
     def stray_trials
-      Trial.where.not(system_id: nct_ids_for_location(@system_info.search_term))
+      Trial.where(parser_id: @parser_id).where.not(nct_id: self.site_nct_ids)
     end
 
     def cleanup_stray_trials
-      stray_trials.destroy_all
+      stray_trials.update_all(visible: false)
     end
 
-    private
-
-      def extract_zip
-        dirname = "#{Rails.root}/tmp/"
-        unless File.directory?(dirname)
-          FileUtils.mkdir_p(dirname)
-        end
-
-        unless File.directory?("#{dirname}trials/")
-          FileUtils.mkdir_p("#{dirname}trials/")
-        end
-
-        FileUtils.rm_rf(Dir.glob("#{dirname}trials/*"))
-        Zip::File.open("#{dirname}search_result.zip") do |file|
-          file.each do |entry|
-            file.extract(entry, "#{dirname}trials/#{entry.name}")
-          end
-        end
-      end
-
-    def nct_ids_for_location(location, start = 1, endd = 1000, ids = [])
-      response = HTTParty.get(
-        "https://classic.clinicaltrials.gov/api/query/study_fields",
-        query: {
-          expr: "SEARCH[Location](AREA[LocationFacility]#{location})",
+    def nct_ids_for_location(location, page_token = nil)
+      csc = 'M Health Fairview Clinics and Surgery Center'
+      ids = []
+      q = {
+          'query.locn' => "SEARCH[Location](AREA[LocationFacility]#{location} AND AREA[LocationStatus]RECRUITING)",
           fields: "NCTId",
-          min_rnk: start,
-          max_rnk: endd,
-          fmt: "json"
+          countTotal: true,
+          pageSize: 1000,
+          format: "json"
         }
-      )
-
-      response_ids = Array(JSON.parse(response.body || "{}").dig("StudyFieldsResponse").dig("StudyFields")).map do |result|
-        Array(result.dig("NCTId")).first
+      
+      # API only wants a pageToken arg at all if we are actually asking for one.
+      if !page_token.blank?
+        q[:pageToken] = page_token
       end
 
-      if response_ids.empty?
-        ids
-      else
-        nct_ids_for_location(location, endd + 1, endd + 1000, ids + response_ids)
+      response = HTTParty.get(
+        "https://clinicaltrials.gov/api/v2/studies",
+        query: q
+      )
+      payload = JSON.parse(response.body || "{}")
+
+      response_ids = Array(payload.dig("studies")).map do |result|
+        result.dig("protocolSection").dig("identificationModule").dig("nctId")
+      end
+
+      # Add the ids we just received, and ...
+      ids.push(*response_ids)
+
+      # ... recurse if there's another page. 
+      if payload.dig("nextPageToken")
+        ids.push(*(nct_ids_for_location(location, payload.dig("nextPageToken"))))
+      end
+
+      return ids
+    end
+    
+    private
+    
+    def extract_zip
+      dirname = "#{Rails.root}/tmp/"
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+
+      unless File.directory?("#{dirname}trials/")
+        FileUtils.mkdir_p("#{dirname}trials/")
+      end
+
+      FileUtils.rm_rf(Dir.glob("#{dirname}trials/*"))
+      Zip::File.open("#{dirname}search_result.zip") do |file|
+        file.each do |entry|
+          file.extract(entry, "#{dirname}trials/#{entry.name}")
+        end
       end
     end
+
   end
 end
