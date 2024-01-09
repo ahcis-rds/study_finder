@@ -14,10 +14,12 @@ describe Connectors::Ctgov do
       expect(will_hide.visible).to be_truthy
       expect(wont_hide.first.visible).to be_truthy
 
-      strays = ctgov.stray_trials(remaining_ids)
+      allow(ctgov).to receive(:site_nct_ids).and_return(remaining_ids)
+
+      strays = ctgov.stray_trials
       expect(strays.map { |e| e.nct_id }).to include(will_hide.nct_id)
 
-      ctgov.cleanup_stray_trials(remaining_ids)
+      ctgov.cleanup_stray_trials
       will_hide.reload
       expect(will_hide.visible).to be_falsey
       expect(wont_hide.first.visible).to be_truthy
@@ -36,7 +38,9 @@ describe Connectors::Ctgov do
       expect(will_hide.visible).to be_truthy
       expect(wont_hide_2.visible).to be_truthy
 
-      ctgov.cleanup_stray_trials(remaining_ids)
+      allow(ctgov).to receive(:site_nct_ids).and_return(remaining_ids)
+      
+      ctgov.cleanup_stray_trials
       will_hide.reload
 
       expect(will_hide.visible).to be_falsey

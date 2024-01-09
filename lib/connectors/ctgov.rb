@@ -94,14 +94,12 @@ module Connectors
       nct_ids_for_location(SystemInfo.search_term)
     end
 
-    def stray_trials(nct_ids = nil)
-      nct_ids ||= site_nct_ids
-      Trial.where(parser_id: @parser_id).where.not(nct_id: nct_ids)
+    def stray_trials
+      Trial.where(parser_id: @parser_id).where.not(nct_id: self.site_nct_ids)
     end
 
-    def cleanup_stray_trials(nct_ids = nil)
-      nct_ids ||= site_nct_ids
-      stray_trials(nct_ids).update!(visible: false)
+    def cleanup_stray_trials
+      stray_trials.update_all(visible: false)
     end
 
     def nct_ids_for_location(location, page_token = nil)
