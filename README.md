@@ -10,9 +10,11 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 - Have any questions about StudyFinder, or
 - Want to learn more about updates or enhancements of the tool.
 
-## Upgrade notes for 2.1
+## Upgrade notes for 2.2
+The built-in clinicaltrials.gov connector has been transitioned fully to the clinicaltrials.gov V2 API. This includes two breaking changes in the private API for the ctgov connector. 
 
-The main page carousel/video feature was an accessibility and usability issue, and has been replaced with a three-wide panel of "featured studies". These can be configured in the admin panel, where the carousel configuration formerly was.
+1. In `Connectors::Ctgov#load(start_date,end_date)` the start and end dates must now be in ISO format YYYY-MM-DD (the old format was MM/DD/YYYY). Any custom tasks that directly call this method should be updated.
+2. `Connectors::Ctgov#load(start_date,end_date)` now calls `Connectors::Ctgov#process` itself to recurse through the V2 API's paged results. Formerly, `load` and `process` had to be called separately in that order. Remove any direct calls to `process` in order to avoid a redundant re-processing of the last "page" of data from the API. 
 
 ## Development
 
