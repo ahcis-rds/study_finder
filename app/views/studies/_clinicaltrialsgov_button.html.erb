@@ -1,5 +1,5 @@
 <% if Trial.is_nct_number?(study.nct_id) %>
-  <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/ct2/show/study/<%= study.nct_id%>" onclick="track('send', 'event', 'ctgov', 'click', {'nct_id':'<%= study.nct_id %>'});" target="_blank">
+  <a class="btn btn-school btn-more-info" href="https://www.clinicaltrials.gov/study/<%= study.nct_id%>" onclick="track('send', 'event', 'ctgov', 'click', {'nct_id':'<%= study.nct_id %>'});" target="_blank">
     <i class="fa-solid fa-info-circle"></i>
     See this study on ClinicalTrials.gov
   </a>
