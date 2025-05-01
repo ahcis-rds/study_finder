@@ -10,6 +10,11 @@ Contact the StudyFinder team at studyfinder@umn.edu if you:
 - Have any questions about StudyFinder, or
 - Want to learn more about updates or enhancements of the tool.
 
+## Architecture
+
+Please see the [StudyFinder architecture overview](architecture.md) for details regarding the scope of StudyFinder and
+its documentation, dependencies, application environment, and security. 
+
 ## Upgrade notes for 2.2
 The built-in clinicaltrials.gov connector has been transitioned fully to the clinicaltrials.gov V2 API. This includes two breaking changes in the private API for the ctgov connector. 
 
