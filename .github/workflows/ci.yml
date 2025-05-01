@@ -11,6 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Prepare database
-      run: docker-compose run web rails db:setup
+      run: docker compose run web rails db:setup
     - name: Run tests
-      run: docker-compose run web rspec
+      run: docker compose run web rspec

@@ -4,10 +4,10 @@ services:
   - docker
 
 before_install:
-  - docker-compose run -e RAILS_ENV=test web bundle exec rake db:create db:migrate
+  - docker compose run -e RAILS_ENV=test web bundle exec rake db:create db:migrate
 
 script:
-  - docker-compose run web bundle exec rspec
+  - docker compose run web bundle exec rspec
 
 # have travis not email after every update
 notifications:
