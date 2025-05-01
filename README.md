@@ -23,9 +23,9 @@ The built-in clinicaltrials.gov connector has been transitioned fully to the cli
 
 ## Development
 
-The easiest way to get started with a development environment is to use `docker-compose`:
+The easiest way to get started with a development environment is to use `docker compose`:
 
-1. Run `USER=username docker-compose run web rake db:setup` to initialize your
+1. Run `USER=username docker compose run web rake db:setup` to initialize your
 database and search index. 
 
     The username value will be used to create an initial admin user; you should set it to the username you will use with LDAP authentication.
@@ -40,7 +40,7 @@ database and search index.
     }
     ```
     (Once the site is up, this is availble as a setting in the front-end admin interface.)
-1. Run `docker-compose up -d` to start a development server.
+1. Run `docker compose up -d` to start a development server.
 1. Visit `http://localhost:3000/` to view the application.
 
 ## Deployment
