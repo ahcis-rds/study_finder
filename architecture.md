@@ -53,8 +53,10 @@ implement as necessary.
 
 ## Security
 
-StudyFinder is intended to capture publicly viewable and searchable study
-information. It is NOT intended to handle sensitive data, including
+This information is intended to share which technologies are used, and
+what has been done by us to reduce, but not eliminate, the risk of IT security
+incidents. StudyFinder is intended to capture publicly viewable and searchable
+study information. It is NOT intended to handle sensitive data, including
 HIPAA-covered private health information. StudyFinder adheres to Ruby on Rails
 defaults for standard security for web applications per se; it uses secure
 HTTPS connections, has protection against cross-site scripting attacks, etc.
@@ -72,4 +74,10 @@ application, is the responsibility of the adopter. For example, securing the
 network between StudyFinder any any sensitive data sources that you decide to
 integrate is your responsibility and outside the scope of the StudyFinder
 application per se. 
+
+## Accessibility
+
+StudyFinder targets compliance with the ADA Title II rules published April 24,
+2024. The application is regularly scanned using a variety of common web
+accessibility evaluation tools, and updates made based on the results. 
 
