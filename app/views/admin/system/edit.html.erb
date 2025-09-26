@@ -1,25 +1,22 @@
 <div class="admin">
-  <h2>Edit System Information</h2>
+  <h1>Edit System Information</h1>
   <p class="description">This section is where the administrator can configure how StudyFinder works.</p>
   <div class="last-updated">
     <i class="fa-solid fa-info-circle big-icon"></i>
     <strong>Trials Last Updated: <%= @updated_at %></strong>
   </div>
-
   <br/>
-
   <%= simple_form_for @system, url: admin_system_path do |f| %>
-    
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item active"><a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information</a></li>
-      <li class="nav-item"><a class="nav-link" id="override-tab" data-toggle="tab" href="#override" role="tab" aria-controls="override" aria-selected="false">System Override Options</a></li>
-      <li class="nav-item"><a class="nav-link" id="trial-display-tab" data-toggle="tab" href="#trial-display" role="tab" aria-controls="trial-display" aria-selected="false">Study Attribute Display Options</a></li>
-      <li class="nav-item"><a class="nav-link" id="tracking-tab" data-toggle="tab" href="#tracking" role="tab" aria-controls="tracking" aria-selected="false">Analytics/Tracking Options</a></li>
+      <li class="nav-item active"><a class="nav-link nav-link-contrast active  " id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information</a></li>
+      <li class="nav-item"><a class="nav-link nav-link-contrast " id="override-tab" data-toggle="tab" href="#override" role="tab" aria-controls="override" aria-selected="false">System Override Options</a></li>
+      <li class="nav-item"><a class="nav-link nav-link-contrast " id="trial-display-tab" data-toggle="tab" href="#trial-display" role="tab" aria-controls="trial-display" aria-selected="false">Study Attribute Display Options</a></li>
+      <li class="nav-item"><a class="nav-link nav-link-contrast " id="tracking-tab" data-toggle="tab" href="#tracking" role="tab" aria-controls="tracking" aria-selected="false">Analytics/Tracking Options</a></li>
     </ul>
     <br>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
-        <h4> Basic Information</h4>
+        <h2> Basic Information</h2>
         <%= f.input :initials %>
         <%= f.input :school_name %>
         <%= f.input :system_header %>
@@ -39,77 +36,68 @@
           <i>Turning on will enable the Healthy Volunteer filter for studies.</i>
         </small>
         <%= f.input :healthy_volunteers_filter, as: :select, label: false %>
-        <label>Display "Gender" Filter</label>
+        <label for="system_info_gender_filter">Display "Gender" Filter</label>
         <small>
           <i>Turning on will enable the Gender filter for studies.</i>
         </small>
         <%= f.input :gender_filter, as: :select, label: false %>
-        <label>Add Captcha to email forms</label>
+        <label for="system_info_captcha">Add Captcha to email forms</label>
         <small>
           <i>Turning on captcha will require a recaptcha key.  Refer to the readme instructions on github for more details.</i>
         </small>
         <%= f.input :captcha, as: :select, label: false %>
-
-        <label>Require admin approval for imported trials</label>
+        <label for="system_info_trial_approval">Require admin approval for imported trials</label>
         <small>
           <i>Turning on will hide imported trials from public view. Trials will appear in a 'Under Review' queue in the admin panel, where they can be reviewed and approved.</i>
         </small>
         <%= f.input :trial_approval, as: :select, label: false %>
-
-        <label>Notify admin when the API receives a study creation request with an empty System ID</label>
+        <label for="system_info_alert_on_empty_system_id">Notify admin when the API receives a study creation request with an empty System ID</label>
         <%= f.input :alert_on_empty_system_id, as: :select, label: false %>
 
       </div>
       <div class="tab-pane fade" id="override" role="tabpanel" aria-labelledby="override-tab">
-        <h4> System Override Options</h4>
-        <label>Search Term</label>
+        <h2> System Override Options</h2>
+        <label for='system_info_search_term'>Search Term</label>
         <small>
           <i>(Search term is the term that will be used to pull clinical trials from ClinicalTrials.gov)</i>
         </small>
         <%= f.input :search_term, label: false %>
-
-        <label>Contact email suffix</label>
+        <label for="system_info_contact_email_suffix">Contact email suffix</label>
         <small>
           <i>(If populated, the system will find and display only contacts with this email pattern. On a trial located at multiple sites, the system will attempt to provide a @umn.edu email as the contact.)</i>
         </small>
         <%= f.input :contact_email_suffix, label: false %>
-
-        <label>Display Locations</label>
+        <label for="system_info_display_all_locations">Display Locations</label>
         <small>
           <i>(When a trial is located at multiple sites "display locations" determines if those other sites be listed within StudyFinder)</i>
         </small>
         <%= f.input :display_all_locations, as: :select, label: false %>
-
-        <label>Display Keywords</label>
+        <label for="system_info_display_keywords" >Display Keywords</label>
         <small>
           <i>(Show a trial's keywords in the search results)</i>
         </small>
         <%= f.input :display_keywords, as: :select, label: false %>
-
-        <label>Display Categories Page</label>
+        <label for="system_info_display_groups_page">Display Categories Page</label>
         <small>
           <i>(Show categories upon viewing the "Search for a Study" page)</i>
         </small>
         <%= f.input :display_groups_page, as: :select, label: false, include_blank: false %>
-
-        <label>Display Study Show Page</label>
+        <label for="system_info_display_study_show_page">Display Study Show Page</label>
         <small>
           <i>(Create a landing page for each study)</i>
         </small>
         <%= f.input :display_study_show_page, as: :select, label: false, include_blank: false %>
-
-        <label>Display Showcase</label>
+        <label for="system_info_enable_showcase">Display Showcase</label>
         <small>
           <i>(Enable a section of uploaded images with headers, captions, and links on the site homepage. ***This replaces the main image.)</i>
         </small>
         <%= f.input :enable_showcase, as: :select, label: false, include_blank: false %>
       </div>
       <div class="tab-pane fade" id="trial-display" role="tabpanel" aria-labelledby="trial-display-tab">
-        <h4> Study Attribute Display Options</h4>
-
+        <h2> Study Attribute Display Options</h2>
         <table class="table">
           <tr>
-            <th colspan="2"></th>
+            <th colspan="2">Study Attribute Settings</th>
             <th colspan="3" class="highlight-col text-center">List Page Display Settings</th>
             <th colspan="3" class="text-center">Show Page Display Settings</th>
           </tr>
@@ -125,31 +113,37 @@
           </tr>
           <% @system.trial_attribute_settings.order(:attribute_name).each do |t| %>
             <tr>
-              <input type="hidden" value="<%=t.id%>" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][id]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_id" ></input>
-              <td><%= t.attribute_name %></td>
+              <input type="hidden" value="<%=t.id%>" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][id]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_id" >
+              <td><label for="system_info_trial_attribute_settings_attributes_<%=t.id%>_attribute_label"><%= t.attribute_name %></label></td>
               <td><input type="text" value="<%= t.attribute_label %>" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][attribute_label]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_attribute_label"></td>
               <td class="highlight-col">
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_list">
+                <label class='sr-only' for="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_list"><%= t.attribute_name %> List Page Display Attribute</label>
                 <input type="checkbox" value="1" <% if t.display_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_list">
               </td>
               <td class="highlight-col">
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_if_null_on_list">
+                <label class='sr-only' for="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_if_null_on_list"><%= t.attribute_name %> List Page Display If Blank</label>
                 <input type="checkbox" value="1" <% if t.display_if_null_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_if_null_on_list">
               </td>
               <td class="highlight-col">
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_label_on_list">
+                <label class='sr-only' for="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_list"><%= t.attribute_name %> List Page Display Label</label>
                 <input type="checkbox" value="1" <% if t.display_label_on_list %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_list]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_list">
               </td>
               <td>
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_show">
+                <label class='sr-only' for="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_show"><%= t.attribute_name %> Show Page Display Attribute</label>
                 <input type="checkbox" value="1" <% if t.display_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_on_show">
               </td>
               <td>
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_if_null_on_show">
+                <label class='sr-only' for="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_if_null_on_show"><%= t.attribute_name %> Show Page Display If Blank</label>
                 <input type="checkbox" value="1" <% if t.display_if_null_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_if_null_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_if_null_on_show">
               </td>
               <td>
                 <input type="hidden" value="0" name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>display_label_on_show">
+                <label class='sr-only' for="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_show"><%= t.attribute_name %> Show Page Display If Blank</label>
                 <input type="checkbox" value="1" <% if t.display_label_on_show %>checked="checked"<% end %> name="system_info[trial_attribute_settings_attributes][<%=t.id%>][display_label_on_show]" id="system_info_trial_attribute_settings_attributes_<%=t.id%>_display_label_on_show">
               </td>
             </tr>
@@ -157,14 +151,14 @@
         </table>
       </div>
       <div class="tab-pane fade" id="tracking" role="tabpanel" aria-labelledby="tracking-tab">
-        <h4> Analytics/Tracking Options</h4>
-        <label>Google analytics tracking ID</label>
+        <h2> Analytics/Tracking Options</h2>
+        <label for='system_info_google_analytics_id'>Google analytics tracking ID</label>
         <%= f.input :google_analytics_id, label: false %>
         <%= f.input :google_analytics_version, collection: [['Universal',3],['GA 4',4]] %>
         <%= f.input :research_match_campaign %>
         <div class="form-group string optional">
           <label class="string optional control-label" for="campaign_source"}>Campaign Source</label>
-          <input class="string optional form-control" id="campaign_source"></input>
+          <input class="string optional form-control" id="campaign_source">
         </div>
       </div>
     </div>

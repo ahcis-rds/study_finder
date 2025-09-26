@@ -1,12 +1,11 @@
-
-  <div class="admin">
-    <div class="clearfix">
-      <h3 class="float-left">Under Review (<%= @trials.count%>)  </h3> 
+<div class="admin">
+  <div class="clearfix">
+    <h1 class="float-left">Under Review (<%= @trials.count%>)  </h1>
     <div class="float-right header-button">
       <%= link_to 'All Trials', admin_trials_path, class: 'btn btn-school'%>
       <%= link_to 'Approvals History',  admin_approvals_path, class: 'btn btn-school'%>
-       <%= link_to "Export All to Excel", admin_all_trials_under_review_path(format: :xls), class: 'btn btn-success' %>
-      </div>
+      <%= link_to "Export All to Excel", admin_all_trials_under_review_path(format: :xls), class: 'btn btn-school' %>
+    </div>
   </div>
   
   <p class="description">This section is where an administrator can approve trials under review. </p>
@@ -15,31 +14,27 @@
   <p class="description"> Click on "Approve" to indicate that the trial under review has sufficient information to be made public in the Study Finder results. Click on "Show Details" to see all the details related to a trial. "Show Details"  will provide additional options to "Edit" or "Approve"  the trial.</p>
   
   <p class="description">
-    Once a trial is approved, it can take up to 24 hours for it to appear in search results due to indexing. If a study needs to be made available as soon as possible, the reindexing process will need to be manually run via "Reindex" from the <%= link_to "Admin Groups page", admin_groups_path %>.</p>
-  
-
- 
-
+    Once a trial is approved, it can take up to 24 hours for it to appear in search results due to indexing. If a study needs to be made available as soon as possible, the reindexing process will need to be manually run via "Reindex" from the <%= link_to "Admin Groups page", admin_groups_path, class: "nav-link-contrast" %>.</p>
   <hr/>
   <div class="clearfix">
-      <div class="float-left">
-        <%= form_tag admin_all_trials_under_review_path, method: :get do %>
-          <div class="form-group">
-            <label>Search</label>
-            <%= text_field_tag :q, params[:q].try(:downcase), class: 'form-control', style: 'width: 400px' %>
-          </div>
-          <div class="form-group">
-            <%= submit_tag 'Search', class: 'btn btn-school' %>
-            <%= link_to 'Clear', admin_all_trials_under_review_path, class: 'btn btn-outline-secondary' %>
-          </div>
-        <% end %>
-      </div>
-      <div class="float-right"> 
-        <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %> 
-     </div>
+    <div class="float-left">
+      <%= form_tag admin_all_trials_under_review_path, method: :get do %>
+        <div class="form-group">
+          <label for='q'>Search</label>
+          <%= text_field_tag :q, params[:q].try(:downcase), class: 'form-control', style: 'width: 400px' %>
+        </div>
+        <div class="form-group">
+          <%= submit_tag 'Search', class: 'btn btn-school' %>
+          <%= link_to 'Clear', admin_all_trials_under_review_path, class: 'btn btn-outline-secondary' %>
+        </div>
+      <% end %>
     </div>
-
-
+    <div class="float-right">
+      <%= will_paginate @collection, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %>
+    </div>
+  </div>
+</div>
+<div>
   <table class="table table-bordered table-trials-under-review">
   <thead>
       <tr>

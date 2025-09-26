@@ -4,8 +4,8 @@
       <div class="row">
 
         <div class="col-12 col-lg-4 col-md-5">
-          <h3 class=""><i class="fa-solid fa-search"></i><%=  text_field_tag 'search[q]', search_value(params[:search], 'q'), placeholder: 'keywords, conditions, etc', class: 'input-search refine-search typeahead', autocomplete: 'off' %></h3>
-
+          <%= label_tag 'search[q]', 'Search', class: 'sr-only'%>
+          <div id='refine-search'><i class="fa-solid fa-search"></i><%=  text_field_tag 'search[q]', search_value(params[:search], 'q'), placeholder: 'keywords, conditions, etc', class: 'input-search refine-search typeahead', autocomplete: 'off' %></div>
           <div class="buttons ">
             <% if !params[:search].nil? and !params[:search][:category].nil? %>
               <input type='hidden' name='search[category]' value="<%=params[:search][:category]%>"></input>

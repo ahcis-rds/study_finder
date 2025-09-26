@@ -1,15 +1,15 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="float-left">Disease Sites</h3>
-    <div class="float-right header-button"><%= link_to 'Add Site', new_admin_disease_site_path, class: 'btn btn-school'%></div>  
+    <h1 class="float-left">Disease Sites</h1>
+    <div class="float-right header-button"><%= link_to 'Add Site', new_admin_disease_site_path, class: 'btn btn-school'%></div>
   </div>
   <p class="description">The site section allows the administrator to add different disease sites to the system.  These disease sites can then be tagged on a particular trial.</p>
-  
   <table class="table table-bordered table-trials">
+    <caption>Disease Sites</caption>
     <tr>
       <th>Disease Site Name</th>
       <th>Group</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
     <% if @sites.empty? %>
       <tr>

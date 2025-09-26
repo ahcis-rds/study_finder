@@ -231,10 +231,10 @@ module StudiesHelper
 
     if page == 'show' && setting.display_on_show && !(setting.display_if_null_on_show == false && (attribute.nil? || attribute.blank?))
       #configured to show up on the page unless attribute is nil
-      rendered = rendered + '<label class="nomargin strong">' + setting.attribute_label + '</label> ' if setting.display_label_on_show
+      rendered = rendered + '<span class="nomargin strong attribute-label">' + setting.attribute_label + '</span> ' if setting.display_label_on_show
       rendered = rendered + open_tag + attribute.to_s + close_tag
     elsif page == 'list' && setting.display_on_list && !(setting.display_if_null_on_list == false && (attribute.nil? || attribute.blank?))
-      rendered = rendered + '<label class="nomargin strong">' + setting.attribute_label + '</label> ' if setting.display_label_on_list
+      rendered = rendered + '<span class="nomargin strong attribute-label">' + setting.attribute_label + '</span> ' if setting.display_label_on_list
       rendered = rendered + open_tag + attribute.to_s + close_tag
     end
     rendered = '<div data-attribute-name=' + setting.attribute_key + '>' + rendered + '</div>' unless rendered == ''

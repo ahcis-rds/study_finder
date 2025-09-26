@@ -1,21 +1,20 @@
 <div class="main-content banner-content">
   <div class="row">
     <div class="col-lg-4 d-none d-md-block">
-      <h2 class="banner-text">Be part of tomorrow's healthcare breakthroughs</h2>
-        <p class="banner-text">When you participate in a <%= @system_info.school_name %> study, you can help create a healthier future.</p>
-        <br>
-        <div class="banner-text">
-          <%= link_to 'Find a study', categories_path, class: 'btn btn-school btn-lg' %>
-        </div>
-        <br>
+      <h1 id='homepage-banner' class="banner-text">Be part of tomorrow's healthcare breakthroughs</h1>
+      <p class="banner-text">When you participate in a <%= @system_info.school_name %> study, you can help create a healthier future.</p>
+      <br>
+      <div class="banner-text">
+        <%= link_to 'Find a study', categories_path, class: 'btn btn-school btn-lg' %>
+      </div>
+      <br>
     </div>
     <div class="col-8 d-none d-md-block">
-      <%= image_tag 'home-collage.jpg', class: 'float-right d-none d-xl-block' %>
-      <%= image_tag 'home-collage-condensed.jpg', class: 'float-right d-none d-lg-block d-xl-none' %>
+      <%# image_tag 'home-collage.jpg', class: 'float-right d-none d-xl-block', alt: "" %>
+      <%# image_tag 'home-collage-condensed.jpg', class: 'float-right d-none d-lg-block d-xl-none', alt: "" %>
     </div>
   </div>
 </div>
-
 <div class="content home mt-5 p0">
   <div class="card card-body bg-light">
     <div class="row">

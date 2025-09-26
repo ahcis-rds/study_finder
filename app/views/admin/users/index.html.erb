@@ -1,15 +1,14 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="float-left">Users</h3>
-    <div class="float-right header-button"><%= link_to 'Add User', new_admin_user_path, class: 'btn btn-school'%></div>  
+    <h1 class="float-left">Users</h1>
+    <div class="float-right header-button"><%= link_to 'Add User', new_admin_user_path, class: 'btn btn-school'%></div>
   </div>
   <p class="description">This section is where the administrator can add/edit other admin users within StudyFinder.  To add a new user click the "Add User" button above.  You will need their unique email and <%= username_string %>.  Once a user has been added, they will be able to access the entire admininstration area, so only grant these privileges to administrative staff.</p>
-  
   <table class="table table-bordered table-trials">
     <tr>
       <th>Name</th>
       <th>Email</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
     <% if @users.empty? %>
       <tr>
@@ -19,10 +18,10 @@
     <% @users.each do |u| %>
       <tr>
         <td><%= u.full_name %></td>
-        <td><%= mail_to u.email%></td>
+        <td><%= mail_to u.email, class: 'nav-link-contrast'%></td>
         <td>
-          <%= link_to 'Edit', edit_admin_user_path(u.id), class: 'btn btn-primary' %>
-          <%= link_to 'Delete', admin_user_path(u.id), method: 'delete', class: 'btn btn-danger', data: { confirm:"Are you sure you want to delete this user?" }%>
+          <%= link_to 'Edit', edit_admin_user_path(u.id), class: 'btn btn-primary btn-primary-contrast' %>
+          <%= link_to 'Deactivate',  deactivate_admin_users_path(id: u.id, 'user[active]': false), method: 'post', class: 'btn btn-danger', data: { confirm:"Are you sure you want to deactivate this user?" }%>
         </td>
       </tr>
     <% end %>

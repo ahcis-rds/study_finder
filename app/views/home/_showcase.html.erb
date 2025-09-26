@@ -8,12 +8,12 @@
             <div class="card">
               <% unless !item.showcase_image.attached? && item.url.blank? %>
                 <% if item.showcase_image.attached? %>
-                  <%= image_tag item.showcase_image, class: 'w-100 card-img-top img-fluid d-none d-sm-block' %>
+                  <%= image_tag item.showcase_image, class: 'w-100 card-img-top img-fluid d-sm-block', alt: item.alt_text  %>
                 <% end %>
               <% end %>
               <div class="card-body">
-                <div class="card-title" style=""> 
-                  <h5 ><%= item.title.to_s %></h5>
+                <div class="card-title" style="">
+                  <h3 ><%= item.title.to_s %></h3>
                 </div>
                 <p class="card-text"><%= item.caption.to_s %></p>
               </div>

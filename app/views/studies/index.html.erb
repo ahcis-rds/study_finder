@@ -20,10 +20,9 @@
 
 <div class="study-results">
   <div class="study-results-info">
-    <h3>Search Results <%= (@group.blank? || @search_category.blank?) ? '' : 'Within Category "' + @group.group_name + '"' %></h3>
+    <h1>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h1>
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
-
-    <% unless @search_category.blank? %>
+    <% if !params[:search].nil? and !params[:search][:category].nil? %>
       <a class="btn btn-outline-secondary hide-on-print" href="<%=remove_category_param%>">Search all categories</a>
       <hr class="tighten"/>
       <% unless @group.blank? || @group.subgroups.empty? %>
@@ -47,22 +46,19 @@
       </div>
     </div>
   </div>
-
   <hr/>
-
   <% if @trials.empty? %>
     <div class="alert"><i class="fa-solid fa-warning"></i> There were no trials that matched your search for <strong><%= @search_query %></strong></div>
   <% end %>
-
   <% @trials.each_with_index do |t, i| %>
     <div class="study">
-      <h4>
+      <h2>
         <% if @system_info.display_study_show_page %>
           <%= link_to highlight(t, 'display_title'), study_path(id: t.id) %>
         <% else %>
           <%= highlight(t, 'display_title') %>
         <% end %>
-      </h4>
+      </h2>
       <% c = determine_contacts(t) %>
       <%= render "description", study: t, settings: @attribute_settings %>
       <%= render_attribute(@attribute_settings, 'overall_status', 'list', t.overall_status) %>
@@ -85,31 +81,25 @@
           <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
         </div>
       <% end %>
-
       <%= render_attribute(@attribute_settings, 'interventions', 'list', t.interventions.to_s.gsub(/;/,',').html_safe) %>
       <%= render_attribute(@attribute_settings, 'conditions', 'list', t.conditions_map.to_s.gsub(/;/,',').html_safe) %>
       <%= render_attribute(@attribute_settings, 'keywords', 'list', t.keywords.to_s.gsub(/;/,',').html_safe) %>
       <%= render_attribute(@attribute_settings, 'sites', 'list', t.sites.map{|x| site(x) }.join('; ')) %>
       <%= render_attribute(@attribute_settings, 'disease_sites', 'list', t.disease_sites.map{|x| x.disease_site_name }.join('; ')) %>
-
       <div class="trial-cta-options hide-on-print">
         <% unless t.recruitment_url.blank? %>
           <a class="btn btn-school-inverse" href="<%=t.recruitment_url%>" target="_blank"><i class="fa-solid fa-users" target="_blank"></i> Visit study website</a>
         <% end %>
-
         <% contact_method = determine_contact_method(t) %>
         <% if contact_method == 'url' %>
-          <a class="btn btn-school" href="<%= render_contact_url(t) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
+          <a class="btn btn-school btn-study-outlink" href="<%= render_contact_url(t) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
         <% elsif contact_method == 'email' %>
           <% unless c.empty? %>
             <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{t.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
           <% end %>
         <% end %>
-
         <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', {'system_id':'<%= t.system_id %>'});"><i class="fa-solid fa-envelope"></i> Share via email</div>
-
         <%= render partial: "clinicaltrialsgov_button", locals: { study: t } %>
-
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
           <div class="btn btn-school btn-all-locations">
             <i class="fa-solid fa-location-arrow"></i>

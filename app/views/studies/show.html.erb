@@ -1,17 +1,24 @@
+<% if is_admin? && !@study.visible %>
+  <div class='alert alert-warning'>
+    This study is not visible -- you can see this page as an admin.
+  </div>
+<% end %>
+<% if is_admin? && !@study.approved %>
+  <div class='alert alert-warning'>
+    This study is not approved -- you can see this page as an admin.
+  </div>
+<% end %>
 <%= render 'captcha' %>
-
 <% c = determine_contacts(@study) %>
-
 <div class="container study-results clearfix">
   <h1><%= @study.brief_title %></h1>
-  <%= image_tag @study_photo, class: 'bordered float-lg-right ml-4 mb-4 study-photo' %>
+  <%= image_tag @study_photo, class: 'bordered float-lg-right ml-4 mb-4 study-photo', alt: "" %>
   <%= render_attribute(@attribute_settings, 'overall_status', 'show', @study.overall_status) %>
   <%= render "description", study: @study, settings: @attribute_settings %>
-
   <div class="button-holder hide-on-print">
     <% contact_method = determine_contact_method(@study) %>
     <% if contact_method == 'url' %>
-      <a class="btn btn-school" href="<%= render_contact_url(@study) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
+      <a class="btn btn-school btn-study-outlink" href="<%= render_contact_url(@study) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
     <% elsif contact_method == 'email' %>
       <% unless c.empty? %>
         <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{@study.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
