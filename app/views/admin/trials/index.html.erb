@@ -42,12 +42,16 @@
       <% end %>
       <th>Conditions</th>
       <th>Interventions</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
     <% if @trials.empty? && params[:q].nil? %>
-      <tr><td colspan="9">There are no trials loaded.  Please make sure the nightly job is running, or add trials manually using the add button above.</td></tr>
+      <tr>
+        <td colspan="9">There are no trials loaded.  Please make sure the nightly job is running, or add trials manually using the add button above.</td>
+      </tr>
     <% elsif @trials.empty? && !params[:q].nil? %>
-      <tr><td colspan="9">No trials found with search criteria <strong><%= params[:q].try(:downcase) %></strong></td></tr>
+      <tr>
+        <td colspan="9">No trials found with search criteria <strong><%= params[:q].try(:downcase) %></strong></td>
+      </tr>
     <% end %>
     <% @trials.each do |t| %>
       <tr>

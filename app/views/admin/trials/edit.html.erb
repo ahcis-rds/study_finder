@@ -1,53 +1,47 @@
 <div class="admin">
   <h1>Edit Trial</h1>
-  <label>Title</label>
+  <div>Title</div>
   <p><%= @trial.display_title %></p>
-  <label>Sex</label>
+  <div>Sex</div>
   <p><%= @trial.gender %></p>
-  <label>Status</label>
+  <div>Status</div>
   <p><%= @trial.overall_status %></p>
-  <label>System ID</label>
+  <div>System ID</div>
   <p><%= @trial.system_id %></p>
-
   <%= simple_form_for @trial, url: admin_trial_path, method: :put do |f| %>
     <%= f.input :simple_description_override %>
-    Simple Description (imported): <i><%= f.object.simple_description %><br><br>
-    <%= f.input :display_simple_description, as: :select %>
-    <%= f.input :contact_override %>
-    <%= f.input :contact_override_first_name %>
-    <%= f.input :contact_override_last_name %>
-    <%= f.input :contact_url_override, hint: 'If supplied, the "Contact the Study Team" button will redirect to the specified URL instead of opening the contact modal.' %>
-    <%= f.input :recruitment_url %>
-    <%= f.input :irb_number, label: 'IRB Number' %>
-    <%= f.input :healthy_volunteers_override, as: :select, include_blank: true %>
-    <%= f.input :visible, as: :select %>
-    <%= f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false %>
-    <%= f.input :cancer_yn, as: :select, collection: [['Yes', 'Y'],['No', 'N']], include_blank: true, label: 'Cancer Y/N' %>
-
-    <%= f.input :pi_name, label: 'PI Name' %>
-    <%= f.input :pi_id, label: 'PI ID' %>
-
-    <%= f.association :sites, label_method: :site_name, value_method: :id, input_html: { class: 'select2' } %>
-    <%= f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' } %>
-
-    <%= f.input :photo, label: "Custom study image", input_html: { class: "form-control" } %>
-    <small class="form-text text-muted study-photo-help">Please upload web-optimized images with a maximum width of 500px.</small>
-
-    <% if @trial.photo.attached? %>
-      <div class="my-5">
-        <p>Current image:</p>
-        <%= image_tag @trial.photo, class: "img-fluid" %>
-
-        <div class="form-check">
-          <input type="checkbox" name="delete_photo" id="delete-photo" />
-          <label class="form-check-label" for="delete-photo">Delete this image</label>
+    Simple Description (imported): <i><%= f.object.simple_description %><br>
+      <br>
+      <%= f.input :display_simple_description, as: :select %>
+      <%= f.input :contact_override %>
+      <%= f.input :contact_override_first_name %>
+      <%= f.input :contact_override_last_name %>
+      <%= f.input :contact_url_override, hint: 'If supplied, the "Contact the Study Team" button will redirect to the specified URL instead of opening the contact modal.' %>
+      <%= f.input :recruitment_url %>
+      <%= f.input :irb_number, label: 'IRB Number' %>
+      <%= f.input :healthy_volunteers_override, as: :select, include_blank: true %>
+      <%= f.input :visible, as: :select %>
+      <%= f.input :featured, as: :select, collection: [['No', 0],['Yes', 1]], include_blank: false %>
+      <%= f.input :cancer_yn, as: :select, collection: [['Yes', 'Y'],['No', 'N']], include_blank: true, label: 'Cancer Y/N' %>
+      <%= f.input :pi_name, label: 'PI Name' %>
+      <%= f.input :pi_id, label: 'PI ID' %>
+      <%= f.association :sites, label_method: :site_name, value_method: :id, input_html: { class: 'select2' } %>
+      <%= f.association :disease_sites, label_method: :disease_site_label, value_method: :id, input_html: { class: 'select2' } %>
+      <%= f.input :photo, label: "Custom study image", input_html: { class: "form-control" } %>
+      <small class="form-text text-muted study-photo-help">Please upload web-optimized images with a maximum width of 500px.</small>
+      <% if @trial.photo.attached? %>
+        <div class="my-5">
+          <p>Current image:</p>
+          <%= image_tag @trial.photo, class: "img-fluid" %>
+          <div class="form-check">
+            <input type="checkbox" name="delete_photo" id="delete-photo" />
+            <label class="form-check-label" for="delete-photo">Delete this image</label>
+          </div>
         </div>
+      <% end %>
+      <div class="mt-4">
+        <%= f.submit 'Update Trial', class: 'btn btn-school' %>
+        <%= link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-outline-secondary' %>
       </div>
     <% end %>
-
-    <div class="mt-4">
-      <%= f.submit 'Update Trial', class: 'btn btn-school' %>
-      <%= link_to 'Back to trials admin', admin_trials_path, class: 'btn btn-outline-secondary' %>
-    </div>
-  <% end %>
-</div>
+  </div>

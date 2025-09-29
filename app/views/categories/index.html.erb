@@ -1,10 +1,15 @@
 <div class="study-result-hud hide-on-print">
   <%= render 'shared/refine_search' %>
 </div>
+<div class="center-text">
+  <h1>Categories</h1>
+</div>
 <div class="row categories">
   <% @groups.each do |g| %>
     <div class="col-md-2">
-      <a href="<%=studies_path(search: { category: g.id }.merge(g.apply_filters)) %>"><p><%= g.group_name%></p></a>
+      <a href="<%=studies_path(search: { category: g.id }.merge(g.apply_filters)) %>">
+        <p><%= g.group_name%></p>
+      </a>
       <div class="label"><%= g.study_count %></div>
     </div>
   <% end %>

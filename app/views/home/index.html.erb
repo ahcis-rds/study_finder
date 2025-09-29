@@ -10,8 +10,8 @@
       <br>
     </div>
     <div class="col-8 d-none d-md-block">
-      <%# image_tag 'home-collage.jpg', class: 'float-right d-none d-xl-block', alt: "" %>
-      <%# image_tag 'home-collage-condensed.jpg', class: 'float-right d-none d-lg-block d-xl-none', alt: "" %>
+      <%= image_tag 'home-collage.jpg', class: 'float-right d-none d-xl-block', alt: "" %>
+      <%= image_tag 'home-collage-condensed.jpg', class: 'float-right d-none d-lg-block d-xl-none', alt: "" %>
     </div>
   </div>
 </div>
@@ -29,14 +29,11 @@
     </div>
   </div>
   <br>
-
   <% if @system_info.enable_showcase && @showcase.size > 0 %>
     <hr>
     <%= render 'showcase' %>
   <% end %>
-  
   <hr>
-
   <div class="row">
     <div class="col-md-6 study-highlights">
       <%= render 'themed/home_lower_left' %>
