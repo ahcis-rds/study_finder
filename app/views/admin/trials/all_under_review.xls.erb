@@ -1,22 +1,11 @@
 <?xml version="1.0"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:o="urn:schemas-microsoft-com:office:office"
   xmlns:x="urn:schemas-microsoft-com:office:excel"
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:html="http://www.w3.org/TR/REC-html40">
-  <Worksheet ss:Name="TrialsUnderReview">
-    <Table>
-      <Row>
-        <Cell><Data ss:Type="String">System ID</Data></Cell>
-        <Cell><Data ss:Type="String">Brief Title</Data></Cell>
-        <Cell><Data ss:Type="String">Brief Description</Data></Cell>
-        <Cell><Data ss:Type="String">Protocol Type</Data></Cell>
-        <Cell><Data ss:Type="String">Study Contact</Data></Cell>
-        <Cell><Data ss:Type="String">PI</Data></Cell>
-        <Cell><Data ss:Type="String">Keywords</Data></Cell>
-        <Cell><Data ss:Type="String">Date Added</Data></Cell>
-      </Row>
-      <% @trials.each do |t| %>
+    <Worksheet ss:Name="TrialsUnderReview">
+      <Table>
         <Row>
           <Cell><Data ss:Type="String"><%= t.system_id%></Data></Cell>
           <Cell><Data ss:Type="String"><%= t.brief_title %></Data></Cell>

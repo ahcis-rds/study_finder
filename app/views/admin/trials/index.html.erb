@@ -1,6 +1,6 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="float-left">Trials (<%=@trials.count %>)</h3>
+    <h1 class="float-left">Trials (<%=@trials.count %>)</h1>
     <div class="float-right header-button">
       <%= link_to 'Add Trial', new_admin_trial_path, class: 'btn btn-school'%>
       <% if @system_info.trial_approval %>
@@ -9,13 +9,13 @@
       <%= link_to 'Import Trials', admin_trials_import_path, class: 'btn btn-outline-secondary'%>
     </div>
   </div>
-  <p class="description">This section is where the administrator can configure trials within StudyFinder. To add a new trial from clinicaltrials.gov click the "Add Trial" button above.  Otherwise, use the search box to find a specific trial and then click the "Edit" button to edit specific information related to that trial. You may also see a list of new trials and <a href="<%= admin_trial_recent_as_path %>">Review</a> them.</p>
+  <p class="description">This section is where the administrator can configure trials within StudyFinder. To add a new trial from clinicaltrials.gov click the "Add Trial" button above.  Otherwise, use the search box to find a specific trial and then click the "Edit" button to edit specific information related to that trial. </p>
   <hr/>
   <div class="clearfix">
     <div class="float-left">
       <%= form_tag admin_trials_path, method: :get do %>
         <div class="form-group">
-          <label>Search</label>
+          <%= label_tag :q, "Search"%>
           <%= text_field_tag :q, params[:q].try(:downcase), class: 'form-control', style: 'width: 400px' %>
         </div>
         <div class="form-group">
@@ -42,12 +42,16 @@
       <% end %>
       <th>Conditions</th>
       <th>Interventions</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
     <% if @trials.empty? && params[:q].nil? %>
-      <tr><td colspan="9">There are no trials loaded.  Please make sure the nightly job is running, or add trials manually using the add button above.</td></tr>
+      <tr>
+        <td colspan="9">There are no trials loaded.  Please make sure the nightly job is running, or add trials manually using the add button above.</td>
+      </tr>
     <% elsif @trials.empty? && !params[:q].nil? %>
-      <tr><td colspan="9">No trials found with search criteria <strong><%= params[:q].try(:downcase) %></strong></td></tr>
+      <tr>
+        <td colspan="9">No trials found with search criteria <strong><%= params[:q].try(:downcase) %></strong></td>
+      </tr>
     <% end %>
     <% @trials.each do |t| %>
       <tr>

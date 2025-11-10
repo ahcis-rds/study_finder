@@ -5,36 +5,34 @@
     <%= f.input :sort_order, as: :integer, label: 'Order' %>
     <%= f.input :title, hint: '<small><i>(Heading for the showcase item.)</i></small>'.html_safe %>
     <%= f.input :caption, hint: '<small><i>(Text for the showcase item.)</i></small>'.html_safe %>
+    <%= f.input :alt_text, hint: '<small><i>(Alt text for the showcase item.)</i></small>'.html_safe%>
     <div class="form-group optional">
       <label class="control-label optional" for="showcase_item_showcase_image">Image Upload</label><br/>
       <%= f.file_field :showcase_image %>
     </div>
     <%= f.input :url, label: 'URL', hint: '<small><i>(URL that the "Learn More" button will link to.)</i></small>'.html_safe %>
   </div>
-
   <% if @item.showcase_image.attached? || !@item.url.blank? %>
-  		<h4>Preview</h4>
-
-      <div class="col-md-4 card border-0">
-        <div class="card-text">
-          <% unless !@item.showcase_image.attached? && @item.url.blank? %>
-            <% if @item.showcase_image.attached? %>
-              <%= image_tag @item.showcase_image, class: 'w-100' %>
-            <% end %>
+    <h2>Preview</h2>
+    <div class="col-md-4 card border-0">
+      <div class="card-text">
+        <% unless !@item.showcase_image.attached? && @item.url.blank? %>
+          <% if @item.showcase_image.attached? %>
+            <%= image_tag @item.showcase_image, class: 'w-100', alt: @item.alt_text %>
           <% end %>
-        </div>
-        <div class="card-header align-items-center justify-content-center h-100"> 
-          <h5 class="caption-title"><%= @item.title.to_s %></h5>
-          <span style="float: right; position: relative; bottom: 0;">
+        <% end %>
+      </div>
+      <div class="card-header align-items-center justify-content-center h-100">
+        <h3 class="caption-title"><%= @item.title.to_s %></h3>
+        <span style="float: right; position: relative; bottom: 0;">
           <%= link_to 'Learn More', @item.url, class: 'btn btn-secondary' %>
         </span>
-        </div>
       </div>
-  	</div>
-  <% end %>
-
-  <div class="controls">
-    <%= f.submit 'Save', class: 'btn btn-school' %>
-    <%= link_to 'Back to Showcase', admin_showcase_items_path, class: 'btn btn-secondary' %>
+    </div>
   </div>
+<% end %>
+<div class="controls">
+  <%= f.submit 'Save', class: 'btn btn-school' %>
+  <%= link_to 'Back to Showcase', admin_showcase_items_path, class: 'btn btn-secondary' %>
+</div>
 <% end %>

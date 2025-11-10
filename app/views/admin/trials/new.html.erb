@@ -1,5 +1,5 @@
 <div class="admin">
-  <h3>Add Trial</h3>
+  <h1>Add Trial</h1>
   <hr/>
   <%= simple_form_for @trial, url: admin_trial_preview_path, method: :post do |f| %>
     <div class="row">
@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="form-group col-md-6">
-        <label for="exampleInputEmail1">System</label>
+        <label for="system">System</label>
         <%= select_tag :system, options_for_select(@systems), { class: 'form-control' } %>
       </div>
     </div>

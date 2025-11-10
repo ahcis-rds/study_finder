@@ -51,6 +51,6 @@ class Admin::ShowcaseItemsController < ApplicationController
 
   private
     def item_params
-      params.require(:showcase_item).permit(:name, :title, :caption, :url, :active, :showcase_image, :sort_order)
+      params.require(:showcase_item).permit(:name, :title, :caption, :url, :active, :showcase_image, :sort_order, :alt_text)
     end
 end

@@ -1,9 +1,7 @@
 <div class="contact">
-
   <%= @system_info.faq_description.html_safe unless @system_info.faq_description.nil? %>
-
-  <h2>Contact Us</h2>
-  <div class="row">  
+  <h1>Contact Us</h1>
+  <div class="row">
     <div class="col-md-12 col-sm-12 col-lg-6">
       <p>Use this form to contact the StudyFinder team with general questions about participating in research.</p>
       <%= form_tag contact_index_path, method: :post do %>
@@ -19,15 +17,16 @@
           <label for="message" class="control-label">How can we help? <small class="text-muted">(required)</small></label>
           <%= text_area_tag 'message', params[:message], class: 'form-control' %>
           <% if @system_info.captcha %>
-            <div id="myself-captcha" name="myself-captcha"></div>
+            <label class="sr-only" for="g-recaptcha-response">Google Recaptcha</label>
+            <div id="myself-captcha" name="myself-captcha">
+            </div>
           <% end %>
         </div>
-
         <%= submit_tag 'Contact Us', class: 'btn btn-school', onclick: "track('send', 'event', 'contact_us_submit', 'submit');" %>
       <% end %>
     </div>
     <div class="col-6 d-none d-md-block">
-      <%= image_tag 'contact-us.jpg', class: 'bordered' %>
+      <%= image_tag 'contact-us.jpg', class: 'bordered', alt: '' %>
     </div>
   </div>
   <% if @system_info.captcha %>
