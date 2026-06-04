@@ -15,7 +15,7 @@
   <div class="embed-container">
     <%= yield %>
   </div>
-  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'application', "data-turbo-track": "reload", type: "module" %>
   <%= render 'shared/analytics' %>
 </body>
 </html>
