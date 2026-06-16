@@ -1,3 +1,5 @@
+@use "base/variables" as vars;
+
 $school_main_color: #06559a;
 $school_secondary_color: #58585a;
 $school_dark_color: #404d5b;
@@ -29,7 +31,7 @@ $school_dark_color: #404d5b;
   color: white;
 
   &:hover {
-    color: $body_text;
+    color: vars.$body_text;
     background: $school_secondary_color;
   }
 }
@@ -39,7 +41,7 @@ $school_dark_color: #404d5b;
   background: $school_secondary_color;
 }
 
-@media ( max-width: $screen-sm-min ) {
+@media ( max-width: vars.$screen-sm-min ) {
   .brand {
     width: 240px;
     height: 33px;

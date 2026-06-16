@@ -1,8 +1,19 @@
 {
   "name": "app",
-  "private": "true",
-  "dependencies": {
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "sass": "^1.93.0"
   },
   "scripts": {
+    "build": "yarn build:js && yarn build:css",
+    "build:js": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:js:watch": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --watch=forever",
+    "theme:setup": "THEME=${THEME:-${theme:-umn}}; printf '@forward \"base/variables\";\\n@forward \"theme/%s\";\\n' \"$THEME\" > app/assets/stylesheets/theme/_active.scss",
+    "sass:compile": "sass --quiet-deps --load-path=node_modules --load-path=app/assets/stylesheets app/assets/stylesheets/application.bootstrap.scss:app/assets/builds/application.css app/assets/stylesheets/pdf.scss:app/assets/builds/pdf.css",
+    "sass:watch": "sass --quiet-deps --watch --load-path=node_modules --load-path=app/assets/stylesheets app/assets/stylesheets/application.bootstrap.scss:app/assets/builds/application.css app/assets/stylesheets/pdf.scss:app/assets/builds/pdf.css",
+    "build:css": "yarn theme:setup && yarn sass:compile",
+    "build:css:watch": "yarn theme:setup && yarn sass:watch"
+  },
   }
 }

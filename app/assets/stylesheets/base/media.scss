@@ -1,5 +1,7 @@
+@use "theme/active" as active;
+
 //  Phones Only
-@media ( max-width: $screen-sm-min ) {
+@media ( max-width: active.$screen-sm-min ) {
   html, body {
     width: 100%;
     font-size: 12px;
