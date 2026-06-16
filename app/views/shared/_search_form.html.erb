@@ -1,7 +1,7 @@
 <%= form_tag studies_path, method: :get, class: 'search-form', target: (params[:action] == 'embed' ? '_blank' : nil) do %>
   <div class="row">
     <div class="col-md-10">
-      <%= label_tag 'search[q]','Search Studies', class: 'sr-only' %>
+      <%= label_tag 'search[q]','Search Studies', class: 'visually-hidden' %>
       <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off', data: { controller: 'typeahead' } %>
     </div>
   </div>
@@ -45,8 +45,8 @@
         <div class="age-ranges">
           <div class="row">
             <div class="col-md-12">
-              <label class="checkbox-left"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
-              <label class="checkbox"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
+              <label class="form-check-label search-filter-option-left"><%= check_box_tag 'search[children]' %> Children (age &lt; 18 years)</label>
+              <label class="form-check-label search-filter-option"><%= check_box_tag 'search[adults]' %> Adults (age &ge; 18 years)</label>
             </div>
           </div>
         </div>

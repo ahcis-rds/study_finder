@@ -1,7 +1,7 @@
 <div class="admin">
   <div class="clearfix">
-    <h1 class="float-left">Groups</h1>
-    <div class="float-right header-button">
+    <h1 class="float-start">Groups</h1>
+    <div class="float-end header-button">
       <%= link_to 'Add Group', new_admin_group_path, class: 'btn btn-school' %>
     </div>
   </div>
@@ -10,8 +10,8 @@
     <p>Note: When changing groups the trials must be re-indexed to reflect the changes. This process can take up to 5 min to complete.  If you have made changes to the groups, please re-index by pressing the button below.</p>
   </div>
   <div class="clearfix">
-    <div class="float-right">
-      <%= link_to '<i class="fa-solid fa-refresh"></i> Re-Index Trials Now'.html_safe, admin_group_reindex_path, class: 'btn btn-primary btn-primary-contrast' %>
+    <div class="float-end">
+      <%= link_to '<i class="bi bi-arrow-clockwise"></i> Re-Index Trials Now'.html_safe, admin_group_reindex_path, class: 'btn btn-primary btn-primary-contrast' %>
     </div>
   </div>
   <table class="table table-bordered table-trials">

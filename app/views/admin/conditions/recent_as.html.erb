@@ -1,13 +1,13 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="float-left">Recent Conditions (<%= @conditions.size %>)</h3>
+    <h3 class="float-start">Recent Conditions (<%= @conditions.size %>)</h3>
   </div>
   <p class="description">This section is where the administrator can review recently created conditions within StudyFinder.</p>
   <hr/>
   <div class="clearfix">
-    <div class="float-left">
+    <div class="float-start">
       <%= form_tag admin_reports_recent_conditions_path, method: :get do %>
-        <div class="float-left row">
+        <div class="float-start row">
           <div class="col-md-4">
             <label>Start Date</label>
             <div data-controller="datepicker" data-datepicker-format-value="%m/%d/%Y">
@@ -28,7 +28,7 @@
         </div>
       <% end %>
     </div>
-    <div class="float-right">
+    <div class="float-end">
       <%= link_to 'Back to Reports', admin_reports_path, class: 'btn btn-outline-secondary' %>
     </div>
   </div>

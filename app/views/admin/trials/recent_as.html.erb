@@ -1,13 +1,13 @@
 <div class="admin">
   <div class="clearfix">
-    <h3 class="float-left">Recent Trials (<%= @trials.size %>)</h3>
+    <h3 class="float-start">Recent Trials (<%= @trials.size %>)</h3>
   </div>
   <p class="description">This section is where the administrator can review recent trials within StudyFinder. This report details Trials having recently been imported or modified.</p>
   <hr/>
   <div class="clearfix">
-    <div class="float-left">
+    <div class="float-start">
       <%= form_tag admin_trial_recent_as_path, method: :get do %>
-        <div class="float-left row">
+        <div class="float-start row">
           <div class="col-md-3">
             <label>Start Date</label>
             <div data-controller="datepicker" data-datepicker-format-value="%m/%d/%Y">
@@ -24,13 +24,13 @@
           </div>
           <div class="col-md-3">
             <label>Trials</label>
-            <div class="custom-control custom-radio">
-              <input type="radio" id="attribute1" name="attribute" class="custom-control-input" value="updated_at" <% if @attribute == "updated_at"%> checked <% end %> >
-              <label class="custom-control-label" for="attribute1">Recently Modified</label>
+            <div class="form-check">
+              <input type="radio" id="attribute1" name="attribute" class="form-check-input" value="updated_at" <% if @attribute == "updated_at"%> checked <% end %> >
+              <label class="form-check-label" for="attribute1">Recently Modified</label>
             </div>
-            <div class="custom-control custom-radio">
-              <input type="radio" id="attribute2" name="attribute" class="custom-control-input" value="created_at" <% if @attribute == "created_at"%> checked <% end %> >
-              <label class="custom-control-label" for="attribute2">Recently Imported</label>
+            <div class="form-check">
+              <input type="radio" id="attribute2" name="attribute" class="form-check-input" value="created_at" <% if @attribute == "created_at"%> checked <% end %> >
+              <label class="form-check-label" for="attribute2">Recently Imported</label>
             </div>
           </div>
           <div class="col-md-3">
@@ -39,7 +39,7 @@
         </div>
       <% end %>
     </div>
-    <div class="float-right">
+    <div class="float-end">
       <%= link_to 'Back to Reports', admin_reports_path, class: 'btn btn-outline-secondary' %>
     </div>
   </div>

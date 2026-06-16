@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2><i class="fa-solid fa-envelope"></i> Email this study information to me</h2>
+        <h2><i class="bi bi-envelope"></i> Email this study information to me</h2>
       </div>
       <div class="modal-body">
         <form id="email-me-form" data-email-me-modal-target="form">
@@ -24,7 +24,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track('send', 'event', 'email_me_close', 'close')">Close</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="track('send', 'event', 'email_me_close', 'close')">Close</button>
         <button type="button" class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" data-email-me-modal-target="submit" data-action="click->email-me-modal#submit" onclick="track('send', 'event', 'email_me_submit', 'submit');">Send</button>
       </div>
     </div>
@@ -35,7 +35,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2><i class="fa-solid fa-envelope"></i> Contact the study team</h2>
+        <h2><i class="bi bi-envelope"></i> Contact the study team</h2>
       </div>
       <div class="modal-body">
         <form id="contact-study-team-form" data-contact-study-team-modal-target="form">
@@ -66,7 +66,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track('send', 'event', 'email_study_team_close', 'close');">Close</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="track('send', 'event', 'email_study_team_close', 'close');">Close</button>
         <button type="button" class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" data-contact-study-team-modal-target="submit" data-action="click->contact-study-team-modal#submit" onclick="track('send', 'event', 'email_study_team_submit', 'submit');">Send</button>
       </div>
     </div>
