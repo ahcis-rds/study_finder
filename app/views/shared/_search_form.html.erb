@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-10">
       <%= label_tag 'search[q]','Search Studies', class: 'sr-only' %>
-      <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off' %>
+      <%= text_field_tag 'search[q]', '', placeholder: 'Search (Keyword, condition, researcher, etc.)', class: 'form-control input-lg typeahead', autocomplete: 'off', data: { controller: 'typeahead' } %>
     </div>
   </div>
   <%= hidden_field 'search', 'category', value: @category.id unless @category.nil? %>
@@ -38,7 +38,7 @@
         <% if @system_info.try(:healthy_volunteers_filter) == true %>
           <div class="row">
             <div class="col-md-12">
-              <label class="checkbox" data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top'> <%= check_box_tag 'search[healthy_volunteers]' %> Only show me studies that need healthy volunteers <i class="fa-solid fa-circle-question"></i> </label>
+              <label class="form-check-label search-filter-option" data-controller="popover" title="Healthy Volunteer" data-bs-content="A person who does not have the condition or disease being studied." data-bs-placement="top"> <%= check_box_tag 'search[healthy_volunteers]' %> Only show me studies that need healthy volunteers <i class="bi bi-question-circle"></i> </label>
             </div>
           </div>
         <% end %>

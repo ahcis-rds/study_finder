@@ -5,7 +5,7 @@
 
         <div class="col-12 col-lg-4 col-md-5">
           <%= label_tag 'search[q]', 'Search', class: 'sr-only'%>
-          <div id='refine-search'><i class="fa-solid fa-search"></i><%=  text_field_tag 'search[q]', search_value(params[:search], 'q'), placeholder: 'keywords, conditions, etc', class: 'input-search refine-search typeahead', autocomplete: 'off' %></div>
+          <div id='refine-search'><i class="bi bi-search"></i><%=  text_field_tag 'search[q]', search_value(params[:search], 'q'), placeholder: 'keywords, conditions, etc', class: 'input-search refine-search typeahead', autocomplete: 'off', data: { controller: 'typeahead' } %></div>
           <div class="buttons ">
             <% if !params[:search].nil? and !params[:search][:category].nil? %>
               <input type='hidden' name='search[category]' value="<%=params[:search][:category]%>"></input>
@@ -34,7 +34,7 @@
           <label class="checkbox"><%= check_box_tag 'search[adults]', 1, (!params[:search].nil? and !params[:search]['adults'].nil?) %> Adults (age &ge; 18 years)</label>
           <% if @system_info.healthy_volunteers_filter %>
             <div>
-              <label data-toggle='popover' data-title='Healthy Volunteer' data-content='A person who does not have the condition or disease being studied.' data-placement='top' class="checkbox"><%= check_box_tag 'search[healthy_volunteers]', 1, (!params[:search].nil? and !params[:search]['healthy_volunteers'].nil?) %> Only show me studies that need healthy volunteers <i class="fa-solid fa-circle-question"></i> </label>
+              <label class="form-check-label search-filter-option" data-controller="popover" title="Healthy Volunteer" data-bs-content="A person who does not have the condition or disease being studied." data-bs-placement="top"><%= check_box_tag 'search[healthy_volunteers]', 1, (!params[:search].nil? and !params[:search]['healthy_volunteers'].nil?) %> Only show me studies that need healthy volunteers <i class="bi bi-question-circle"></i> </label>
             </div>
           <% end %>
         </div>

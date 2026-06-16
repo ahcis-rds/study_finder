@@ -3,7 +3,7 @@
   <label for="subgroups">
     Subgroups
   </label>
-  <select aria-label='subgroups' name="group[subgroups][]" multiple="true" id="subgroups" class="select2 tags">
+  <select aria-label="subgroups" name="group[subgroups][]" multiple="true" id="subgroups" class="tags" data-controller="ts--select">
     <%= options_for_select(Subgroup.distinct_values, @group.subgroups.map { |sg| sg.name }) %>
   </select>
   <hr/>

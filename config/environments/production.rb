@@ -96,5 +96,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { address: ENV['smtp_host'], port: 25 }
   config.action_mailer.default_url_options = { host: ENV['DEFAULT_URL_HOST'], protocol: ENV['DEFAULT_URL_PROTOCOL'] || 'https' }
 
+  # Uncomment to use an ElaasticSearch synonyms file on your ES instance. The default is to load
+  # synonyms from the array in app/lib/modules/trial_synonyms.rb.
   # config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
 end

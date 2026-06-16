@@ -10,11 +10,17 @@
         <div class="float-left row">
           <div class="col-md-3">
             <label>Start Date</label>
-            <input id="start_date" name="start_date" class="form-control datepicker" type="text", value="<%=@start_date%>">
+            <div data-controller="datepicker" data-datepicker-format-value="%m/%d/%Y">
+              <input id="start_date" name="start_date" class="form-control" type="text" value="<%= @start_date %>" data-datepicker-target="input">
+              <button type="button" class="btn btn-outline-secondary mt-2" data-datepicker-target="toggle">Choose date</button>
+            </div>
           </div>
           <div class="col-md-3">
             <label>End Date</label>
-            <input id="end_date" name="end_date" class="form-control datepicker" type="text", value="<%=@end_date%>">
+            <div data-controller="datepicker" data-datepicker-format-value="%m/%d/%Y">
+              <input id="end_date" name="end_date" class="form-control" type="text" value="<%= @end_date %>" data-datepicker-target="input">
+              <button type="button" class="btn btn-outline-secondary mt-2" data-datepicker-target="toggle">Choose date</button>
+            </div>
           </div>
           <div class="col-md-3">
             <label>Trials</label>

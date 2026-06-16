@@ -72,9 +72,4 @@
 <%= link_to 'Back', :back, class: 'btn btn-school hide-on-print' %>
 
 <%= render 'modals' %>
-
-<script>
- $(document).ready(function() {
-  $('div[data-attribute-name="overall_status"').find("span").addClass("<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'label label-success' : 'label label-info' %>");
- });
-</script>
+<div data-controller="attribute-highlight" data-attribute-highlight-selector-value="div[data-attribute-name='overall_status']" data-attribute-highlight-child-selector-value="span" data-attribute-highlight-class-name-value="<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'badge text-bg-success' : 'badge text-bg-info' %>"></div>

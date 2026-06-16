@@ -86,6 +86,8 @@ Rails.application.configure do
   # LOCAL
   config.action_mailer.delivery_method = :file
 
+  # Uncomment to use an ElaasticSearch synonyms file on your ES instance. The default is to load
+  # synonyms from the array in app/lib/modules/trial_synonyms.rb.
   #config.synonyms_path = '/usr/share/elasticsearch/config/analysis/synonyms.txt'
 
   config.after_initialize do

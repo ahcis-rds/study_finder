@@ -6,7 +6,7 @@
     <strong>Trials Last Updated: <%= @updated_at %></strong>
   </div>
   <br/>
-  <%= simple_form_for @system, url: admin_system_path do |f| %>
+  <%= simple_form_for @system, url: admin_system_path, data: { controller: 'campaign-source', campaign_source_target: 'form' } do |f| %>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item active"><a class="nav-link nav-link-contrast active  " id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Information</a></li>
       <li class="nav-item"><a class="nav-link nav-link-contrast " id="override-tab" data-toggle="tab" href="#override" role="tab" aria-controls="override" aria-selected="false">System Override Options</a></li>
@@ -155,8 +155,8 @@
         <%= f.input :google_analytics_version, collection: [['Universal',3],['GA 4',4]] %>
         <%= f.input :research_match_campaign %>
         <div class="form-group string optional">
-          <label class="string optional control-label" for="campaign_source"}>Campaign Source</label>
-          <input class="string optional form-control" id="campaign_source">
+          <label class="string optional form-label" for="campaign_source">Campaign Source</label>
+          <input class="string optional form-control" id="campaign_source" data-campaign-source-target="input">
         </div>
       </div>
     </div>
@@ -165,18 +165,3 @@
   <% end %>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function(event) {
-    var campaignElement = document.getElementById('campaign_source');
-    if(window.localStorage.getItem('utm_source')) {
-      campaignElement.value = window.localStorage.getItem('utm_source');
-    }
-    var formElement = document.getElementById('edit_system_info_1');
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-      window.localStorage.setItem('utm_source', campaignElement.value);
-      this.submit();
-    }, false);
-  });
-
-</script>

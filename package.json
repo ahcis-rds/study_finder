@@ -15,5 +15,15 @@
     "build:css": "yarn theme:setup && yarn sass:compile",
     "build:css:watch": "yarn theme:setup && yarn sass:watch"
   },
+  "dependencies": {
+    "@github/combobox-nav": "^3.0.1",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.23",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "stimulus-datepicker": "^1.0.9",
+    "tom-select": "^2.6.1",
+    "yarn": "^1.22.22"
   }
 }

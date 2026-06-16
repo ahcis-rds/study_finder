@@ -22,12 +22,17 @@ Trial.__elasticsearch__.create_index!
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+
+  # System specs drive a real browser that makes HTTP requests on a separate
+  # thread, so the browser's requests won't share the same DB transaction as
+  # the test.  rspec-rails handles this automatically with system specs when
+  # using the built-in driven_by helper, so transactional fixtures remain on.
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

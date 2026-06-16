@@ -18,7 +18,7 @@
           <%= text_area_tag 'message', params[:message], class: 'form-control' %>
           <% if @system_info.captcha %>
             <label class="sr-only" for="g-recaptcha-response">Google Recaptcha</label>
-            <div id="myself-captcha" name="myself-captcha">
+            <div id="myself-captcha" name="myself-captcha" data-controller="recaptcha" data-recaptcha-site-key-value="<%= Recaptcha.configuration.site_key %>">
             </div>
           <% end %>
         </div>
@@ -29,15 +29,4 @@
       <%= image_tag 'contact-us.jpg', class: 'bordered', alt: '' %>
     </div>
   </div>
-  <% if @system_info.captcha %>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
-    <script>
-      var myselfWidget;
-      var onloadCallback = function() {
-        myselfWidget = grecaptcha.render('myself-captcha', {
-          'sitekey' : '<%= Recaptcha.configuration.site_key %>'
-        });
-      };
-    </script>
-  <% end %>
 </div>
