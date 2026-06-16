@@ -1,9 +1,12 @@
+# LDAP
 host: 'ldap.umn.edu'
 port: 636
 base: 'o=University of Minnesota,c=US'
 encryption: :simple_tls
 departmental_cn: 'USERNAME'
 departmental_pw: 'PASSWORD'
+
+# General
 theme: 'umn'
 ELASTICSEARCH_URL: 'elastic.umn.edu'
 wkhtmltopdf_binary_path: 'PATH'

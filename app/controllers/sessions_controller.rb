@@ -1,6 +1,4 @@
 class SessionsController < ApplicationController
-  require 'modules/ldap'
-
   def new
     @user = User.new
   end
@@ -44,6 +42,7 @@ class SessionsController < ApplicationController
       end
     # the user didn't pass ldap authentication, kick them out
     else
+      Rails.logger.error "[LDAP] Authentication failed for '#{params[:user][:internet_id]}': #{ldap[:message]}"
       redirect_to new_session_path, flash: { error: 'There was a problem signing in.' }
     end
   end

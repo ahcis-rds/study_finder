@@ -49,7 +49,7 @@ class StudiesController < ApplicationController
   end
 
   def typeahead
-    respond_with(Trial.typeahead(params[:q].try(:downcase)))
+    render json: Trial.typeahead(params[:q].try(:downcase))
   end
 
   def contact_team

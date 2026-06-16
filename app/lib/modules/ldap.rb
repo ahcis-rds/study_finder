@@ -19,6 +19,7 @@ module Modules
       _return[:success] = false
       _return[:message] = ''
 
+      begin
       # authenticate with our departmental account
       departmental_ldap = Net::LDAP.new(
         host: ENV['host'],
@@ -26,7 +27,7 @@ module Modules
         port: ENV['port'],
         auth: {
           method: :simple,
-          username: "cn=#{ENV['departmental_cn']},ou=Organizations,#{ENV['base']}",
+          username: ENV['departmental_cn'],
           password: ENV['departmental_pw']
         }
       )
@@ -35,8 +36,8 @@ module Modules
       if departmental_ldap.bind
 
         # now search for the user logging in
-        filter = Net::LDAP::Filter.eq( "uid", username ) # is this correct?
-        user_search = departmental_ldap.search( base: ENV['base'], filter: filter ).first
+        filter = Net::LDAP::Filter.eq( "uid", username )
+        user_search = departmental_ldap.search( base: ENV['base'], filter: filter )&.first
 
         # departmental_ldap.search( :base => ENV['base'], :filter => filter ) do |entry|
         #   # puts "DN: #{entry.dn}"
@@ -67,15 +68,20 @@ module Modules
             _return[:success] = true
             _return[:ldap_user] = user_search
           else
+            result = ldap_user.get_operation_result
             _return[:ldap_user] = user_search
-            _return[:message] = 'User authentication with LDAP failed.'
+            _return[:message] = "User authentication with LDAP failed. Code: #{result.code}, Message: #{result.message}"
           end
         else
           _return[:message] = 'User not found in LDAP.'
         end
       # departmental authentication failed
       else
-        _return[:message] = 'Departmental authentication with LDAP failed.'
+        result = departmental_ldap.get_operation_result
+        _return[:message] = "Departmental authentication with LDAP failed. Code: #{result.code}, Message: #{result.message}"
+      end
+      rescue => e
+        _return[:message] = "LDAP connection error: #{e.class}: #{e.message}"
       end
       _return
     end

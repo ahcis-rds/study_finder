@@ -10,7 +10,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Start dependent services
+      run: docker compose up -d selenium postgres elasticsearch
+
     - name: Prepare database
-      run: docker compose run web rails db:setup
+      run: docker compose run --rm web rails db:test:prepare
+
+    - name: Build frontend assets
+      run: docker compose run --rm web bash -lc "yarn install --check-files && yarn build"
+
     - name: Run tests
-      run: docker compose run web rspec
+      run: docker compose run --rm web bundle exec rspec
