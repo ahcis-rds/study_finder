@@ -70,7 +70,7 @@ Running Study Finder on a web server requires:
 - A configured database that the StudyFinder server can connect to (PostgreSQL configured out of the box; MySQL, SQLServer, Oracle, and more supported by Rails with the appropriate configuration changes)
 - An LDAP server that can be used to authenticate StudyFinder users for admin access.  
 - ElasticSearch 8.x [Official Instructions](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html)
-- ElasticSearch (synonyms file)[#ElasticSearch synonyms]
+- ElasticSearch (synonyms file)[#elasticsearch-synonyms]
 - Add config/application.yml for application specific variables with the following format:
 
 ```yaml
