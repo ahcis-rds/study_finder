@@ -21,6 +21,7 @@ export default class extends Controller {
 
     // Hide the original select element from screen readers and apply an aria label in case it is still picked up
     this.element.classList.add('d-none')
+    this.element.setAttribute("aria-hidden", "true")
     this.element.setAttribute("aria-labelledby", this.element.id + '-ts-label' )
   }
 

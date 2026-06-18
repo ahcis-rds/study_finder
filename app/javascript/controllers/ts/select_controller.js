@@ -15,6 +15,7 @@ export default class extends Controller {
     })
 
     this.element.classList.add('d-none')
+    this.element.setAttribute("aria-hidden", "true")
     this.element.setAttribute("aria-labelledby", `${this.element.id}-ts-label`)
   }
 
