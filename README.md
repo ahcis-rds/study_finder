@@ -132,7 +132,7 @@ Any images referenced in your theme CSS should be located in /app/assets/images.
 
 Themes are the recommended method for customizing the appearance of the site. Users with Ruby on Rails experience can change the template files for infinite customization, but as with any open-source project, local changes to the code make pulling updates more difficult. 
 
-Theme files and the theme setting itself (via environmment variable) are recognized and processed at build time via a script in `package.json`, per the current Rails defaults with jsbundling/cssbundling. The scripts in `package.json` write out an 'active' theme import in `app/assets/stylesheets/theme/_active.scss` based on the value of the environment variable `$THEME`.
+Theme files and the theme setting itself (via environment variable) are recognized and processed at build time via a script in `package.json`, per the current Rails defaults with jsbundling/cssbundling. The scripts in `package.json` write out an 'active' theme import in `app/assets/stylesheets/theme/_active.scss` based on the value of the environment variable `$THEME`.
 
 ## Other Site Customization
 
