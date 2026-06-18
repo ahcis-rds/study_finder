@@ -9,7 +9,7 @@
     <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
       <% replacement_search = @search_query.downcase.gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
       <% if replacement_search != @search_query.downcase %>
-        <div clsas="suggestions hide-on-print">
+        <div class="suggestions hide-on-print">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
           <div class="alert alert-info"><i class="bi bi-exclamation-circle"></i> Did you mean "<a href="<%= url.gsub( @search_query.downcase.gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
         </div>
