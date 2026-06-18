@@ -55,7 +55,7 @@ _capybara_host =
 Capybara.server_host = _capybara_host
 Capybara.app_host    = "http://#{_capybara_host}"
 
-if ENV['CAPYBARA_NETWORK_DEBUG'] != '0'
+if ENV.fetch('CAPYBARA_NETWORK_DEBUG', '0') != '0'
   warn("[capybara-network] SELENIUM_URL=#{SELENIUM_URL} server_host=#{Capybara.server_host} app_host=#{Capybara.app_host}")
 end
 
