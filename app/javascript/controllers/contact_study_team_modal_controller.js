@@ -162,7 +162,7 @@ export default class extends Controller {
 
   track(category, action, data = {}) {
     if (typeof window.track === "function") {
-      window.track("send", "event", category, action, data)
+      window.track(category, action, data)
     }
   }
 }
