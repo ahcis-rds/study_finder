@@ -44,7 +44,6 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 gem 'responders'
-gem 'jquery-rails', '~> 4.6.0'
 gem 'json'
 gem 'jbuilder', '~> 2.0'
 # gem 'nokogiri'
