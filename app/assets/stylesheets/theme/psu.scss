@@ -1,3 +1,5 @@
+@use "base/variables" as vars;
+
 $school_main_color: #0062A0;
 $school_secondary_color: #3580d1;
 $school_dark_color: #404d5b;
@@ -27,7 +29,7 @@ $school_dark_color: #404d5b;
   color: white;
 
   &:hover {
-    color: $body_text;
+    color: vars.$body_text;
     background: $school_secondary_color;
   }
 }

@@ -18,22 +18,22 @@
   <div class="button-holder hide-on-print">
     <% contact_method = determine_contact_method(@study) %>
     <% if contact_method == 'url' %>
-      <a class="btn btn-school btn-study-outlink" href="<%= render_contact_url(@study) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
+      <a class="btn btn-school btn-study-outlink" href="<%= render_contact_url(@study) %>"><i class="bi bi-envelope"></i> I'm interested</a>
     <% elsif contact_method == 'email' %>
       <% unless c.empty? %>
-        <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{@study.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
+        <div class="btn btn-school btn-email-study-team" data-bs-toggle="modal" data-bs-target="#contact-study-team-modal" data-email="<%=c.first[:email]%>" data-trial-id="<%=@study.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{@study.system_id}'});"><i class="bi bi-envelope"></i> I'm interested</div>
       <% end %>
     <% end %>
     <% unless @study.recruitment_url.blank? %>
-      <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="fa-solid fa-users" target="_blank"></i> Visit the Study Website</a>
+      <a class="btn btn-school btn-recruitment" href="<%=@study.recruitment_url%>" target="_blank"><i class="bi bi-people"></i> Visit the Study Website</a>
     <% end %>
   </div>
   <%= render 'social', study: @study %>
 </div>
 <ul class="nav nav-tabs hide-on-print" id="myTab" role="tablist">
-  <li class="nav-item  active" ><a class="nav-link nav-link-contrast active" id="eligibility-tab" data-toggle="tab" href="#eligibility" role="tab" aria-controls="eligibility" aria-selected="true">Eligibility Criteria</a></li>
-  <li class="nav-item"><a class="nav-link nav-link-contrast" id="conditions-tab" data-toggle="tab" href="#conditions" role="tab" aria-controls="conditions" aria-selected="false">Conditions & Interventions</a></li>
-  <li class="nav-item"><a class="nav-link nav-link-contrast" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">More Information</a></li>
+    <li class="nav-item"><a class="nav-link nav-link-contrast active" id="eligibility-tab" data-bs-toggle="tab" href="#eligibility" role="tab" aria-controls="eligibility" aria-selected="true">Eligibility Criteria</a></li>
+    <li class="nav-item"><a class="nav-link nav-link-contrast" id="conditions-tab" data-bs-toggle="tab" href="#conditions" role="tab" aria-controls="conditions" aria-selected="false">Conditions & Interventions</a></li>
+    <li class="nav-item"><a class="nav-link nav-link-contrast" id="details-tab" data-bs-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">More Information</a></li>
 </ul>
 <br>
 <div class="tab-content" id="myTabContent">
@@ -72,9 +72,4 @@
 <%= link_to 'Back', :back, class: 'btn btn-school hide-on-print' %>
 
 <%= render 'modals' %>
-
-<script>
- $(document).ready(function() {
-  $('div[data-attribute-name="overall_status"').find("span").addClass("<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'label label-success' : 'label label-info' %>");
- });
-</script>
+<div data-controller="attribute-highlight" data-attribute-highlight-selector-value="div[data-attribute-name='overall_status']" data-attribute-highlight-child-selector-value="span" data-attribute-highlight-class-name-value="<%= ['Recruiting','Enrolling by invitation'].include?(@study.overall_status) ? 'badge text-bg-success' : 'badge text-bg-info' %>"></div>

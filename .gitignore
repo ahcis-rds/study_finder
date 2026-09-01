@@ -7,6 +7,9 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore locally-compiled assets -- uncomment if your deploy pipeline does not compile assets. 
+/app/assets/builds
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
@@ -20,3 +23,9 @@
 # Ignore application configuration
 /config/application.yml
 /.byebug_history
+
+# Ignore node modules
+/node_modules
+config/credentials.yml.enc
+config/master.key
+log/development.log.0

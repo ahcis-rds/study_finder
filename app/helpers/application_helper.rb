@@ -20,15 +20,15 @@ module ApplicationHelper
   def bootstrap_icon_for flash_type
     case flash_type
       when 'success'
-        'fa-check-circle-o'
+        'bi-check-circle'
       when 'alert'
-        'fa-exclamation-triangle'
+        'bi-exclamation-circle'
       when 'error'
-        'fa-exclamation-triangle'
+        'bi-exclamation-circle'
       when 'notice'
-        'fa-info-circle'
+        'bi-exclamation-circle'
       when 'recaptcha_error'
-        'fa-refresh'  
+        'bi-arrow-clockwise'
       else
         flash_type
     end

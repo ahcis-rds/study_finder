@@ -1,3 +1,5 @@
+@use "theme/active" as active;
+
 .sign-in-container {
   padding: 50px;
   color: white;
@@ -7,7 +9,7 @@
     max-width: 500px;
     margin: 0 auto;
     padding: 40px 50px;
-    background: $school_main_color;
+    background: active.$school_main_color;
   }
 
   i {

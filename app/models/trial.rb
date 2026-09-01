@@ -507,22 +507,25 @@ class Trial < ApplicationRecord
 
   #  Keyword typeahead
   def self.typeahead(q)
+    query = q.to_s.strip.downcase
+    return [] if query.blank?
+
     response_hash = search({
       suggest: {
         keyword_suggest: {
-          text: q,
+          text: query,
           completion: {
-            field: "keyword_suggest"
+            field: "keyword_suggest",
+            size: 10,
+            skip_duplicates: true
           }
         }
       }
     }).raw_response
 
     suggestions_hash = Array(response_hash.dig("suggest", "keyword_suggest")).first || {}
-    suggestions = Array((suggestions_hash).dig("options"))
-    unique_suggestions = suggestions.map { |suggestion| suggestion["text"] }.uniq
-
-    unique_suggestions
+    suggestions = Array(suggestions_hash.dig("options"))
+    suggestions.map { |suggestion| suggestion["text"] }.compact.uniq
   end
 
   # Did you mean?

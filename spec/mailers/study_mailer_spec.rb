@@ -51,7 +51,7 @@ describe StudyMailer do
     end
 
     it "includes phone number" do
-      expect(@mail.body.raw_source).to match(@phone_number)
+      expect(@mail.body.raw_source).to match(Regexp.escape(@phone_number))
     end
 
     after {

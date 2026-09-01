@@ -1,38 +1,40 @@
+@use "theme/active" as active;
+
 #header-content {
   margin-top: 25px;
   a {
     text-transform: uppercase;
     font-weight: bold;
-    color: $school_secondary_color;
+    color: active.$school_secondary_color;
   }
 }
 
 #main-nav {
   padding-top: 0;
   padding-bottom: 0;
-  background-color: $school_secondary_color;
+  background-color: active.$school_secondary_color;
   border: 0 !important;
   box-shadow: none;
   color: #fff;
   .nav-link{
     font-size: 12px;
     padding: 10px 15px;
-    color: $body_text;
+    color: active.$body_text;
     font-weight: 600;
   }
   
   .nav-link:hover{
     color: white;
-    background: $school_main_color;
+    background: active.$school_main_color;
   }
   .nav-link.active{
     color: white;
-    background: $school_main_color;
+    background: active.$school_main_color;
   }
   
   .dropdown-menu {
     a {
-      color: $body_text;
+      color: active.$body_text;
     }
   }
 }
@@ -42,7 +44,7 @@
   margin: 0;
   width: 100%;
   font-size: 26px;
-  background: $school_main_color;
+  background: active.$school_main_color;
   color: white;
 }
 

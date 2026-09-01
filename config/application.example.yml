@@ -1,11 +1,14 @@
-host: 'ldap.umn.edu'
+# LDAP
+host: 'ldap.wossomatta.edu'
 port: 636
-base: 'o=University of Minnesota,c=US'
 encryption: :simple_tls
-departmental_cn: 'USERNAME'
-departmental_pw: 'PASSWORD'
+base: 'o=University of Minnesota,c=US' # Used in user lookup during auth
+departmental_cn: 'cn=MYORG (myorg1),ou=Organizations,o=Wossomatta U,c=US' # Used in BIND for auth
+departmental_pw: 'PASSWORD' # Used in BIND for auth
+
+# General
 theme: 'umn'
-ELASTICSEARCH_URL: 'elastic.umn.edu'
+ELASTICSEARCH_URL: 'elastic.wossomatta.edu'
 wkhtmltopdf_binary_path: 'PATH'
-DEFAULT_URL_HOST: 'yourstudyfinder.example.com' # Used in email links/URLs
+DEFAULT_URL_HOST: 'studyfinder.wossomatta.edu' # Used in email links/URLs
 username_string: 'Internet ID' # What a login 'username' is called at your institution. Appears in various templates.

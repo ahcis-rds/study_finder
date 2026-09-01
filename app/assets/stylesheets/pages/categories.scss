@@ -1,3 +1,5 @@
+@use "theme/active" as active;
+
 .categories {
   max-width: 1000px;
   margin: 40px auto;
@@ -11,7 +13,7 @@
     height: 100px;
     margin: 0 15px 47px 0;
     // background: rgba(0,0,0,0.1);
-    background: $school_main_color;
+    background: active.$school_main_color;
     padding: 0;
 
     a {
@@ -38,7 +40,7 @@
       display: block;
       font-family: Arial;
       font-weight: 300;
-      background: $school_secondary_color;
+      background: active.$school_secondary_color;
       color: #404d5b;
       position: absolute;
       right: -10px;

@@ -104,7 +104,7 @@ end
 # Trials
 # ============================================
 
-Rake::Task['studyfinder:ctgov:load'].invoke
+Rake::Task['studyfinder:ctgov:refresh_all'].invoke
 
 # ============================================
 # Trial attribute settings

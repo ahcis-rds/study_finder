@@ -1,3 +1,5 @@
+@use "theme/active" as active;
+
 .breadcrumb {
   margin-top: 10px;
   background: none;
@@ -71,7 +73,7 @@
   }
 
   .last-updated {
-    background: $school_main_color;
+    background: active.$school_main_color;
     padding: 20px;
     margin-top: 20px;
     color: white;
@@ -91,7 +93,7 @@
     background-color: whitesmoke;
   }
 
-  .checkbox {
+  .sf-boolean-label {
     span {
       margin: 0;
       padding: 0;

@@ -9,16 +9,16 @@
     <% if @suggestions['suggest']['suggestions'][0]['options'].size > 0 %>
       <% replacement_search = @search_query.downcase.gsub(@suggestions['suggest']['suggestions'][0]['text'], @suggestions['suggest']['suggestions'][0]['options'][0]['text']) %>
       <% if replacement_search != @search_query.downcase %>
-        <div clsas="suggestions hide-on-print">
+        <div class="suggestions hide-on-print">
           <% url = request.original_url.encode('utf-8', 'ascii-8bit') %>
-          <div class="alert alert-info"><i class="fa-solid fa-info-circle"></i> Did you mean "<a href="<%= url.gsub( @search_query.downcase.gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
+          <div class="alert alert-info"><i class="bi bi-exclamation-circle"></i> Did you mean "<a href="<%= url.gsub( @search_query.downcase.gsub(' ', '+'), replacement_search.gsub(' ', '+')) %>"><%= replacement_search %></a>" ?</div>
         </div>
       <% end %>
     <% end %>
   <% end %>
 <% end %>
 
-<div class="study-results">
+<div class="study-results" data-controller="study-results">
   <div class="study-results-info">
     <h1>Search Results <%= 'Within Category "' + @group.group_name + '"' if !params[:search].nil? and !params[:search][:category].nil? %></h1>
     <p class="matching-message">Here are the studies that match your search criteria. If you are interested in participating, please reach out to the contact listed for the study. If no contact is listed, contact us and we'll help you find the right person.</p>
@@ -38,20 +38,20 @@
       <% end %>
     <% end %>
     <div class="clearfix">
-      <div class="float-left study-count">
+      <div class="float-start study-count">
         <span><%= @trials.empty? ? 0 : @trials.total %></span> Study Matches
       </div>
-      <div class="float-right top-paginate">
+      <div class="float-end top-paginate">
         <%= will_paginate @trials, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, next_label: 'Next →', previous_label: '← Previous' %>
       </div>
     </div>
   </div>
   <hr/>
   <% if @trials.empty? %>
-    <div class="alert"><i class="fa-solid fa-warning"></i> There were no trials that matched your search for <strong><%= @search_query %></strong></div>
+    <div class="alert"><i class="bi bi-exclamation-circle"></i> There were no trials that matched your search for <strong><%= @search_query %></strong></div>
   <% end %>
   <% @trials.each_with_index do |t, i| %>
-    <div class="study">
+    <div class="study" data-study-id="<%= t.id %>">
       <h2>
         <% if @system_info.display_study_show_page %>
           <%= link_to highlight(t, 'display_title'), study_path(id: t.id) %>
@@ -74,8 +74,8 @@
 
       <% unless t.eligibility_criteria.nil? %>
         <div class="field important eligibility-buttons hide-on-print">
-          <div class="btn btn-xs btn-school-inverse btn-show-full-eligibility"><i class="fa-solid fa-plus"></i> Show full eligibility criteria</div>
-          <div class="btn btn-xs btn-school-inverse btn-hide-full-eligibility d-none"><i class="fa-solid fa-close"></i> Hide eligibility criteria</div>
+          <div class="btn btn-sm btn-school-inverse btn-show-full-eligibility" data-action="click->study-results#showEligibility"><i class="bi bi-plus"></i> Show full eligibility criteria</div>
+          <div class="btn btn-sm btn-school-inverse btn-hide-full-eligibility d-none" data-action="click->study-results#hideEligibility"><i class="bi bi-x"></i> Hide eligibility criteria</div>
         </div>
         <div class="eligibility-criteria d-none card card-body">
           <%= render_attribute(@attribute_settings, 'eligibility_criteria', 'list', t.eligibility_criteria.gsub(/(^\s*- )|(^\s*[0-9]+\.\s*)/, '<br class="eligibility-line-break"> &bull; ').gsub('Inclusion Criteria:', '<div class="eligibility-header"><strong>Inclusion Criteria:</strong></div>').gsub('Exclusion Criteria:', '<hr><div class="eligibility-header"><strong>Exclusion Criteria:</strong></div>').gsub('Healthy volunteers', '<div class="eligibility-header"><strong>Healthy volunteers</strong></div>')) %>
@@ -88,28 +88,28 @@
       <%= render_attribute(@attribute_settings, 'disease_sites', 'list', t.disease_sites.map{|x| x.disease_site_name }.join('; ')) %>
       <div class="trial-cta-options hide-on-print">
         <% unless t.recruitment_url.blank? %>
-          <a class="btn btn-school-inverse" href="<%=t.recruitment_url%>" target="_blank"><i class="fa-solid fa-users" target="_blank"></i> Visit study website</a>
+          <a class="btn btn-school-inverse" href="<%=t.recruitment_url%>" target="_blank"><i class="bi bi-people"></i> Visit study website</a>
         <% end %>
         <% contact_method = determine_contact_method(t) %>
         <% if contact_method == 'url' %>
-          <a class="btn btn-school btn-study-outlink" href="<%= render_contact_url(t) %>"><i class="fa-solid fa-envelope"></i> I'm interested</a>
+          <a class="btn btn-school btn-study-outlink" href="<%= render_contact_url(t) %>"><i class="bi bi-envelope"></i> I'm interested</a>
         <% elsif contact_method == 'email' %>
           <% unless c.empty? %>
-            <div class="btn btn-school btn-email-study-team" data-toggle='modal' data-target='#contact-study-team-modal' data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{t.system_id}'});"><i class="fa-solid fa-envelope"></i> I'm interested</div>
+            <div class="btn btn-school btn-email-study-team" data-bs-toggle="modal" data-bs-target="#contact-study-team-modal" data-email="<%=c.first[:email]%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_study_team', 'open', {'system_id':'#{t.system_id}'});"><i class="bi bi-envelope"></i> I'm interested</div>
           <% end %>
         <% end %>
-        <div class="btn btn-school btn-email-me" data-toggle='modal' data-target='#email-me-modal' data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', {'system_id':'<%= t.system_id %>'});"><i class="fa-solid fa-envelope"></i> Share via email</div>
+        <div class="btn btn-school btn-email-me" data-bs-toggle="modal" data-bs-target="#email-me-modal" data-title="<%=t.display_title%>" data-trial-id="<%=t.id%>" onclick="track('send', 'event', 'email_me', 'open', {'system_id':'<%= t.system_id %>'});"><i class="bi bi-envelope"></i> Share via email</div>
         <%= render partial: "clinicaltrialsgov_button", locals: { study: t } %>
         <% if !t.trial_locations.empty? && @system_info.display_all_locations == true %>
-          <div class="btn btn-school btn-all-locations">
-            <i class="fa-solid fa-location-arrow"></i>
+          <div class="btn btn-school btn-all-locations" data-action="click->study-results#showLocations">
+            <i class="bi bi-geo-alt"></i>
             Show <%= pluralize(t.trial_locations.count, "location") %>
           </div>
           <div class="field d-none study-locations">
             <hr/>
             <div class="clearfix">
-              <h4 class="float-left">Study Locations</h4>
-              <div class="btn btn-school btn-hide float-right"><i class="fa-solid fa-close"></i> Hide all locations</div>
+              <h4 class="float-start">Study Locations</h4>
+              <div class="btn btn-school btn-hide float-end" data-action="click->study-results#hideLocations"><i class="bi bi-x"></i> Hide all locations</div>
             </div>
             <table class="table table-bordered">
               <tr>
@@ -143,16 +143,4 @@
 </div>
 
 <%= render 'modals' %>
-
-<script>
- $(document).ready(function() {
-  $('div[data-attribute-name="overall_status"').addClass("strong important");
-  $('div[data-attribute-name="contacts"').addClass("strong important");
-  $('div[data-attribute-name="principal_investigator"').addClass("strong important");
-  $('div[data-attribute-name="principal_investigator_id"').addClass("strong important");
-  $('div[data-attribute-name="gender"').addClass("strong important");
-  $('div[data-attribute-name="age"').addClass("strong important");
-  $('div[data-attribute-name="phase"').addClass("strong important");
-  $('div[data-attribute-name="healthy_volunteers"').addClass("strong important");
- });
-</script>
+<div data-controller="attribute-highlight" data-attribute-highlight-selector-value="div[data-attribute-name='overall_status'],div[data-attribute-name='contacts'],div[data-attribute-name='principal_investigator'],div[data-attribute-name='principal_investigator_id'],div[data-attribute-name='gender'],div[data-attribute-name='age'],div[data-attribute-name='phase'],div[data-attribute-name='healthy_volunteers']" data-attribute-highlight-class-name-value="strong important"></div>

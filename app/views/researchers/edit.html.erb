@@ -3,7 +3,7 @@
 <%= simple_form_for @trial, url: researcher_path, method: :put do |f| %>
   <% if f.object.simple_description_from_source.blank? %>
     <label>Simple Description</label>
-    <p class="help-block">
+    <p class="form-text">
       <strong>FORMAT:</strong>
       This is a study of (population)  with/without (condition) between ages (X-Y) years old. This study is trying to figure out (aim of study).
       <br/>
@@ -11,7 +11,7 @@
       Your simple description must be IRB approved.
     </p>
     <%= f.input :simple_description_override %>
-    Simple Description (imported): <i><%= f.object.simple_description %><br><br>
+    Simple Description (imported): <i><%= f.object.simple_description %></i><br><br>
     <%= f.input :display_simple_description, as: :select, label: "Should this description be visible to the public?", input_html: {class: "col-md-2"} %>
   <% end %>
 
@@ -31,12 +31,12 @@
   <label>Contact override last name</label>
   <small>
     <i>(If populated, this will override any contact last name from clinialtrials.gov for this trial)</i>
-  <small>
+  </small>
   <%= f.input :contact_override_last_name, label: false %>
   <div class="form-group">
-    <label class="control-label" for="secret_key">Secret Key</label>
-    <input id="secret_key" name="secret_key" class="form-copntrol" type="password"></input>
-    <p class="help-block">
+    <label class="form-label" for="secret_key">Secret Key</label>
+    <input id="secret_key" name="secret_key" class="form-control" type="password"></input>
+    <p class="form-text">
       Note: The secret key is a shared key among the research community and is required for all updates.  It has been configured by the StudyFinder adminstrative staff.  If you have not received the key via some form of communication, feel free to email <a href="mailto:<%=@system_info.default_email%>"><%=@system_info.default_email %></a>.
     </p>
   </div>

@@ -1,78 +1,74 @@
-<div id="email-me-modal" name="email-me-modal" class="modal fade">
+<div id="email-me-modal" name="email-me-modal" class="modal fade" data-controller="email-me-modal" data-email-me-modal-endpoint-value="/studies/email_me">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2><i class="fa-solid fa-envelope"></i> Email this study information to me</h2>
+        <h2><i class="bi bi-envelope"></i> Email this study information to me</h2>
       </div>
       <div class="modal-body">
-        <form id="email-me-form" onsubmit="return false;">
+        <form id="email-me-form" data-email-me-modal-target="form">
           <span>Study Title</span>
-          <p class="study-title"></p>
+          <p class="study-title" data-email-me-modal-target="title"></p>
           <div class="form-group">
             <label for="email-me-email">Your email address <small class="text-muted">(required)</small></label>
-            <input id="email-me-email" class="form-control email" type="text"></input>
+            <input id="email-me-email" class="form-control email" type="text" data-email-me-modal-target="email">
           </div>
           <div class="form-group">
             <label for="email-me-notes">Additional Notes</label>
-            <textarea id="email-me-notes" class="form-control notes"></textarea>
+            <textarea id="email-me-notes" class="form-control notes" data-email-me-modal-target="notes"></textarea>
           </div>
           <% if @system_info.captcha %>
             <div class="form-group">
-              <div id="myself-captcha" name="myself-captcha"></div>
+              <div id="myself-captcha" name="myself-captcha" data-controller="recaptcha" data-recaptcha-site-key-value="<%= Recaptcha.configuration.site_key %>"></div>
             </div>
           <% end %>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track('send', 'event', 'email_me_close', 'close')">Close</button>
-        <button class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_me_submit', 'submit');">Send</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="track('send', 'event', 'email_me_close', 'close')">Close</button>
+        <button type="button" class="btn btn-school" id="email-me-modal-submit" name="email-me-modal-submit" data-trial-id="" data-email-me-modal-target="submit" data-action="click->email-me-modal#submit" onclick="track('send', 'event', 'email_me_submit', 'submit');">Send</button>
       </div>
     </div>
   </div>
 </div>
 
-<div id="contact-study-team-modal" name="ontact-study-team-modal" class="modal fade">
+<div id="contact-study-team-modal" name="ontact-study-team-modal" class="modal fade" data-controller="contact-study-team-modal" data-contact-study-team-modal-endpoint-value="/studies/contact_team">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2><i class="fa-solid fa-envelope"></i> Contact the study team</h2>
+        <h2><i class="bi bi-envelope"></i> Contact the study team</h2>
       </div>
       <div class="modal-body">
-        <form id="contact-study-team-form" onsubmit="return false;">
+        <form id="contact-study-team-form" data-contact-study-team-modal-target="form">
           <p>
-            Use this form to contact the study team at <a class="study-email"></a> to see if you are a good fit for the study.
+            Use this form to contact the study team at <a class="study-email" data-contact-study-team-modal-target="studyEmail"></a> to see if you are a good fit for the study.
           </p>
           <div class="form-group">
             <label for="contact-email">Your email address <small class="text-muted">(required)</small></label>
-            <input id="contact-email" class="form-control email" type="text"></input>
+            <input id="contact-email" class="form-control email" type="text" data-contact-study-team-modal-target="email">
           </div>
           <div class="form-group">
             <label for="contact-name">Your name <small class="text-muted">(required)</small></label>
-            <input id="contact-name" class="form-control name" type="text"></input>
+            <input id="contact-name" class="form-control name" type="text" data-contact-study-team-modal-target="name">
           </div>
           <div class="form-group">
             <label for="contact-phone">Your phone number</label>
-            <input id="contact-phone" class="form-control phone" type="text"></input>
+            <input id="contact-phone" class="form-control phone" type="text" data-contact-study-team-modal-target="phone">
           </div>
           <div class="form-group">
             <label for="contact-notes">Anything else you'd like to share with the study team?</label>
-            <textarea id="contact-notes" class="form-control notes"></textarea>
+            <textarea id="contact-notes" class="form-control notes" data-contact-study-team-modal-target="notes"></textarea>
           </div>
           <% if @system_info.captcha %>
             <div class="form-group">
-              <div id="study-team-captcha" name="study-team-captcha"></div>
+              <div id="study-team-captcha" name="study-team-captcha" data-controller="recaptcha" data-recaptcha-site-key-value="<%= Recaptcha.configuration.site_key %>"></div>
             </div>
           <% end %>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-secondary" data-dismiss='modal' onclick="track('send', 'event', 'email_study_team_close', 'close');">Close</button>
-        <button class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" onclick="track('send', 'event', 'email_study_team_submit', 'submit');">Send</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="track('send', 'event', 'email_study_team_close', 'close');">Close</button>
+        <button type="button" class="btn btn-school" id="contact-study-team-modal-submit" name="contact-study-team-modal-submit" data-trial-id="" data-contact-study-team-modal-target="submit" data-action="click->contact-study-team-modal#submit" onclick="track('send', 'event', 'email_study_team_submit', 'submit');">Send</button>
       </div>
     </div>
   </div>
 </div>
-
-<% if @system_info.captcha %>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
-<% end %>

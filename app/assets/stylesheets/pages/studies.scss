@@ -1,4 +1,5 @@
-@import "../mixins/multiline_truncate";
+@use "../mixins/multiline_truncate" as mixins;
+@use "theme/active" as active;
 
 .btn-primary-contrast {
   background-color: #0056B3 !important;
@@ -21,7 +22,7 @@
   .results-header {
 
     padding: 15px 30px 30px 30px;
-    background: $school_main_color;
+    background: active.$school_main_color;
     color: white;
 
     h3 {
@@ -57,7 +58,7 @@
     width: 145px;
     border-radius: 0;
     border: 0;
-    outline: 1px inset $school_main_color;
+    outline: 1px inset active.$school_main_color;
     outline-offset: -1px;
   }
 
@@ -91,7 +92,7 @@
     text-shadow: none;
     padding: 4px 10px;
     border-radius: 10px;
-    background: $highlight_color;
+    background: active.$highlight_color;
   }
 
   h1 {
@@ -103,10 +104,10 @@
     a {
       text-decoration: underline;
       //font-weight: bold;
-      color: $school_main_color;
+      color: active.$school_main_color;
     }
     a:hover {
-      background-color: $school_secondary_color;
+      background-color: active.$school_secondary_color;
     }
   }
   
@@ -136,7 +137,7 @@
     span {
       display: inline-block;
       padding: 10px 5px 0 5px; 
-      color: $school_main_color;
+      color: active.$school_main_color;
       font-family: 'Prompt';
       font-size: 28px;
       font-weight: 700;
@@ -183,7 +184,7 @@
       position: absolute;
       right: 0;
       top: -5px;
-      background: $school_main_color;
+      background: active.$school_main_color;
       color: white;
       padding: 10px;
       text-align: center;
@@ -204,7 +205,7 @@
     font-size: 13px;
 
     .important {
-      color: $school_main_color;
+      color: active.$school_main_color;
       font-size: 14px;
     }
 
@@ -219,7 +220,7 @@
 
     div[data-attribute-name=simple_description] {
       p {
-        @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 3, $bgColor: white);
+        @include mixins.multiLineEllipsis($lineHeight: 1.2em, $lineCount: 3, $bgColor: white);
       }
     }
   }
@@ -275,22 +276,4 @@
 
 .button-holder {
   margin-top: 1.5em;
-}
-
-@media only screen and (max-width: 480px) {
-
-  .study-photo {
-    width: 100%;
-    float: none;
-    margin-left: 0px !important;
-  }
-}
-
-.study-photo {
-  max-width: 500px;
-}
-
-.refine-search::placeholder {
-  color: white;
-  opacity: .5;
 }

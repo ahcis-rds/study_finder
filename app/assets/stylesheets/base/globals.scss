@@ -1,5 +1,7 @@
+@use "theme/active" as active;
+
 body {
-  color: $body_text;
+  color: active.$body_text;
 }
 
 .brand {
@@ -10,10 +12,10 @@ body {
 }
 
 g#studyfinder-logo-study {
-  fill: $school_main_color;
+  fill: active.$school_main_color;
 }
 g#studyfinder-logo-finder {
-  fill: $school_secondary_color;
+  fill: active.$school_secondary_color;
 }
 
 #studyfinder-logo {
@@ -22,7 +24,7 @@ g#studyfinder-logo-finder {
 
 h1, h2, h3, h4, h5 {
   font-family: 'Raleway','Helvetica Neue',Helvetica,Arial,sans-serif;
-  color: $school_main_color;
+  color: active.$school_main_color;
   font-weight: 400;
 }
 
@@ -42,8 +44,8 @@ footer {
     color: #212529;
   }
   a:hover {
-    background-color: $school_secondary_color;
-    color: $school_main_color;
+    background-color: active.$school_secondary_color;
+    color: active.$school_main_color;
   }
 }
 
@@ -58,7 +60,7 @@ footer {
   }
 
   .modal-header {
-    background: $school_main_color;
+    background: active.$school_main_color;
 
     h2 {
       color: white;
@@ -74,7 +76,7 @@ footer {
   background: white;
   width: 100%;
   padding: 10px;
-  color: $body_text;
+  color: active.$body_text;
   border: 1px solid #eee;
 }
 
@@ -89,7 +91,7 @@ footer {
   }
 
   &:hover {
-    background-color: $school_main_color;
+    background-color: active.$school_main_color;
     color: white;
     cursor: pointer;
   }
@@ -98,14 +100,14 @@ footer {
 .pagination {
   li {
     a, a:hover {
-      color: $school_main_color;
+      color: active.$school_main_color;
     }
   }
 
   .page-item.active {
     .page-link {
-      background-color: $school_main_color;
-      border-color: $school_main_color;
+      background-color: active.$school_main_color;
+      border-color: active.$school_main_color;
     }
   }
 }
@@ -135,11 +137,11 @@ footer {
 .popover {
   h3.popover-title {
     margin: 0 !important;
-    background: $school_main_color;
+    background: active.$school_main_color;
     color: white !important;
   }
   .popover-content {
-    color: $body_text !important;
+    color: active.$body_text !important;
   }
 }
 
@@ -152,13 +154,13 @@ footer {
 }
 
 .mast {
-  background-image: image-url("mast.jpg");
+  background-image: url("mast.jpg");
   background-position: 50% 25%;
   height: 440px;
 }
 
 .banner-content {
-  background: $school_secondary_color;
+  background: active.$school_secondary_color;
 }
 
 .banner-text {
@@ -166,7 +168,7 @@ footer {
 }
 
 .banner-image {
-  background: $school_secondary_color;
+  background: active.$school_secondary_color;
   width: 780px;
 }
 
@@ -224,7 +226,39 @@ footer {
 
 .caption-title {
   font-weight: bold;
-  color: $school_main_color;
+  color: active.$school_main_color;
+}
+
+// TomSelect: use theme primary color for the highlighted option
+.ts-wrapper .ts-dropdown .option.active {
+  background-color: active.$school_main_color;
+  color: #fff;
+}
+
+.typeahead-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.typeahead-option {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  color: active.$body_text;
+}
+
+.typeahead-option[aria-selected="true"],
+.typeahead-option:hover {
+  background-color: active.$school_main_color;
+  color: #fff;
 }
 
 .caption-text{

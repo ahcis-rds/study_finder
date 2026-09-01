@@ -1,0 +1,21 @@
+// Base styles
+@use "base/globals";
+@use "base/navbar";
+
+// Pages
+@use "pages/home";
+@use "pages/categories";
+@use "pages/admin";
+@use "pages/contact";
+@use "pages/researchers";
+@use "pages/studies";
+@use "pages/signin";
+@use "pages/splash";
+@use "pages/spotlight";
+@use "pages/search";
+
+// Responsive
+@use "base/media";
+
+// Print Friendly
+@use "base/print";
