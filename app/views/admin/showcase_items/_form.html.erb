@@ -14,19 +14,24 @@
   </div>
   <% if @item.showcase_image.attached? || !@item.url.blank? %>
     <h2>Preview</h2>
-    <div class="col-md-4 card border-0">
-      <div class="card-text">
-        <% unless !@item.showcase_image.attached? && @item.url.blank? %>
-          <% if @item.showcase_image.attached? %>
-            <%= image_tag @item.showcase_image, class: 'w-100', alt: @item.alt_text %>
+    <div id="showcase" class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <% unless !@item.showcase_image.attached? && @item.url.blank? %>
+            <% if @item.showcase_image.attached? %>
+              <%= image_tag @item.showcase_image, class: 'w-100 card-img-top img-fluid d-sm-block', alt: @item.alt_text  %>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
-      <div class="card-header align-items-center justify-content-center h-100">
-        <h3 class="caption-title"><%= @item.title.to_s %></h3>
-        <span style="float: right; position: relative; bottom: 0;">
-          <%= link_to 'Learn More', @item.url, class: 'btn btn-secondary' %>
-        </span>
+          <div class="card-body">
+            <div class="card-title" style="">
+              <h3 ><%= @item.title.to_s %></h3>
+            </div>
+            <p class="card-text"><%= @item.caption.to_s %></p>
+          </div>
+          <div class="card-footer text-right">
+            <%= link_to 'Learn more', @item.url, class: 'btn btn-secondary' %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
